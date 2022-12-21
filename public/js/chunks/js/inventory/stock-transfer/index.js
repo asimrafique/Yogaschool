@@ -1,2 +1,1385 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[9631],{57434:(t,e,s)=>{"use strict";s.d(e,{Z:()=>o});const r={components:{},props:["id"],data:function(){return{stockTransferForm:new Form({type:"room",date:"",return_due_date:"",room_id:"",student_id:"",employee_id:"",description:"",details:[],upload_token:""}),stock_items:[],rooms:[],selected_room:null,employees:[],selected_employee:null,students:[],selected_student:null,module_id:"",clearAttachment:!0}},mounted:function(){this.id||this.addRow(),this.id?this.get():this.stockTransferForm.upload_token=this.$uuid.v4(),this.getPreRequisite()},methods:{proceed:function(){this.id?this.update():this.store()},getPreRequisite:function(){var t=this,e=this.$loading.show();axios.get("/api/stock/transfer/pre-requisite").then((function(s){t.rooms=s.rooms,t.students=s.students,t.employees=s.employees,t.stock_items=s.stock_items,e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},addRow:function(){this.stockTransferForm.details.push({quantity:"",stock_item_id:"",description:"",selected_stock_item:null})},getStockItemName:function(t){return t+"_stock_item_id"},getDescriptionName:function(t){return t+"_description"},getQuantityName:function(t){return t+"_quantity"},get:function(){var t=this,e=this.$loading.show();axios.get("/api/stock/transfer/"+this.id).then((function(s){t.stockTransferForm.type=s.stock_transfer.type,t.stockTransferForm.upload_token=s.stock_transfer.upload_token,t.module_id=s.stock_transfer.id,t.stockTransferForm.number=s.stock_transfer.number,t.stockTransferForm.date=s.stock_transfer.date,t.stockTransferForm.return_due_date=s.stock_transfer.return_due_date,t.stockTransferForm.description=s.stock_transfer.description,t.stockTransferForm.room_id=s.stock_transfer.room_id,t.selected_room=s.selected_room,t.stockTransferForm.employee_id=s.stock_transfer.employee_id,t.selected_employee=s.selected_employee,t.stockTransferForm.student_id=s.stock_transfer.student_id,t.selected_student=s.selected_student,s.stock_transfer.details.forEach((function(e){t.stockTransferForm.details.push({quantity:e.quantity,stock_item_id:e.stock_item_id,selected_stock_item:e.stock_item_id?{id:e.stock_item_id,name:e.item.name}:null,description:e.description})})),e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},store:function(){var t=this,e=this.$loading.show();this.stockTransferForm.post("/api/stock/transfer").then((function(s){toastr.success(s.message),t.selected_room=null,t.selected_student=null,t.selected_employee=null,t.stockTransferForm.details=[],t.clearAttachment=!t.clearAttachment,t.stockTransferForm.upload_token=t.$uuid.v4(),t.addRow(),t.$emit("completed"),e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},update:function(){var t=this,e=this.$loading.show();this.stockTransferForm.patch("/api/stock/transfer/"+this.id).then((function(s){toastr.success(s.message),e.hide(),t.$router.push("/inventory/stock/transfer")})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},onRoomSelect:function(t){this.stockTransferForm.room_id=t.id},onEmployeeSelect:function(t){this.stockTransferForm.employee_id=t.id},onStudentSelect:function(t){this.stockTransferForm.student_id=t.id},confirmDelete:function(t){var e=this;return function(s){return e.deleteDetail(t)}},deleteDetail:function(t){this.stockTransferForm.details.splice(t,1)},onStockItemSelect:function(t,e){var s=e.split("_")[0];this.stockTransferForm.details[s].stock_item_id=t.id},onStockItemRemove:function(t,e){var s=e.split("_")[0];this.stockTransferForm.details[s].stock_item_id=""}},computed:{}};const o=(0,s(51900).Z)(r,(function(){var t=this,e=t.$createElement,s=t._self._c||e;return s("div",[s("form",{on:{submit:function(e){return e.preventDefault(),t.proceed.apply(null,arguments)},keydown:function(e){return t.stockTransferForm.errors.clear(e.target.name)}}},[s("div",{staticClass:"row"},[s("div",{staticClass:"col-12 col-sm-3"},[s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[t._v(t._s(t.trans("inventory.stock_transfer_date")))]),t._v(" "),s("datepicker",{attrs:{bootstrapStyling:!0,placeholder:t.trans("inventory.stock_transfer_date")},on:{selected:function(e){return t.stockTransferForm.errors.clear("date")}},model:{value:t.stockTransferForm.date,callback:function(e){t.$set(t.stockTransferForm,"date",e)},expression:"stockTransferForm.date"}}),t._v(" "),s("show-error",{attrs:{"form-name":t.stockTransferForm,"prop-name":"date"}})],1)]),t._v(" "),s("div",{staticClass:"col-12 col-sm-3"},[s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[t._v(t._s(t.trans("inventory.stock_transfer_return_due_date")))]),t._v(" "),s("datepicker",{attrs:{bootstrapStyling:!0,placeholder:t.trans("inventory.stock_transfer_return_due_date")},on:{selected:function(e){return t.stockTransferForm.errors.clear("return_due_")}},model:{value:t.stockTransferForm.return_due_,callback:function(e){t.$set(t.stockTransferForm,"return_due_",e)},expression:"stockTransferForm.return_due_"}}),t._v(" "),s("show-error",{attrs:{"form-name":t.stockTransferForm,"prop-name":"return_due_"}})],1)]),t._v(" "),s("div",{staticClass:"col-12 col-sm-3"},[s("div",{staticClass:"form-group"},[s("div",{staticClass:"radio radio-success m-t-20"},[s("input",{directives:[{name:"model",rawName:"v-model",value:t.stockTransferForm.type,expression:"stockTransferForm.type"}],attrs:{type:"radio",value:"room",id:"type_room",name:"type"},domProps:{checked:"room"==t.stockTransferForm.type,checked:t._q(t.stockTransferForm.type,"room")},on:{click:function(e){return t.stockTransferForm.errors.clear("type")},change:function(e){return t.$set(t.stockTransferForm,"type","room")}}}),t._v(" "),s("label",{attrs:{for:"type_room"}},[t._v(t._s(t.trans("asset.room")))]),t._v(" "),s("br"),t._v(" "),s("input",{directives:[{name:"model",rawName:"v-model",value:t.stockTransferForm.type,expression:"stockTransferForm.type"}],attrs:{type:"radio",value:"student",id:"type_student",name:"type"},domProps:{checked:"student"==t.stockTransferForm.type,checked:t._q(t.stockTransferForm.type,"student")},on:{click:function(e){return t.stockTransferForm.errors.clear("type")},change:function(e){return t.$set(t.stockTransferForm,"type","student")}}}),t._v(" "),s("label",{attrs:{for:"type_student"}},[t._v(t._s(t.trans("student.student")))]),t._v(" "),s("br"),t._v(" "),s("input",{directives:[{name:"model",rawName:"v-model",value:t.stockTransferForm.type,expression:"stockTransferForm.type"}],attrs:{type:"radio",value:"employee",id:"type_employee",name:"type"},domProps:{checked:"employee"==t.stockTransferForm.type,checked:t._q(t.stockTransferForm.type,"employee")},on:{click:function(e){return t.stockTransferForm.errors.clear("type")},change:function(e){return t.$set(t.stockTransferForm,"type","employee")}}}),t._v(" "),s("label",{attrs:{for:"type_employee"}},[t._v(t._s(t.trans("employee.employee")))])]),t._v(" "),s("show-error",{attrs:{"form-name":t.stockTransferForm,"prop-name":"type"}})],1)]),t._v(" "),s("div",{staticClass:"col-12 col-sm-3"},["room"==t.stockTransferForm.type?s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[t._v(t._s(t.trans("asset.room")))]),t._v(" "),s("v-select",{attrs:{label:"name",name:"room_id",id:"room_id",options:t.rooms,placeholder:t.trans("inventory.select_room")},on:{select:t.onRoomSelect,close:function(e){return t.stockTransferForm.errors.clear("room_id")},remove:function(e){t.stockTransferForm.room_id=""}},model:{value:t.selected_room,callback:function(e){t.selected_room=e},expression:"selected_room"}},[t.rooms.length?t._e():s("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                "+t._s(t.trans("general.no_option_found"))+"\n                            ")])]),t._v(" "),s("show-error",{attrs:{"form-name":t.stockTransferForm,"prop-name":"room_id"}})],1):t._e(),t._v(" "),"student"==t.stockTransferForm.type?s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.student")))]),t._v(" "),s("v-select",{attrs:{label:"name",name:"student_id",id:"student_id",options:t.students,placeholder:t.trans("student.select_student")},on:{select:t.onStudentSelect,close:function(e){return t.stockTransferForm.errors.clear("student_id")},remove:function(e){t.stockTransferForm.student_id=""}},model:{value:t.selected_student,callback:function(e){t.selected_student=e},expression:"selected_student"}},[t.students.length?t._e():s("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                "+t._s(t.trans("general.no_option_found"))+"\n                            ")])]),t._v(" "),s("show-error",{attrs:{"form-name":t.stockTransferForm,"prop-name":"student_id"}})],1):t._e(),t._v(" "),"employee"==t.stockTransferForm.type?s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[t._v(t._s(t.trans("employee.employee")))]),t._v(" "),s("v-select",{attrs:{label:"name",name:"employee_id",id:"employee_id",options:t.employees,placeholder:t.trans("employee.select_employee")},on:{select:t.onEmployeeSelect,close:function(e){return t.stockTransferForm.errors.clear("employee_id")},remove:function(e){t.stockTransferForm.employee_id=""}},model:{value:t.selected_employee,callback:function(e){t.selected_employee=e},expression:"selected_employee"}},[t.employees.length?t._e():s("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                "+t._s(t.trans("general.no_option_found"))+"\n                            ")])]),t._v(" "),s("show-error",{attrs:{"form-name":t.stockTransferForm,"prop-name":"employee_id"}})],1):t._e()]),t._v(" "),s("div",{staticClass:"col-12"},[s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[t._v(t._s(t.trans("inventory.stock_transfer_description")))]),t._v(" "),s("autosize-textarea",{attrs:{rows:"1",name:"description",placeholder:t.trans("inventory.stock_transfer_description")},model:{value:t.stockTransferForm.description,callback:function(e){t.$set(t.stockTransferForm,"description",e)},expression:"stockTransferForm.description"}}),t._v(" "),s("show-error",{attrs:{"form-name":t.stockTransferForm,"prop-name":"description"}})],1)])]),t._v(" "),s("div",{staticClass:"p-t-20 border-top"},[t._l(t.stockTransferForm.details,(function(e,r){return s("div",{staticClass:"row"},[s("div",{staticClass:"col-12 col-sm-3"},[s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[t._v("\n                                "+t._s(t.trans("inventory.stock_item"))+"\n                                "),s("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:t.confirmDelete(r)},expression:"{ok: confirmDelete(index)}"},{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.delete"),expression:"trans('general.delete')"}],key:r+"_delete_detail",staticClass:"btn btn-xs btn-danger",attrs:{type:"button"}},[s("i",{staticClass:"fas fa-times"})])]),t._v(" "),s("v-select",{attrs:{label:"name",name:t.getStockItemName(r),id:t.getStockItemName(r),options:t.stock_items,placeholder:t.trans("inventory.select_stock_item")},on:{select:t.onStockItemSelect,close:function(e){t.stockTransferForm.errors.clear(t.getStockItemName(r))},remove:t.onStockItemRemove},model:{value:e.selected_stock_item,callback:function(s){t.$set(e,"selected_stock_item",s)},expression:"detail.selected_stock_item"}},[t.stock_items.length?t._e():s("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                    "+t._s(t.trans("general.no_option_found"))+"\n                                ")])]),t._v(" "),s("show-error",{attrs:{"form-name":t.stockTransferForm,"prop-name":t.getStockItemName(r)}})],1)]),t._v(" "),s("div",{staticClass:"col-12 col-sm-3"},[s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[t._v(t._s(t.trans("inventory.stock_transfer_quantity")))]),t._v(" "),s("input",{directives:[{name:"model",rawName:"v-model",value:e.quantity,expression:"detail.quantity"}],staticClass:"form-control",attrs:{type:"text",name:t.getQuantityName(r),placeholder:t.trans("inventory.stock_transfer_quantity")},domProps:{value:e.quantity},on:{input:function(s){s.target.composing||t.$set(e,"quantity",s.target.value)}}}),t._v(" "),s("show-error",{attrs:{"form-name":t.stockTransferForm,"prop-name":t.getQuantityName(r)}})],1)]),t._v(" "),s("div",{staticClass:"col-12 col-sm-6"},[s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[t._v("\n                                "+t._s(t.trans("inventory.stock_item_description"))+"\n                            ")]),t._v(" "),s("input",{directives:[{name:"model",rawName:"v-model",value:e.description,expression:"detail.description"}],staticClass:"form-control",attrs:{type:"text",name:t.getDescriptionName(r),placeholder:t.trans("inventory.stock_item_description")},domProps:{value:e.description},on:{input:function(s){s.target.composing||t.$set(e,"description",s.target.value)}}}),t._v(" "),s("show-error",{attrs:{"form-name":t.stockTransferForm,"prop-name":t.getDescriptionName(r)}})],1)])])})),t._v(" "),s("div",{staticClass:"row"},[s("div",{staticClass:"col-12"},[s("div",{staticClass:"form-group"},[s("button",{staticClass:"btn btn-info btn-sm waves-effect waves-light",attrs:{type:"button"},on:{click:t.addRow}},[t._v(t._s(t.trans("inventory.add_new_stock_item")))])])]),t._v(" "),s("div",{staticClass:"col-12"},[s("div",{staticClass:"form-group"},[s("file-upload-input",{attrs:{"button-text":t.trans("general.upload_document"),token:t.stockTransferForm.upload_token,module:"stock_transfer","clear-file":t.clearAttachment,"module-id":t.module_id}})],1)])])],2),t._v(" "),s("div",{staticClass:"card-footer text-right"},[s("button",{directives:[{name:"show",rawName:"v-show",value:t.id,expression:"id"}],staticClass:"btn btn-danger ",attrs:{type:"button"},on:{click:function(e){return t.$router.push("/inventory/stock/transfer")}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),t.id?t._e():s("button",{staticClass:"btn btn-danger ",attrs:{type:"button"},on:{click:function(e){return t.$emit("cancel")}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),s("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[t._v(t._s(t.trans("general.save")))])])])])}),[],!1,null,null,null).exports},12377:(t,e,s)=>{"use strict";s.r(e),s.d(e,{default:()=>o});const r={components:{stockTransferForm:s(57434).Z},data:function(){return{stock_transfers:{total:0,data:[]},filter:{sort_by:"date",order:"desc",room_id:[],date_start_date:"",date_end_date:"",page_length:helper.getConfig("page_length")},orderByOptions:[{value:"date",translation:i18n.inventory.stock_transfer_date},{value:"created_at",translation:i18n.general.created_at}],showFilterPanel:!1,showCreatePanel:!1,rooms:[],selected_rooms:null,help_topic:""}},mounted:function(){helper.hasPermission("list-stock-transfer")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getStockTransfers(),helper.showDemoNotification(["inventory"])},methods:{hasPermission:function(t){return helper.hasPermission(t)},getStudentName:function(t){return helper.getStudentName(t)},getEmployeeName:function(t){return helper.getEmployeeName(t)},getEmployeeDesignationOnDate:function(t,e){return helper.getEmployeeDesignationOnDate(t,e)},getStockTransfers:function(t){var e=this,s=this.$loading.show();"number"!=typeof t&&(t=1),this.filter.date_start_date=helper.toDate(this.filter.date_start_date),this.filter.date_end_date=helper.toDate(this.filter.date_end_date);var r=helper.getFilterURL(this.filter);axios.get("/api/stock/transfer?page="+t+r).then((function(t){e.stock_transfers=t.stock_transfers,e.rooms=t.filters.rooms,s.hide()})).catch((function(t){s.hide(),helper.showErrorMsg(t)}))},editStockTransfer:function(t){this.$router.push("/inventory/stock/transfer/"+t.id+"/edit")},confirmDelete:function(t){var e=this;return function(s){return e.deleteStockTransfer(t)}},deleteStockTransfer:function(t){var e=this,s=this.$loading.show();axios.delete("/api/stock/transfer/"+t.id).then((function(t){toastr.success(t.message),e.getStockTransfers(),s.hide()})).catch((function(t){s.hide(),helper.showErrorMsg(t)}))},getConfig:function(t){return helper.getConfig(t)},print:function(){var t=this.$loading.show();axios.post("/api/stock/transfer/print",{filter:this.filter}).then((function(e){var s=window.open("/print");t.hide(),s.document.write(e)})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},pdf:function(){var t=this,e=this.$loading.show();axios.post("/api/stock/transfer/pdf",{filter:this.filter}).then((function(s){e.hide(),window.open("/download/report/"+s+"?token="+t.authToken)})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},onRoomSelect:function(t){this.filter.room_id.push(t.id)},onRoomRemove:function(t){this.filter.room_id.splice(this.filter.room_id.indexOf(t.id),1)},formatCurrency:function(t){return helper.formatCurrency(t)}},filters:{moment:function(t){return helper.formatDate(t)},momentDateTime:function(t){return helper.formatDateTime(t)},momentTime:function(t){return helper.formatTime(t)}},watch:{"filter.sort_by":function(t){this.getStockTransfers()},"filter.order":function(t){this.getStockTransfers()},"filter.page_length":function(t){this.getStockTransfers()}},computed:{authToken:function(){return helper.getAuthToken()}}};const o=(0,s(51900).Z)(r,(function(){var t=this,e=t.$createElement,s=t._self._c||e;return s("div",[s("div",{staticClass:"page-titles"},[s("div",{staticClass:"row"},[s("div",{staticClass:"col-12 col-sm-6"},[s("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("inventory.stock_transfer"))+"\n                    "),t.stock_transfers.total?s("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.total_result_found",{count:t.stock_transfers.total,from:t.stock_transfers.from,to:t.stock_transfers.to})))]):s("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.no_result_found")))])])]),t._v(" "),s("div",{staticClass:"col-12 col-sm-6"},[s("div",{staticClass:"action-buttons pull-right"},[t.stock_transfers.total&&!t.showCreatePanel&&t.hasPermission("create-stock-transfer")?s("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.add_new"),expression:"trans('general.add_new')"}],staticClass:"btn btn-info btn-sm",on:{click:function(e){t.showCreatePanel=!t.showCreatePanel}}},[s("i",{staticClass:"fas fa-plus"}),t._v(" "),s("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("inventory.add_new_stock_transfer")))])]):t._e(),t._v(" "),t.showFilterPanel?t._e():s("button",{staticClass:"btn btn-info btn-sm",on:{click:function(e){t.showFilterPanel=!t.showFilterPanel}}},[s("i",{staticClass:"fas fa-filter"}),t._v(" "),s("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("general.filter")))])]),t._v(" "),s("sort-by",{attrs:{"order-by-options":t.orderByOptions,"sort-by":t.filter.sort_by,order:t.filter.order},on:{updateSortBy:function(e){t.filter.sort_by=e},updateOrder:function(e){t.filter.order=e}}}),t._v(" "),s("div",{staticClass:"btn-group"},[s("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.more_option"),expression:"trans('general.more_option')"}],staticClass:"btn btn-info btn-sm dropdown-toggle no-caret ",attrs:{type:"button",role:"menu",id:"moreOption","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[s("i",{staticClass:"fas fa-ellipsis-h"}),t._v(" "),s("span",{staticClass:"d-none d-sm-inline"})]),t._v(" "),s("div",{class:["dropdown-menu","ltr"==t.getConfig("direction")?"dropdown-menu-right":""],attrs:{"aria-labelledby":"moreOption"}},[s("button",{staticClass:"dropdown-item custom-dropdown",on:{click:t.print}},[s("i",{staticClass:"fas fa-print"}),t._v(" "+t._s(t.trans("general.print")))]),t._v(" "),s("button",{staticClass:"dropdown-item custom-dropdown",on:{click:t.pdf}},[s("i",{staticClass:"fas fa-file-pdf"}),t._v(" "+t._s(t.trans("general.generate_pdf")))])])]),t._v(" "),s("help-button",{on:{clicked:function(e){t.help_topic="inventory.stock.transfer"}}})],1)])])]),t._v(" "),s("div",{staticClass:"container-fluid"},[s("transition",{attrs:{name:"fade"}},[t.showFilterPanel?s("div",{staticClass:"card card-form"},[s("div",{staticClass:"card-body"},[s("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("general.filter")))]),t._v(" "),s("div",{staticClass:"row"},[s("div",{staticClass:"col-12 col-sm-3"},[s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[t._v(t._s(t.trans("asset.room")))]),t._v(" "),s("v-select",{attrs:{label:"name","track-by":"id",name:"room_id",id:"room_id",options:t.rooms,placeholder:t.trans("inventory.select_room"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_rooms},on:{select:t.onRoomSelect,remove:t.onRoomRemove},model:{value:t.selected_rooms,callback:function(e){t.selected_rooms=e},expression:"selected_rooms"}},[t.rooms.length?t._e():s("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),s("div",{staticClass:"col-12 col-sm-6"},[s("date-range-picker",{attrs:{"start-date":t.filter.date_start_date,"end-date":t.filter.date_end_date,label:t.trans("general.date_between")},on:{"update:startDate":function(e){return t.$set(t.filter,"date_start_date",e)},"update:start-date":function(e){return t.$set(t.filter,"date_start_date",e)},"update:endDate":function(e){return t.$set(t.filter,"date_end_date",e)},"update:end-date":function(e){return t.$set(t.filter,"date_end_date",e)}}})],1)]),t._v(" "),s("div",{staticClass:"card-footer text-right"},[s("button",{staticClass:"btn btn-danger",attrs:{type:"button"},on:{click:function(e){t.showFilterPanel=!1}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),s("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"button"},on:{click:t.getStockTransfers}},[t._v(t._s(t.trans("general.filter")))])])])]):t._e()]),t._v(" "),t.hasPermission("create-stock-transfer")?s("transition",{attrs:{name:"fade"}},[t.showCreatePanel?s("div",{staticClass:"card card-form"},[s("div",{staticClass:"card-body"},[s("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("inventory.add_new_stock_transfer")))]),t._v(" "),s("stock-transfer-form",{on:{completed:t.getStockTransfers,cancel:function(e){t.showCreatePanel=!t.showCreatePanel}}})],1)]):t._e()]):t._e(),t._v(" "),s("div",{staticClass:"card"},[s("div",{staticClass:"card-body"},[t.stock_transfers.total?s("div",{staticClass:"table-responsive"},[s("table",{staticClass:"table table-sm"},[s("thead",[s("tr",[s("th",[t._v(t._s(t.trans("inventory.stock_transfer_detail")))]),t._v(" "),s("th",[t._v(t._s(t.trans("inventory.stock_transfer_date")))]),t._v(" "),s("th",[t._v(t._s(t.trans("inventory.stock_transfer_return_due_date")))]),t._v(" "),s("th",[t._v(t._s(t.trans("inventory.stock_transfer_description")))]),t._v(" "),s("th",{staticClass:"table-option"},[t._v(t._s(t.trans("general.action")))])])]),t._v(" "),s("tbody",t._l(t.stock_transfers.data,(function(e){return s("tr",[s("td",["employee"==e.type?[t._v("\n                                        "+t._s(t.trans("employee.employee_name")+": "+t.getEmployeeName(e.employee))+" "),s("br"),t._v("\n                                        "+t._s(t.getEmployeeDesignationOnDate(e.employee,e.date))+"\n                                    ")]:"student"==e.type?[t._v("\n                                        "+t._s(t.trans("student.student_name")+": "+t.getStudentName(e.student))+" "),s("br"),t._v("\n                                        "+t._s(t.trans("student.first_guardian_name")+": "+e.student.parent.first_guardian_name)+" "),s("br"),t._v("\n                                        "+t._s(t.trans("student.contact_number")+": "+e.student.contact_number)+" "),s("br")]:"room"==e.type?[t._v("\n                                        "+t._s(t.trans("asset.room"))+": "+t._s(e.room.name)+"\n                                    ")]:t._e()],2),t._v(" "),s("td",[t._v(t._s(t._f("moment")(e.date)))]),t._v(" "),s("td",[e.return_due_date?[t._v("\n                                        "+t._s(t._f("moment")(e.return_due_date))+"\n                                    ")]:[t._v("-")]],2),t._v(" "),s("td",{domProps:{textContent:t._s(e.description)}}),t._v(" "),s("td",{staticClass:"table-option"},[s("div",{staticClass:"btn-group"},[s("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("inventory.stock_transfer_detail"),expression:"trans('inventory.stock_transfer_detail')"}],staticClass:"btn btn-success btn-sm",on:{click:function(s){return t.$router.push("/inventory/stock/transfer/"+e.id)}}},[s("i",{staticClass:"fas fa-arrow-circle-right"})]),t._v(" "),t.hasPermission("edit-stock-transfer")?s("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("inventory.edit_stock_transfer"),expression:"trans('inventory.edit_stock_transfer')"}],staticClass:"btn btn-info btn-sm",on:{click:function(s){return s.preventDefault(),t.editStockTransfer(e)}}},[s("i",{staticClass:"fas fa-edit"})]):t._e(),t._v(" "),t.hasPermission("delete-stock-transfer")?s("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:t.confirmDelete(e)},expression:"{ok: confirmDelete(stock_transfer)}"},{name:"tooltip",rawName:"v-tooltip",value:t.trans("inventory.delete_stock_transfer"),expression:"trans('inventory.delete_stock_transfer')"}],key:e.id,staticClass:"btn btn-danger btn-sm"},[s("i",{staticClass:"fas fa-trash"})]):t._e()])])])})),0)])]):t._e(),t._v(" "),t.stock_transfers.total?t._e():s("module-info",{attrs:{module:"inventory",title:"stock_transfer_module_title",description:"stock_transfer_module_description",icon:"list"}},[s("div",{attrs:{slot:"btn"},slot:"btn"},[!t.showCreatePanel&&t.hasPermission("create-stock-transfer")?s("button",{staticClass:"btn btn-info btn-md",on:{click:function(e){t.showCreatePanel=!t.showCreatePanel}}},[s("i",{staticClass:"fas fa-plus"}),t._v(" "+t._s(t.trans("general.add_new")))]):t._e()])]),t._v(" "),s("pagination-record",{attrs:{"page-length":t.filter.page_length,records:t.stock_transfers},on:{"update:pageLength":function(e){return t.$set(t.filter,"page_length",e)},"update:page-length":function(e){return t.$set(t.filter,"page_length",e)},updateRecords:t.getStockTransfers}})],1)])],1),t._v(" "),s("right-panel",{attrs:{topic:t.help_topic}})],1)}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=index.js.map?id=711cb3f7b9b599d1e4bd
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/inventory/stock-transfer/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/form.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/form.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  props: ['id'],
+  data: function data() {
+    return {
+      stockTransferForm: new Form({
+        type: 'room',
+        date: '',
+        return_due_date: '',
+        room_id: '',
+        student_id: '',
+        employee_id: '',
+        description: '',
+        details: [],
+        upload_token: ''
+      }),
+      stock_items: [],
+      rooms: [],
+      selected_room: null,
+      employees: [],
+      selected_employee: null,
+      students: [],
+      selected_student: null,
+      module_id: '',
+      clearAttachment: true
+    };
+  },
+  mounted: function mounted() {
+    if (!this.id) this.addRow();
+    if (this.id) this.get();else this.stockTransferForm.upload_token = this.$uuid.v4();
+    this.getPreRequisite();
+  },
+  methods: {
+    proceed: function proceed() {
+      if (this.id) this.update();else this.store();
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/stock/transfer/pre-requisite').then(function (response) {
+        _this.rooms = response.rooms;
+        _this.students = response.students;
+        _this.employees = response.employees;
+        _this.stock_items = response.stock_items;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    addRow: function addRow() {
+      var new_index = this.stockTransferForm.details.push({
+        quantity: '',
+        stock_item_id: '',
+        description: '',
+        selected_stock_item: null
+      });
+    },
+    getStockItemName: function getStockItemName(index) {
+      return index + '_stock_item_id';
+    },
+    getDescriptionName: function getDescriptionName(index) {
+      return index + '_description';
+    },
+    getQuantityName: function getQuantityName(index) {
+      return index + '_quantity';
+    },
+    get: function get() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/stock/transfer/' + this.id).then(function (response) {
+        _this2.stockTransferForm.type = response.stock_transfer.type;
+        _this2.stockTransferForm.upload_token = response.stock_transfer.upload_token;
+        _this2.module_id = response.stock_transfer.id;
+        _this2.stockTransferForm.number = response.stock_transfer.number;
+        _this2.stockTransferForm.date = response.stock_transfer.date;
+        _this2.stockTransferForm.return_due_date = response.stock_transfer.return_due_date;
+        _this2.stockTransferForm.description = response.stock_transfer.description;
+        _this2.stockTransferForm.room_id = response.stock_transfer.room_id;
+        _this2.selected_room = response.selected_room;
+        _this2.stockTransferForm.employee_id = response.stock_transfer.employee_id;
+        _this2.selected_employee = response.selected_employee;
+        _this2.stockTransferForm.student_id = response.stock_transfer.student_id;
+        _this2.selected_student = response.selected_student;
+        response.stock_transfer.details.forEach(function (detail) {
+          _this2.stockTransferForm.details.push({
+            quantity: detail.quantity,
+            stock_item_id: detail.stock_item_id,
+            selected_stock_item: detail.stock_item_id ? {
+              id: detail.stock_item_id,
+              name: detail.item.name
+            } : null,
+            description: detail.description
+          });
+        });
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    store: function store() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      this.stockTransferForm.post('/api/stock/transfer').then(function (response) {
+        toastr.success(response.message);
+        _this3.selected_room = null;
+        _this3.selected_student = null;
+        _this3.selected_employee = null;
+        _this3.stockTransferForm.details = [];
+        _this3.clearAttachment = !_this3.clearAttachment;
+        _this3.stockTransferForm.upload_token = _this3.$uuid.v4();
+        _this3.addRow();
+        _this3.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    update: function update() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      this.stockTransferForm.patch('/api/stock/transfer/' + this.id).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this4.$router.push('/inventory/stock/transfer');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onRoomSelect: function onRoomSelect(selectedOption) {
+      this.stockTransferForm.room_id = selectedOption.id;
+    },
+    onEmployeeSelect: function onEmployeeSelect(selectedOption) {
+      this.stockTransferForm.employee_id = selectedOption.id;
+    },
+    onStudentSelect: function onStudentSelect(selectedOption) {
+      this.stockTransferForm.student_id = selectedOption.id;
+    },
+    confirmDelete: function confirmDelete(index) {
+      var _this5 = this;
+      return function (dialog) {
+        return _this5.deleteDetail(index);
+      };
+    },
+    deleteDetail: function deleteDetail(index) {
+      this.stockTransferForm.details.splice(index, 1);
+    },
+    onStockItemSelect: function onStockItemSelect(selectedOption, id) {
+      var index = id.split("_")[0];
+      var detail = this.stockTransferForm.details[index];
+      detail.stock_item_id = selectedOption.id;
+    },
+    onStockItemRemove: function onStockItemRemove(removedOption, id) {
+      var index = id.split("_")[0];
+      var detail = this.stockTransferForm.details[index];
+      detail.stock_item_id = '';
+    }
+  },
+  computed: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/index.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/index.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/inventory/stock-transfer/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    stockTransferForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      stock_transfers: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        sort_by: 'date',
+        order: 'desc',
+        room_id: [],
+        date_start_date: '',
+        date_end_date: '',
+        page_length: helper.getConfig('page_length')
+      },
+      orderByOptions: [{
+        value: 'date',
+        translation: i18n.inventory.stock_transfer_date
+      }, {
+        value: 'created_at',
+        translation: i18n.general.created_at
+      }],
+      showFilterPanel: false,
+      showCreatePanel: false,
+      rooms: [],
+      selected_rooms: null,
+      help_topic: ''
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('list-stock-transfer')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getStockTransfers();
+    helper.showDemoNotification(['inventory']);
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    getStudentName: function getStudentName(student) {
+      return helper.getStudentName(student);
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getEmployeeDesignationOnDate: function getEmployeeDesignationOnDate(employee, date) {
+      return helper.getEmployeeDesignationOnDate(employee, date);
+    },
+    getStockTransfers: function getStockTransfers(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      this.filter.date_start_date = helper.toDate(this.filter.date_start_date);
+      this.filter.date_end_date = helper.toDate(this.filter.date_end_date);
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/stock/transfer?page=' + page + url).then(function (response) {
+        _this.stock_transfers = response.stock_transfers;
+        _this.rooms = response.filters.rooms;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    editStockTransfer: function editStockTransfer(stock_transfer) {
+      this.$router.push('/inventory/stock/transfer/' + stock_transfer.id + '/edit');
+    },
+    confirmDelete: function confirmDelete(stock_transfer) {
+      var _this2 = this;
+      return function (dialog) {
+        return _this2.deleteStockTransfer(stock_transfer);
+      };
+    },
+    deleteStockTransfer: function deleteStockTransfer(stock_transfer) {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios["delete"]('/api/stock/transfer/' + stock_transfer.id).then(function (response) {
+        toastr.success(response.message);
+        _this3.getStockTransfers();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    print: function print() {
+      var loader = this.$loading.show();
+      axios.post('/api/stock/transfer/print', {
+        filter: this.filter
+      }).then(function (response) {
+        var print = window.open("/print");
+        loader.hide();
+        print.document.write(response);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    pdf: function pdf() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      axios.post('/api/stock/transfer/pdf', {
+        filter: this.filter
+      }).then(function (response) {
+        loader.hide();
+        window.open('/download/report/' + response + '?token=' + _this4.authToken);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onRoomSelect: function onRoomSelect(selectedOption) {
+      this.filter.room_id.push(selectedOption.id);
+    },
+    onRoomRemove: function onRoomRemove(removedOption) {
+      this.filter.room_id.splice(this.filter.room_id.indexOf(removedOption.id), 1);
+    },
+    formatCurrency: function formatCurrency(amount) {
+      return helper.formatCurrency(amount);
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    },
+    momentTime: function momentTime(time) {
+      return helper.formatTime(time);
+    }
+  },
+  watch: {
+    'filter.sort_by': function filterSort_by(val) {
+      this.getStockTransfers();
+    },
+    'filter.order': function filterOrder(val) {
+      this.getStockTransfers();
+    },
+    'filter.page_length': function filterPage_length(val) {
+      this.getStockTransfers();
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/form.vue?vue&type=template&id=6bec9562&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/form.vue?vue&type=template&id=6bec9562& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.stockTransferForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("inventory.stock_transfer_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("inventory.stock_transfer_date")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.stockTransferForm.errors.clear("date");
+      }
+    },
+    model: {
+      value: _vm.stockTransferForm.date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.stockTransferForm, "date", $$v);
+      },
+      expression: "stockTransferForm.date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.stockTransferForm,
+      "prop-name": "date"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("inventory.stock_transfer_return_due_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("inventory.stock_transfer_return_due_date")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.stockTransferForm.errors.clear("return_due_");
+      }
+    },
+    model: {
+      value: _vm.stockTransferForm.return_due_,
+      callback: function callback($$v) {
+        _vm.$set(_vm.stockTransferForm, "return_due_", $$v);
+      },
+      expression: "stockTransferForm.return_due_"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.stockTransferForm,
+      "prop-name": "return_due_"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "radio radio-success m-t-20"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.stockTransferForm.type,
+      expression: "stockTransferForm.type"
+    }],
+    attrs: {
+      type: "radio",
+      value: "room",
+      id: "type_room",
+      name: "type"
+    },
+    domProps: _defineProperty({
+      checked: _vm.stockTransferForm.type == "room"
+    }, "checked", _vm._q(_vm.stockTransferForm.type, "room")),
+    on: {
+      click: function click($event) {
+        return _vm.stockTransferForm.errors.clear("type");
+      },
+      change: function change($event) {
+        return _vm.$set(_vm.stockTransferForm, "type", "room");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "type_room"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("asset.room")))]), _vm._v(" "), _c("br"), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.stockTransferForm.type,
+      expression: "stockTransferForm.type"
+    }],
+    attrs: {
+      type: "radio",
+      value: "student",
+      id: "type_student",
+      name: "type"
+    },
+    domProps: _defineProperty({
+      checked: _vm.stockTransferForm.type == "student"
+    }, "checked", _vm._q(_vm.stockTransferForm.type, "student")),
+    on: {
+      click: function click($event) {
+        return _vm.stockTransferForm.errors.clear("type");
+      },
+      change: function change($event) {
+        return _vm.$set(_vm.stockTransferForm, "type", "student");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "type_student"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.student")))]), _vm._v(" "), _c("br"), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.stockTransferForm.type,
+      expression: "stockTransferForm.type"
+    }],
+    attrs: {
+      type: "radio",
+      value: "employee",
+      id: "type_employee",
+      name: "type"
+    },
+    domProps: _defineProperty({
+      checked: _vm.stockTransferForm.type == "employee"
+    }, "checked", _vm._q(_vm.stockTransferForm.type, "employee")),
+    on: {
+      click: function click($event) {
+        return _vm.stockTransferForm.errors.clear("type");
+      },
+      change: function change($event) {
+        return _vm.$set(_vm.stockTransferForm, "type", "employee");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "type_employee"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee")))])]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.stockTransferForm,
+      "prop-name": "type"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_vm.stockTransferForm.type == "room" ? _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("asset.room")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "room_id",
+      id: "room_id",
+      options: _vm.rooms,
+      placeholder: _vm.trans("inventory.select_room")
+    },
+    on: {
+      select: _vm.onRoomSelect,
+      close: function close($event) {
+        return _vm.stockTransferForm.errors.clear("room_id");
+      },
+      remove: function remove($event) {
+        _vm.stockTransferForm.room_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_room,
+      callback: function callback($$v) {
+        _vm.selected_room = $$v;
+      },
+      expression: "selected_room"
+    }
+  }, [!_vm.rooms.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                " + _vm._s(_vm.trans("general.no_option_found")) + "\n                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.stockTransferForm,
+      "prop-name": "room_id"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _vm.stockTransferForm.type == "student" ? _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.student")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "student_id",
+      id: "student_id",
+      options: _vm.students,
+      placeholder: _vm.trans("student.select_student")
+    },
+    on: {
+      select: _vm.onStudentSelect,
+      close: function close($event) {
+        return _vm.stockTransferForm.errors.clear("student_id");
+      },
+      remove: function remove($event) {
+        _vm.stockTransferForm.student_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_student,
+      callback: function callback($$v) {
+        _vm.selected_student = $$v;
+      },
+      expression: "selected_student"
+    }
+  }, [!_vm.students.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                " + _vm._s(_vm.trans("general.no_option_found")) + "\n                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.stockTransferForm,
+      "prop-name": "student_id"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _vm.stockTransferForm.type == "employee" ? _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "employee_id",
+      id: "employee_id",
+      options: _vm.employees,
+      placeholder: _vm.trans("employee.select_employee")
+    },
+    on: {
+      select: _vm.onEmployeeSelect,
+      close: function close($event) {
+        return _vm.stockTransferForm.errors.clear("employee_id");
+      },
+      remove: function remove($event) {
+        _vm.stockTransferForm.employee_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_employee,
+      callback: function callback($$v) {
+        _vm.selected_employee = $$v;
+      },
+      expression: "selected_employee"
+    }
+  }, [!_vm.employees.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                " + _vm._s(_vm.trans("general.no_option_found")) + "\n                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.stockTransferForm,
+      "prop-name": "employee_id"
+    }
+  })], 1) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("inventory.stock_transfer_description")))]), _vm._v(" "), _c("autosize-textarea", {
+    attrs: {
+      rows: "1",
+      name: "description",
+      placeholder: _vm.trans("inventory.stock_transfer_description")
+    },
+    model: {
+      value: _vm.stockTransferForm.description,
+      callback: function callback($$v) {
+        _vm.$set(_vm.stockTransferForm, "description", $$v);
+      },
+      expression: "stockTransferForm.description"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.stockTransferForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "p-t-20 border-top"
+  }, [_vm._l(_vm.stockTransferForm.details, function (detail, index) {
+    return _c("div", {
+      staticClass: "row"
+    }, [_c("div", {
+      staticClass: "col-12 col-sm-3"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("label", {
+      attrs: {
+        "for": ""
+      }
+    }, [_vm._v("\n                                " + _vm._s(_vm.trans("inventory.stock_item")) + "\n                                "), _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(index)
+        },
+        expression: "{ok: confirmDelete(index)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("general.delete"),
+        expression: "trans('general.delete')"
+      }],
+      key: "".concat(index, "_delete_detail"),
+      staticClass: "btn btn-xs btn-danger",
+      attrs: {
+        type: "button"
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-times"
+    })])]), _vm._v(" "), _c("v-select", {
+      attrs: {
+        label: "name",
+        name: _vm.getStockItemName(index),
+        id: _vm.getStockItemName(index),
+        options: _vm.stock_items,
+        placeholder: _vm.trans("inventory.select_stock_item")
+      },
+      on: {
+        select: _vm.onStockItemSelect,
+        close: function close($event) {
+          _vm.stockTransferForm.errors.clear(_vm.getStockItemName(index));
+        },
+        remove: _vm.onStockItemRemove
+      },
+      model: {
+        value: detail.selected_stock_item,
+        callback: function callback($$v) {
+          _vm.$set(detail, "selected_stock_item", $$v);
+        },
+        expression: "detail.selected_stock_item"
+      }
+    }, [!_vm.stock_items.length ? _c("div", {
+      staticClass: "multiselect__option",
+      attrs: {
+        slot: "afterList"
+      },
+      slot: "afterList"
+    }, [_vm._v("\n                                    " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+      attrs: {
+        "form-name": _vm.stockTransferForm,
+        "prop-name": _vm.getStockItemName(index)
+      }
+    })], 1)]), _vm._v(" "), _c("div", {
+      staticClass: "col-12 col-sm-3"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("label", {
+      attrs: {
+        "for": ""
+      }
+    }, [_vm._v(_vm._s(_vm.trans("inventory.stock_transfer_quantity")))]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: detail.quantity,
+        expression: "detail.quantity"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "text",
+        name: _vm.getQuantityName(index),
+        placeholder: _vm.trans("inventory.stock_transfer_quantity")
+      },
+      domProps: {
+        value: detail.quantity
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(detail, "quantity", $event.target.value);
+        }
+      }
+    }), _vm._v(" "), _c("show-error", {
+      attrs: {
+        "form-name": _vm.stockTransferForm,
+        "prop-name": _vm.getQuantityName(index)
+      }
+    })], 1)]), _vm._v(" "), _c("div", {
+      staticClass: "col-12 col-sm-6"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("label", {
+      attrs: {
+        "for": ""
+      }
+    }, [_vm._v("\n                                " + _vm._s(_vm.trans("inventory.stock_item_description")) + "\n                            ")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: detail.description,
+        expression: "detail.description"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "text",
+        name: _vm.getDescriptionName(index),
+        placeholder: _vm.trans("inventory.stock_item_description")
+      },
+      domProps: {
+        value: detail.description
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(detail, "description", $event.target.value);
+        }
+      }
+    }), _vm._v(" "), _c("show-error", {
+      attrs: {
+        "form-name": _vm.stockTransferForm,
+        "prop-name": _vm.getDescriptionName(index)
+      }
+    })], 1)])]);
+  }), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.addRow
+    }
+  }, [_vm._v(_vm._s(_vm.trans("inventory.add_new_stock_item")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("file-upload-input", {
+    attrs: {
+      "button-text": _vm.trans("general.upload_document"),
+      token: _vm.stockTransferForm.upload_token,
+      module: "stock_transfer",
+      "clear-file": _vm.clearAttachment,
+      "module-id": _vm.module_id
+    }
+  })], 1)])])], 2), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("button", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.id,
+      expression: "id"
+    }],
+    staticClass: "btn btn-danger",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/inventory/stock/transfer");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.id ? _c("button", {
+    staticClass: "btn btn-danger",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.save")))])])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/index.vue?vue&type=template&id=4465ae52&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/index.vue?vue&type=template&id=4465ae52& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("inventory.stock_transfer")) + "\n                    "), _vm.stock_transfers.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.stock_transfers.total,
+    from: _vm.stock_transfers.from,
+    to: _vm.stock_transfers.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_vm.stock_transfers.total && !_vm.showCreatePanel && _vm.hasPermission("create-stock-transfer") ? _c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.add_new"),
+      expression: "trans('general.add_new')"
+    }],
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("inventory.add_new_stock_transfer")))])]) : _vm._e(), _vm._v(" "), !_vm.showFilterPanel ? _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = !_vm.showFilterPanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-filter"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])]) : _vm._e(), _vm._v(" "), _c("sort-by", {
+    attrs: {
+      "order-by-options": _vm.orderByOptions,
+      "sort-by": _vm.filter.sort_by,
+      order: _vm.filter.order
+    },
+    on: {
+      updateSortBy: function updateSortBy(value) {
+        _vm.filter.sort_by = value;
+      },
+      updateOrder: function updateOrder(value) {
+        _vm.filter.order = value;
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "btn-group"
+  }, [_c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.more_option"),
+      expression: "trans('general.more_option')"
+    }],
+    staticClass: "btn btn-info btn-sm dropdown-toggle no-caret",
+    attrs: {
+      type: "button",
+      role: "menu",
+      id: "moreOption",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-ellipsis-h"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  })]), _vm._v(" "), _c("div", {
+    "class": ["dropdown-menu", _vm.getConfig("direction") == "ltr" ? "dropdown-menu-right" : ""],
+    attrs: {
+      "aria-labelledby": "moreOption"
+    }
+  }, [_c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.print
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-print"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.print")))]), _vm._v(" "), _c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.pdf
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-file-pdf"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.generate_pdf")))])])]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "inventory.stock.transfer";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showFilterPanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("asset.room")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "room_id",
+      id: "room_id",
+      options: _vm.rooms,
+      placeholder: _vm.trans("inventory.select_room"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_rooms
+    },
+    on: {
+      select: _vm.onRoomSelect,
+      remove: _vm.onRoomRemove
+    },
+    model: {
+      value: _vm.selected_rooms,
+      callback: function callback($$v) {
+        _vm.selected_rooms = $$v;
+      },
+      expression: "selected_rooms"
+    }
+  }, [!_vm.rooms.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("date-range-picker", {
+    attrs: {
+      "start-date": _vm.filter.date_start_date,
+      "end-date": _vm.filter.date_end_date,
+      label: _vm.trans("general.date_between")
+    },
+    on: {
+      "update:startDate": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "date_start_date", $event);
+      },
+      "update:start-date": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "date_start_date", $event);
+      },
+      "update:endDate": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "date_end_date", $event);
+      },
+      "update:end-date": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "date_end_date", $event);
+      }
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("button", {
+    staticClass: "btn btn-danger",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = false;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.getStockTransfers
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])])])]) : _vm._e()]), _vm._v(" "), _vm.hasPermission("create-stock-transfer") ? _c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showCreatePanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("inventory.add_new_stock_transfer")))]), _vm._v(" "), _c("stock-transfer-form", {
+    on: {
+      completed: _vm.getStockTransfers,
+      cancel: function cancel($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  })], 1)]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.stock_transfers.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("inventory.stock_transfer_detail")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("inventory.stock_transfer_date")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("inventory.stock_transfer_return_due_date")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("inventory.stock_transfer_description")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.stock_transfers.data, function (stock_transfer) {
+    return _c("tr", [_c("td", [stock_transfer.type == "employee" ? [_vm._v("\n                                        " + _vm._s(_vm.trans("employee.employee_name") + ": " + _vm.getEmployeeName(stock_transfer.employee)) + " "), _c("br"), _vm._v("\n                                        " + _vm._s(_vm.getEmployeeDesignationOnDate(stock_transfer.employee, stock_transfer.date)) + "\n                                    ")] : stock_transfer.type == "student" ? [_vm._v("\n                                        " + _vm._s(_vm.trans("student.student_name") + ": " + _vm.getStudentName(stock_transfer.student)) + " "), _c("br"), _vm._v("\n                                        " + _vm._s(_vm.trans("student.first_guardian_name") + ": " + stock_transfer.student.parent.first_guardian_name) + " "), _c("br"), _vm._v("\n                                        " + _vm._s(_vm.trans("student.contact_number") + ": " + stock_transfer.student.contact_number) + " "), _c("br")] : stock_transfer.type == "room" ? [_vm._v("\n                                        " + _vm._s(_vm.trans("asset.room")) + ": " + _vm._s(stock_transfer.room.name) + "\n                                    ")] : _vm._e()], 2), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("moment")(stock_transfer.date)))]), _vm._v(" "), _c("td", [stock_transfer.return_due_date ? [_vm._v("\n                                        " + _vm._s(_vm._f("moment")(stock_transfer.return_due_date)) + "\n                                    ")] : [_vm._v("-")]], 2), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(stock_transfer.description)
+      }
+    }), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [_c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("inventory.stock_transfer_detail"),
+        expression: "trans('inventory.stock_transfer_detail')"
+      }],
+      staticClass: "btn btn-success btn-sm",
+      on: {
+        click: function click($event) {
+          return _vm.$router.push("/inventory/stock/transfer/" + stock_transfer.id);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-arrow-circle-right"
+    })]), _vm._v(" "), _vm.hasPermission("edit-stock-transfer") ? _c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("inventory.edit_stock_transfer"),
+        expression: "trans('inventory.edit_stock_transfer')"
+      }],
+      staticClass: "btn btn-info btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.editStockTransfer(stock_transfer);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-edit"
+    })]) : _vm._e(), _vm._v(" "), _vm.hasPermission("delete-stock-transfer") ? _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(stock_transfer)
+        },
+        expression: "{ok: confirmDelete(stock_transfer)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("inventory.delete_stock_transfer"),
+        expression: "trans('inventory.delete_stock_transfer')"
+      }],
+      key: stock_transfer.id,
+      staticClass: "btn btn-danger btn-sm"
+    }, [_c("i", {
+      staticClass: "fas fa-trash"
+    })]) : _vm._e()])])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.stock_transfers.total ? _c("module-info", {
+    attrs: {
+      module: "inventory",
+      title: "stock_transfer_module_title",
+      description: "stock_transfer_module_description",
+      icon: "list"
+    }
+  }, [_c("div", {
+    attrs: {
+      slot: "btn"
+    },
+    slot: "btn"
+  }, [!_vm.showCreatePanel && _vm.hasPermission("create-stock-transfer") ? _c("button", {
+    staticClass: "btn btn-info btn-md",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.add_new")))]) : _vm._e()])]) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.stock_transfers
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getStockTransfers
+    }
+  })], 1)])], 1), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/inventory/stock-transfer/form.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/views/inventory/stock-transfer/form.vue ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_6bec9562___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=6bec9562& */ "./resources/js/views/inventory/stock-transfer/form.vue?vue&type=template&id=6bec9562&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/inventory/stock-transfer/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_6bec9562___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_6bec9562___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/inventory/stock-transfer/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/inventory/stock-transfer/index.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/views/inventory/stock-transfer/index.vue ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_4465ae52___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=4465ae52& */ "./resources/js/views/inventory/stock-transfer/index.vue?vue&type=template&id=4465ae52&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/inventory/stock-transfer/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_4465ae52___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_4465ae52___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/inventory/stock-transfer/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/inventory/stock-transfer/form.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/views/inventory/stock-transfer/form.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/inventory/stock-transfer/index.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/views/inventory/stock-transfer/index.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/inventory/stock-transfer/form.vue?vue&type=template&id=6bec9562&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/views/inventory/stock-transfer/form.vue?vue&type=template&id=6bec9562& ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_6bec9562___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_6bec9562___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_6bec9562___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=6bec9562& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/form.vue?vue&type=template&id=6bec9562&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/inventory/stock-transfer/index.vue?vue&type=template&id=4465ae52&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/views/inventory/stock-transfer/index.vue?vue&type=template&id=4465ae52& ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_4465ae52___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_4465ae52___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_4465ae52___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=4465ae52& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/inventory/stock-transfer/index.vue?vue&type=template&id=4465ae52&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=989a52c116698de1

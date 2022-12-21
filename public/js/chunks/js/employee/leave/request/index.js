@@ -1,2 +1,621 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[7728],{95488:(e,t,s)=>{"use strict";s.r(t),s.d(t,{default:()=>n});const a={components:{},data:function(){return{leave_requests:{total:0,data:[]},filter:{sort_by:"created_at",order:"desc",employee_id:[],leave_type_id:[],page_length:helper.getConfig("page_length")},orderByOptions:[{value:"created_at",translation:i18n.general.created_at},{value:"start_date",translation:i18n.employee.leave_request_start_date},{value:"end_date",translation:i18n.employee.leave_request_end_date}],employees:[],leave_types:[],selected_employees:null,selected_leave_types:null,showFilterPanel:!1,help_topic:""}},mounted:function(){helper.hasPermission("request-leave")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getLeaveRequests()},methods:{hasPermission:function(e){return helper.hasPermission(e)},getEmployeeName:function(e){return helper.getEmployeeName(e)},getEmployeeCode:function(e){return helper.getEmployeeCode(e)},getEmployeeDesignationOnDate:function(e,t){return helper.getEmployeeDesignationOnDate(e,t)},getLeaveRequests:function(e){var t=this,s=this.$loading.show();"number"!=typeof e&&(e=1);var a=helper.getFilterURL(this.filter);axios.get("/api/employee/leave/request?page="+e+a).then((function(e){t.leave_requests=e.leave_requests,t.employees=e.filters.employees,t.leave_types=e.filters.leave_types,s.hide()})).catch((function(e){s.hide(),helper.showErrorMsg(e)}))},getLeaveRequestCount:function(e){var t=e.options.holidays.excluded||[];e.options.holidays.included;return helper.getDateDiff(e.start_date,e.end_date)+1-t.length},getLeaveRequestStatus:function(e){return helper.getLeaveRequestStatus(e)},editLeaveRequest:function(e){this.$router.push("/employee/leave/request/"+e.uuid+"/edit")},confirmDelete:function(e){var t=this;return function(s){return t.deleteLeaveRequest(e)}},deleteLeaveRequest:function(e){var t=this,s=this.$loading.show();axios.delete("/api/employee/leave/request/"+e.uuid).then((function(e){toastr.success(e.message),t.getLeaveRequests(),s.hide()})).catch((function(e){s.hide(),helper.showErrorMsg(e)}))},getConfig:function(e){return helper.getConfig(e)},print:function(){var e=this.$loading.show();axios.post("/api/employee/leave/request/print",{filter:this.filter}).then((function(t){var s=window.open("/print");e.hide(),s.document.write(t)})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},pdf:function(){var e=this,t=this.$loading.show();axios.post("/api/employee/leave/request/pdf",{filter:this.filter}).then((function(s){t.hide(),window.open("/download/report/"+s+"?token="+e.authToken)})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onEmployeeSelect:function(e){this.filter.employee_id.push(e.id)},onEmployeeRemove:function(e){this.filter.employee_id.splice(this.filter.employee_id.indexOf(e.id),1)},onLeaveTypeSelect:function(e){this.filter.leave_type_id.push(e.id)},onLeaveTypeRemove:function(e){this.filter.leave_type_id.splice(this.filter.leave_type_id.indexOf(e.id),1)}},filters:{moment:function(e){return helper.formatDate(e)},momentDateTime:function(e){return helper.formatDateTime(e)}},watch:{"filter.sort_by":function(e){this.getLeaveRequests()},"filter.order":function(e){this.getLeaveRequests()},"filter.page_length":function(e){this.getLeaveRequests()}},computed:{authToken:function(){return helper.getAuthToken()}}};const n=(0,s(51900).Z)(a,(function(){var e=this,t=e.$createElement,s=e._self._c||t;return s("div",[s("div",{staticClass:"page-titles"},[s("div",{staticClass:"row"},[s("div",{staticClass:"col-12 col-sm-6"},[s("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("employee.leave_request"))+" \n                    "),e.leave_requests.total?s("span",{staticClass:"card-subtitle d-none d-sm-inline"},[e._v(e._s(e.trans("general.total_result_found",{count:e.leave_requests.total,from:e.leave_requests.from,to:e.leave_requests.to})))]):s("span",{staticClass:"card-subtitle d-none d-sm-inline"},[e._v(e._s(e.trans("general.no_result_found")))])])]),e._v(" "),s("div",{staticClass:"col-12 col-sm-6"},[s("div",{staticClass:"action-buttons pull-right"},[e.leave_requests.total?s("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.add_new"),expression:"trans('general.add_new')"}],staticClass:"btn btn-info btn-sm",on:{click:function(t){return e.$router.push("/employee/leave/request/create")}}},[s("i",{staticClass:"fas fa-plus"}),e._v(" "),s("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("employee.request_leave")))])]):e._e(),e._v(" "),e.showFilterPanel?e._e():s("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){e.showFilterPanel=!e.showFilterPanel}}},[s("i",{staticClass:"fas fa-filter"}),e._v(" "),s("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("general.filter")))])]),e._v(" "),s("sort-by",{attrs:{"order-by-options":e.orderByOptions,"sort-by":e.filter.sort_by,order:e.filter.order},on:{updateSortBy:function(t){e.filter.sort_by=t},updateOrder:function(t){e.filter.order=t}}}),e._v(" "),s("div",{staticClass:"btn-group"},[s("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.more_option"),expression:"trans('general.more_option')"}],staticClass:"btn btn-info btn-sm dropdown-toggle no-caret ",attrs:{type:"button",role:"menu",id:"moreOption","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[s("i",{staticClass:"fas fa-ellipsis-h"}),e._v(" "),s("span",{staticClass:"d-none d-sm-inline"})]),e._v(" "),s("div",{class:["dropdown-menu","ltr"==e.getConfig("direction")?"dropdown-menu-right":""],attrs:{"aria-labelledby":"moreOption"}},[s("button",{staticClass:"dropdown-item custom-dropdown",on:{click:e.print}},[s("i",{staticClass:"fas fa-print"}),e._v(" "+e._s(e.trans("general.print")))]),e._v(" "),s("button",{staticClass:"dropdown-item custom-dropdown",on:{click:e.pdf}},[s("i",{staticClass:"fas fa-file-pdf"}),e._v(" "+e._s(e.trans("general.generate_pdf")))])])]),e._v(" "),s("help-button",{on:{clicked:function(t){e.help_topic="employee.leave.request"}}})],1)])])]),e._v(" "),s("div",{staticClass:"container-fluid"},[s("transition",{attrs:{name:"fade"}},[e.showFilterPanel?s("div",{staticClass:"card card-form"},[s("div",{staticClass:"card-body"},[s("h4",{staticClass:"card-title"},[e._v(e._s(e.trans("general.filter")))]),e._v(" "),s("div",{staticClass:"row"},[s("div",{staticClass:"col-12 col-sm-3"},[s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.employee")))]),e._v(" "),s("v-select",{attrs:{label:"name","track-by":"id",name:"employee_id",id:"employee_id",options:e.employees,placeholder:e.trans("employee.select_employee"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_employees},on:{select:e.onEmployeeSelect,remove:e.onEmployeeRemove},model:{value:e.selected_employees,callback:function(t){e.selected_employees=t},expression:"selected_employees"}},[e.employees.length?e._e():s("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                        "+e._s(e.trans("general.no_option_found"))+"\n                                    ")])])],1)]),e._v(" "),s("div",{staticClass:"col-12 col-sm-3"},[s("div",{staticClass:"form-group"},[s("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.leave_type")))]),e._v(" "),s("v-select",{attrs:{label:"name","track-by":"id",name:"leave_type_id",id:"leave_type_id",options:e.leave_types,placeholder:e.trans("employee.select_leave_type"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_leave_types},on:{select:e.onLeaveTypeSelect,remove:e.onLeaveTypeRemove},model:{value:e.selected_leave_types,callback:function(t){e.selected_leave_types=t},expression:"selected_leave_types"}},[e.leave_types.length?e._e():s("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                        "+e._s(e.trans("general.no_option_found"))+"\n                                    ")])])],1)])]),e._v(" "),s("div",{staticClass:"card-footer text-right"},[s("button",{staticClass:"btn btn-danger",attrs:{type:"button"},on:{click:function(t){e.showFilterPanel=!1}}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),s("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"button"},on:{click:e.getLeaveRequests}},[e._v(e._s(e.trans("general.filter")))])])])]):e._e()]),e._v(" "),s("div",{staticClass:"card"},[s("div",{staticClass:"card-body"},[e.leave_requests.total?s("div",{staticClass:"table-responsive"},[s("table",{staticClass:"table table-sm"},[s("thead",[s("tr",[s("th",[e._v(e._s(e.trans("employee.name")))]),e._v(" "),s("th",[e._v(e._s(e.trans("employee.designation")))]),e._v(" "),s("th",[e._v(e._s(e.trans("employee.leave_type")))]),e._v(" "),s("th",[e._v(e._s(e.trans("employee.leave_request_period")))]),e._v(" "),s("th",[e._v(e._s(e.trans("employee.leave_request_count")))]),e._v(" "),s("th",[e._v(e._s(e.trans("employee.leave_request_status")))]),e._v(" "),s("th",[e._v(e._s(e.trans("employee.leave_requested_by")))]),e._v(" "),s("th",{staticClass:"table-option"},[e._v(e._s(e.trans("general.action")))])])]),e._v(" "),s("tbody",e._l(e.leave_requests.data,(function(t){return s("tr",[s("td",{domProps:{textContent:e._s(e.getEmployeeName(t.employee)+" ("+e.getEmployeeCode(t.employee)+")")}}),e._v(" "),s("td",{domProps:{textContent:e._s(e.getEmployeeDesignationOnDate(t.employee,t.end_date))}}),e._v(" "),s("td",{domProps:{textContent:e._s(t.leave_type.name)}}),e._v(" "),s("td",[e._v(e._s(e._f("moment")(t.start_date))+" "+e._s(e.trans("general.to"))+" "+e._s(e._f("moment")(t.end_date)))]),e._v(" "),s("td",[e._v(e._s(e.getLeaveRequestCount(t)))]),e._v(" "),s("td",e._l(e.getLeaveRequestStatus(t),(function(t){return s("span",{class:["label","label-"+t.color,"m-r-5"]},[e._v(e._s(t.label))])})),0),e._v(" "),s("td",{domProps:{textContent:e._s(e.getEmployeeName(t.requester_user.employee)+" ("+e.getEmployeeCode(t.requester_user.employee)+")")}}),e._v(" "),s("td",{staticClass:"table-option"},[s("div",{staticClass:"btn-group"},[s("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.view"),expression:"trans('general.view')"}],staticClass:"btn btn-success btn-sm",on:{click:function(s){return e.$router.push("/employee/leave/request/"+t.uuid)}}},[s("i",{staticClass:"fas fa-arrow-circle-right"})]),e._v(" "),"pending"==t.status?[s("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("employee.edit_leave_request"),expression:"trans('employee.edit_leave_request')"}],staticClass:"btn btn-info btn-sm",on:{click:function(s){return s.preventDefault(),e.editLeaveRequest(t)}}},[s("i",{staticClass:"fas fa-edit"})]),e._v(" "),s("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:e.confirmDelete(t)},expression:"{ok: confirmDelete(leave_request)}"},{name:"tooltip",rawName:"v-tooltip",value:e.trans("employee.delete_leave_request"),expression:"trans('employee.delete_leave_request')"}],key:t.id,staticClass:"btn btn-danger btn-sm"},[s("i",{staticClass:"fas fa-trash"})])]:e._e()],2)])])})),0)])]):e._e(),e._v(" "),e.leave_requests.total?e._e():s("module-info",{attrs:{module:"employee",title:"leave_request_module_title",description:"leave_request_module_description",icon:"list"}},[s("div",{attrs:{slot:"btn"},slot:"btn"},[s("button",{staticClass:"btn btn-info btn-md",on:{click:function(t){return e.$router.push("/employee/leave/request/create")}}},[s("i",{staticClass:"fas fa-plus"}),e._v(" "+e._s(e.trans("general.add_new")))])])]),e._v(" "),s("pagination-record",{attrs:{"page-length":e.filter.page_length,records:e.leave_requests},on:{"update:pageLength":function(t){return e.$set(e.filter,"page_length",t)},"update:page-length":function(t){return e.$set(e.filter,"page_length",t)},updateRecords:e.getLeaveRequests}})],1)])],1),e._v(" "),s("right-panel",{attrs:{topic:e.help_topic}})],1)}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=index.js.map?id=ec5a14c637f667bbe166
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/employee/leave/request/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/index.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/index.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      leave_requests: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        sort_by: 'created_at',
+        order: 'desc',
+        employee_id: [],
+        leave_type_id: [],
+        page_length: helper.getConfig('page_length')
+      },
+      orderByOptions: [{
+        value: 'created_at',
+        translation: i18n.general.created_at
+      }, {
+        value: 'start_date',
+        translation: i18n.employee.leave_request_start_date
+      }, {
+        value: 'end_date',
+        translation: i18n.employee.leave_request_end_date
+      }],
+      employees: [],
+      leave_types: [],
+      selected_employees: null,
+      selected_leave_types: null,
+      showFilterPanel: false,
+      help_topic: ''
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('request-leave')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getLeaveRequests();
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getEmployeeCode: function getEmployeeCode(employee) {
+      return helper.getEmployeeCode(employee);
+    },
+    getEmployeeDesignationOnDate: function getEmployeeDesignationOnDate(employee, date) {
+      return helper.getEmployeeDesignationOnDate(employee, date);
+    },
+    getLeaveRequests: function getLeaveRequests(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/employee/leave/request?page=' + page + url).then(function (response) {
+        _this.leave_requests = response.leave_requests;
+        _this.employees = response.filters.employees;
+        _this.leave_types = response.filters.leave_types;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getLeaveRequestCount: function getLeaveRequestCount(leave_request) {
+      var excluded_holiday = leave_request.options.holidays.excluded || [];
+      var included_holiday = leave_request.options.holidays.included || [];
+      var day = helper.getDateDiff(leave_request.start_date, leave_request.end_date) + 1;
+      return day - excluded_holiday.length;
+    },
+    getLeaveRequestStatus: function getLeaveRequestStatus(leave_request) {
+      return helper.getLeaveRequestStatus(leave_request);
+    },
+    editLeaveRequest: function editLeaveRequest(leave_request) {
+      this.$router.push('/employee/leave/request/' + leave_request.uuid + '/edit');
+    },
+    confirmDelete: function confirmDelete(leave_request) {
+      var _this2 = this;
+      return function (dialog) {
+        return _this2.deleteLeaveRequest(leave_request);
+      };
+    },
+    deleteLeaveRequest: function deleteLeaveRequest(leave_request) {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios["delete"]('/api/employee/leave/request/' + leave_request.uuid).then(function (response) {
+        toastr.success(response.message);
+        _this3.getLeaveRequests();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    print: function print() {
+      var loader = this.$loading.show();
+      axios.post('/api/employee/leave/request/print', {
+        filter: this.filter
+      }).then(function (response) {
+        var print = window.open("/print");
+        loader.hide();
+        print.document.write(response);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    pdf: function pdf() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      axios.post('/api/employee/leave/request/pdf', {
+        filter: this.filter
+      }).then(function (response) {
+        loader.hide();
+        window.open('/download/report/' + response + '?token=' + _this4.authToken);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onEmployeeSelect: function onEmployeeSelect(selectedOption) {
+      this.filter.employee_id.push(selectedOption.id);
+    },
+    onEmployeeRemove: function onEmployeeRemove(removedOption) {
+      this.filter.employee_id.splice(this.filter.employee_id.indexOf(removedOption.id), 1);
+    },
+    onLeaveTypeSelect: function onLeaveTypeSelect(selectedOption) {
+      this.filter.leave_type_id.push(selectedOption.id);
+    },
+    onLeaveTypeRemove: function onLeaveTypeRemove(removedOption) {
+      this.filter.leave_type_id.splice(this.filter.leave_type_id.indexOf(removedOption.id), 1);
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  },
+  watch: {
+    'filter.sort_by': function filterSort_by(val) {
+      this.getLeaveRequests();
+    },
+    'filter.order': function filterOrder(val) {
+      this.getLeaveRequests();
+    },
+    'filter.page_length': function filterPage_length(val) {
+      this.getLeaveRequests();
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/index.vue?vue&type=template&id=58f3bdd0&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/index.vue?vue&type=template&id=58f3bdd0& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_request")) + " \n                    "), _vm.leave_requests.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.leave_requests.total,
+    from: _vm.leave_requests.from,
+    to: _vm.leave_requests.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_vm.leave_requests.total ? _c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.add_new"),
+      expression: "trans('general.add_new')"
+    }],
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/employee/leave/request/create");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("employee.request_leave")))])]) : _vm._e(), _vm._v(" "), !_vm.showFilterPanel ? _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = !_vm.showFilterPanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-filter"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])]) : _vm._e(), _vm._v(" "), _c("sort-by", {
+    attrs: {
+      "order-by-options": _vm.orderByOptions,
+      "sort-by": _vm.filter.sort_by,
+      order: _vm.filter.order
+    },
+    on: {
+      updateSortBy: function updateSortBy(value) {
+        _vm.filter.sort_by = value;
+      },
+      updateOrder: function updateOrder(value) {
+        _vm.filter.order = value;
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "btn-group"
+  }, [_c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.more_option"),
+      expression: "trans('general.more_option')"
+    }],
+    staticClass: "btn btn-info btn-sm dropdown-toggle no-caret",
+    attrs: {
+      type: "button",
+      role: "menu",
+      id: "moreOption",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-ellipsis-h"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  })]), _vm._v(" "), _c("div", {
+    "class": ["dropdown-menu", _vm.getConfig("direction") == "ltr" ? "dropdown-menu-right" : ""],
+    attrs: {
+      "aria-labelledby": "moreOption"
+    }
+  }, [_c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.print
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-print"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.print")))]), _vm._v(" "), _c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.pdf
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-file-pdf"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.generate_pdf")))])])]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "employee.leave.request";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showFilterPanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "employee_id",
+      id: "employee_id",
+      options: _vm.employees,
+      placeholder: _vm.trans("employee.select_employee"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_employees
+    },
+    on: {
+      select: _vm.onEmployeeSelect,
+      remove: _vm.onEmployeeRemove
+    },
+    model: {
+      value: _vm.selected_employees,
+      callback: function callback($$v) {
+        _vm.selected_employees = $$v;
+      },
+      expression: "selected_employees"
+    }
+  }, [!_vm.employees.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_type")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "leave_type_id",
+      id: "leave_type_id",
+      options: _vm.leave_types,
+      placeholder: _vm.trans("employee.select_leave_type"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_leave_types
+    },
+    on: {
+      select: _vm.onLeaveTypeSelect,
+      remove: _vm.onLeaveTypeRemove
+    },
+    model: {
+      value: _vm.selected_leave_types,
+      callback: function callback($$v) {
+        _vm.selected_leave_types = $$v;
+      },
+      expression: "selected_leave_types"
+    }
+  }, [!_vm.leave_types.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("button", {
+    staticClass: "btn btn-danger",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = false;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.getLeaveRequests
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])])])]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.leave_requests.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("employee.name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.designation")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.leave_type")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.leave_request_period")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.leave_request_count")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.leave_request_status")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.leave_requested_by")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.leave_requests.data, function (leave_request) {
+    return _c("tr", [_c("td", {
+      domProps: {
+        textContent: _vm._s(_vm.getEmployeeName(leave_request.employee) + " (" + _vm.getEmployeeCode(leave_request.employee) + ")")
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(_vm.getEmployeeDesignationOnDate(leave_request.employee, leave_request.end_date))
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(leave_request.leave_type.name)
+      }
+    }), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("moment")(leave_request.start_date)) + " " + _vm._s(_vm.trans("general.to")) + " " + _vm._s(_vm._f("moment")(leave_request.end_date)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getLeaveRequestCount(leave_request)))]), _vm._v(" "), _c("td", _vm._l(_vm.getLeaveRequestStatus(leave_request), function (status) {
+      return _c("span", {
+        "class": ["label", "label-" + status.color, "m-r-5"]
+      }, [_vm._v(_vm._s(status.label))]);
+    }), 0), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(_vm.getEmployeeName(leave_request.requester_user.employee) + " (" + _vm.getEmployeeCode(leave_request.requester_user.employee) + ")")
+      }
+    }), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [_c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("general.view"),
+        expression: "trans('general.view')"
+      }],
+      staticClass: "btn btn-success btn-sm",
+      on: {
+        click: function click($event) {
+          return _vm.$router.push("/employee/leave/request/" + leave_request.uuid);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-arrow-circle-right"
+    })]), _vm._v(" "), leave_request.status == "pending" ? [_c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("employee.edit_leave_request"),
+        expression: "trans('employee.edit_leave_request')"
+      }],
+      staticClass: "btn btn-info btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.editLeaveRequest(leave_request);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-edit"
+    })]), _vm._v(" "), _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(leave_request)
+        },
+        expression: "{ok: confirmDelete(leave_request)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("employee.delete_leave_request"),
+        expression: "trans('employee.delete_leave_request')"
+      }],
+      key: leave_request.id,
+      staticClass: "btn btn-danger btn-sm"
+    }, [_c("i", {
+      staticClass: "fas fa-trash"
+    })])] : _vm._e()], 2)])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.leave_requests.total ? _c("module-info", {
+    attrs: {
+      module: "employee",
+      title: "leave_request_module_title",
+      description: "leave_request_module_description",
+      icon: "list"
+    }
+  }, [_c("div", {
+    attrs: {
+      slot: "btn"
+    },
+    slot: "btn"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-md",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/employee/leave/request/create");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.add_new")))])])]) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.leave_requests
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getLeaveRequests
+    }
+  })], 1)])], 1), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/leave/request/index.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/views/employee/leave/request/index.vue ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_58f3bdd0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=58f3bdd0& */ "./resources/js/views/employee/leave/request/index.vue?vue&type=template&id=58f3bdd0&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/employee/leave/request/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_58f3bdd0___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_58f3bdd0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/employee/leave/request/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/leave/request/index.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/views/employee/leave/request/index.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/leave/request/index.vue?vue&type=template&id=58f3bdd0&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/views/employee/leave/request/index.vue?vue&type=template&id=58f3bdd0& ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_58f3bdd0___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_58f3bdd0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_58f3bdd0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=58f3bdd0& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/index.vue?vue&type=template&id=58f3bdd0&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=a3f7ea7da6829350

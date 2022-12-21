@@ -225,7 +225,7 @@ class RegistrationController extends Controller
         $registration = $this->repo->findOrFail($id);
 
         $this->authorize('updateStatus', Registration::class);
-
+//        dd($request->all());
         $registration = $this->repo->status($this->request->all(), $registration);
 
         return $this->success(['message' => trans('student.registration_status_updated')]);

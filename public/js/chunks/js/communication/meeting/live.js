@@ -1,3 +1,6611 @@
-/*! For license information please see live.js.LICENSE.txt */
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[7253],{66737:(e,t,n)=>{"use strict";var i=i||window.AdapterJS||{};if(i.options=i.options||{},i.options.getAllCams=!!i.options.getAllCams,i.options.hidePluginInstallPrompt=!!i.options.hidePluginInstallPrompt,i.options.forceSafariPlugin=!!i.options.forceSafariPlugin,i.VERSION="0.15.5",i.onwebrtcready=i.onwebrtcready||function(e){},i._onwebrtcreadies=[],i.webRTCReady=function(e){if("function"!=typeof e)throw new Error("Callback provided is not a function");var t=function(){"function"==typeof window.require&&"function"==typeof i._defineMediaSourcePolyfill&&i._defineMediaSourcePolyfill(),e(null!==i.WebRTCPlugin.plugin)};!0===i.onwebrtcreadyDone?t():i._onwebrtcreadies.push(t)},i.WebRTCPlugin=i.WebRTCPlugin||{},i.WebRTCPlugin.pluginInfo=i.WebRTCPlugin.pluginInfo||{prefix:"Tem",plugName:"TemWebRTCPlugin",pluginId:"plugin0",type:"application/x-temwebrtcplugin",onload:"__TemWebRTCReady0",portalLink:"https://skylink.io/plugin/",downloadLink:null,companyName:"Temasys",downloadLinks:{mac:"https://bit.ly/webrtcpluginpkg",win:"https://bit.ly/webrtcpluginmsi"}},void 0!==i.WebRTCPlugin.pluginInfo.downloadLinks&&null!==i.WebRTCPlugin.pluginInfo.downloadLinks&&(navigator.platform.match(/^Mac/i)?i.WebRTCPlugin.pluginInfo.downloadLink=i.WebRTCPlugin.pluginInfo.downloadLinks.mac:navigator.platform.match(/^Win/i)&&(i.WebRTCPlugin.pluginInfo.downloadLink=i.WebRTCPlugin.pluginInfo.downloadLinks.win)),i.WebRTCPlugin.TAGS={NONE:"none",AUDIO:"audio",VIDEO:"video"},i.WebRTCPlugin.pageId=Math.random().toString(36).slice(2),i.WebRTCPlugin.plugin=null,i.WebRTCPlugin.setLogLevel=null,i.WebRTCPlugin.defineWebRTCInterface=null,i.WebRTCPlugin.isPluginInstalled=null,i.WebRTCPlugin.pluginInjectionInterval=null,i.WebRTCPlugin.injectPlugin=null,i.WebRTCPlugin.PLUGIN_STATES={NONE:0,INITIALIZING:1,INJECTING:2,INJECTED:3,READY:4},i.WebRTCPlugin.pluginState=i.WebRTCPlugin.PLUGIN_STATES.NONE,i.onwebrtcreadyDone=!1,i.WebRTCPlugin.PLUGIN_LOG_LEVELS={NONE:"NONE",ERROR:"ERROR",WARNING:"WARNING",INFO:"INFO",VERBOSE:"VERBOSE",SENSITIVE:"SENSITIVE"},i.WebRTCPlugin.WaitForPluginReady=null,i.WebRTCPlugin.callWhenPluginReady=null,i.documentReady=function(){return"interactive"===document.readyState&&!!document.body||"complete"===document.readyState},window.__TemWebRTCReady0=function(){i.documentReady()?(i.WebRTCPlugin.pluginState=i.WebRTCPlugin.PLUGIN_STATES.READY,i.maybeThroughWebRTCReady()):setTimeout(__TemWebRTCReady0,100)},i.maybeThroughWebRTCReady=function(){i.onwebrtcreadyDone||(i.onwebrtcreadyDone=!0,i._onwebrtcreadies.length?i._onwebrtcreadies.forEach((function(e){"function"==typeof e&&e(null!==i.WebRTCPlugin.plugin)})):"function"==typeof i.onwebrtcready&&i.onwebrtcready(null!==i.WebRTCPlugin.plugin))},i.TEXT={PLUGIN:{REQUIRE_INSTALLATION:"This website requires you to install a WebRTC-enabling plugin to work on this browser.",REQUIRE_RESTART:"Your plugin is being downloaded. Please run the installer, and restart your browser to begin using it.",NOT_SUPPORTED:"Your browser does not support WebRTC.",BUTTON:"Install Now"},REFRESH:{REQUIRE_REFRESH:"Please refresh page",BUTTON:"Refresh Page"}},i._iceConnectionStates={starting:"starting",checking:"checking",connected:"connected",completed:"connected",done:"completed",disconnected:"disconnected",failed:"failed",closed:"closed"},i._iceConnectionFiredStates=[],i.isDefined=null,window.webrtcDetectedType=null,window.MediaStream="function"==typeof MediaStream?MediaStream:null,window.MediaStreamTrack="function"==typeof MediaStreamTrack?MediaStreamTrack:null,window.RTCPeerConnection="function"==typeof RTCPeerConnection?RTCPeerConnection:null,window.RTCSessionDescription="function"==typeof RTCSessionDescription?RTCSessionDescription:null,window.RTCIceCandidate="function"==typeof RTCIceCandidate?RTCIceCandidate:null,window.getUserMedia="function"==typeof getUserMedia?getUserMedia:null,window.attachMediaStream=null,window.reattachMediaStream=null,window.webrtcDetectedBrowser=null,window.webrtcDetectedVersion=null,window.webrtcMinimumVersion=null,window.webrtcDetectedDCSupport=null,i.parseWebrtcDetectedBrowser=function(){var e=null;if(window.opr&&opr.addons||window.opera||navigator.userAgent.indexOf(" OPR/")>=0)e=navigator.userAgent.match(/OPR\/(\d+)/i)||[],window.webrtcDetectedBrowser="opera",window.webrtcDetectedVersion=parseInt(e[1]||"0",10),window.webrtcMinimumVersion=26,window.webrtcDetectedType="webkit",window.webrtcDetectedDCSupport="SCTP";else if(navigator.userAgent.match(/Bowser\/[0-9.]*/g)){e=navigator.userAgent.match(/Bowser\/[0-9.]*/g)||[];var t=parseInt((navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./i)||[])[2]||"0",10);window.webrtcDetectedBrowser="bowser",window.webrtcDetectedVersion=parseFloat((e[0]||"0/0").split("/")[1],10),window.webrtcMinimumVersion=0,window.webrtcDetectedType="webkit",window.webrtcDetectedDCSupport=t>30?"SCTP":"RTP"}else if(navigator.userAgent.indexOf("OPiOS")>0)e=navigator.userAgent.match(/OPiOS\/([0-9]+)\./),window.webrtcDetectedBrowser="opera",window.webrtcDetectedVersion=parseInt(e[1]||"0",10),window.webrtcMinimumVersion=0,window.webrtcDetectedType=null,window.webrtcDetectedDCSupport=null;else if(navigator.userAgent.indexOf("CriOS")>0)e=navigator.userAgent.match(/CriOS\/([0-9]+)\./)||[],window.webrtcDetectedVersion=parseInt(e[1]||"0",10),window.webrtcMinimumVersion=0,window.webrtcDetectedType=null,window.webrtcDetectedBrowser="chrome",window.webrtcDetectedDCSupport=null;else if(navigator.userAgent.indexOf("FxiOS")>0)e=navigator.userAgent.match(/FxiOS\/([0-9]+)\./)||[],window.webrtcDetectedBrowser="firefox",window.webrtcDetectedVersion=parseInt(e[1]||"0",10),window.webrtcMinimumVersion=0,window.webrtcDetectedType=null,window.webrtcDetectedDCSupport=null;else if(document.documentMode)e=/\brv[ :]+(\d+)/g.exec(navigator.userAgent)||[],window.webrtcDetectedBrowser="IE",window.webrtcDetectedVersion=parseInt(e[1],10),window.webrtcMinimumVersion=9,window.webrtcDetectedType="plugin",window.webrtcDetectedDCSupport="SCTP",webrtcDetectedVersion||(e=/\bMSIE[ :]+(\d+)/g.exec(navigator.userAgent)||[],window.webrtcDetectedVersion=parseInt(e[1]||"0",10));else if(window.StyleMedia||navigator.userAgent.match(/Edge\/(\d+).(\d+)$/))e=navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)||[],window.webrtcDetectedBrowser="edge",window.webrtcDetectedVersion=parseFloat((e[0]||"0/0").split("/")[1],10),window.webrtcMinimumVersion=13.10547,window.webrtcDetectedType="ms",window.webrtcDetectedDCSupport=null;else if("undefined"!=typeof InstallTrigger||navigator.userAgent.indexOf("irefox")>0)e=navigator.userAgent.match(/Firefox\/([0-9]+)\./)||[],window.webrtcDetectedBrowser="firefox",window.webrtcDetectedVersion=parseInt(e[1]||"0",10),window.webrtcMinimumVersion=33,window.webrtcDetectedType="moz",window.webrtcDetectedDCSupport="SCTP";else if(window.chrome&&window.chrome.webstore||navigator.userAgent.indexOf("Chrom")>0)e=navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./i)||[],window.webrtcDetectedBrowser="chrome",window.webrtcDetectedVersion=parseInt(e[2]||"0",10),window.webrtcMinimumVersion=38,window.webrtcDetectedType="webkit",window.webrtcDetectedDCSupport=window.webrtcDetectedVersion>30?"SCTP":"RTP";else if(/constructor/i.test(window.HTMLElement)||"[object SafariRemoteNotification]"===(!window.safari||safari.pushNotification).toString()||navigator.userAgent.match(/AppleWebKit\/(\d+)\./)||navigator.userAgent.match(/Version\/(\d+).(\d+)/)){e=navigator.userAgent.match(/version\/(\d+)\.(\d+)/i)||[];var n=navigator.userAgent.match(/AppleWebKit\/(\d+)/i)||[],r=navigator.userAgent.match(/(iPhone|iPad)/gi),o=n.length>=1&&n[1]>=604;if(window.webrtcDetectedBrowser="safari",window.webrtcDetectedVersion=parseInt(e[1]||"0",10),window.webrtcMinimumVersion=7,r)window.webrtcDetectedType=o?"AppleWebKit":null;else{var a=window.webrtcDetectedVersion,s=parseInt(e[2]||"0",10),c=11==a&&s<2;window.webrtcDetectedType=!o||i.options.forceSafariPlugin&&c?"plugin":"AppleWebKit"}window.webrtcDetectedDCSupport="SCTP"}i.webrtcDetectedBrowser=window.webrtcDetectedBrowser,i.webrtcDetectedVersion=window.webrtcDetectedVersion,i.webrtcMinimumVersion=window.webrtcMinimumVersion,i.webrtcDetectedType=window.webrtcDetectedType,i.webrtcDetectedDCSupport=window.webrtcDetectedDCSupport},i.addEvent=function(e,t,n){e.addEventListener?e.addEventListener(t,n,!1):e.attachEvent?e.attachEvent("on"+t,n):e[t]=n},i.renderNotificationBar=function(e,t,n){if(i.documentReady()){var r=window,o=document.createElement("iframe");o.name="adapterjs-alert",o.style.position="fixed",o.style.top="-41px",o.style.left=0,o.style.right=0,o.style.width="100%",o.style.height="40px",o.style.backgroundColor="#ffffe1",o.style.border="none",o.style.borderBottom="1px solid #888888",o.style.zIndex="9999999","string"==typeof o.style.webkitTransition?o.style.webkitTransition="all .5s ease-out":"string"==typeof o.style.transition&&(o.style.transition="all .5s ease-out"),document.body.appendChild(o);var a=o.contentWindow?o.contentWindow:o.contentDocument.document?o.contentDocument.document:o.contentDocument;a.document.open(),a.document.write('<span style="display: inline-block; font-family: Helvetica, Arial,sans-serif; font-size: .9rem; padding: 4px; vertical-align: middle; cursor: default;">'+e+"</span>"),t&&"function"==typeof n?(a.document.write('<button id="okay">'+t+'</button><button id="cancel">Cancel</button>'),a.document.close(),i.addEvent(a.document.getElementById("okay"),"click",(function(e){e.preventDefault();try{e.cancelBubble=!0}catch(e){}n(e)})),i.addEvent(a.document.getElementById("cancel"),"click",(function(e){r.document.body.removeChild(o)}))):a.document.close(),setTimeout((function(){"string"==typeof o.style.webkitTransform?o.style.webkitTransform="translateY(40px)":"string"==typeof o.style.transform?o.style.transform="translateY(40px)":o.style.top="0px"}),300)}},window.requestUserMedia="function"==typeof requestUserMedia?requestUserMedia:null,i.parseWebrtcDetectedBrowser(),["webkit","moz","ms","AppleWebKit"].indexOf(i.webrtcDetectedType)>-1){navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)&&window.RTCPeerConnection&&(window.msRTCPeerConnection=window.RTCPeerConnection),e.exports=function e(t,n,i){function r(a,s){if(!n[a]){if(!t[a]){if(o)return o(a,!0);var c=new Error("Cannot find module '"+a+"'");throw c.code="MODULE_NOT_FOUND",c}var d=n[a]={exports:{}};t[a][0].call(d.exports,(function(e){return r(t[a][1][e]||e)}),d,d.exports,e,t,n,i)}return n[a].exports}for(var o=void 0,a=0;a<i.length;a++)r(i[a]);return r}({1:[function(e,t,n){function i(e){return{inboundrtp:"inbound-rtp",outboundrtp:"outbound-rtp",candidatepair:"candidate-pair",localcandidate:"local-candidate",remotecandidate:"remote-candidate"}[e.type]||e.type}function r(e,t,n,i,r){var o=u.writeRtpDescription(e.kind,t);if(o+=u.writeIceParameters(e.iceGatherer.getLocalParameters()),o+=u.writeDtlsParameters(e.dtlsTransport.getLocalParameters(),"offer"===n?"actpass":r||"active"),o+="a=mid:"+e.mid+"\r\n",e.rtpSender&&e.rtpReceiver?o+="a=sendrecv\r\n":e.rtpSender?o+="a=sendonly\r\n":e.rtpReceiver?o+="a=recvonly\r\n":o+="a=inactive\r\n",e.rtpSender){var a=e.rtpSender._initialTrackId||e.rtpSender.track.id;e.rtpSender._initialTrackId=a;var s="msid:"+(i?i.id:"-")+" "+a+"\r\n";o+="a="+s,o+="a=ssrc:"+e.sendEncodingParameters[0].ssrc+" "+s,e.sendEncodingParameters[0].rtx&&(o+="a=ssrc:"+e.sendEncodingParameters[0].rtx.ssrc+" "+s,o+="a=ssrc-group:FID "+e.sendEncodingParameters[0].ssrc+" "+e.sendEncodingParameters[0].rtx.ssrc+"\r\n")}return o+="a=ssrc:"+e.sendEncodingParameters[0].ssrc+" cname:"+u.localCName+"\r\n",e.rtpSender&&e.sendEncodingParameters[0].rtx&&(o+="a=ssrc:"+e.sendEncodingParameters[0].rtx.ssrc+" cname:"+u.localCName+"\r\n"),o}function o(e,t){var n=!1;return(e=JSON.parse(JSON.stringify(e))).filter((function(e){if(e&&(e.urls||e.url)){var i=e.urls||e.url;e.url&&e.urls;var r="string"==typeof i;return r&&(i=[i]),i=i.filter((function(e){return 0!==e.indexOf("turn:")||-1===e.indexOf("transport=udp")||-1!==e.indexOf("turn:[")||n?0===e.indexOf("stun:")&&t>=14393&&-1===e.indexOf("?transport=udp"):(n=!0,!0)})),delete e.url,e.urls=r?i[0]:i,!!i.length}}))}function a(e,t){var n={codecs:[],headerExtensions:[],fecMechanisms:[]},i=function(e,t){e=parseInt(e,10);for(var n=0;n<t.length;n++)if(t[n].payloadType===e||t[n].preferredPayloadType===e)return t[n]},r=function(e,t,n,r){var o=i(e.parameters.apt,n),a=i(t.parameters.apt,r);return o&&a&&o.name.toLowerCase()===a.name.toLowerCase()};return e.codecs.forEach((function(i){for(var o=0;o<t.codecs.length;o++){var a=t.codecs[o];if(i.name.toLowerCase()===a.name.toLowerCase()&&i.clockRate===a.clockRate){if("rtx"===i.name.toLowerCase()&&i.parameters&&a.parameters.apt&&!r(i,a,e.codecs,t.codecs))continue;(a=JSON.parse(JSON.stringify(a))).numChannels=Math.min(i.numChannels,a.numChannels),n.codecs.push(a),a.rtcpFeedback=a.rtcpFeedback.filter((function(e){for(var t=0;t<i.rtcpFeedback.length;t++)if(i.rtcpFeedback[t].type===e.type&&i.rtcpFeedback[t].parameter===e.parameter)return!0;return!1}));break}}})),e.headerExtensions.forEach((function(e){for(var i=0;i<t.headerExtensions.length;i++){var r=t.headerExtensions[i];if(e.uri===r.uri){n.headerExtensions.push(r);break}}})),n}function s(e,t,n){return-1!=={offer:{setLocalDescription:["stable","have-local-offer"],setRemoteDescription:["stable","have-remote-offer"]},answer:{setLocalDescription:["have-remote-offer","have-local-pranswer"],setRemoteDescription:["have-local-offer","have-remote-pranswer"]}}[t][e].indexOf(n)}function c(e,t){var n=e.getRemoteCandidates().find((function(e){return t.foundation===e.foundation&&t.ip===e.ip&&t.port===e.port&&t.priority===e.priority&&t.protocol===e.protocol&&t.type===e.type}));return n||e.addRemoteCandidate(t),!n}function d(e,t){var n=new Error(t);return n.name=e,n.code={NotSupportedError:9,InvalidStateError:11,InvalidAccessError:15,TypeError:void 0,OperationError:void 0}[e],n}var u=e("sdp");t.exports=function(e,t){function n(t,n){n.addTrack(t),n.dispatchEvent(new e.MediaStreamTrackEvent("addtrack",{track:t}))}function l(t,n){n.removeTrack(t),n.dispatchEvent(new e.MediaStreamTrackEvent("removetrack",{track:t}))}function p(t,n,i,r){var o=new Event("track");o.track=n,o.receiver=i,o.transceiver={receiver:i},o.streams=r,e.setTimeout((function(){t._dispatchEvent("track",o)}))}var m=function(n){var i=this,r=document.createDocumentFragment();if(["addEventListener","removeEventListener","dispatchEvent"].forEach((function(e){i[e]=r[e].bind(r)})),this.canTrickleIceCandidates=null,this.needNegotiation=!1,this.localStreams=[],this.remoteStreams=[],this._localDescription=null,this._remoteDescription=null,this.signalingState="stable",this.iceConnectionState="new",this.connectionState="new",this.iceGatheringState="new",n=JSON.parse(JSON.stringify(n||{})),this.usingBundle="max-bundle"===n.bundlePolicy,"negotiate"===n.rtcpMuxPolicy)throw d("NotSupportedError","rtcpMuxPolicy 'negotiate' is not supported");switch(n.rtcpMuxPolicy||(n.rtcpMuxPolicy="require"),n.iceTransportPolicy){case"all":case"relay":break;default:n.iceTransportPolicy="all"}switch(n.bundlePolicy){case"balanced":case"max-compat":case"max-bundle":break;default:n.bundlePolicy="balanced"}if(n.iceServers=o(n.iceServers||[],t),this._iceGatherers=[],n.iceCandidatePoolSize)for(var a=n.iceCandidatePoolSize;a>0;a--)this._iceGatherers.push(new e.RTCIceGatherer({iceServers:n.iceServers,gatherPolicy:n.iceTransportPolicy}));else n.iceCandidatePoolSize=0;this._config=n,this.transceivers=[],this._sdpSessionId=u.generateSessionId(),this._sdpSessionVersion=0,this._dtlsRole=void 0,this._isClosed=!1};Object.defineProperty(m.prototype,"localDescription",{configurable:!0,get:function(){return this._localDescription}}),Object.defineProperty(m.prototype,"remoteDescription",{configurable:!0,get:function(){return this._remoteDescription}}),m.prototype.onicecandidate=null,m.prototype.onaddstream=null,m.prototype.ontrack=null,m.prototype.onremovestream=null,m.prototype.onsignalingstatechange=null,m.prototype.oniceconnectionstatechange=null,m.prototype.onconnectionstatechange=null,m.prototype.onicegatheringstatechange=null,m.prototype.onnegotiationneeded=null,m.prototype.ondatachannel=null,m.prototype._dispatchEvent=function(e,t){this._isClosed||(this.dispatchEvent(t),"function"==typeof this["on"+e]&&this["on"+e](t))},m.prototype._emitGatheringStateChange=function(){var e=new Event("icegatheringstatechange");this._dispatchEvent("icegatheringstatechange",e)},m.prototype.getConfiguration=function(){return this._config},m.prototype.getLocalStreams=function(){return this.localStreams},m.prototype.getRemoteStreams=function(){return this.remoteStreams},m.prototype._createTransceiver=function(e,t){var n=this.transceivers.length>0,i={track:null,iceGatherer:null,iceTransport:null,dtlsTransport:null,localCapabilities:null,remoteCapabilities:null,rtpSender:null,rtpReceiver:null,kind:e,mid:null,sendEncodingParameters:null,recvEncodingParameters:null,stream:null,associatedRemoteMediaStreams:[],wantReceive:!0};if(this.usingBundle&&n)i.iceTransport=this.transceivers[0].iceTransport,i.dtlsTransport=this.transceivers[0].dtlsTransport;else{var r=this._createIceAndDtlsTransports();i.iceTransport=r.iceTransport,i.dtlsTransport=r.dtlsTransport}return t||this.transceivers.push(i),i},m.prototype.addTrack=function(t,n){if(this._isClosed)throw d("InvalidStateError","Attempted to call addTrack on a closed peerconnection.");if(this.transceivers.find((function(e){return e.track===t})))throw d("InvalidAccessError","Track already exists.");for(var i,r=0;r<this.transceivers.length;r++)this.transceivers[r].track||this.transceivers[r].kind!==t.kind||(i=this.transceivers[r]);return i||(i=this._createTransceiver(t.kind)),this._maybeFireNegotiationNeeded(),-1===this.localStreams.indexOf(n)&&this.localStreams.push(n),i.track=t,i.stream=n,i.rtpSender=new e.RTCRtpSender(t,i.dtlsTransport),i.rtpSender},m.prototype.addStream=function(e){var n=this;if(t>=15025)e.getTracks().forEach((function(t){n.addTrack(t,e)}));else{var i=e.clone();e.getTracks().forEach((function(e,t){var n=i.getTracks()[t];e.addEventListener("enabled",(function(e){n.enabled=e.enabled}))})),i.getTracks().forEach((function(e){n.addTrack(e,i)}))}},m.prototype.removeTrack=function(t){if(this._isClosed)throw d("InvalidStateError","Attempted to call removeTrack on a closed peerconnection.");if(!(t instanceof e.RTCRtpSender))throw new TypeError("Argument 1 of RTCPeerConnection.removeTrack does not implement interface RTCRtpSender.");var n=this.transceivers.find((function(e){return e.rtpSender===t}));if(!n)throw d("InvalidAccessError","Sender was not created by this connection.");var i=n.stream;n.rtpSender.stop(),n.rtpSender=null,n.track=null,n.stream=null,-1===this.transceivers.map((function(e){return e.stream})).indexOf(i)&&this.localStreams.indexOf(i)>-1&&this.localStreams.splice(this.localStreams.indexOf(i),1),this._maybeFireNegotiationNeeded()},m.prototype.removeStream=function(e){var t=this;e.getTracks().forEach((function(e){var n=t.getSenders().find((function(t){return t.track===e}));n&&t.removeTrack(n)}))},m.prototype.getSenders=function(){return this.transceivers.filter((function(e){return!!e.rtpSender})).map((function(e){return e.rtpSender}))},m.prototype.getReceivers=function(){return this.transceivers.filter((function(e){return!!e.rtpReceiver})).map((function(e){return e.rtpReceiver}))},m.prototype._createIceGatherer=function(t,n){var i=this;if(n&&t>0)return this.transceivers[0].iceGatherer;if(this._iceGatherers.length)return this._iceGatherers.shift();var r=new e.RTCIceGatherer({iceServers:this._config.iceServers,gatherPolicy:this._config.iceTransportPolicy});return Object.defineProperty(r,"state",{value:"new",writable:!0}),this.transceivers[t].bufferedCandidateEvents=[],this.transceivers[t].bufferCandidates=function(e){var n=!e.candidate||0===Object.keys(e.candidate).length;r.state=n?"completed":"gathering",null!==i.transceivers[t].bufferedCandidateEvents&&i.transceivers[t].bufferedCandidateEvents.push(e)},r.addEventListener("localcandidate",this.transceivers[t].bufferCandidates),r},m.prototype._gather=function(t,n){var i=this,r=this.transceivers[n].iceGatherer;if(!r.onlocalcandidate){var o=this.transceivers[n].bufferedCandidateEvents;this.transceivers[n].bufferedCandidateEvents=null,r.removeEventListener("localcandidate",this.transceivers[n].bufferCandidates),r.onlocalcandidate=function(e){if(!(i.usingBundle&&n>0)){var o=new Event("icecandidate");o.candidate={sdpMid:t,sdpMLineIndex:n};var a=e.candidate,s=!a||0===Object.keys(a).length;if(s)"new"!==r.state&&"gathering"!==r.state||(r.state="completed");else{"new"===r.state&&(r.state="gathering"),a.component=1,a.ufrag=r.getLocalParameters().usernameFragment;var c=u.writeCandidate(a);o.candidate=Object.assign(o.candidate,u.parseCandidate(c)),o.candidate.candidate=c,o.candidate.toJSON=function(){return{candidate:o.candidate.candidate,sdpMid:o.candidate.sdpMid,sdpMLineIndex:o.candidate.sdpMLineIndex,usernameFragment:o.candidate.usernameFragment}}}var d=u.getMediaSections(i._localDescription.sdp);d[o.candidate.sdpMLineIndex]+=s?"a=end-of-candidates\r\n":"a="+o.candidate.candidate+"\r\n",i._localDescription.sdp=u.getDescription(i._localDescription.sdp)+d.join("");var l=i.transceivers.every((function(e){return e.iceGatherer&&"completed"===e.iceGatherer.state}));"gathering"!==i.iceGatheringState&&(i.iceGatheringState="gathering",i._emitGatheringStateChange()),s||i._dispatchEvent("icecandidate",o),l&&(i._dispatchEvent("icecandidate",new Event("icecandidate")),i.iceGatheringState="complete",i._emitGatheringStateChange())}},e.setTimeout((function(){o.forEach((function(e){r.onlocalcandidate(e)}))}),0)}},m.prototype._createIceAndDtlsTransports=function(){var t=this,n=new e.RTCIceTransport(null);n.onicestatechange=function(){t._updateIceConnectionState(),t._updateConnectionState()};var i=new e.RTCDtlsTransport(n);return i.ondtlsstatechange=function(){t._updateConnectionState()},i.onerror=function(){Object.defineProperty(i,"state",{value:"failed",writable:!0}),t._updateConnectionState()},{iceTransport:n,dtlsTransport:i}},m.prototype._disposeIceAndDtlsTransports=function(e){var t=this.transceivers[e].iceGatherer;t&&(delete t.onlocalcandidate,delete this.transceivers[e].iceGatherer);var n=this.transceivers[e].iceTransport;n&&(delete n.onicestatechange,delete this.transceivers[e].iceTransport);var i=this.transceivers[e].dtlsTransport;i&&(delete i.ondtlsstatechange,delete i.onerror,delete this.transceivers[e].dtlsTransport)},m.prototype._transceive=function(e,n,i){var r=a(e.localCapabilities,e.remoteCapabilities);n&&e.rtpSender&&(r.encodings=e.sendEncodingParameters,r.rtcp={cname:u.localCName,compound:e.rtcpParameters.compound},e.recvEncodingParameters.length&&(r.rtcp.ssrc=e.recvEncodingParameters[0].ssrc),e.rtpSender.send(r)),i&&e.rtpReceiver&&r.codecs.length>0&&("video"===e.kind&&e.recvEncodingParameters&&t<15019&&e.recvEncodingParameters.forEach((function(e){delete e.rtx})),e.recvEncodingParameters.length?r.encodings=e.recvEncodingParameters:r.encodings=[{}],r.rtcp={compound:e.rtcpParameters.compound},e.rtcpParameters.cname&&(r.rtcp.cname=e.rtcpParameters.cname),e.sendEncodingParameters.length&&(r.rtcp.ssrc=e.sendEncodingParameters[0].ssrc),e.rtpReceiver.receive(r))},m.prototype.setLocalDescription=function(e){var t,n,i=this;if(-1===["offer","answer"].indexOf(e.type))return Promise.reject(d("TypeError",'Unsupported type "'+e.type+'"'));if(!s("setLocalDescription",e.type,i.signalingState)||i._isClosed)return Promise.reject(d("InvalidStateError","Can not set local "+e.type+" in state "+i.signalingState));if("offer"===e.type)t=u.splitSections(e.sdp),n=t.shift(),t.forEach((function(e,t){var n=u.parseRtpParameters(e);i.transceivers[t].localCapabilities=n})),i.transceivers.forEach((function(e,t){i._gather(e.mid,t)}));else if("answer"===e.type){t=u.splitSections(i._remoteDescription.sdp),n=t.shift();var r=u.matchPrefix(n,"a=ice-lite").length>0;t.forEach((function(e,t){var o=i.transceivers[t],s=o.iceGatherer,c=o.iceTransport,d=o.dtlsTransport,l=o.localCapabilities,p=o.remoteCapabilities;if(!(u.isRejected(e)&&0===u.matchPrefix(e,"a=bundle-only").length||o.rejected)){var m=u.getIceParameters(e,n),f=u.getDtlsParameters(e,n);r&&(f.role="server"),i.usingBundle&&0!==t||(i._gather(o.mid,t),"new"===c.state&&c.start(s,m,r?"controlling":"controlled"),"new"===d.state&&d.start(f));var v=a(l,p);i._transceive(o,v.codecs.length>0,!1)}}))}return i._localDescription={type:e.type,sdp:e.sdp},"offer"===e.type?i._updateSignalingState("have-local-offer"):i._updateSignalingState("stable"),Promise.resolve()},m.prototype.setRemoteDescription=function(i){var r=this;if(-1===["offer","answer"].indexOf(i.type))return Promise.reject(d("TypeError",'Unsupported type "'+i.type+'"'));if(!s("setRemoteDescription",i.type,r.signalingState)||r._isClosed)return Promise.reject(d("InvalidStateError","Can not set remote "+i.type+" in state "+r.signalingState));var o={};r.remoteStreams.forEach((function(e){o[e.id]=e}));var a=[],m=u.splitSections(i.sdp),f=m.shift(),v=u.matchPrefix(f,"a=ice-lite").length>0,g=u.matchPrefix(f,"a=group:BUNDLE ").length>0;r.usingBundle=g;var h=u.matchPrefix(f,"a=ice-options:")[0];return r.canTrickleIceCandidates=!!h&&h.substr(14).split(" ").indexOf("trickle")>=0,m.forEach((function(s,d){var p=u.splitLines(s),m=u.getKind(s),h=u.isRejected(s)&&0===u.matchPrefix(s,"a=bundle-only").length,C=p[0].substr(2).split(" ")[2],w=u.getDirection(s,f),y=u.parseMsid(s),S=u.getMid(s)||u.generateIdentifier();if(h||"application"===m&&("DTLS/SCTP"===C||"UDP/DTLS/SCTP"===C))r.transceivers[d]={mid:S,kind:m,protocol:C,rejected:!0};else{!h&&r.transceivers[d]&&r.transceivers[d].rejected&&(r.transceivers[d]=r._createTransceiver(m,!0));var b,T,R,P,k,E,x,D,_,M,O,I=u.parseRtpParameters(s);h||(M=u.getIceParameters(s,f),(O=u.getDtlsParameters(s,f)).role="client"),x=u.parseRtpEncodingParameters(s);var A=u.parseRtcpParameters(s),L=u.matchPrefix(s,"a=end-of-candidates",f).length>0,N=u.matchPrefix(s,"a=candidate:").map((function(e){return u.parseCandidate(e)})).filter((function(e){return 1===e.component}));if(("offer"===i.type||"answer"===i.type)&&!h&&g&&d>0&&r.transceivers[d]&&(r._disposeIceAndDtlsTransports(d),r.transceivers[d].iceGatherer=r.transceivers[0].iceGatherer,r.transceivers[d].iceTransport=r.transceivers[0].iceTransport,r.transceivers[d].dtlsTransport=r.transceivers[0].dtlsTransport,r.transceivers[d].rtpSender&&r.transceivers[d].rtpSender.setTransport(r.transceivers[0].dtlsTransport),r.transceivers[d].rtpReceiver&&r.transceivers[d].rtpReceiver.setTransport(r.transceivers[0].dtlsTransport)),"offer"!==i.type||h)"answer"!==i.type||h||(T=(b=r.transceivers[d]).iceGatherer,R=b.iceTransport,P=b.dtlsTransport,k=b.rtpReceiver,E=b.sendEncodingParameters,D=b.localCapabilities,r.transceivers[d].recvEncodingParameters=x,r.transceivers[d].remoteCapabilities=I,r.transceivers[d].rtcpParameters=A,N.length&&"new"===R.state&&(!v&&!L||g&&0!==d?N.forEach((function(e){c(b.iceTransport,e)})):R.setRemoteCandidates(N)),g&&0!==d||("new"===R.state&&R.start(T,M,"controlling"),"new"===P.state&&P.start(O)),r._transceive(b,"sendrecv"===w||"recvonly"===w,"sendrecv"===w||"sendonly"===w),!k||"sendrecv"!==w&&"sendonly"!==w?delete b.rtpReceiver:(_=k.track,y?(o[y.stream]||(o[y.stream]=new e.MediaStream),n(_,o[y.stream]),a.push([_,k,o[y.stream]])):(o.default||(o.default=new e.MediaStream),n(_,o.default),a.push([_,k,o.default]))));else{(b=r.transceivers[d]||r._createTransceiver(m)).mid=S,b.iceGatherer||(b.iceGatherer=r._createIceGatherer(d,g)),N.length&&"new"===b.iceTransport.state&&(!L||g&&0!==d?N.forEach((function(e){c(b.iceTransport,e)})):b.iceTransport.setRemoteCandidates(N)),D=e.RTCRtpReceiver.getCapabilities(m),t<15019&&(D.codecs=D.codecs.filter((function(e){return"rtx"!==e.name}))),E=b.sendEncodingParameters||[{ssrc:1001*(2*d+2)}];var U,W=!1;"sendrecv"===w||"sendonly"===w?(W=!b.rtpReceiver,k=b.rtpReceiver||new e.RTCRtpReceiver(b.dtlsTransport,m),W&&(_=k.track,y&&"-"===y.stream||(y?(o[y.stream]||(o[y.stream]=new e.MediaStream,Object.defineProperty(o[y.stream],"id",{get:function(){return y.stream}})),Object.defineProperty(_,"id",{get:function(){return y.track}}),U=o[y.stream]):(o.default||(o.default=new e.MediaStream),U=o.default)),U&&(n(_,U),b.associatedRemoteMediaStreams.push(U)),a.push([_,k,U]))):b.rtpReceiver&&b.rtpReceiver.track&&(b.associatedRemoteMediaStreams.forEach((function(e){var t=e.getTracks().find((function(e){return e.id===b.rtpReceiver.track.id}));t&&l(t,e)})),b.associatedRemoteMediaStreams=[]),b.localCapabilities=D,b.remoteCapabilities=I,b.rtpReceiver=k,b.rtcpParameters=A,b.sendEncodingParameters=E,b.recvEncodingParameters=x,r._transceive(r.transceivers[d],!1,W)}}})),void 0===r._dtlsRole&&(r._dtlsRole="offer"===i.type?"active":"passive"),r._remoteDescription={type:i.type,sdp:i.sdp},"offer"===i.type?r._updateSignalingState("have-remote-offer"):r._updateSignalingState("stable"),Object.keys(o).forEach((function(t){var n=o[t];if(n.getTracks().length){if(-1===r.remoteStreams.indexOf(n)){r.remoteStreams.push(n);var i=new Event("addstream");i.stream=n,e.setTimeout((function(){r._dispatchEvent("addstream",i)}))}a.forEach((function(e){var t=e[0],i=e[1];n.id===e[2].id&&p(r,t,i,[n])}))}})),a.forEach((function(e){e[2]||p(r,e[0],e[1],[])})),e.setTimeout((function(){r&&r.transceivers&&r.transceivers.forEach((function(e){e.iceTransport&&"new"===e.iceTransport.state&&e.iceTransport.getRemoteCandidates().length>0&&e.iceTransport.addRemoteCandidate({})}))}),4e3),Promise.resolve()},m.prototype.close=function(){this.transceivers.forEach((function(e){e.iceTransport&&e.iceTransport.stop(),e.dtlsTransport&&e.dtlsTransport.stop(),e.rtpSender&&e.rtpSender.stop(),e.rtpReceiver&&e.rtpReceiver.stop()})),this._isClosed=!0,this._updateSignalingState("closed")},m.prototype._updateSignalingState=function(e){this.signalingState=e;var t=new Event("signalingstatechange");this._dispatchEvent("signalingstatechange",t)},m.prototype._maybeFireNegotiationNeeded=function(){var t=this;"stable"===this.signalingState&&!0!==this.needNegotiation&&(this.needNegotiation=!0,e.setTimeout((function(){if(t.needNegotiation){t.needNegotiation=!1;var e=new Event("negotiationneeded");t._dispatchEvent("negotiationneeded",e)}}),0))},m.prototype._updateIceConnectionState=function(){var e,t={new:0,closed:0,checking:0,connected:0,completed:0,disconnected:0,failed:0};if(this.transceivers.forEach((function(e){t[e.iceTransport.state]++})),e="new",t.failed>0?e="failed":t.checking>0?e="checking":t.disconnected>0?e="disconnected":t.new>0?e="new":t.connected>0?e="connected":t.completed>0&&(e="completed"),e!==this.iceConnectionState){this.iceConnectionState=e;var n=new Event("iceconnectionstatechange");this._dispatchEvent("iceconnectionstatechange",n)}},m.prototype._updateConnectionState=function(){var e,t={new:0,closed:0,connecting:0,connected:0,completed:0,disconnected:0,failed:0};if(this.transceivers.forEach((function(e){t[e.iceTransport.state]++,t[e.dtlsTransport.state]++})),t.connected+=t.completed,e="new",t.failed>0?e="failed":t.connecting>0?e="connecting":t.disconnected>0?e="disconnected":t.new>0?e="new":t.connected>0&&(e="connected"),e!==this.connectionState){this.connectionState=e;var n=new Event("connectionstatechange");this._dispatchEvent("connectionstatechange",n)}},m.prototype.createOffer=function(){var n=this;if(n._isClosed)return Promise.reject(d("InvalidStateError","Can not call createOffer after close"));var i=n.transceivers.filter((function(e){return"audio"===e.kind})).length,o=n.transceivers.filter((function(e){return"video"===e.kind})).length,a=arguments[0];if(a){if(a.mandatory||a.optional)throw new TypeError("Legacy mandatory/optional constraints not supported.");void 0!==a.offerToReceiveAudio&&(i=!0===a.offerToReceiveAudio?1:!1===a.offerToReceiveAudio?0:a.offerToReceiveAudio),void 0!==a.offerToReceiveVideo&&(o=!0===a.offerToReceiveVideo?1:!1===a.offerToReceiveVideo?0:a.offerToReceiveVideo)}for(n.transceivers.forEach((function(e){"audio"===e.kind?--i<0&&(e.wantReceive=!1):"video"===e.kind&&--o<0&&(e.wantReceive=!1)}));i>0||o>0;)i>0&&(n._createTransceiver("audio"),i--),o>0&&(n._createTransceiver("video"),o--);var s=u.writeSessionBoilerplate(n._sdpSessionId,n._sdpSessionVersion++);n.transceivers.forEach((function(i,r){var o=i.track,a=i.kind,s=i.mid||u.generateIdentifier();i.mid=s,i.iceGatherer||(i.iceGatherer=n._createIceGatherer(r,n.usingBundle));var c=e.RTCRtpSender.getCapabilities(a);t<15019&&(c.codecs=c.codecs.filter((function(e){return"rtx"!==e.name}))),c.codecs.forEach((function(e){"H264"===e.name&&void 0===e.parameters["level-asymmetry-allowed"]&&(e.parameters["level-asymmetry-allowed"]="1"),i.remoteCapabilities&&i.remoteCapabilities.codecs&&i.remoteCapabilities.codecs.forEach((function(t){e.name.toLowerCase()===t.name.toLowerCase()&&e.clockRate===t.clockRate&&(e.preferredPayloadType=t.payloadType)}))})),c.headerExtensions.forEach((function(e){(i.remoteCapabilities&&i.remoteCapabilities.headerExtensions||[]).forEach((function(t){e.uri===t.uri&&(e.id=t.id)}))}));var d=i.sendEncodingParameters||[{ssrc:1001*(2*r+1)}];o&&t>=15019&&"video"===a&&!d[0].rtx&&(d[0].rtx={ssrc:d[0].ssrc+1}),i.wantReceive&&(i.rtpReceiver=new e.RTCRtpReceiver(i.dtlsTransport,a)),i.localCapabilities=c,i.sendEncodingParameters=d})),"max-compat"!==n._config.bundlePolicy&&(s+="a=group:BUNDLE "+n.transceivers.map((function(e){return e.mid})).join(" ")+"\r\n"),s+="a=ice-options:trickle\r\n",n.transceivers.forEach((function(e,t){s+=r(e,e.localCapabilities,"offer",e.stream,n._dtlsRole),s+="a=rtcp-rsize\r\n",!e.iceGatherer||"new"===n.iceGatheringState||0!==t&&n.usingBundle||(e.iceGatherer.getLocalCandidates().forEach((function(e){e.component=1,s+="a="+u.writeCandidate(e)+"\r\n"})),"completed"===e.iceGatherer.state&&(s+="a=end-of-candidates\r\n"))}));var c=new e.RTCSessionDescription({type:"offer",sdp:s});return Promise.resolve(c)},m.prototype.createAnswer=function(){var n=this;if(n._isClosed)return Promise.reject(d("InvalidStateError","Can not call createAnswer after close"));if("have-remote-offer"!==n.signalingState&&"have-local-pranswer"!==n.signalingState)return Promise.reject(d("InvalidStateError","Can not call createAnswer in signalingState "+n.signalingState));var i=u.writeSessionBoilerplate(n._sdpSessionId,n._sdpSessionVersion++);n.usingBundle&&(i+="a=group:BUNDLE "+n.transceivers.map((function(e){return e.mid})).join(" ")+"\r\n");var o=u.getMediaSections(n._remoteDescription.sdp).length;n.transceivers.forEach((function(e,s){if(!(s+1>o)){if(e.rejected)return"application"===e.kind?"DTLS/SCTP"===e.protocol?i+="m=application 0 DTLS/SCTP 5000\r\n":i+="m=application 0 "+e.protocol+" webrtc-datachannel\r\n":"audio"===e.kind?i+="m=audio 0 UDP/TLS/RTP/SAVPF 0\r\na=rtpmap:0 PCMU/8000\r\n":"video"===e.kind&&(i+="m=video 0 UDP/TLS/RTP/SAVPF 120\r\na=rtpmap:120 VP8/90000\r\n"),void(i+="c=IN IP4 0.0.0.0\r\na=inactive\r\na=mid:"+e.mid+"\r\n");var c;e.stream&&("audio"===e.kind?c=e.stream.getAudioTracks()[0]:"video"===e.kind&&(c=e.stream.getVideoTracks()[0]),c&&t>=15019&&"video"===e.kind&&!e.sendEncodingParameters[0].rtx&&(e.sendEncodingParameters[0].rtx={ssrc:e.sendEncodingParameters[0].ssrc+1}));var d=a(e.localCapabilities,e.remoteCapabilities);!d.codecs.filter((function(e){return"rtx"===e.name.toLowerCase()})).length&&e.sendEncodingParameters[0].rtx&&delete e.sendEncodingParameters[0].rtx,i+=r(e,d,"answer",e.stream,n._dtlsRole),e.rtcpParameters&&e.rtcpParameters.reducedSize&&(i+="a=rtcp-rsize\r\n")}}));var s=new e.RTCSessionDescription({type:"answer",sdp:i});return Promise.resolve(s)},m.prototype.addIceCandidate=function(e){var t,n=this;return e&&void 0===e.sdpMLineIndex&&!e.sdpMid?Promise.reject(new TypeError("sdpMLineIndex or sdpMid required")):new Promise((function(i,r){if(!n._remoteDescription)return r(d("InvalidStateError","Can not add ICE candidate without a remote description"));if(e&&""!==e.candidate){var o=e.sdpMLineIndex;if(e.sdpMid)for(var a=0;a<n.transceivers.length;a++)if(n.transceivers[a].mid===e.sdpMid){o=a;break}var s=n.transceivers[o];if(!s)return r(d("OperationError","Can not add ICE candidate"));if(s.rejected)return i();var l=Object.keys(e.candidate).length>0?u.parseCandidate(e.candidate):{};if("tcp"===l.protocol&&(0===l.port||9===l.port))return i();if(l.component&&1!==l.component)return i();if((0===o||o>0&&s.iceTransport!==n.transceivers[0].iceTransport)&&!c(s.iceTransport,l))return r(d("OperationError","Can not add ICE candidate"));var p=e.candidate.trim();0===p.indexOf("a=")&&(p=p.substr(2)),(t=u.getMediaSections(n._remoteDescription.sdp))[o]+="a="+(l.type?p:"end-of-candidates")+"\r\n",n._remoteDescription.sdp=u.getDescription(n._remoteDescription.sdp)+t.join("")}else for(var m=0;m<n.transceivers.length&&(n.transceivers[m].rejected||(n.transceivers[m].iceTransport.addRemoteCandidate({}),(t=u.getMediaSections(n._remoteDescription.sdp))[m]+="a=end-of-candidates\r\n",n._remoteDescription.sdp=u.getDescription(n._remoteDescription.sdp)+t.join(""),!n.usingBundle));m++);i()}))},m.prototype.getStats=function(t){if(t&&t instanceof e.MediaStreamTrack){var n=null;if(this.transceivers.forEach((function(e){e.rtpSender&&e.rtpSender.track===t?n=e.rtpSender:e.rtpReceiver&&e.rtpReceiver.track===t&&(n=e.rtpReceiver)})),!n)throw d("InvalidAccessError","Invalid selector.");return n.getStats()}var i=[];return this.transceivers.forEach((function(e){["rtpSender","rtpReceiver","iceGatherer","iceTransport","dtlsTransport"].forEach((function(t){e[t]&&i.push(e[t].getStats())}))})),Promise.all(i).then((function(e){var t=new Map;return e.forEach((function(e){e.forEach((function(e){t.set(e.id,e)}))})),t}))},["RTCRtpSender","RTCRtpReceiver","RTCIceGatherer","RTCIceTransport","RTCDtlsTransport"].forEach((function(t){var n=e[t];if(n&&n.prototype&&n.prototype.getStats){var r=n.prototype.getStats;n.prototype.getStats=function(){return r.apply(this).then((function(e){var t=new Map;return Object.keys(e).forEach((function(n){e[n].type=i(e[n]),t.set(n,e[n])})),t}))}}}));var f=["createOffer","createAnswer"];return f.forEach((function(e){var t=m.prototype[e];m.prototype[e]=function(){var e=arguments;return"function"==typeof e[0]||"function"==typeof e[1]?t.apply(this,[arguments[2]]).then((function(t){"function"==typeof e[0]&&e[0].apply(null,[t])}),(function(t){"function"==typeof e[1]&&e[1].apply(null,[t])})):t.apply(this,arguments)}})),(f=["setLocalDescription","setRemoteDescription","addIceCandidate"]).forEach((function(e){var t=m.prototype[e];m.prototype[e]=function(){var e=arguments;return"function"==typeof e[1]||"function"==typeof e[2]?t.apply(this,arguments).then((function(){"function"==typeof e[1]&&e[1].apply(null)}),(function(t){"function"==typeof e[2]&&e[2].apply(null,[t])})):t.apply(this,arguments)}})),["getStats"].forEach((function(e){var t=m.prototype[e];m.prototype[e]=function(){var e=arguments;return"function"==typeof e[1]?t.apply(this,arguments).then((function(){"function"==typeof e[1]&&e[1].apply(null)})):t.apply(this,arguments)}})),m}},{sdp:2}],2:[function(e,t,n){var i={generateIdentifier:function(){return Math.random().toString(36).substr(2,10)}};i.localCName=i.generateIdentifier(),i.splitLines=function(e){return e.trim().split("\n").map((function(e){return e.trim()}))},i.splitSections=function(e){return e.split("\nm=").map((function(e,t){return(t>0?"m="+e:e).trim()+"\r\n"}))},i.getDescription=function(e){var t=i.splitSections(e);return t&&t[0]},i.getMediaSections=function(e){var t=i.splitSections(e);return t.shift(),t},i.matchPrefix=function(e,t){return i.splitLines(e).filter((function(e){return 0===e.indexOf(t)}))},i.parseCandidate=function(e){for(var t,n={foundation:(t=0===e.indexOf("a=candidate:")?e.substring(12).split(" "):e.substring(10).split(" "))[0],component:parseInt(t[1],10),protocol:t[2].toLowerCase(),priority:parseInt(t[3],10),ip:t[4],port:parseInt(t[5],10),type:t[7]},i=8;i<t.length;i+=2)switch(t[i]){case"raddr":n.relatedAddress=t[i+1];break;case"rport":n.relatedPort=parseInt(t[i+1],10);break;case"tcptype":n.tcpType=t[i+1];break;case"ufrag":n.ufrag=t[i+1],n.usernameFragment=t[i+1];break;default:n[t[i]]=t[i+1]}return n},i.writeCandidate=function(e){var t=[];t.push(e.foundation),t.push(e.component),t.push(e.protocol.toUpperCase()),t.push(e.priority),t.push(e.ip),t.push(e.port);var n=e.type;return t.push("typ"),t.push(n),"host"!==n&&e.relatedAddress&&e.relatedPort&&(t.push("raddr"),t.push(e.relatedAddress),t.push("rport"),t.push(e.relatedPort)),e.tcpType&&"tcp"===e.protocol.toLowerCase()&&(t.push("tcptype"),t.push(e.tcpType)),(e.usernameFragment||e.ufrag)&&(t.push("ufrag"),t.push(e.usernameFragment||e.ufrag)),"candidate:"+t.join(" ")},i.parseIceOptions=function(e){return e.substr(14).split(" ")},i.parseRtpMap=function(e){var t=e.substr(9).split(" "),n={payloadType:parseInt(t.shift(),10)};return t=t[0].split("/"),n.name=t[0],n.clockRate=parseInt(t[1],10),n.channels=3===t.length?parseInt(t[2],10):1,n.numChannels=n.channels,n},i.writeRtpMap=function(e){var t=e.payloadType;void 0!==e.preferredPayloadType&&(t=e.preferredPayloadType);var n=e.channels||e.numChannels||1;return"a=rtpmap:"+t+" "+e.name+"/"+e.clockRate+(1!==n?"/"+n:"")+"\r\n"},i.parseExtmap=function(e){var t=e.substr(9).split(" ");return{id:parseInt(t[0],10),direction:t[0].indexOf("/")>0?t[0].split("/")[1]:"sendrecv",uri:t[1]}},i.writeExtmap=function(e){return"a=extmap:"+(e.id||e.preferredId)+(e.direction&&"sendrecv"!==e.direction?"/"+e.direction:"")+" "+e.uri+"\r\n"},i.parseFmtp=function(e){for(var t,n={},i=e.substr(e.indexOf(" ")+1).split(";"),r=0;r<i.length;r++)n[(t=i[r].trim().split("="))[0].trim()]=t[1];return n},i.writeFmtp=function(e){var t="",n=e.payloadType;if(void 0!==e.preferredPayloadType&&(n=e.preferredPayloadType),e.parameters&&Object.keys(e.parameters).length){var i=[];Object.keys(e.parameters).forEach((function(t){e.parameters[t]?i.push(t+"="+e.parameters[t]):i.push(t)})),t+="a=fmtp:"+n+" "+i.join(";")+"\r\n"}return t},i.parseRtcpFb=function(e){var t=e.substr(e.indexOf(" ")+1).split(" ");return{type:t.shift(),parameter:t.join(" ")}},i.writeRtcpFb=function(e){var t="",n=e.payloadType;return void 0!==e.preferredPayloadType&&(n=e.preferredPayloadType),e.rtcpFeedback&&e.rtcpFeedback.length&&e.rtcpFeedback.forEach((function(e){t+="a=rtcp-fb:"+n+" "+e.type+(e.parameter&&e.parameter.length?" "+e.parameter:"")+"\r\n"})),t},i.parseSsrcMedia=function(e){var t=e.indexOf(" "),n={ssrc:parseInt(e.substr(7,t-7),10)},i=e.indexOf(":",t);return i>-1?(n.attribute=e.substr(t+1,i-t-1),n.value=e.substr(i+1)):n.attribute=e.substr(t+1),n},i.parseSsrcGroup=function(e){var t=e.substr(13).split(" ");return{semantics:t.shift(),ssrcs:t.map((function(e){return parseInt(e,10)}))}},i.getMid=function(e){var t=i.matchPrefix(e,"a=mid:")[0];if(t)return t.substr(6)},i.parseFingerprint=function(e){var t=e.substr(14).split(" ");return{algorithm:t[0].toLowerCase(),value:t[1]}},i.getDtlsParameters=function(e,t){return{role:"auto",fingerprints:i.matchPrefix(e+t,"a=fingerprint:").map(i.parseFingerprint)}},i.writeDtlsParameters=function(e,t){var n="a=setup:"+t+"\r\n";return e.fingerprints.forEach((function(e){n+="a=fingerprint:"+e.algorithm+" "+e.value+"\r\n"})),n},i.getIceParameters=function(e,t){var n=i.splitLines(e);return{usernameFragment:(n=n.concat(i.splitLines(t))).filter((function(e){return 0===e.indexOf("a=ice-ufrag:")}))[0].substr(12),password:n.filter((function(e){return 0===e.indexOf("a=ice-pwd:")}))[0].substr(10)}},i.writeIceParameters=function(e){return"a=ice-ufrag:"+e.usernameFragment+"\r\na=ice-pwd:"+e.password+"\r\n"},i.parseRtpParameters=function(e){for(var t={codecs:[],headerExtensions:[],fecMechanisms:[],rtcp:[]},n=i.splitLines(e)[0].split(" "),r=3;r<n.length;r++){var o=n[r],a=i.matchPrefix(e,"a=rtpmap:"+o+" ")[0];if(a){var s=i.parseRtpMap(a),c=i.matchPrefix(e,"a=fmtp:"+o+" ");switch(s.parameters=c.length?i.parseFmtp(c[0]):{},s.rtcpFeedback=i.matchPrefix(e,"a=rtcp-fb:"+o+" ").map(i.parseRtcpFb),t.codecs.push(s),s.name.toUpperCase()){case"RED":case"ULPFEC":t.fecMechanisms.push(s.name.toUpperCase())}}}return i.matchPrefix(e,"a=extmap:").forEach((function(e){t.headerExtensions.push(i.parseExtmap(e))})),t},i.writeRtpDescription=function(e,t){var n="";n+="m="+e+" ",n+=t.codecs.length>0?"9":"0",n+=" UDP/TLS/RTP/SAVPF ",n+=t.codecs.map((function(e){return void 0!==e.preferredPayloadType?e.preferredPayloadType:e.payloadType})).join(" ")+"\r\n",n+="c=IN IP4 0.0.0.0\r\n",n+="a=rtcp:9 IN IP4 0.0.0.0\r\n",t.codecs.forEach((function(e){n+=i.writeRtpMap(e),n+=i.writeFmtp(e),n+=i.writeRtcpFb(e)}));var r=0;return t.codecs.forEach((function(e){e.maxptime>r&&(r=e.maxptime)})),r>0&&(n+="a=maxptime:"+r+"\r\n"),n+="a=rtcp-mux\r\n",t.headerExtensions&&t.headerExtensions.forEach((function(e){n+=i.writeExtmap(e)})),n},i.parseRtpEncodingParameters=function(e){var t,n=[],r=i.parseRtpParameters(e),o=-1!==r.fecMechanisms.indexOf("RED"),a=-1!==r.fecMechanisms.indexOf("ULPFEC"),s=i.matchPrefix(e,"a=ssrc:").map((function(e){return i.parseSsrcMedia(e)})).filter((function(e){return"cname"===e.attribute})),c=s.length>0&&s[0].ssrc,d=i.matchPrefix(e,"a=ssrc-group:FID").map((function(e){return e.substr(17).split(" ").map((function(e){return parseInt(e,10)}))}));d.length>0&&d[0].length>1&&d[0][0]===c&&(t=d[0][1]),r.codecs.forEach((function(e){if("RTX"===e.name.toUpperCase()&&e.parameters.apt){var i={ssrc:c,codecPayloadType:parseInt(e.parameters.apt,10)};c&&t&&(i.rtx={ssrc:t}),n.push(i),o&&((i=JSON.parse(JSON.stringify(i))).fec={ssrc:t,mechanism:a?"red+ulpfec":"red"},n.push(i))}})),0===n.length&&c&&n.push({ssrc:c});var u=i.matchPrefix(e,"b=");return u.length&&(u=0===u[0].indexOf("b=TIAS:")?parseInt(u[0].substr(7),10):0===u[0].indexOf("b=AS:")?1e3*parseInt(u[0].substr(5),10)*.95-16e3:void 0,n.forEach((function(e){e.maxBitrate=u}))),n},i.parseRtcpParameters=function(e){var t={},n=i.matchPrefix(e,"a=ssrc:").map((function(e){return i.parseSsrcMedia(e)})).filter((function(e){return"cname"===e.attribute}))[0];n&&(t.cname=n.value,t.ssrc=n.ssrc);var r=i.matchPrefix(e,"a=rtcp-rsize");t.reducedSize=r.length>0,t.compound=0===r.length;var o=i.matchPrefix(e,"a=rtcp-mux");return t.mux=o.length>0,t},i.parseMsid=function(e){var t,n=i.matchPrefix(e,"a=msid:");if(1===n.length)return{stream:(t=n[0].substr(7).split(" "))[0],track:t[1]};var r=i.matchPrefix(e,"a=ssrc:").map((function(e){return i.parseSsrcMedia(e)})).filter((function(e){return"msid"===e.attribute}));return r.length>0?{stream:(t=r[0].value.split(" "))[0],track:t[1]}:void 0},i.generateSessionId=function(){return Math.random().toString().substr(2,21)},i.writeSessionBoilerplate=function(e,t){var n=void 0!==t?t:2;return"v=0\r\no=thisisadapterortc "+(e||i.generateSessionId())+" "+n+" IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\n"},i.writeMediaSection=function(e,t,n,r){var o=i.writeRtpDescription(e.kind,t);if(o+=i.writeIceParameters(e.iceGatherer.getLocalParameters()),o+=i.writeDtlsParameters(e.dtlsTransport.getLocalParameters(),"offer"===n?"actpass":"active"),o+="a=mid:"+e.mid+"\r\n",e.direction?o+="a="+e.direction+"\r\n":e.rtpSender&&e.rtpReceiver?o+="a=sendrecv\r\n":e.rtpSender?o+="a=sendonly\r\n":e.rtpReceiver?o+="a=recvonly\r\n":o+="a=inactive\r\n",e.rtpSender){var a="msid:"+r.id+" "+e.rtpSender.track.id+"\r\n";o+="a="+a,o+="a=ssrc:"+e.sendEncodingParameters[0].ssrc+" "+a,e.sendEncodingParameters[0].rtx&&(o+="a=ssrc:"+e.sendEncodingParameters[0].rtx.ssrc+" "+a,o+="a=ssrc-group:FID "+e.sendEncodingParameters[0].ssrc+" "+e.sendEncodingParameters[0].rtx.ssrc+"\r\n")}return o+="a=ssrc:"+e.sendEncodingParameters[0].ssrc+" cname:"+i.localCName+"\r\n",e.rtpSender&&e.sendEncodingParameters[0].rtx&&(o+="a=ssrc:"+e.sendEncodingParameters[0].rtx.ssrc+" cname:"+i.localCName+"\r\n"),o},i.getDirection=function(e,t){for(var n=i.splitLines(e),r=0;r<n.length;r++)switch(n[r]){case"a=sendrecv":case"a=sendonly":case"a=recvonly":case"a=inactive":return n[r].substr(2)}return t?i.getDirection(t):"sendrecv"},i.getKind=function(e){return i.splitLines(e)[0].split(" ")[0].substr(2)},i.isRejected=function(e){return"0"===e.split(" ",2)[1]},i.parseMLine=function(e){var t=i.splitLines(e)[0].substr(2).split(" ");return{kind:t[0],port:parseInt(t[1],10),protocol:t[2],fmt:t.slice(3).join(" ")}},i.parseOLine=function(e){var t=i.matchPrefix(e,"o=")[0].substr(2).split(" ");return{username:t[0],sessionId:t[1],sessionVersion:parseInt(t[2],10),netType:t[3],addressType:t[4],address:t[5]}},i.isValidSDP=function(e){if("string"!=typeof e||0===e.length)return!1;for(var t=i.splitLines(e),n=0;n<t.length;n++)if(t[n].length<2||"="!==t[n].charAt(1))return!1;return!0},"object"==typeof t&&(t.exports=i)},{}],3:[function(e,t,i){(function(n){var i=e("./adapter_factory.js");t.exports=i({window:n.window})}).call(this,void 0!==n.g?n.g:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{"./adapter_factory.js":4}],4:[function(e,t,n){var i=e("./utils");t.exports=function(t,n){var r=t&&t.window,o={shimChrome:!0,shimFirefox:!0,shimEdge:!0,shimSafari:!0};for(var a in n)hasOwnProperty.call(n,a)&&(o[a]=n[a]);var s=i.log,c=i.detectBrowser(r),d=e("./chrome/chrome_shim")||null,u=e("./edge/edge_shim")||null,l=e("./firefox/firefox_shim")||null,p=e("./safari/safari_shim")||null,m=e("./common_shim")||null,f={browserDetails:c,commonShim:m,extractVersion:i.extractVersion,disableLog:i.disableLog,disableWarnings:i.disableWarnings};switch(c.browser){case"chrome":if(!d||!d.shimPeerConnection||!o.shimChrome)return s("Chrome shim is not included in this adapter release."),f;s("adapter.js shimming chrome."),f.browserShim=d,m.shimCreateObjectURL(r),d.shimGetUserMedia(r),d.shimMediaStream(r),d.shimSourceObject(r),d.shimPeerConnection(r),d.shimOnTrack(r),d.shimAddTrackRemoveTrack(r),d.shimGetSendersWithDtmf(r),d.shimSenderReceiverGetStats(r),d.fixNegotiationNeeded(r),m.shimRTCIceCandidate(r),m.shimMaxMessageSize(r),m.shimSendThrowTypeError(r);break;case"firefox":if(!l||!l.shimPeerConnection||!o.shimFirefox)return s("Firefox shim is not included in this adapter release."),f;s("adapter.js shimming firefox."),f.browserShim=l,m.shimCreateObjectURL(r),l.shimGetUserMedia(r),l.shimSourceObject(r),l.shimPeerConnection(r),l.shimOnTrack(r),l.shimRemoveStream(r),l.shimSenderGetStats(r),l.shimReceiverGetStats(r),l.shimRTCDataChannel(r),m.shimRTCIceCandidate(r),m.shimMaxMessageSize(r),m.shimSendThrowTypeError(r);break;case"edge":if(!u||!u.shimPeerConnection||!o.shimEdge)return s("MS edge shim is not included in this adapter release."),f;s("adapter.js shimming edge."),f.browserShim=u,m.shimCreateObjectURL(r),u.shimGetUserMedia(r),u.shimPeerConnection(r),u.shimReplaceTrack(r),m.shimMaxMessageSize(r),m.shimSendThrowTypeError(r);break;case"safari":if(!p||!o.shimSafari)return s("Safari shim is not included in this adapter release."),f;s("adapter.js shimming safari."),f.browserShim=p,m.shimCreateObjectURL(r),p.shimRTCIceServerUrls(r),p.shimCreateOfferLegacy(r),p.shimCallbacksAPI(r),p.shimLocalStreamsAPI(r),p.shimRemoteStreamsAPI(r),p.shimTrackEventTransceiver(r),p.shimGetUserMedia(r),m.shimRTCIceCandidate(r),m.shimMaxMessageSize(r),m.shimSendThrowTypeError(r);break;default:s("Unsupported browser!")}return f}},{"./chrome/chrome_shim":5,"./common_shim":7,"./edge/edge_shim":8,"./firefox/firefox_shim":11,"./safari/safari_shim":13,"./utils":14}],5:[function(e,t,n){function i(e,t,n){t&&!n.has(t.id)&&(n.set(t.id,t),Object.keys(t).forEach((function(r){r.endsWith("Id")?i(e,e.get(t[r]),n):r.endsWith("Ids")&&t[r].forEach((function(t){i(e,e.get(t),n)}))})))}function r(e,t,n){var r=n?"outbound-rtp":"inbound-rtp",o=new Map;if(null===t)return o;var a=[];return e.forEach((function(e){"track"===e.type&&e.trackIdentifier===t.id&&a.push(e)})),a.forEach((function(t){e.forEach((function(n){n.type===r&&n.trackId===t.id&&i(e,n,o)}))})),o}var o=e("../utils.js"),a=o.log;t.exports={shimGetUserMedia:e("./getusermedia"),shimMediaStream:function(e){e.MediaStream=e.MediaStream||e.webkitMediaStream},shimOnTrack:function(e){if("object"!=typeof e||!e.RTCPeerConnection||"ontrack"in e.RTCPeerConnection.prototype)"RTCRtpTransceiver"in e||o.wrapPeerConnectionEvent(e,"track",(function(e){return e.transceiver||(e.transceiver={receiver:e.receiver}),e}));else{Object.defineProperty(e.RTCPeerConnection.prototype,"ontrack",{get:function(){return this._ontrack},set:function(e){this._ontrack&&this.removeEventListener("track",this._ontrack),this.addEventListener("track",this._ontrack=e)},enumerable:!0,configurable:!0});var t=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){var n=this;return n._ontrackpoly||(n._ontrackpoly=function(t){t.stream.addEventListener("addtrack",(function(i){var r;r=e.RTCPeerConnection.prototype.getReceivers?n.getReceivers().find((function(e){return e.track&&e.track.id===i.track.id})):{track:i.track};var o=new Event("track");o.track=i.track,o.receiver=r,o.transceiver={receiver:r},o.streams=[t.stream],n.dispatchEvent(o)})),t.stream.getTracks().forEach((function(i){var r;r=e.RTCPeerConnection.prototype.getReceivers?n.getReceivers().find((function(e){return e.track&&e.track.id===i.id})):{track:i};var o=new Event("track");o.track=i,o.receiver=r,o.transceiver={receiver:r},o.streams=[t.stream],n.dispatchEvent(o)}))},n.addEventListener("addstream",n._ontrackpoly)),t.apply(n,arguments)}}},shimGetSendersWithDtmf:function(e){if("object"==typeof e&&e.RTCPeerConnection&&!("getSenders"in e.RTCPeerConnection.prototype)&&"createDTMFSender"in e.RTCPeerConnection.prototype){var t=function(e,t){return{track:t,get dtmf(){return void 0===this._dtmf&&("audio"===t.kind?this._dtmf=e.createDTMFSender(t):this._dtmf=null),this._dtmf},_pc:e}};if(!e.RTCPeerConnection.prototype.getSenders){e.RTCPeerConnection.prototype.getSenders=function(){return this._senders=this._senders||[],this._senders.slice()};var n=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addTrack=function(e,i){var r=this,o=n.apply(r,arguments);return o||(o=t(r,e),r._senders.push(o)),o};var i=e.RTCPeerConnection.prototype.removeTrack;e.RTCPeerConnection.prototype.removeTrack=function(e){var t=this;i.apply(t,arguments);var n=t._senders.indexOf(e);-1!==n&&t._senders.splice(n,1)}}var r=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(e){var n=this;n._senders=n._senders||[],r.apply(n,[e]),e.getTracks().forEach((function(e){n._senders.push(t(n,e))}))};var o=e.RTCPeerConnection.prototype.removeStream;e.RTCPeerConnection.prototype.removeStream=function(e){var t=this;t._senders=t._senders||[],o.apply(t,[e]),e.getTracks().forEach((function(e){var n=t._senders.find((function(t){return t.track===e}));n&&t._senders.splice(t._senders.indexOf(n),1)}))}}else if("object"==typeof e&&e.RTCPeerConnection&&"getSenders"in e.RTCPeerConnection.prototype&&"createDTMFSender"in e.RTCPeerConnection.prototype&&e.RTCRtpSender&&!("dtmf"in e.RTCRtpSender.prototype)){var a=e.RTCPeerConnection.prototype.getSenders;e.RTCPeerConnection.prototype.getSenders=function(){var e=this,t=a.apply(e,[]);return t.forEach((function(t){t._pc=e})),t},Object.defineProperty(e.RTCRtpSender.prototype,"dtmf",{get:function(){return void 0===this._dtmf&&("audio"===this.track.kind?this._dtmf=this._pc.createDTMFSender(this.track):this._dtmf=null),this._dtmf}})}},shimSenderReceiverGetStats:function(e){if("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender&&e.RTCRtpReceiver){if(!("getStats"in e.RTCRtpSender.prototype)){var t=e.RTCPeerConnection.prototype.getSenders;t&&(e.RTCPeerConnection.prototype.getSenders=function(){var e=this,n=t.apply(e,[]);return n.forEach((function(t){t._pc=e})),n});var n=e.RTCPeerConnection.prototype.addTrack;n&&(e.RTCPeerConnection.prototype.addTrack=function(){var e=n.apply(this,arguments);return e._pc=this,e}),e.RTCRtpSender.prototype.getStats=function(){var e=this;return this._pc.getStats().then((function(t){return r(t,e.track,!0)}))}}if(!("getStats"in e.RTCRtpReceiver.prototype)){var i=e.RTCPeerConnection.prototype.getReceivers;i&&(e.RTCPeerConnection.prototype.getReceivers=function(){var e=this,t=i.apply(e,[]);return t.forEach((function(t){t._pc=e})),t}),o.wrapPeerConnectionEvent(e,"track",(function(e){return e.receiver._pc=e.srcElement,e})),e.RTCRtpReceiver.prototype.getStats=function(){var e=this;return this._pc.getStats().then((function(t){return r(t,e.track,!1)}))}}if("getStats"in e.RTCRtpSender.prototype&&"getStats"in e.RTCRtpReceiver.prototype){var a=e.RTCPeerConnection.prototype.getStats;e.RTCPeerConnection.prototype.getStats=function(){var t=this;if(arguments.length>0&&arguments[0]instanceof e.MediaStreamTrack){var n,i,r,o=arguments[0];return t.getSenders().forEach((function(e){e.track===o&&(n?r=!0:n=e)})),t.getReceivers().forEach((function(e){return e.track===o&&(i?r=!0:i=e),e.track===o})),r||n&&i?Promise.reject(new DOMException("There are more than one sender or receiver for the track.","InvalidAccessError")):n?n.getStats():i?i.getStats():Promise.reject(new DOMException("There is no sender or receiver for the track.","InvalidAccessError"))}return a.apply(t,arguments)}}}},shimSourceObject:function(e){var t=e&&e.URL;"object"==typeof e&&(!e.HTMLMediaElement||"srcObject"in e.HTMLMediaElement.prototype||Object.defineProperty(e.HTMLMediaElement.prototype,"srcObject",{get:function(){return this._srcObject},set:function(e){var n=this;this._srcObject=e,this.src&&t.revokeObjectURL(this.src),e?(this.src=t.createObjectURL(e),e.addEventListener("addtrack",(function(){n.src&&t.revokeObjectURL(n.src),n.src=t.createObjectURL(e)})),e.addEventListener("removetrack",(function(){n.src&&t.revokeObjectURL(n.src),n.src=t.createObjectURL(e)}))):this.src=""}}))},shimAddTrackRemoveTrackWithNative:function(e){e.RTCPeerConnection.prototype.getLocalStreams=function(){var e=this;return this._shimmedLocalStreams=this._shimmedLocalStreams||{},Object.keys(this._shimmedLocalStreams).map((function(t){return e._shimmedLocalStreams[t][0]}))};var t=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addTrack=function(e,n){if(!n)return t.apply(this,arguments);this._shimmedLocalStreams=this._shimmedLocalStreams||{};var i=t.apply(this,arguments);return this._shimmedLocalStreams[n.id]?-1===this._shimmedLocalStreams[n.id].indexOf(i)&&this._shimmedLocalStreams[n.id].push(i):this._shimmedLocalStreams[n.id]=[n,i],i};var n=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(e){var t=this;this._shimmedLocalStreams=this._shimmedLocalStreams||{},e.getTracks().forEach((function(e){if(t.getSenders().find((function(t){return t.track===e})))throw new DOMException("Track already exists.","InvalidAccessError")}));var i=t.getSenders();n.apply(this,arguments);var r=t.getSenders().filter((function(e){return-1===i.indexOf(e)}));this._shimmedLocalStreams[e.id]=[e].concat(r)};var i=e.RTCPeerConnection.prototype.removeStream;e.RTCPeerConnection.prototype.removeStream=function(e){return this._shimmedLocalStreams=this._shimmedLocalStreams||{},delete this._shimmedLocalStreams[e.id],i.apply(this,arguments)};var r=e.RTCPeerConnection.prototype.removeTrack;e.RTCPeerConnection.prototype.removeTrack=function(e){var t=this;return this._shimmedLocalStreams=this._shimmedLocalStreams||{},e&&Object.keys(this._shimmedLocalStreams).forEach((function(n){var i=t._shimmedLocalStreams[n].indexOf(e);-1!==i&&t._shimmedLocalStreams[n].splice(i,1),1===t._shimmedLocalStreams[n].length&&delete t._shimmedLocalStreams[n]})),r.apply(this,arguments)}},shimAddTrackRemoveTrack:function(e){function t(e,t){var n=t.sdp;return Object.keys(e._reverseStreams||[]).forEach((function(t){var i=e._reverseStreams[t],r=e._streams[i.id];n=n.replace(new RegExp(r.id,"g"),i.id)})),new RTCSessionDescription({type:t.type,sdp:n})}function n(e,t){var n=t.sdp;return Object.keys(e._reverseStreams||[]).forEach((function(t){var i=e._reverseStreams[t],r=e._streams[i.id];n=n.replace(new RegExp(i.id,"g"),r.id)})),new RTCSessionDescription({type:t.type,sdp:n})}var i=o.detectBrowser(e);if(e.RTCPeerConnection.prototype.addTrack&&i.version>=65)return this.shimAddTrackRemoveTrackWithNative(e);var r=e.RTCPeerConnection.prototype.getLocalStreams;e.RTCPeerConnection.prototype.getLocalStreams=function(){var e=this,t=r.apply(this);return e._reverseStreams=e._reverseStreams||{},t.map((function(t){return e._reverseStreams[t.id]}))};var a=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(t){var n=this;if(n._streams=n._streams||{},n._reverseStreams=n._reverseStreams||{},t.getTracks().forEach((function(e){if(n.getSenders().find((function(t){return t.track===e})))throw new DOMException("Track already exists.","InvalidAccessError")})),!n._reverseStreams[t.id]){var i=new e.MediaStream(t.getTracks());n._streams[t.id]=i,n._reverseStreams[i.id]=t,t=i}a.apply(n,[t])};var s=e.RTCPeerConnection.prototype.removeStream;e.RTCPeerConnection.prototype.removeStream=function(e){var t=this;t._streams=t._streams||{},t._reverseStreams=t._reverseStreams||{},s.apply(t,[t._streams[e.id]||e]),delete t._reverseStreams[t._streams[e.id]?t._streams[e.id].id:e.id],delete t._streams[e.id]},e.RTCPeerConnection.prototype.addTrack=function(t,n){var i=this;if("closed"===i.signalingState)throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.","InvalidStateError");var r=[].slice.call(arguments,1);if(1!==r.length||!r[0].getTracks().find((function(e){return e===t})))throw new DOMException("The adapter.js addTrack polyfill only supports a single  stream which is associated with the specified track.","NotSupportedError");if(i.getSenders().find((function(e){return e.track===t})))throw new DOMException("Track already exists.","InvalidAccessError");i._streams=i._streams||{},i._reverseStreams=i._reverseStreams||{};var o=i._streams[n.id];if(o)o.addTrack(t),Promise.resolve().then((function(){i.dispatchEvent(new Event("negotiationneeded"))}));else{var a=new e.MediaStream([t]);i._streams[n.id]=a,i._reverseStreams[a.id]=n,i.addStream(a)}return i.getSenders().find((function(e){return e.track===t}))},["createOffer","createAnswer"].forEach((function(n){var i=e.RTCPeerConnection.prototype[n];e.RTCPeerConnection.prototype[n]=function(){var e=this,n=arguments;return arguments.length&&"function"==typeof arguments[0]?i.apply(e,[function(i){var r=t(e,i);n[0].apply(null,[r])},function(e){n[1]&&n[1].apply(null,e)},arguments[2]]):i.apply(e,arguments).then((function(n){return t(e,n)}))}}));var c=e.RTCPeerConnection.prototype.setLocalDescription;e.RTCPeerConnection.prototype.setLocalDescription=function(){var e=this;return arguments.length&&arguments[0].type?(arguments[0]=n(e,arguments[0]),c.apply(e,arguments)):c.apply(e,arguments)};var d=Object.getOwnPropertyDescriptor(e.RTCPeerConnection.prototype,"localDescription");Object.defineProperty(e.RTCPeerConnection.prototype,"localDescription",{get:function(){var e=this,n=d.get.apply(this);return""===n.type?n:t(e,n)}}),e.RTCPeerConnection.prototype.removeTrack=function(e){var t,n=this;if("closed"===n.signalingState)throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.","InvalidStateError");if(!e._pc)throw new DOMException("Argument 1 of RTCPeerConnection.removeTrack does not implement interface RTCRtpSender.","TypeError");if(e._pc!==n)throw new DOMException("Sender was not created by this connection.","InvalidAccessError");n._streams=n._streams||{},Object.keys(n._streams).forEach((function(i){n._streams[i].getTracks().find((function(t){return e.track===t}))&&(t=n._streams[i])})),t&&(1===t.getTracks().length?n.removeStream(n._reverseStreams[t.id]):t.removeTrack(e.track),n.dispatchEvent(new Event("negotiationneeded")))}},shimPeerConnection:function(e){var t=o.detectBrowser(e);if(!e.RTCPeerConnection&&e.webkitRTCPeerConnection)e.RTCPeerConnection=function(t,n){return a("PeerConnection"),t&&t.iceTransportPolicy&&(t.iceTransports=t.iceTransportPolicy),new e.webkitRTCPeerConnection(t,n)},e.RTCPeerConnection.prototype=e.webkitRTCPeerConnection.prototype,e.webkitRTCPeerConnection.generateCertificate&&Object.defineProperty(e.RTCPeerConnection,"generateCertificate",{get:function(){return e.webkitRTCPeerConnection.generateCertificate}});else{var n=e.RTCPeerConnection;e.RTCPeerConnection=function(e,t){if(e&&e.iceServers){for(var i=[],r=0;r<e.iceServers.length;r++){var a=e.iceServers[r];!a.hasOwnProperty("urls")&&a.hasOwnProperty("url")?(o.deprecated("RTCIceServer.url","RTCIceServer.urls"),(a=JSON.parse(JSON.stringify(a))).urls=a.url,i.push(a)):i.push(e.iceServers[r])}e.iceServers=i}return new n(e,t)},e.RTCPeerConnection.prototype=n.prototype,Object.defineProperty(e.RTCPeerConnection,"generateCertificate",{get:function(){return n.generateCertificate}})}var i=e.RTCPeerConnection.prototype.getStats;e.RTCPeerConnection.prototype.getStats=function(e,t,n){var r=this,o=arguments;if(arguments.length>0&&"function"==typeof e)return i.apply(this,arguments);if(0===i.length&&(0===arguments.length||"function"!=typeof arguments[0]))return i.apply(this,[]);var a=function(e){var t={};return e.result().forEach((function(e){var n={id:e.id,timestamp:e.timestamp,type:{localcandidate:"local-candidate",remotecandidate:"remote-candidate"}[e.type]||e.type};e.names().forEach((function(t){n[t]=e.stat(t)})),t[n.id]=n})),t},s=function(e){return new Map(Object.keys(e).map((function(t){return[t,e[t]]})))};if(arguments.length>=2){var c=function(e){o[1](s(a(e)))};return i.apply(this,[c,arguments[0]])}return new Promise((function(e,t){i.apply(r,[function(t){e(s(a(t)))},t])})).then(t,n)},t.version<51&&["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach((function(t){var n=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=function(){var e=arguments,t=this,i=new Promise((function(i,r){n.apply(t,[e[0],i,r])}));return e.length<2?i:i.then((function(){e[1].apply(null,[])}),(function(t){e.length>=3&&e[2].apply(null,[t])}))}})),t.version<52&&["createOffer","createAnswer"].forEach((function(t){var n=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=function(){var e=this;if(arguments.length<1||1===arguments.length&&"object"==typeof arguments[0]){var t=1===arguments.length?arguments[0]:void 0;return new Promise((function(i,r){n.apply(e,[i,r,t])}))}return n.apply(this,arguments)}})),["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach((function(t){var n=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=function(){return arguments[0]=new("addIceCandidate"===t?e.RTCIceCandidate:e.RTCSessionDescription)(arguments[0]),n.apply(this,arguments)}}));var r=e.RTCPeerConnection.prototype.addIceCandidate;e.RTCPeerConnection.prototype.addIceCandidate=function(){return arguments[0]?r.apply(this,arguments):(arguments[1]&&arguments[1].apply(null),Promise.resolve())}},fixNegotiationNeeded:function(e){o.wrapPeerConnectionEvent(e,"negotiationneeded",(function(e){if("stable"===e.target.signalingState)return e}))},shimGetDisplayMedia:function(e,t){"getDisplayMedia"in e.navigator||"function"==typeof t&&(navigator.getDisplayMedia=function(e){return t(e).then((function(t){return e.video={mandatory:{chromeMediaSource:"desktop",chromeMediaSourceId:t,maxFrameRate:e.video.frameRate||3}},navigator.mediaDevices.getUserMedia(e)}))})}}},{"../utils.js":14,"./getusermedia":6}],6:[function(e,t,n){var i=e("../utils.js"),r=i.log;t.exports=function(e){var t=i.detectBrowser(e),n=e&&e.navigator,o=function(e){if("object"!=typeof e||e.mandatory||e.optional)return e;var t={};return Object.keys(e).forEach((function(n){if("require"!==n&&"advanced"!==n&&"mediaSource"!==n){var i="object"==typeof e[n]?e[n]:{ideal:e[n]};void 0!==i.exact&&"number"==typeof i.exact&&(i.min=i.max=i.exact);var r=function(e,t){return e?e+t.charAt(0).toUpperCase()+t.slice(1):"deviceId"===t?"sourceId":t};if(void 0!==i.ideal){t.optional=t.optional||[];var o={};"number"==typeof i.ideal?(o[r("min",n)]=i.ideal,t.optional.push(o),(o={})[r("max",n)]=i.ideal,t.optional.push(o)):(o[r("",n)]=i.ideal,t.optional.push(o))}void 0!==i.exact&&"number"!=typeof i.exact?(t.mandatory=t.mandatory||{},t.mandatory[r("",n)]=i.exact):["min","max"].forEach((function(e){void 0!==i[e]&&(t.mandatory=t.mandatory||{},t.mandatory[r(e,n)]=i[e])}))}})),e.advanced&&(t.optional=(t.optional||[]).concat(e.advanced)),t},a=function(e,i){if(t.version>=61)return i(e);if((e=JSON.parse(JSON.stringify(e)))&&"object"==typeof e.audio){var a=function(e,t,n){t in e&&!(n in e)&&(e[n]=e[t],delete e[t])};a((e=JSON.parse(JSON.stringify(e))).audio,"autoGainControl","googAutoGainControl"),a(e.audio,"noiseSuppression","googNoiseSuppression"),e.audio=o(e.audio)}if(e&&"object"==typeof e.video){var s=e.video.facingMode;s=s&&("object"==typeof s?s:{ideal:s});var c,d=t.version<66;if(s&&("user"===s.exact||"environment"===s.exact||"user"===s.ideal||"environment"===s.ideal)&&(!n.mediaDevices.getSupportedConstraints||!n.mediaDevices.getSupportedConstraints().facingMode||d)&&(delete e.video.facingMode,"environment"===s.exact||"environment"===s.ideal?c=["back","rear"]:"user"!==s.exact&&"user"!==s.ideal||(c=["front"]),c))return n.mediaDevices.enumerateDevices().then((function(t){var n=(t=t.filter((function(e){return"videoinput"===e.kind}))).find((function(e){return c.some((function(t){return-1!==e.label.toLowerCase().indexOf(t)}))}));return!n&&t.length&&-1!==c.indexOf("back")&&(n=t[t.length-1]),n&&(e.video.deviceId=s.exact?{exact:n.deviceId}:{ideal:n.deviceId}),e.video=o(e.video),r("chrome: "+JSON.stringify(e)),i(e)}));e.video=o(e.video)}return r("chrome: "+JSON.stringify(e)),i(e)},s=function(e){return t.version>=64?e:{name:{PermissionDeniedError:"NotAllowedError",PermissionDismissedError:"NotAllowedError",InvalidStateError:"NotAllowedError",DevicesNotFoundError:"NotFoundError",ConstraintNotSatisfiedError:"OverconstrainedError",TrackStartError:"NotReadableError",MediaDeviceFailedDueToShutdown:"NotAllowedError",MediaDeviceKillSwitchOn:"NotAllowedError",TabCaptureError:"AbortError",ScreenCaptureError:"AbortError",DeviceCaptureError:"AbortError"}[e.name]||e.name,message:e.message,constraint:e.constraint||e.constraintName,toString:function(){return this.name+(this.message&&": ")+this.message}}},c=function(e,t,i){a(e,(function(e){n.webkitGetUserMedia(e,t,(function(e){i&&i(s(e))}))}))};n.getUserMedia=c;var d=function(e){return new Promise((function(t,i){n.getUserMedia(e,t,i)}))};if(n.mediaDevices||(n.mediaDevices={getUserMedia:d,enumerateDevices:function(){return new Promise((function(t){var n={audio:"audioinput",video:"videoinput"};return e.MediaStreamTrack.getSources((function(e){t(e.map((function(e){return{label:e.label,kind:n[e.kind],deviceId:e.id,groupId:""}})))}))}))},getSupportedConstraints:function(){return{deviceId:!0,echoCancellation:!0,facingMode:!0,frameRate:!0,height:!0,width:!0}}}),n.mediaDevices.getUserMedia){var u=n.mediaDevices.getUserMedia.bind(n.mediaDevices);n.mediaDevices.getUserMedia=function(e){return a(e,(function(e){return u(e).then((function(t){if(e.audio&&!t.getAudioTracks().length||e.video&&!t.getVideoTracks().length)throw t.getTracks().forEach((function(e){e.stop()})),new DOMException("","NotFoundError");return t}),(function(e){return Promise.reject(s(e))}))}))}}else n.mediaDevices.getUserMedia=function(e){return d(e)};void 0===n.mediaDevices.addEventListener&&(n.mediaDevices.addEventListener=function(){r("Dummy mediaDevices.addEventListener called.")}),void 0===n.mediaDevices.removeEventListener&&(n.mediaDevices.removeEventListener=function(){r("Dummy mediaDevices.removeEventListener called.")})}},{"../utils.js":14}],7:[function(e,t,n){var i=e("sdp"),r=e("./utils");t.exports={shimRTCIceCandidate:function(e){if(e.RTCIceCandidate&&(!e.RTCIceCandidate||!("foundation"in e.RTCIceCandidate.prototype))){var t=e.RTCIceCandidate;e.RTCIceCandidate=function(e){if("object"==typeof e&&e.candidate&&0===e.candidate.indexOf("a=")&&((e=JSON.parse(JSON.stringify(e))).candidate=e.candidate.substr(2)),e.candidate&&e.candidate.length){var n=new t(e),r=i.parseCandidate(e.candidate),o=Object.assign(n,r);return o.toJSON=function(){return{candidate:o.candidate,sdpMid:o.sdpMid,sdpMLineIndex:o.sdpMLineIndex,usernameFragment:o.usernameFragment}},o}return new t(e)},e.RTCIceCandidate.prototype=t.prototype,r.wrapPeerConnectionEvent(e,"icecandidate",(function(t){return t.candidate&&Object.defineProperty(t,"candidate",{value:new e.RTCIceCandidate(t.candidate),writable:"false"}),t}))}},shimCreateObjectURL:function(e){var t=e&&e.URL;if("object"==typeof e&&e.HTMLMediaElement&&"srcObject"in e.HTMLMediaElement.prototype&&t.createObjectURL&&t.revokeObjectURL){var n=t.createObjectURL.bind(t),i=t.revokeObjectURL.bind(t),o=new Map,a=0;t.createObjectURL=function(e){if("getTracks"in e){var t="polyblob:"+ ++a;return o.set(t,e),r.deprecated("URL.createObjectURL(stream)","elem.srcObject = stream"),t}return n(e)},t.revokeObjectURL=function(e){i(e),o.delete(e)};var s=Object.getOwnPropertyDescriptor(e.HTMLMediaElement.prototype,"src");Object.defineProperty(e.HTMLMediaElement.prototype,"src",{get:function(){return s.get.apply(this)},set:function(e){return this.srcObject=o.get(e)||null,s.set.apply(this,[e])}});var c=e.HTMLMediaElement.prototype.setAttribute;e.HTMLMediaElement.prototype.setAttribute=function(){return 2===arguments.length&&"src"===(""+arguments[0]).toLowerCase()&&(this.srcObject=o.get(arguments[1])||null),c.apply(this,arguments)}}},shimMaxMessageSize:function(e){if(!e.RTCSctpTransport&&e.RTCPeerConnection){var t=r.detectBrowser(e);"sctp"in e.RTCPeerConnection.prototype||Object.defineProperty(e.RTCPeerConnection.prototype,"sctp",{get:function(){return void 0===this._sctp?null:this._sctp}});var n=function(e){var t=i.splitSections(e.sdp);return t.shift(),t.some((function(e){var t=i.parseMLine(e);return t&&"application"===t.kind&&-1!==t.protocol.indexOf("SCTP")}))},o=function(e){var t=e.sdp.match(/mozilla...THIS_IS_SDPARTA-(\d+)/);if(null===t||t.length<2)return-1;var n=parseInt(t[1],10);return n!=n?-1:n},a=function(e){var n=65536;return"firefox"===t.browser&&(n=t.version<57?-1===e?16384:2147483637:t.version<60?57===t.version?65535:65536:2147483637),n},s=function(e,n){var r=65536;"firefox"===t.browser&&57===t.version&&(r=65535);var o=i.matchPrefix(e.sdp,"a=max-message-size:");return o.length>0?r=parseInt(o[0].substr(19),10):"firefox"===t.browser&&-1!==n&&(r=2147483637),r},c=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){var e=this;if(e._sctp=null,n(arguments[0])){var t,i=o(arguments[0]),r=a(i),d=s(arguments[0],i);t=0===r&&0===d?Number.POSITIVE_INFINITY:0===r||0===d?Math.max(r,d):Math.min(r,d);var u={};Object.defineProperty(u,"maxMessageSize",{get:function(){return t}}),e._sctp=u}return c.apply(e,arguments)}}},shimSendThrowTypeError:function(e){function t(e,t){var n=e.send;e.send=function(){var i=arguments[0],r=i.length||i.size||i.byteLength;if("open"===e.readyState&&t.sctp&&r>t.sctp.maxMessageSize)throw new TypeError("Message too large (can send a maximum of "+t.sctp.maxMessageSize+" bytes)");return n.apply(e,arguments)}}if(e.RTCPeerConnection&&"createDataChannel"in e.RTCPeerConnection.prototype){var n=e.RTCPeerConnection.prototype.createDataChannel;e.RTCPeerConnection.prototype.createDataChannel=function(){var e=this,i=n.apply(e,arguments);return t(i,e),i},r.wrapPeerConnectionEvent(e,"datachannel",(function(e){return t(e.channel,e.target),e}))}}}},{"./utils":14,sdp:2}],8:[function(e,t,n){var i=e("../utils"),r=e("./filtericeservers"),o=e("rtcpeerconnection-shim");t.exports={shimGetUserMedia:e("./getusermedia"),shimPeerConnection:function(e){var t=i.detectBrowser(e);if(e.RTCIceGatherer&&(e.RTCIceCandidate||(e.RTCIceCandidate=function(e){return e}),e.RTCSessionDescription||(e.RTCSessionDescription=function(e){return e}),t.version<15025)){var n=Object.getOwnPropertyDescriptor(e.MediaStreamTrack.prototype,"enabled");Object.defineProperty(e.MediaStreamTrack.prototype,"enabled",{set:function(e){n.set.call(this,e);var t=new Event("enabled");t.enabled=e,this.dispatchEvent(t)}})}!e.RTCRtpSender||"dtmf"in e.RTCRtpSender.prototype||Object.defineProperty(e.RTCRtpSender.prototype,"dtmf",{get:function(){return void 0===this._dtmf&&("audio"===this.track.kind?this._dtmf=new e.RTCDtmfSender(this):"video"===this.track.kind&&(this._dtmf=null)),this._dtmf}}),e.RTCDtmfSender&&!e.RTCDTMFSender&&(e.RTCDTMFSender=e.RTCDtmfSender);var a=o(e,t.version);e.RTCPeerConnection=function(e){return e&&e.iceServers&&(e.iceServers=r(e.iceServers)),new a(e)},e.RTCPeerConnection.prototype=a.prototype},shimReplaceTrack:function(e){!e.RTCRtpSender||"replaceTrack"in e.RTCRtpSender.prototype||(e.RTCRtpSender.prototype.replaceTrack=e.RTCRtpSender.prototype.setTrack)}}},{"../utils":14,"./filtericeservers":9,"./getusermedia":10,"rtcpeerconnection-shim":1}],9:[function(e,t,n){var i=e("../utils");t.exports=function(e,t){var n=!1;return(e=JSON.parse(JSON.stringify(e))).filter((function(e){if(e&&(e.urls||e.url)){var r=e.urls||e.url;e.url&&!e.urls&&i.deprecated("RTCIceServer.url","RTCIceServer.urls");var o="string"==typeof r;return o&&(r=[r]),r=r.filter((function(e){return 0!==e.indexOf("turn:")||-1===e.indexOf("transport=udp")||-1!==e.indexOf("turn:[")||n?0===e.indexOf("stun:")&&t>=14393&&-1===e.indexOf("?transport=udp"):(n=!0,!0)})),delete e.url,e.urls=o?r[0]:r,!!r.length}}))}},{"../utils":14}],10:[function(e,t,n){t.exports=function(e){var t=e&&e.navigator,n=function(e){return{name:{PermissionDeniedError:"NotAllowedError"}[e.name]||e.name,message:e.message,constraint:e.constraint,toString:function(){return this.name}}},i=t.mediaDevices.getUserMedia.bind(t.mediaDevices);t.mediaDevices.getUserMedia=function(e){return i(e).catch((function(e){return Promise.reject(n(e))}))}}},{}],11:[function(e,t,n){var i=e("../utils");t.exports={shimGetUserMedia:e("./getusermedia"),shimOnTrack:function(e){"object"!=typeof e||!e.RTCPeerConnection||"ontrack"in e.RTCPeerConnection.prototype||Object.defineProperty(e.RTCPeerConnection.prototype,"ontrack",{get:function(){return this._ontrack},set:function(e){this._ontrack&&(this.removeEventListener("track",this._ontrack),this.removeEventListener("addstream",this._ontrackpoly)),this.addEventListener("track",this._ontrack=e),this.addEventListener("addstream",this._ontrackpoly=function(e){e.stream.getTracks().forEach(function(t){var n=new Event("track");n.track=t,n.receiver={track:t},n.transceiver={receiver:n.receiver},n.streams=[e.stream],this.dispatchEvent(n)}.bind(this))}.bind(this))},enumerable:!0,configurable:!0}),"object"==typeof e&&e.RTCTrackEvent&&"receiver"in e.RTCTrackEvent.prototype&&!("transceiver"in e.RTCTrackEvent.prototype)&&Object.defineProperty(e.RTCTrackEvent.prototype,"transceiver",{get:function(){return{receiver:this.receiver}}})},shimSourceObject:function(e){"object"==typeof e&&(!e.HTMLMediaElement||"srcObject"in e.HTMLMediaElement.prototype||Object.defineProperty(e.HTMLMediaElement.prototype,"srcObject",{get:function(){return this.mozSrcObject},set:function(e){this.mozSrcObject=e}}))},shimPeerConnection:function(e){var t=i.detectBrowser(e);if("object"==typeof e&&(e.RTCPeerConnection||e.mozRTCPeerConnection)){e.RTCPeerConnection||(e.RTCPeerConnection=function(n,i){if(t.version<38&&n&&n.iceServers){for(var r=[],o=0;o<n.iceServers.length;o++){var a=n.iceServers[o];if(a.hasOwnProperty("urls"))for(var s=0;s<a.urls.length;s++){var c={url:a.urls[s]};0===a.urls[s].indexOf("turn")&&(c.username=a.username,c.credential=a.credential),r.push(c)}else r.push(n.iceServers[o])}n.iceServers=r}return new e.mozRTCPeerConnection(n,i)},e.RTCPeerConnection.prototype=e.mozRTCPeerConnection.prototype,e.mozRTCPeerConnection.generateCertificate&&Object.defineProperty(e.RTCPeerConnection,"generateCertificate",{get:function(){return e.mozRTCPeerConnection.generateCertificate}}),e.RTCSessionDescription=e.mozRTCSessionDescription,e.RTCIceCandidate=e.mozRTCIceCandidate),["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach((function(t){var n=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=function(){return arguments[0]=new("addIceCandidate"===t?e.RTCIceCandidate:e.RTCSessionDescription)(arguments[0]),n.apply(this,arguments)}}));var n=e.RTCPeerConnection.prototype.addIceCandidate;e.RTCPeerConnection.prototype.addIceCandidate=function(){return arguments[0]?n.apply(this,arguments):(arguments[1]&&arguments[1].apply(null),Promise.resolve())};var r=function(e){var t=new Map;return Object.keys(e).forEach((function(n){t.set(n,e[n]),t[n]=e[n]})),t},o={inboundrtp:"inbound-rtp",outboundrtp:"outbound-rtp",candidatepair:"candidate-pair",localcandidate:"local-candidate",remotecandidate:"remote-candidate"},a=e.RTCPeerConnection.prototype.getStats;e.RTCPeerConnection.prototype.getStats=function(e,n,i){return a.apply(this,[e||null]).then((function(e){if(t.version<48&&(e=r(e)),t.version<53&&!n)try{e.forEach((function(e){e.type=o[e.type]||e.type}))}catch(t){if("TypeError"!==t.name)throw t;e.forEach((function(t,n){e.set(n,Object.assign({},t,{type:o[t.type]||t.type}))}))}return e})).then(n,i)}}},shimSenderGetStats:function(e){if("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender&&(!e.RTCRtpSender||!("getStats"in e.RTCRtpSender.prototype))){var t=e.RTCPeerConnection.prototype.getSenders;t&&(e.RTCPeerConnection.prototype.getSenders=function(){var e=this,n=t.apply(e,[]);return n.forEach((function(t){t._pc=e})),n});var n=e.RTCPeerConnection.prototype.addTrack;n&&(e.RTCPeerConnection.prototype.addTrack=function(){var e=n.apply(this,arguments);return e._pc=this,e}),e.RTCRtpSender.prototype.getStats=function(){return this.track?this._pc.getStats(this.track):Promise.resolve(new Map)}}},shimReceiverGetStats:function(e){if("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender&&(!e.RTCRtpSender||!("getStats"in e.RTCRtpReceiver.prototype))){var t=e.RTCPeerConnection.prototype.getReceivers;t&&(e.RTCPeerConnection.prototype.getReceivers=function(){var e=this,n=t.apply(e,[]);return n.forEach((function(t){t._pc=e})),n}),i.wrapPeerConnectionEvent(e,"track",(function(e){return e.receiver._pc=e.srcElement,e})),e.RTCRtpReceiver.prototype.getStats=function(){return this._pc.getStats(this.track)}}},shimRemoveStream:function(e){!e.RTCPeerConnection||"removeStream"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.removeStream=function(e){var t=this;i.deprecated("removeStream","removeTrack"),this.getSenders().forEach((function(n){n.track&&-1!==e.getTracks().indexOf(n.track)&&t.removeTrack(n)}))})},shimRTCDataChannel:function(e){e.DataChannel&&!e.RTCDataChannel&&(e.RTCDataChannel=e.DataChannel)},shimGetDisplayMedia:function(e,t){"getDisplayMedia"in e.navigator||(navigator.getDisplayMedia=function(e){if(!e||!e.video){var n=new DOMException("getDisplayMedia without video constraints is undefined");return n.name="NotFoundError",n.code=8,Promise.reject(n)}return!0===e.video?e.video={mediaSource:t}:e.video.mediaSource=t,navigator.mediaDevices.getUserMedia(e)})}}},{"../utils":14,"./getusermedia":12}],12:[function(e,t,n){var i=e("../utils"),r=i.log;t.exports=function(e){var t=i.detectBrowser(e),n=e&&e.navigator,o=e&&e.MediaStreamTrack,a=function(e){return{name:{InternalError:"NotReadableError",NotSupportedError:"TypeError",PermissionDeniedError:"NotAllowedError",SecurityError:"NotAllowedError"}[e.name]||e.name,message:{"The operation is insecure.":"The request is not allowed by the user agent or the platform in the current context."}[e.message]||e.message,constraint:e.constraint,toString:function(){return this.name+(this.message&&": ")+this.message}}},s=function(e,i,o){var s=function(e){if("object"!=typeof e||e.require)return e;var t=[];return Object.keys(e).forEach((function(n){if("require"!==n&&"advanced"!==n&&"mediaSource"!==n){var i=e[n]="object"==typeof e[n]?e[n]:{ideal:e[n]};if(void 0===i.min&&void 0===i.max&&void 0===i.exact||t.push(n),void 0!==i.exact&&("number"==typeof i.exact?i.min=i.max=i.exact:e[n]=i.exact,delete i.exact),void 0!==i.ideal){e.advanced=e.advanced||[];var r={};"number"==typeof i.ideal?r[n]={min:i.ideal,max:i.ideal}:r[n]=i.ideal,e.advanced.push(r),delete i.ideal,Object.keys(i).length||delete e[n]}}})),t.length&&(e.require=t),e};return e=JSON.parse(JSON.stringify(e)),t.version<38&&(r("spec: "+JSON.stringify(e)),e.audio&&(e.audio=s(e.audio)),e.video&&(e.video=s(e.video)),r("ff37: "+JSON.stringify(e))),n.mozGetUserMedia(e,i,(function(e){o(a(e))}))},c=function(e){return new Promise((function(t,n){s(e,t,n)}))};if(n.mediaDevices||(n.mediaDevices={getUserMedia:c,addEventListener:function(){},removeEventListener:function(){}}),n.mediaDevices.enumerateDevices=n.mediaDevices.enumerateDevices||function(){return new Promise((function(e){e([{kind:"audioinput",deviceId:"default",label:"",groupId:""},{kind:"videoinput",deviceId:"default",label:"",groupId:""}])}))},t.version<41){var d=n.mediaDevices.enumerateDevices.bind(n.mediaDevices);n.mediaDevices.enumerateDevices=function(){return d().then(void 0,(function(e){if("NotFoundError"===e.name)return[];throw e}))}}if(t.version<49){var u=n.mediaDevices.getUserMedia.bind(n.mediaDevices);n.mediaDevices.getUserMedia=function(e){return u(e).then((function(t){if(e.audio&&!t.getAudioTracks().length||e.video&&!t.getVideoTracks().length)throw t.getTracks().forEach((function(e){e.stop()})),new DOMException("The object can not be found here.","NotFoundError");return t}),(function(e){return Promise.reject(a(e))}))}}if(!(t.version>55&&"autoGainControl"in n.mediaDevices.getSupportedConstraints())){var l=function(e,t,n){t in e&&!(n in e)&&(e[n]=e[t],delete e[t])},p=n.mediaDevices.getUserMedia.bind(n.mediaDevices);if(n.mediaDevices.getUserMedia=function(e){return"object"==typeof e&&"object"==typeof e.audio&&(e=JSON.parse(JSON.stringify(e)),l(e.audio,"autoGainControl","mozAutoGainControl"),l(e.audio,"noiseSuppression","mozNoiseSuppression")),p(e)},o&&o.prototype.getSettings){var m=o.prototype.getSettings;o.prototype.getSettings=function(){var e=m.apply(this,arguments);return l(e,"mozAutoGainControl","autoGainControl"),l(e,"mozNoiseSuppression","noiseSuppression"),e}}if(o&&o.prototype.applyConstraints){var f=o.prototype.applyConstraints;o.prototype.applyConstraints=function(e){return"audio"===this.kind&&"object"==typeof e&&(e=JSON.parse(JSON.stringify(e)),l(e,"autoGainControl","mozAutoGainControl"),l(e,"noiseSuppression","mozNoiseSuppression")),f.apply(this,[e])}}}n.getUserMedia=function(e,r,o){if(t.version<44)return s(e,r,o);i.deprecated("navigator.getUserMedia","navigator.mediaDevices.getUserMedia"),n.mediaDevices.getUserMedia(e).then(r,o)}}},{"../utils":14}],13:[function(e,t,n){var i=e("../utils");t.exports={shimLocalStreamsAPI:function(e){if("object"==typeof e&&e.RTCPeerConnection){if("getLocalStreams"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.getLocalStreams=function(){return this._localStreams||(this._localStreams=[]),this._localStreams}),"getStreamById"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.getStreamById=function(e){var t=null;return this._localStreams&&this._localStreams.forEach((function(n){n.id===e&&(t=n)})),this._remoteStreams&&this._remoteStreams.forEach((function(n){n.id===e&&(t=n)})),t}),!("addStream"in e.RTCPeerConnection.prototype)){var t=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addStream=function(e){this._localStreams||(this._localStreams=[]),-1===this._localStreams.indexOf(e)&&this._localStreams.push(e);var n=this;e.getTracks().forEach((function(i){t.call(n,i,e)}))},e.RTCPeerConnection.prototype.addTrack=function(e,n){return n&&(this._localStreams?-1===this._localStreams.indexOf(n)&&this._localStreams.push(n):this._localStreams=[n]),t.call(this,e,n)}}"removeStream"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.removeStream=function(e){this._localStreams||(this._localStreams=[]);var t=this._localStreams.indexOf(e);if(-1!==t){this._localStreams.splice(t,1);var n=this,i=e.getTracks();this.getSenders().forEach((function(e){-1!==i.indexOf(e.track)&&n.removeTrack(e)}))}})}},shimRemoteStreamsAPI:function(e){if("object"==typeof e&&e.RTCPeerConnection&&("getRemoteStreams"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.getRemoteStreams=function(){return this._remoteStreams?this._remoteStreams:[]}),!("onaddstream"in e.RTCPeerConnection.prototype))){Object.defineProperty(e.RTCPeerConnection.prototype,"onaddstream",{get:function(){return this._onaddstream},set:function(e){this._onaddstream&&this.removeEventListener("addstream",this._onaddstream),this.addEventListener("addstream",this._onaddstream=e)}});var t=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){var e=this;return this._onaddstreampoly||this.addEventListener("track",this._onaddstreampoly=function(t){t.streams.forEach((function(t){if(e._remoteStreams||(e._remoteStreams=[]),!(e._remoteStreams.indexOf(t)>=0)){e._remoteStreams.push(t);var n=new Event("addstream");n.stream=t,e.dispatchEvent(n)}}))}),t.apply(e,arguments)}}},shimCallbacksAPI:function(e){if("object"==typeof e&&e.RTCPeerConnection){var t=e.RTCPeerConnection.prototype,n=t.createOffer,i=t.createAnswer,r=t.setLocalDescription,o=t.setRemoteDescription,a=t.addIceCandidate;t.createOffer=function(e,t){var i=arguments.length>=2?arguments[2]:arguments[0],r=n.apply(this,[i]);return t?(r.then(e,t),Promise.resolve()):r},t.createAnswer=function(e,t){var n=arguments.length>=2?arguments[2]:arguments[0],r=i.apply(this,[n]);return t?(r.then(e,t),Promise.resolve()):r};var s=function(e,t,n){var i=r.apply(this,[e]);return n?(i.then(t,n),Promise.resolve()):i};t.setLocalDescription=s,s=function(e,t,n){var i=o.apply(this,[e]);return n?(i.then(t,n),Promise.resolve()):i},t.setRemoteDescription=s,s=function(e,t,n){var i=a.apply(this,[e]);return n?(i.then(t,n),Promise.resolve()):i},t.addIceCandidate=s}},shimGetUserMedia:function(e){var t=e&&e.navigator;t.getUserMedia||(t.webkitGetUserMedia?t.getUserMedia=t.webkitGetUserMedia.bind(t):t.mediaDevices&&t.mediaDevices.getUserMedia&&(t.getUserMedia=function(e,n,i){t.mediaDevices.getUserMedia(e).then(n,i)}.bind(t)))},shimRTCIceServerUrls:function(e){var t=e.RTCPeerConnection;e.RTCPeerConnection=function(e,n){if(e&&e.iceServers){for(var r=[],o=0;o<e.iceServers.length;o++){var a=e.iceServers[o];!a.hasOwnProperty("urls")&&a.hasOwnProperty("url")?(i.deprecated("RTCIceServer.url","RTCIceServer.urls"),(a=JSON.parse(JSON.stringify(a))).urls=a.url,delete a.url,r.push(a)):r.push(e.iceServers[o])}e.iceServers=r}return new t(e,n)},e.RTCPeerConnection.prototype=t.prototype,"generateCertificate"in e.RTCPeerConnection&&Object.defineProperty(e.RTCPeerConnection,"generateCertificate",{get:function(){return t.generateCertificate}})},shimTrackEventTransceiver:function(e){"object"==typeof e&&e.RTCPeerConnection&&"receiver"in e.RTCTrackEvent.prototype&&!e.RTCTransceiver&&Object.defineProperty(e.RTCTrackEvent.prototype,"transceiver",{get:function(){return{receiver:this.receiver}}})},shimCreateOfferLegacy:function(e){var t=e.RTCPeerConnection.prototype.createOffer;e.RTCPeerConnection.prototype.createOffer=function(e){var n=this;if(e){void 0!==e.offerToReceiveAudio&&(e.offerToReceiveAudio=!!e.offerToReceiveAudio);var i=n.getTransceivers().find((function(e){return e.sender.track&&"audio"===e.sender.track.kind}));!1===e.offerToReceiveAudio&&i?"sendrecv"===i.direction?i.setDirection?i.setDirection("sendonly"):i.direction="sendonly":"recvonly"===i.direction&&(i.setDirection?i.setDirection("inactive"):i.direction="inactive"):!0!==e.offerToReceiveAudio||i||n.addTransceiver("audio"),void 0!==e.offerToReceiveVideo&&(e.offerToReceiveVideo=!!e.offerToReceiveVideo);var r=n.getTransceivers().find((function(e){return e.sender.track&&"video"===e.sender.track.kind}));!1===e.offerToReceiveVideo&&r?"sendrecv"===r.direction?r.setDirection("sendonly"):"recvonly"===r.direction&&r.setDirection("inactive"):!0!==e.offerToReceiveVideo||r||n.addTransceiver("video")}return t.apply(n,arguments)}}}},{"../utils":14}],14:[function(e,t,n){function i(e,t,n){var i=e.match(t);return i&&i.length>=n&&parseInt(i[n],10)}function r(e,t,n){if(e.RTCPeerConnection){var i=e.RTCPeerConnection.prototype,r=i.addEventListener;i.addEventListener=function(e,i){if(e!==t)return r.apply(this,arguments);var o=function(e){var t=n(e);t&&i(t)};return this._eventMap=this._eventMap||{},this._eventMap[i]=o,r.apply(this,[e,o])};var o=i.removeEventListener;i.removeEventListener=function(e,n){if(e!==t||!this._eventMap||!this._eventMap[n])return o.apply(this,arguments);var i=this._eventMap[n];return delete this._eventMap[n],o.apply(this,[e,i])},Object.defineProperty(i,"on"+t,{get:function(){return this["_on"+t]},set:function(e){this["_on"+t]&&(this.removeEventListener(t,this["_on"+t]),delete this["_on"+t]),e&&this.addEventListener(t,this["_on"+t]=e)},enumerable:!0,configurable:!0})}}var o=!0;t.exports={extractVersion:i,wrapPeerConnectionEvent:r,disableLog:function(e){return"boolean"!=typeof e?new Error("Argument type: "+typeof e+". Please use a boolean."):(o=e,e?"adapter.js logging disabled":"adapter.js logging enabled")},disableWarnings:function(e){return"boolean"!=typeof e?new Error("Argument type: "+typeof e+". Please use a boolean."):"adapter.js deprecation warnings "+(e?"disabled":"enabled")},log:function(){if("object"==typeof window){if(o)return;"undefined"!=typeof console&&console.log}},deprecated:function(e,t){},detectBrowser:function(e){var t=e&&e.navigator,n={browser:null,version:null};if(void 0===e||!e.navigator)return n.browser="Not a browser.",n;if(t.mozGetUserMedia)n.browser="firefox",n.version=i(t.userAgent,/Firefox\/(\d+)\./,1);else if(t.webkitGetUserMedia)n.browser="chrome",n.version=i(t.userAgent,/Chrom(e|ium)\/(\d+)\./,2);else if(t.mediaDevices&&t.userAgent.match(/Edge\/(\d+).(\d+)$/))n.browser="edge",n.version=i(t.userAgent,/Edge\/(\d+).(\d+)$/,2);else{if(!e.RTCPeerConnection||!t.userAgent.match(/AppleWebKit\/(\d+)\./))return n.browser="Not a supported browser.",n;n.browser="safari",n.version=i(t.userAgent,/AppleWebKit\/(\d+)\./,1)}return n}}},{}]},{},[3])(3),navigator.mozGetUserMedia?(MediaStreamTrack.getSources=function(e){setTimeout((function(){e([{kind:"audio",id:"default",label:"",facing:""},{kind:"video",id:"default",label:"",facing:""}])}),0)},attachMediaStream=function(e,t){return e.srcObject=t,e},reattachMediaStream=function(e,t){return e.srcObject=t.srcObject,e}):navigator.webkitGetUserMedia?(attachMediaStream=function(e,t){return i.webrtcDetectedVersion>=43?e.srcObject=t:void 0!==e.src&&(e.src=URL.createObjectURL(t)),e},reattachMediaStream=function(e,t){return i.webrtcDetectedVersion>=43?e.srcObject=t.srcObject:e.src=t.src,e}):"AppleWebKit"===i.webrtcDetectedType?(attachMediaStream=function(e,t){return e.srcObject=t,e},reattachMediaStream=function(e,t){return e.srcObject=t.srcObject,e},navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&(navigator.getUserMedia=getUserMedia=function(e,t,n){navigator.mediaDevices.getUserMedia(e).then(t).catch(n)})):navigator.mediaDevices&&navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)&&(attachMediaStream=function(e,t){return e.srcObject=t,e},reattachMediaStream=function(e,t){return e.srcObject=t.srcObject,e});var r=attachMediaStream;"opera"===i.webrtcDetectedBrowser&&(r=function(e,t){i.webrtcDetectedVersion>38?e.srcObject=t:void 0!==e.src&&(e.src=URL.createObjectURL(t))}),attachMediaStream=function(e,t){return"chrome"!==i.webrtcDetectedBrowser&&"opera"!==i.webrtcDetectedBrowser||t?r(e,t):e.src="",e};var o=reattachMediaStream;reattachMediaStream=function(e,t){return o(e,t),e},window.attachMediaStream=attachMediaStream,window.reattachMediaStream=reattachMediaStream,window.getUserMedia=function(e,t,n){navigator.getUserMedia(e,t,n)},i.attachMediaStream=attachMediaStream,i.reattachMediaStream=reattachMediaStream,i.getUserMedia=getUserMedia,"undefined"==typeof Promise&&(requestUserMedia=null),i.maybeThroughWebRTCReady()}else"object"==typeof console&&"function"==typeof console.log||(console={}||console,console.log=function(e){},console.info=function(e){},console.error=function(e){},console.dir=function(e){},console.exception=function(e){},console.trace=function(e){},console.warn=function(e){},console.count=function(e){},console.debug=function(e){},console.count=function(e){},console.time=function(e){},console.timeEnd=function(e){},console.group=function(e){},console.groupCollapsed=function(e){},console.groupEnd=function(e){}),i.WebRTCPlugin.WaitForPluginReady=function(){for(;i.WebRTCPlugin.pluginState!==i.WebRTCPlugin.PLUGIN_STATES.READY;);},i.WebRTCPlugin.callWhenPluginReady=function(e){if(i.WebRTCPlugin.pluginState===i.WebRTCPlugin.PLUGIN_STATES.READY)e();else var t=setInterval((function(){i.WebRTCPlugin.pluginState===i.WebRTCPlugin.PLUGIN_STATES.READY&&(clearInterval(t),e())}),100)},i.WebRTCPlugin.setLogLevel=function(e){i.WebRTCPlugin.callWhenPluginReady((function(){i.WebRTCPlugin.plugin.setLogLevel(e)}))},i.WebRTCPlugin.injectPlugin=function(){if(i.documentReady()&&i.WebRTCPlugin.pluginState===i.WebRTCPlugin.PLUGIN_STATES.INITIALIZING){i.WebRTCPlugin.pluginState=i.WebRTCPlugin.PLUGIN_STATES.INJECTING;var e=document.getElementById(i.WebRTCPlugin.pluginInfo.pluginId);if(e)if(i.WebRTCPlugin.plugin=e,i.WebRTCPlugin.pluginState=i.WebRTCPlugin.PLUGIN_STATES.INJECTED,i.WebRTCPlugin.plugin.valid)window[i.WebRTCPlugin.pluginInfo.onload]();else var t=setInterval((function(){i.WebRTCPlugin.plugin.valid&&(clearInterval(t),window[i.WebRTCPlugin.pluginInfo.onload]())}),100);else{if("IE"===i.webrtcDetectedBrowser&&i.webrtcDetectedVersion<=10){var n=document.createDocumentFragment();for(i.WebRTCPlugin.plugin=document.createElement("div"),i.WebRTCPlugin.plugin.innerHTML='<object id="'+i.WebRTCPlugin.pluginInfo.pluginId+'" type="'+i.WebRTCPlugin.pluginInfo.type+'" width="1" height="1"><param name="pluginId" value="'+i.WebRTCPlugin.pluginInfo.pluginId+'" /> <param name="windowless" value="false" /> <param name="pageId" value="'+i.WebRTCPlugin.pageId+'" /> <param name="onload" value="'+i.WebRTCPlugin.pluginInfo.onload+'" /><param name="tag" value="'+i.WebRTCPlugin.TAGS.NONE+'" />'+(i.options.getAllCams?'<param name="forceGetAllCams" value="True" />':"")+"</object>";i.WebRTCPlugin.plugin.firstChild;)n.appendChild(i.WebRTCPlugin.plugin.firstChild);document.body.appendChild(n),i.WebRTCPlugin.plugin=document.getElementById(i.WebRTCPlugin.pluginInfo.pluginId)}else i.WebRTCPlugin.plugin=document.createElement("object"),i.WebRTCPlugin.plugin.id=i.WebRTCPlugin.pluginInfo.pluginId,"IE"===i.webrtcDetectedBrowser?(i.WebRTCPlugin.plugin.width="1px",i.WebRTCPlugin.plugin.height="1px"):(i.WebRTCPlugin.plugin.width="0px",i.WebRTCPlugin.plugin.height="0px"),i.WebRTCPlugin.plugin.type=i.WebRTCPlugin.pluginInfo.type,i.WebRTCPlugin.plugin.innerHTML='<param name="onload" value="'+i.WebRTCPlugin.pluginInfo.onload+'"><param name="pluginId" value="'+i.WebRTCPlugin.pluginInfo.pluginId+'"><param name="windowless" value="false" /> '+(i.options.getAllCams?'<param name="forceGetAllCams" value="True" />':"")+'<param name="pageId" value="'+i.WebRTCPlugin.pageId+'"><param name="tag" value="'+i.WebRTCPlugin.TAGS.NONE+'" />',document.body.appendChild(i.WebRTCPlugin.plugin);i.WebRTCPlugin.pluginState=i.WebRTCPlugin.PLUGIN_STATES.INJECTED}}},i.WebRTCPlugin.isPluginInstalled=function(e,t,n,r,o){if("IE"!==i.webrtcDetectedBrowser){var a=navigator.mimeTypes;if(void 0!==a){for(var s=0;s<a.length;s++)if(a[s].type.indexOf(n)>=0)return void r();o()}else i.renderNotificationBar(i.TEXT.PLUGIN.NOT_SUPPORTED)}else{try{new ActiveXObject(e+"."+t)}catch(e){return void o()}r()}},i.WebRTCPlugin.defineWebRTCInterface=function(){if(i.WebRTCPlugin.pluginState!==i.WebRTCPlugin.PLUGIN_STATES.READY){i.WebRTCPlugin.pluginState=i.WebRTCPlugin.PLUGIN_STATES.INITIALIZING,i.isDefined=function(e){return null!=e},RTCSessionDescription=function(e){return i.WebRTCPlugin.WaitForPluginReady(),i.WebRTCPlugin.plugin.ConstructSessionDescription(e.type,e.sdp)},MediaStream=function(e){return i.WebRTCPlugin.WaitForPluginReady(),i.WebRTCPlugin.plugin.MediaStream(e)},RTCPeerConnection=function(e,t){if(null!=e&&!Array.isArray(e.iceServers))throw new Error("Failed to construct 'RTCPeerConnection': Malformed RTCConfiguration");if(null!=t){var n=!1;if(n|="object"!=typeof t,n|=t.hasOwnProperty("mandatory")&&void 0!==t.mandatory&&null!==t.mandatory&&t.mandatory.constructor!==Object,n|=t.hasOwnProperty("optional")&&void 0!==t.optional&&null!==t.optional&&!Array.isArray(t.optional))throw new Error("Failed to construct 'RTCPeerConnection': Malformed constraints object")}i.WebRTCPlugin.WaitForPluginReady();var r=null;if(e&&Array.isArray(e.iceServers)){r=e.iceServers;for(var o=0;o<r.length;o++)r[o].urls&&!r[o].url&&(r[o].url=r[o].urls),r[o].hasCredentials=i.isDefined(r[o].username)&&i.isDefined(r[o].credential)}if(i.WebRTCPlugin.plugin.PEER_CONNECTION_VERSION&&i.WebRTCPlugin.plugin.PEER_CONNECTION_VERSION>1)return r&&(e.iceServers=r),i.WebRTCPlugin.plugin.PeerConnection(e);var a=t&&t.mandatory?t.mandatory:null,s=t&&t.optional?t.optional:null;return i.WebRTCPlugin.plugin.PeerConnection(i.WebRTCPlugin.pageId,r,a,s)},MediaStreamTrack=function(){},MediaStreamTrack.getSources=function(e){i.WebRTCPlugin.callWhenPluginReady((function(){i.WebRTCPlugin.plugin.GetSources(e)}))};var e=function(e){if("object"!=typeof e||e.mandatory||e.optional)return e;var t={};return Object.keys(e).forEach((function(n){if("require"!==n&&"advanced"!==n){if("string"==typeof e[n])return void(t[n]=e[n]);var i="object"==typeof e[n]?e[n]:{ideal:e[n]};void 0!==i.exact&&"number"==typeof i.exact&&(i.min=i.max=i.exact);var r=function(e,t){return e?e+t.charAt(0).toUpperCase()+t.slice(1):"deviceId"===t?"sourceId":t};if("sourceId"===r("",n)&&void 0!==i.exact&&(i.ideal=i.exact,i.exact=void 0),void 0!==i.ideal){t.optional=t.optional||[];var o={};"number"==typeof i.ideal?(o[r("min",n)]=i.ideal,t.optional.push(o),(o={})[r("max",n)]=i.ideal,t.optional.push(o)):(o[r("",n)]=i.ideal,t.optional.push(o))}void 0!==i.exact&&"number"!=typeof i.exact?(t.mandatory=t.mandatory||{},t.mandatory[r("",n)]=i.exact):["min","max"].forEach((function(e){void 0!==i[e]&&(t.mandatory=t.mandatory||{},t.mandatory[r(e,n)]=i[e])}))}})),e.advanced&&(t.optional=(t.optional||[]).concat(e.advanced)),t};getUserMedia=function(t,n,r){var o={};o.audio=!!t.audio&&e(t.audio),o.video=!!t.video&&e(t.video),i.WebRTCPlugin.callWhenPluginReady((function(){i.WebRTCPlugin.plugin.getUserMedia(o,n,r)}))},window.navigator.getUserMedia=getUserMedia,"undefined"!=typeof Promise&&(requestUserMedia=function(e){return new Promise((function(t,n){try{getUserMedia(e,t,n)}catch(e){n(e)}}))},void 0===navigator.mediaDevices&&(navigator.mediaDevices={}),navigator.mediaDevices.getUserMedia=requestUserMedia,navigator.mediaDevices.enumerateDevices=function(){return new Promise((function(e){var t={audio:"audioinput",video:"videoinput"};return MediaStreamTrack.getSources((function(n){e(n.map((function(e){return{label:e.label,kind:t[e.kind],id:e.id,deviceId:e.id,groupId:""}})))}))}))}),attachMediaStream=function(e,t){if(e&&e.parentNode){var n;null===t?n="":(void 0!==t.enableSoundTracks&&t.enableSoundTracks(!0),n=t.id);var r=0===e.id.length?Math.random().toString(36).slice(2):e.id,o=e.nodeName.toLowerCase();if("object"!==o){var a;switch(o){case"audio":a=i.WebRTCPlugin.TAGS.AUDIO;break;case"video":a=i.WebRTCPlugin.TAGS.VIDEO;break;default:a=i.WebRTCPlugin.TAGS.NONE}var s=document.createDocumentFragment(),c=document.createElement("div"),d="";for(e.className?d='class="'+e.className+'" ':e.attributes&&e.attributes.class&&(d='class="'+e.attributes.class.value+'" '),c.innerHTML='<object id="'+r+'" '+d+'type="'+i.WebRTCPlugin.pluginInfo.type+'"><param name="pluginId" value="'+r+'" /> <param name="pageId" value="'+i.WebRTCPlugin.pageId+'" /> <param name="windowless" value="true" /> <param name="streamId" value="'+n+'" /> <param name="tag" value="'+a+'" /> </object>';c.firstChild;)s.appendChild(c.firstChild);var u="",l="";e.clientWidth||e.clientHeight?(l=e.clientWidth,u=e.clientHeight):(e.width||e.height)&&(l=e.width,u=e.height),e.parentNode.insertBefore(s,e),(s=document.getElementById(r)).width=l,s.height=u,e.parentNode.removeChild(e)}else{for(var p=e.children,m=0;m!==p.length;++m)if("streamId"===p[m].name){p[m].value=n;break}e.setStreamId(n)}var f=document.getElementById(r);return i.forwardEventHandlers(f,e,Object.getPrototypeOf(e)),f}},reattachMediaStream=function(e,t){for(var n=null,r=t.children,o=0;o!==r.length;++o)if("streamId"===r[o].name){i.WebRTCPlugin.WaitForPluginReady(),n=i.WebRTCPlugin.plugin.getStreamWithId(i.WebRTCPlugin.pageId,r[o].value);break}if(null!==n)return attachMediaStream(e,n)},window.attachMediaStream=attachMediaStream,window.reattachMediaStream=reattachMediaStream,window.getUserMedia=getUserMedia,i.attachMediaStream=attachMediaStream,i.reattachMediaStream=reattachMediaStream,i.getUserMedia=getUserMedia,i.forwardEventHandlers=function(e,t,n){var r=Object.getOwnPropertyNames(n);for(var o in r)if(o){var a=r[o];"function"==typeof a.slice&&"on"===a.slice(0,2)&&"function"==typeof t[a]&&i.addEvent(e,a.slice(2),t[a])}var s=Object.getPrototypeOf(n);s&&i.forwardEventHandlers(e,t,s)},RTCIceCandidate=function(e){return e.sdpMid||(e.sdpMid=""),i.WebRTCPlugin.WaitForPluginReady(),i.WebRTCPlugin.plugin.ConstructIceCandidate(e.sdpMid,e.sdpMLineIndex,e.candidate)},i.addEvent(document,"readystatechange",i.WebRTCPlugin.injectPlugin),i.WebRTCPlugin.injectPlugin()}},i.WebRTCPlugin.pluginNeededButNotInstalledCb=i.WebRTCPlugin.pluginNeededButNotInstalledCb||function(){i.addEvent(document,"readystatechange",i.WebRTCPlugin.pluginNeededButNotInstalledCbPriv),i.WebRTCPlugin.pluginNeededButNotInstalledCbPriv()},i.WebRTCPlugin.pluginNeededButNotInstalledCbPriv=function(){if(i.documentReady()&&(document.removeEventListener("readystatechange",i.WebRTCPlugin.pluginNeededButNotInstalledCbPriv),!i.options.hidePluginInstallPrompt)){var e,t=i.WebRTCPlugin.pluginInfo.downloadLink;if(t)i.WebRTCPlugin.pluginInfo.companyName?(e="This website requires you to install the ",i.WebRTCPlugin.pluginInfo.portalLink?e+=' <a href="'+i.WebRTCPlugin.pluginInfo.portalLink+'" target="_blank">'+i.WebRTCPlugin.pluginInfo.companyName+" WebRTC Plugin</a>":e+=i.WebRTCPlugin.pluginInfo.companyName+" WebRTC Plugin",e+=" to work on this browser."):e=i.TEXT.PLUGIN.REQUIRE_INSTALLATION,i.renderNotificationBar(e,i.TEXT.PLUGIN.BUTTON,(function(){if(window.open(t,"_top"),"safari"===webrtcDetectedBrowser&&11==webrtcDetectedVersion)i.renderNotificationBar(i.TEXT.PLUGIN.REQUIRE_RESTART);else var e=setInterval((function(){"IE"!==i.webrtcDetectedBrowser&&navigator.plugins.refresh(!1),i.WebRTCPlugin.isPluginInstalled(i.WebRTCPlugin.pluginInfo.prefix,i.WebRTCPlugin.pluginInfo.plugName,i.WebRTCPlugin.pluginInfo.type,(function(){clearInterval(e),i.WebRTCPlugin.defineWebRTCInterface()}),(function(){}))}),500)}));else i.renderNotificationBar(i.TEXT.PLUGIN.NOT_SUPPORTED)}},i.WebRTCPlugin.isPluginInstalled(i.WebRTCPlugin.pluginInfo.prefix,i.WebRTCPlugin.pluginInfo.plugName,i.WebRTCPlugin.pluginInfo.type,i.WebRTCPlugin.defineWebRTCInterface,i.WebRTCPlugin.pluginNeededButNotInstalledCb);e.exports=i},84518:(e,t,n)=>{"use strict";n.d(t,{Z:()=>s});var i=n(94015),r=n.n(i),o=n(23645),a=n.n(o)()(r());a.push([e.id,".icon[data-v-6ee276c6]{margin-right:10px}@media (max-width:991px){.col-t-m[data-v-6ee276c6]{margin:4px 0}}.video-item[data-v-6ee276c6]{align-items:center;align-self:stretch;background:#171a23;display:flex;flex-direction:column;justify-content:space-around;margin-right:.25rem!important;margin-top:.25rem!important;padding:10px 20px}.video-maximized[data-v-6ee276c6]{flex:1 0 49.5%}.video-minimized[data-v-6ee276c6]{flex:0 0 19.7%;padding-top:20px}.maximized[data-v-6ee276c6]{order:-1}","",{version:3,sources:["webpack://./resources/js/views/communication/meeting/live.vue"],names:[],mappings:"AAuaA,uBACA,iBACA,CACA,yBACA,0BACA,YACA,CACA,CACA,6BAGA,kBAAA,CAEA,kBAAA,CACA,kBAAA,CALA,YAAA,CACA,qBAAA,CAEA,4BAAA,CAKA,6BAAA,CADA,2BAAA,CADA,iBAGA,CACA,kCACA,cACA,CACA,kCAEA,cAAA,CADA,gBAEA,CACA,4BACA,QACA",sourcesContent:['<template>\n    <div style="width: 100vw; min-height: 100vh; background: #000000; padding:20px;">\n        <div v-if="is_duplicate">\n            <p>\n                {{trans(\'communication.duplicate_tab\')}}\n            </p>\n        </div>\n        <div v-else>\n            <vue-scroll :ops="scrollOptions">\n                <div style="padding: 10px 20px; background: #171A23;">\n                    <div class="d-flex">\n                        <p class="mr-auto p-1" style="color: #AEB5C0; padding:0; margin:0;">\n                            {{meeting.title}}\n                            <span class="ml-2 label label-success" v-if="meeting.is_live">{{trans(\'communication.live\')}}</span>\n                            <span class="ml-2 label label-danger" v-if="meeting.is_expired">{{trans(\'communication.expired\')}}</span>\n                        </p>\n                        <div class="p-1">\n                        </div>\n                        <div class="p-1">\n                            <span class="icon custom-button" @click="$router.push(\'/communication/meeting/\' + meeting.uuid)" v-tooltip="trans(\'communication.back_to_meeting\')"><i class="fa fa-arrow-circle-left"></i></span>\n                        </div>\n                    </div>\n                </div>\n\n                <div class="container-fluid">\n\n                    <div class="row mt-3" v-if="meeting.is_live">\n                        <div class="col" v-if="! is_joined">\n                            <button class="btn btn-block btn-success" @click="join">{{trans(\'communication.join_meeting\')}}</button>\n                        </div>\n                        <div class="col" v-if="is_joined && can_share_screen">\n                            <button class="btn btn-block btn-info" v-if="! is_screen_shared" @click="share">{{trans(\'communication.share_screen\')}}</button>\n                            <button disabled class="btn btn-block btn-info" v-if="is_screen_shared">{{trans(\'communication.stop_share_screen\')}}</button>\n                        </div>\n                        <div class="col" v-if="is_joined">\n                            <button class="btn btn-block btn-danger" @click="leave">{{trans(\'communication.leave_meeting\')}}</button>\n                        </div>\n                    </div>\n\n                    <div style="display: flex; height: auto; flex-wrap: wrap; justify-content: flex-start; margin-top:10px; ">\n                        <div class="video-item mr-1" style="flex: 1 0 49.5%;">\n                            <vue-scroll :ops="scrollOptions">\n                                <p>{{trans(\'communication.meeting_start_time\')}}: {{meeting.date | moment}} {{meeting.start_time | momentTime}}</p>\n                                <p>{{trans(\'communication.meeting_end_time\')}}: {{meeting.date | moment}} {{meeting.end_time | momentTime}}</p>\n                                <div v-if="attachments.length">\n                                    <ul class="m-t-10 upload-file-list">\n                                        <li class="upload-file-list-item" v-for="attachment in attachments" :key="attachment.uuid">\n                                            <a :href="`/communication/meeting/${meeting.uuid}/attachment/${attachment.uuid}/download?token=${authToken}`" class="no-link-color"><i :class="[\'file-icon\', \'fas\', \'fa-lg\', attachment.file_info.icon]"></i> <span class="upload-file-list-item-size">{{attachment.file_info.size}}</span> {{attachment.user_filename}}</a>\n                                        </li>\n                                    </ul>\n                                </div>\n                                <div v-html="meeting.description">\n                                </div>\n                            </vue-scroll>\n                        </div>\n\n                        <template v-if="! meeting.is_live && ! meeting.is_expired">\n                            <div class="video-item" style="flex: 1 0 49.5%;">\n                                <p class="text-center">{{trans(\'communication.meeting_scheduled\', {date: formatDate(meeting.date), time: formatTime(meeting.start_time)})}}</p>\n                            </div>\n                        </template>\n                        <template v-if="meeting.is_expired">\n                            <div class="video-item" style="flex: 1 0 49.5%;">\n                                <p class="text-center">{{trans(\'communication.meeting_ended\', {date: formatDate(meeting.date), time: formatTime(meeting.end_time)})}}</p>\n                            </div>\n                        </template>\n                        <template v-if="meeting.is_live">\n                            <div class="video-item" style="flex: 1 0 49.5%;" v-if="!is_joined">\n                                <p class="text-center">{{trans(\'communication.join_meeting_instruction\')}}</p>\n                            </div>\n                            <template v-if="is_joined">\n                                <div v-for="(item, index) in orderedVideoList" :key="item.id" :class="[\'video-item\', index === 0 || screen_width <= 768 ? \'video-maximized\' : \'video-minimized\', item.maximized ? \'maxmized\' : \'\' ]">\n                                    <video autoplay ref="videos" :height="index === 0 ? maximizeVideoHeight : minimizeVideoHeight" playsinline :muted="item.muted" :id="item.id"></video>\n                                    <p class="mt-3">\n                                        {{item.fullName}} <span v-if="item.screenSharing">{{(trans(\'communication.screen\'))}}</span>\n                                        <span v-if="item.maximized != -1" class="ml-2 custom-button" @click="highlight(item)"><i class="fas fa-expand-arrows-alt"></i></span> \n                                        <span v-if="index === 0" class="ml-2 custom-button" @click="fullScreen(item)"><i class="fas fa-expand"></i></span> \n                                    </p>\n                                </div>\n                            </template>\n                        </template>\n                    </div>\n                </div>\n            </vue-scroll>\n        </div>\n  </div>\n</template>\n\n<script>\nimport RTCMultiConnection from \'rtcmulticonnection\'\nimport \'adapterjs\'\n\nexport default {\n    components: {RTCMultiConnection},\n    data() {\n        return {\n            uuid:this.$route.params.uuid,\n            meeting: {},\n            attachments: [],\n            roomId: \'\',\n            is_joined: false,\n            is_duplicate: false,\n            can_share_screen: false,\n            is_screen_shared: false,\n            screen_share_stream: {},\n            socketURL: null,\n            enableAudio: true,\n            enableVideo: true,\n            enableLogs: false,\n            autoplay: true,\n            cameraHeight: 160,\n            rtcmConnection: null,\n            localVideo: null,\n            screen_width: window.innerWidth,\n            videoList: [],\n            canvas: null,\n            is_owner: false,\n            scrollOptions: {\n                vuescroll: {\n                    mode: \'native\',\n                },\n                bar: {\n                    background: \'#171A23\'\n                }\n            }\n        }\n    },\n    mounted() {\n        if(!helper.hasPermission(\'list-meeting\')){\n            helper.notAccessibleMsg();\n            this.$router.push(\'/dashboard\');\n        }\n\n        if (window.IsDuplicate()) {\n            this.is_duplicate = true;\n        }\n\n        this.getMeeting();\n    },\n    beforeRouteLeave(to, from, next) {\n        if (this.is_joined) {\n            this.leave();\n        }\n        next()\n    },\n    methods: {\n        getMeeting(){\n            let loader = this.$loading.show();\n            axios.get(\'/api/meeting/\'+this.uuid + \'?live=true\')\n                .then(response => {\n                    this.meeting = response.meeting;\n                    this.attachments = response.attachments;\n                    this.socketURL = response.socket;\n\n                    if (this.meeting.user_id === helper.getAuthUser(\'id\')) {\n                        this.is_owner = true;\n                    }\n\n                    const vm = this\n\n                    this.rtcmConnection = new RTCMultiConnection()\n                    this.rtcmConnection.socketURL = this.socketURL\n                    this.rtcmConnection.autoCreateMediaElement = false\n                    this.rtcmConnection.enableLogs = this.enableLogs\n                    this.rtcmConnection.session = {\n                        audio: this.enableAudio,\n                        video: this.enableVideo\n                    }\n                    this.rtcmConnection.iceServers = response.ice_servers || [];\n\n                    this.rtcmConnection.sdpConstraints.mandatory = {\n                        OfferToReceiveAudio: this.enableAudio,\n                        OfferToReceiveVideo: this.enableVideo\n                    }\n                    this.rtcmConnection.onstream = function(stream) {\n                        let found = vm.videoList.find(video => {\n                            return video.id === stream.streamid\n                        })\n                        if (found === undefined) {\n\n                            let screenSharing = false;\n                            if (stream.hasOwnProperty(\'stream\')) {\n                                if (stream.stream.isVideo === false && stream.stream.isAudio === false) {\n                                    screenSharing = true;\n                                }\n                            }\n\n                            let video = {\n                                id: stream.streamid,\n                                muted: stream.type === \'local\',\n                                fullName: stream.extra.fullName,\n                                userUuid: stream.extra.userUuid,\n                                screenSharing: screenSharing,\n                                isOwner: stream.extra.isOwner,\n                                maximized: vm.videoList.length === 0 ? -1 : stream.extra.maximized,\n                            }\n\n                            let idx = vm.videoList.findIndex(o => {\n                                return o.userUuid === video.userUuid && o.screenSharing === video.screenSharing\n                            })\n                            if (idx >= 0) {\n                                vm.videoList.splice(idx, 1);\n                            }\n\n                            if (video.screenSharing && video.userUuid === helper.getAuthUser(\'uuid\')) {\n                                \n                            } else {\n                                if (vm.meeting.audience_video_preference) {\n                                    if ((vm.is_owner) || (! vm.is_owner && (video.isOwner || video.userUuid === helper.getAuthUser(\'uuid\')))) {\n                                        vm.videoList.push(video)\n                                    }\n                                } else {\n                                    vm.videoList.push(video)\n                                }\n                            }\n\n                            if (stream.type === \'local\') {\n                                video.maximized = -1\n                                vm.localVideo = video\n                            }\n                        }\n\n                        setTimeout(function() {\n                            if (vm.$refs.hasOwnProperty(\'videos\')) {\n                                for (let i = 0, len = vm.$refs.videos.length; i < len; i++) {\n                                    if (vm.$refs.videos[i].id === stream.streamid) {\n                                        vm.$refs.videos[i].srcObject = stream.stream\n                                        break\n                                    }\n                                }\n                            }\n                        }, 1000)\n                    }\n                    this.rtcmConnection.onstreamended = function(stream) {\n                        vm.videoList = vm.videoList.filter(o => o.id != stream.streamid)\n                    }\n\n                    loader.hide();\n                })\n                .catch(error => {\n                    loader.hide();\n                    helper.showErrorMsg(error);\n                    this.$router.push(\'/communication/meeting\');\n                })\n        },\n        highlight(item) {\n            this.videoList.forEach(v => {\n                v.maximized = v.id === item.id ? -1 : 0\n            })\n        },\n        join() {\n            let loader = this.$loading.show();\n            axios.post(\'/api/meeting/\'+this.uuid+\'/join\')\n                .then(response => {\n                    this.roomId = response.code;\n\n                    if (! this.roomId) {\n                        toastr.error(i18n.general.something_wrong);\n                        loader.hide();\n                        return;\n                    }\n\n                    const vm = this\n                    this.rtcmConnection.extra = {\n                        fullName: helper.getAuthUser(\'name\'),\n                        userUuid: helper.getAuthUser(\'uuid\'),\n                        isOwner: this.is_owner ? true : false,\n                        maximized: 0\n                    }\n                    this.rtcmConnection.openOrJoin(this.roomId, function(isRoomExist, roomid) {\n                        if (isRoomExist === false && vm.rtcmConnection.isInitiator === true) {\n                        }\n                        vm.is_joined = true;\n\n                        if (vm.meeting.user_id == helper.getAuthUser(\'id\')) {\n                            vm.can_share_screen = true;\n                        }\n                    })\n\n                    loader.hide();\n                })\n                .catch(error => {\n                    loader.hide();\n                    helper.showErrorMsg(error);\n                })\n        },\n        leave() {\n            let loader = this.$loading.show();\n            axios.post(\'/api/meeting/\'+this.uuid+\'/leave\')\n                .then(response => {\n                    if (this.is_joined) {\n                        this.rtcmConnection.attachStreams.forEach(function(localStream) {\n                            localStream.stop()\n                        })\n                        this.videoList = []\n                        this.is_joined = false;\n                    }\n                    loader.hide();\n                })\n                .catch(error => {\n                    loader.hide();\n                    helper.showErrorMsg(error);\n                })\n        },\n        share() {\n            var vm = this;\n            if (navigator.getDisplayMedia || navigator.mediaDevices.getDisplayMedia) {\n                function addStreamStopListener(stream, callback) {\n                    var streamEndedEvent = \'ended\';\n                    if (\'oninactive\' in stream) {\n                        streamEndedEvent = \'inactive\';\n                    }\n                    stream.addEventListener(streamEndedEvent, function() {\n                        callback();\n                        callback = function() {};\n                    }, false);\n                }\n\n                function onGettingSteam(stream) {\n                    stream.screenSharing = true\n                    vm.rtcmConnection.addStream(stream);\n                    vm.screen_share_stream = stream;\n                    vm.is_screen_shared = true;\n\n                    addStreamStopListener(stream, function() {\n                        vm.rtcmConnection.removeStream(stream.streamid);\n                        vm.is_screen_shared = false;\n                    });\n                }\n\n                function getDisplayMediaError(error) {\n                    console.log(\'Media error: \' + JSON.stringify(error));\n                }\n\n                if (navigator.mediaDevices.getDisplayMedia) {\n                    navigator.mediaDevices.getDisplayMedia({video: true, audio: false}).then(stream => {\n                    onGettingSteam(stream);\n                    }, getDisplayMediaError).catch(getDisplayMediaError);\n                }\n                else if (navigator.getDisplayMedia) {\n                    navigator.getDisplayMedia({video: true}).then(stream => {\n                    onGettingSteam(stream);\n                    }, getDisplayMediaError).catch(getDisplayMediaError);\n                }\n            }\n        },\n        logEvent(event) {},\n        formatDate(date) {\n            return helper.formatDate(date)\n        },\n        formatTime(date) {\n            return helper.formatTime(date)\n        },\n        fullScreen(item) {\n            let elem = document.getElementById(item.id);\n            if (elem.requestFullscreen) {\n                elem.requestFullscreen();\n            } else if (elem.mozRequestFullScreen) {\n                elem.mozRequestFullScreen();\n            } else if (elem.webkitRequestFullscreen) {\n                elem.webkitRequestFullscreen();\n            } else if (elem.msRequestFullscreen) {\n                elem.msRequestFullscreen();\n            }\n        }\n    },\n    filters: {\n        moment(date) {\n            return helper.formatDate(date);\n        },\n        momentDateTime(date) {\n            return helper.formatDateTime(date);\n        },\n        momentTime(time) {\n            return helper.formatTime(time);\n        }\n    },\n    computed: {\n        authToken(){\n            return helper.getAuthToken();\n        },\n        isDemo() {\n            return ! helper.getConfig(\'mode\') ? true : false;\n        },\n        maximizeVideoHeight() {\n            if (this.screen_width < 400) {\n                return 180;\n            } else if (this.screen_width < 640) {\n                return 220;\n            } else if (this.screen_width <= 768) {\n                return 360;\n            } else {\n                return 400;\n            }\n        },\n        minimizeVideoHeight() {\n            if (this.screen_width < 400) {\n                return 180;\n            } else if (this.screen_width < 640) {\n                return 220;\n            } else if (this.screen_width <= 768) {\n                return 360;\n            } else {\n                return 220;\n            }\n        },\n        orderedVideoList() {\n            let arr = this.videoList\n            arr.sort(function(a, b) {\n                var keyA = new Date(a.maximized),\n                    keyB = new Date(b.maximized);\n                if (keyA < keyB) return -1;\n                if (keyA > keyB) return 1;\n                return 0;\n            });\n\n            return arr;\n        }\n    }\n}\n<\/script>\n\n<style scoped>\n    .icon {\n        margin-right: 10px;\n    }\n    @media (max-width: 991px) {\n        .col-t-m {\n            margin: 4px 0;\n        }\n    }\n    .video-item {\n        display: flex; \n        flex-direction: column; \n        align-items: center; \n        justify-content: space-around; \n        align-self: stretch;\n        background: #171A23; \n        padding: 10px 20px;\n        margin-top: 0.25rem !important;\n        margin-right: 0.25rem !important;\n    }\n    .video-maximized {\n        flex: 1 0 49.5%;\n    }\n    .video-minimized {\n        padding-top: 20px;\n        flex: 0 0 19.7%;\n    }\n    .maximized {\n        order: -1;\n    }\n</style>'],sourceRoot:""}]);const s=a},58656:(e,t,n)=>{"use strict";var i,r=n(34155),o=function(o,a){var s;function c(e,t){function n(e){return!e.audio&&!e.video&&!e.screen&&e.data}var i="";i+="?userid="+e.userid,i+="&sessionid="+e.sessionid,i+="&msgEvent="+e.socketMessageEvent,i+="&socketCustomEvent="+e.socketCustomEvent,i+="&autoCloseEntireSession="+!!e.autoCloseEntireSession,!0===e.session.broadcast&&(i+="&oneToMany=true"),i+="&maxParticipantsAllowed="+e.maxParticipantsAllowed,e.enableScalableBroadcast&&(i+="&enableScalableBroadcast=true",i+="&maxRelayLimitPerUser="+(e.maxRelayLimitPerUser||2)),i+="&extra="+JSON.stringify(e.extra||{}),e.socketCustomParameters&&(i+=e.socketCustomParameters);try{io.sockets={}}catch(e){}if(e.socketURL||(e.socketURL="/"),"/"!=e.socketURL.substr(e.socketURL.length-1,1))throw'"socketURL" MUST end with a slash.';e.enableLogs&&("/"==e.socketURL?console.info("socket.io url is: ",location.origin+"/"):console.info("socket.io url is: ",e.socketURL));try{e.socket=io(e.socketURL+i)}catch(t){e.socket=io.connect(e.socketURL+i,e.socketOptions)}var r=e.multiPeersHandler;function o(t,n){e.peersBackup[t]||(e.peersBackup[t]={userid:t,extra:{}}),e.peersBackup[t].extra=n}e.socket.on("extra-data-updated",(function(t,n){e.peers[t]&&(e.peers[t].extra=n,e.onExtraDataUpdated({userid:t,extra:n}),o(t,n))})),e.socket.on(e.socketMessageEvent,(function t(i){if(i.remoteUserId==e.userid)if(e.peers[i.sender]&&e.peers[i.sender].extra!=i.message.extra&&(e.peers[i.sender].extra=i.extra,e.onExtraDataUpdated({userid:i.sender,extra:i.extra}),o(i.sender,i.extra)),i.message.streamSyncNeeded&&e.peers[i.sender]){var a=e.streamEvents[i.message.streamid];if(!a||!a.stream)return;var s=i.message.action;if("ended"===s||"inactive"===s||"stream-removed"===s)return e.peersBackup[a.userid]&&(a.extra=e.peersBackup[a.userid].extra),void e.onstreamended(a);var c="both"!=i.message.type?i.message.type:null;"function"==typeof a.stream[s]&&a.stream[s](c)}else if("dropPeerConnection"!==i.message){if(i.message.allParticipants)return-1===i.message.allParticipants.indexOf(i.sender)&&i.message.allParticipants.push(i.sender),void i.message.allParticipants.forEach((function(t){r[e.peers[t]?"renegotiatePeer":"createNewPeer"](t,{localPeerSdpConstraints:{OfferToReceiveAudio:e.sdpConstraints.mandatory.OfferToReceiveAudio,OfferToReceiveVideo:e.sdpConstraints.mandatory.OfferToReceiveVideo},remotePeerSdpConstraints:{OfferToReceiveAudio:e.session.oneway?!!e.session.audio:e.sdpConstraints.mandatory.OfferToReceiveAudio,OfferToReceiveVideo:e.session.oneway?!!e.session.video||!!e.session.screen:e.sdpConstraints.mandatory.OfferToReceiveVideo},isOneWay:!!e.session.oneway||"one-way"===e.direction,isDataOnly:n(e.session)})}));if(i.message.newParticipant){if(i.message.newParticipant==e.userid)return;if(e.peers[i.message.newParticipant])return;r.createNewPeer(i.message.newParticipant,i.message.userPreferences||{localPeerSdpConstraints:{OfferToReceiveAudio:e.sdpConstraints.mandatory.OfferToReceiveAudio,OfferToReceiveVideo:e.sdpConstraints.mandatory.OfferToReceiveVideo},remotePeerSdpConstraints:{OfferToReceiveAudio:e.session.oneway?!!e.session.audio:e.sdpConstraints.mandatory.OfferToReceiveAudio,OfferToReceiveVideo:e.session.oneway?!!e.session.video||!!e.session.screen:e.sdpConstraints.mandatory.OfferToReceiveVideo},isOneWay:!!e.session.oneway||"one-way"===e.direction,isDataOnly:n(e.session)})}else if(i.message.readyForOffer&&(e.attachStreams.length&&(e.waitingForLocalMedia=!1),e.waitingForLocalMedia))setTimeout((function(){t(i)}),1);else if(i.message.newParticipationRequest&&i.sender!==e.userid){e.peers[i.sender]&&e.deletePeer(i.sender);var d={extra:i.extra||{},localPeerSdpConstraints:i.message.remotePeerSdpConstraints||{OfferToReceiveAudio:e.sdpConstraints.mandatory.OfferToReceiveAudio,OfferToReceiveVideo:e.sdpConstraints.mandatory.OfferToReceiveVideo},remotePeerSdpConstraints:i.message.localPeerSdpConstraints||{OfferToReceiveAudio:e.session.oneway?!!e.session.audio:e.sdpConstraints.mandatory.OfferToReceiveAudio,OfferToReceiveVideo:e.session.oneway?!!e.session.video||!!e.session.screen:e.sdpConstraints.mandatory.OfferToReceiveVideo},isOneWay:void 0!==i.message.isOneWay?i.message.isOneWay:!!e.session.oneway||"one-way"===e.direction,isDataOnly:void 0!==i.message.isDataOnly?i.message.isDataOnly:n(e.session),dontGetRemoteStream:void 0!==i.message.isOneWay?i.message.isOneWay:!!e.session.oneway||"one-way"===e.direction,dontAttachLocalStream:!!i.message.dontGetRemoteStream,connectionDescription:i,successCallback:function(){}};e.onNewParticipant(i.sender,d)}else{if(i.message.changedUUID&&e.peers[i.message.oldUUID]&&(e.peers[i.message.newUUID]=e.peers[i.message.oldUUID],delete e.peers[i.message.oldUUID]),i.message.userLeft)return r.onUserLeft(i.sender),void(i.message.autoCloseEntireSession&&e.leave());r.addNegotiatedMessage(i.message,i.sender)}}else e.deletePeer(i.sender)}));var a=!1;e.socket.resetProps=function(){a=!1},e.socket.on("connect",(function(){a||(a=!0,e.enableLogs&&console.info("socket.io connection is opened."),setTimeout((function(){e.socket.emit("extra-data-updated",e.extra)}),1e3),t&&t(e.socket))})),e.socket.on("disconnect",(function(t){e.onSocketDisconnect(t)})),e.socket.on("error",(function(t){e.onSocketError(t)})),e.socket.on("user-disconnected",(function(t){t!==e.userid&&(e.onUserStatusChanged({userid:t,status:"offline",extra:e.peers[t]&&e.peers[t].extra||{}}),e.deletePeer(t))})),e.socket.on("user-connected",(function(t){t!==e.userid&&e.onUserStatusChanged({userid:t,status:"online",extra:e.peers[t]&&e.peers[t].extra||{}})})),e.socket.on("closed-entire-session",(function(t,n){e.leave(),e.onEntireSessionClosed({sessionid:t,userid:t,extra:n})})),e.socket.on("userid-already-taken",(function(t,n){e.onUserIdAlreadyTaken(t,n)})),e.socket.on("logs",(function(t){e.enableLogs&&console.debug("server-logs",t)})),e.socket.on("number-of-broadcast-viewers-updated",(function(t){e.onNumberOfBroadcastViewersUpdated(t)})),e.socket.on("set-isInitiator-true",(function(t){t==e.sessionid&&(e.isInitiator=!0)}))}function d(e){var t=this,n=["getAllParticipants","getLength","selectFirst","streams","send","forEach"];function i(){e.fbr=new FileBufferReader,e.fbr.onProgress=function(t){e.onFileProgress(t)},e.fbr.onBegin=function(t){e.onFileStart(t)},e.fbr.onEnd=function(t){e.onFileEnd(t)}}e.peers={getLength:function(){var e=0;for(var t in this)-1==n.indexOf(t)&&e++;return e},selectFirst:function(){var e;for(var t in this)-1==n.indexOf(t)&&(e=this[t]);return e},getAllParticipants:function(e){var t=[];for(var i in this)-1==n.indexOf(i)&&i!=e&&t.push(i);return t},forEach:function(t){this.getAllParticipants().forEach((function(n){t(e.peers[n])}))},send:function(n,i){var r=this;if(!h(n.size)&&!h(n.type)){if(e.enableFileSharing)return void t.shareFile(n,i);"string"!=typeof n&&(n=JSON.stringify(n))}if("text"===n.type||n instanceof ArrayBuffer||n instanceof DataView){if("text"===n.type&&(n=JSON.stringify(n)),i){var o=e.peers[i];if(o)return o.channels.length?void o.channels.forEach((function(e){e.send(n)})):(e.peers[i].createDataChannel(),e.renegotiate(i),void setTimeout((function(){r.send(n,i)}),3e3))}this.getAllParticipants().forEach((function(t){if(!r[t].channels.length)return e.peers[t].createDataChannel(),e.renegotiate(t),void setTimeout((function(){r[t].channels.forEach((function(e){e.send(n)}))}),3e3);r[t].channels.forEach((function(e){e.send(n)}))}))}else N.send({text:n,channel:this,connection:e,remoteUserId:i})}},this.uuid=e.userid,this.getLocalConfig=function(n,r,o){return o||(o={}),{streamsToShare:o.streamsToShare||{},rtcMultiConnection:e,connectionDescription:o.connectionDescription,userid:r,localPeerSdpConstraints:o.localPeerSdpConstraints,remotePeerSdpConstraints:o.remotePeerSdpConstraints,dontGetRemoteStream:!!o.dontGetRemoteStream,dontAttachLocalStream:!!o.dontAttachLocalStream,renegotiatingPeer:!!o.renegotiatingPeer,peerRef:o.peerRef,channels:o.channels||[],onLocalSdp:function(e){t.onNegotiationNeeded(e,r)},onLocalCandidate:function(n){(n=M.processCandidates(e,n))&&t.onNegotiationNeeded(n,r)},remoteSdp:n,onDataChannelMessage:function(n){if(!e.fbr&&e.enableFileSharing&&i(),"string"!=typeof n&&e.enableFileSharing){var o=this;n instanceof ArrayBuffer||n instanceof DataView?e.fbr.convertToObject(n,(function(e){o.onDataChannelMessage(e)})):n.readyForNextChunk?e.fbr.getNextChunk(n,(function(t,n){e.peers[r].channels.forEach((function(e){e.send(t)}))}),r):n.chunkMissing?e.fbr.chunkMissing(n):e.fbr.addChunk(n,(function(t){e.peers[r].peer.channel.send(t)}))}else t.onDataChannelMessage(n,r)},onDataChannelError:function(e){t.onDataChannelError(e,r)},onDataChannelOpened:function(e){t.onDataChannelOpened(e,r)},onDataChannelClosed:function(e){t.onDataChannelClosed(e,r)},onRemoteStream:function(n){e.peers[r]&&e.peers[r].streams.push(n),t.onGettingRemoteMedia(n,r)},onRemoteStreamRemoved:function(e){t.onRemovingRemoteMedia(e,r)},onPeerStateChanged:function(e){t.onPeerStateChanged(e),"new"===e.iceConnectionState&&t.onNegotiationStarted(r,e),"connected"===e.iceConnectionState&&t.onNegotiationCompleted(r,e),-1!==e.iceConnectionState.search(/closed|failed/gi)&&(t.onUserLeft(r),t.disconnectWith(r))}}},this.createNewPeer=function(t,n){if(!(e.maxParticipantsAllowed<=e.getAllParticipants().length)){if(n=n||{},e.isInitiator&&e.session.audio&&"two-way"===e.session.audio&&!n.streamsToShare&&(n.isOneWay=!1,n.isDataOnly=!1,n.session=e.session),!n.isOneWay&&!n.isDataOnly)return n.isOneWay=!0,void this.onNegotiationNeeded({enableMedia:!0,userPreferences:n},t);n=e.setUserPreferences(n,t);var i=this.getLocalConfig(null,t,n);e.peers[t]=new D(i)}},this.createAnsweringPeer=function(t,n,i){i=e.setUserPreferences(i||{},n);var r=this.getLocalConfig(t,n,i);e.peers[n]=new D(r)},this.renegotiatePeer=function(t,n,i){if(e.peers[t]){n||(n={}),n.renegotiatingPeer=!0,n.peerRef=e.peers[t].peer,n.channels=e.peers[t].channels;var r=this.getLocalConfig(i,t,n);e.peers[t]=new D(r)}else e.enableLogs&&console.error("Peer ("+t+") does not exist. Renegotiation skipped.")},this.replaceTrack=function(t,n,i){if(!e.peers[n])throw"This peer ("+n+") does not exist.";var r=e.peers[n].peer;r.getSenders&&"function"==typeof r.getSenders&&r.getSenders().length?r.getSenders().forEach((function(r){i&&"video"===r.track.kind&&(e.peers[n].peer.lastVideoTrack=r.track,r.replaceTrack(t)),i||"audio"!==r.track.kind||(e.peers[n].peer.lastAudioTrack=r.track,r.replaceTrack(t))})):(console.warn("RTPSender.replaceTrack is NOT supported."),this.renegotiatePeer(n))},this.onNegotiationNeeded=function(e,t){},this.addNegotiatedMessage=function(n,i){if(n.type&&n.sdp)return"answer"==n.type&&e.peers[i]&&e.peers[i].addRemoteSdp(n),"offer"==n.type&&(n.renegotiatingPeer?this.renegotiatePeer(i,null,n):this.createAnsweringPeer(n,i)),void(e.enableLogs&&console.log("Remote peer's sdp:",n.sdp));if(n.candidate)return e.peers[i]&&e.peers[i].addRemoteCandidate(n),void(e.enableLogs&&console.log("Remote peer's candidate pairs:",n.candidate));if(n.enableMedia){e.session=n.userPreferences.session||e.session,e.session.oneway&&e.attachStreams.length&&(e.attachStreams=[]),n.userPreferences.isDataOnly&&e.attachStreams.length&&(e.attachStreams.length=[]);var r={};e.attachStreams.forEach((function(e){r[e.streamid]={isAudio:!!e.isAudio,isVideo:!!e.isVideo,isScreen:!!e.isScreen}})),n.userPreferences.streamsToShare=r,t.onNegotiationNeeded({readyForOffer:!0,userPreferences:n.userPreferences},i)}n.readyForOffer&&e.onReadyForOffer(i,n.userPreferences)},this.onGettingRemoteMedia=function(e,t){},this.onRemovingRemoteMedia=function(e,t){},this.onGettingLocalMedia=function(e){},this.onLocalMediaError=function(t,n){e.onMediaError(t,n)},this.shareFile=function(t,n){i(),e.fbr.readAsArrayBuffer(t,(function(t){var i=e.getAllParticipants();n&&(i=[n]),i.forEach((function(n){e.fbr.getNextChunk(t,(function(t){e.peers[n].channels.forEach((function(e){e.send(t)}))}),n)}))}),{userid:e.userid,chunkSize:"Firefox"===DetectRTC.browser.name?15e3:e.chunkSize||0})};var r=new L(e);this.onDataChannelMessage=function(t,n){r.receive(JSON.parse(t),n,e.peers[n]?e.peers[n].extra:{})},this.onDataChannelClosed=function(t,n){t.userid=n,t.extra=e.peers[n]?e.peers[n].extra:{},e.onclose(t)},this.onDataChannelError=function(t,n){t.userid=n,event.extra=e.peers[n]?e.peers[n].extra:{},e.onerror(t)},this.onDataChannelOpened=function(t,n){e.peers[n].channels.length?e.peers[n].channels=[t]:(e.peers[n].channels.push(t),e.onopen({userid:n,extra:e.peers[n]?e.peers[n].extra:{},channel:t}))},this.onPeerStateChanged=function(t){e.onPeerStateChanged(t)},this.onNegotiationStarted=function(e,t){},this.onNegotiationCompleted=function(e,t){},this.getRemoteStreams=function(t){return t=t||e.peers.getAllParticipants()[0],e.peers[t]?e.peers[t].streams:[]}}function u(e,t,n){if("undefined"!=typeof CustomEvent){var i=new CustomEvent(t,{arguments:n,__exposedProps__:n});e.dispatchEvent(i)}}function l(e,t){t.stream&&t.stream&&t.stream.addEventListener&&(t.stream.addEventListener("mute",(function(n){(n=e.streamEvents[t.streamid]).session={audio:"audio"===n.muteType,video:"video"===n.muteType},e.onmute(n)}),!1),t.stream.addEventListener("unmute",(function(n){(n=e.streamEvents[t.streamid]).session={audio:"audio"===n.unmuteType,video:"video"===n.unmuteType},e.onunmute(n)}),!1))}function p(){if(window.crypto&&window.crypto.getRandomValues&&-1===navigator.userAgent.indexOf("Safari")){for(var e=window.crypto.getRandomValues(new Uint32Array(3)),t="",n=0,i=e.length;n<i;n++)t+=e[n].toString(36);return t}return(Math.random()*(new Date).getTime()).toString(36).replace(/\./g,"")}function m(e,t,n){if(n.autoCreateMediaElement){var i=!1;y(e,"video").length||e.isVideo||e.isScreen||(i=!0),"Firefox"===DetectRTC.browser.name&&(n.session.video||n.session.screen)&&(i=!1);var r=document.createElement(i?"audio":"video");if(r.srcObject=e,r.setAttribute("autoplay",!0),r.setAttribute("playsinline",!0),r.setAttribute("controls",!0),r.setAttribute("muted",!1),r.setAttribute("volume",1),"Firefox"===DetectRTC.browser.name){var o="ended";"oninactive"in r&&(o="inactive"),r.addEventListener(o,(function(){if(currentUserMediaRequest.remove(e.idInstance),"local"===e.type){o="ended","oninactive"in e&&(o="inactive"),A.onSyncNeeded(e.streamid,o),n.attachStreams.forEach((function(t,i){e.streamid===t.streamid&&delete n.attachStreams[i]}));var t=[];n.attachStreams.forEach((function(e){e&&t.push(e)})),n.attachStreams=t;var i=n.streamEvents[e.streamid];if(i)return void n.onstreamended(i);this.parentNode&&this.parentNode.removeChild(this)}}),!1)}var a=r.play();if(void 0!==a){var s=!1;setTimeout((function(){s||(s=!0,t(r))}),1e3),a.then((function(){s||(s=!0,t(r))})).catch((function(e){s||(s=!0,t(r))}))}else t(r)}else t({})}function f(e,t){window.removeEventListener(e,t),window.addEventListener(e,t,!1)}function v(e){var t=[];return e.forEach((function(e){e&&t.push(e)})),t}function g(e){return!e.audio&&!e.video&&!e.screen&&e.data}function h(e){return void 0===e}(s=void 0!==n.g?n.g:null)&&"undefined"==typeof window&&void 0!==n.g&&(n.g.navigator={userAgent:"Fake/5.0 (FakeOS) AppleWebKit/123 (KHTML, like Gecko) Fake/12.3.4567.89 Fake/123.45",getUserMedia:function(){}},n.g.console||(n.g.console={}),void 0===n.g.console.debug&&(n.g.console.debug=n.g.console.info=n.g.console.error=n.g.console.log=n.g.console.log||function(){console.log(arguments)}),"undefined"==typeof document&&(s.document={},document.createElement=document.captureStream=document.mozCaptureStream=function(){var e={getContext:function(){return e},play:function(){},pause:function(){},drawImage:function(){},toDataURL:function(){return""}};return e},document.addEventListener=document.removeEventListener=s.addEventListener=s.removeEventListener=function(){},s.HTMLVideoElement=s.HTMLMediaElement=function(){}),"undefined"==typeof io&&(s.io=function(){return{on:function(e,t){t=t||function(){},"connect"===e&&t()},emit:function(e,t,n){n=n||function(){},"open-room"!==e&&"join-room"!==e||n(!0,t.sessionid,null)}}}),"undefined"==typeof location&&(s.location={protocol:"file:",href:"",hash:"",origin:"self"}),"undefined"==typeof screen&&(s.screen={width:0,height:0}),"undefined"==typeof URL&&(s.URL={createObjectURL:function(){return""},revokeObjectURL:function(){return""}}),s.window=n.g),function(){var o="Fake/5.0 (FakeOS) AppleWebKit/123 (KHTML, like Gecko) Fake/12.3.4567.89 Fake/123.45";if(b="object"==typeof r&&"object"==typeof r.versions&&r.versions.node&&!r.browser){var a=r.versions.node.toString().replace("v","");o="Nodejs/"+a+" (NodeOS) AppleWebKit/"+a+" (KHTML, like Gecko) Nodejs/"+a+" Nodejs/"+a}!function(e){"undefined"==typeof window&&("undefined"==typeof window&&void 0!==n.g&&(n.g.navigator={userAgent:o,getUserMedia:function(){}},e.window=n.g),"undefined"==typeof location&&(e.location={protocol:"file:",href:"",hash:""}),"undefined"==typeof screen&&(e.screen={width:0,height:0}))}(void 0!==n.g?n.g:window);var s=window.navigator;void 0!==s?(void 0!==s.webkitGetUserMedia&&(s.getUserMedia=s.webkitGetUserMedia),void 0!==s.mozGetUserMedia&&(s.getUserMedia=s.mozGetUserMedia)):s={getUserMedia:function(){},userAgent:o};var c=!!/Android|webOS|iPhone|iPad|iPod|BB10|BlackBerry|IEMobile|Opera Mini|Mobile|mobile/i.test(s.userAgent||""),d=!(-1===s.userAgent.indexOf("Edge")||!s.msSaveOrOpenBlob&&!s.msSaveBlob),u=!!window.opera||s.userAgent.indexOf(" OPR/")>=0,l=void 0!==window.InstallTrigger,p=/^((?!chrome|android).)*safari/i.test(s.userAgent),m=!!window.chrome&&!u,f="undefined"!=typeof document&&!!document.documentMode&&!d;function v(e,t){var n=0,i=!1,r=window.setInterval((function(){e()&&(window.clearInterval(r),t(i)),n++>50&&(window.clearInterval(r),t(i=!0))}),10)}var g={Android:function(){return s.userAgent.match(/Android/i)},BlackBerry:function(){return s.userAgent.match(/BlackBerry|BB10/i)},iOS:function(){return s.userAgent.match(/iPhone|iPad|iPod/i)},Opera:function(){return s.userAgent.match(/Opera Mini/i)},Windows:function(){return s.userAgent.match(/IEMobile/i)},any:function(){return g.Android()||g.BlackBerry()||g.iOS()||g.Opera()||g.Windows()},getOsName:function(){var e="Unknown OS";return g.Android()&&(e="Android"),g.BlackBerry()&&(e="BlackBerry"),g.iOS()&&(e="iOS"),g.Opera()&&(e="Opera Mini"),g.Windows()&&(e="Windows"),e}};var h="Unknown OS",C="Unknown OS Version";var w,y,S=function(){for(var e,t=s.appVersion,n=s.userAgent,i="-",r=[{s:"Windows 10",r:/(Windows 10.0|Windows NT 10.0)/},{s:"Windows 8.1",r:/(Windows 8.1|Windows NT 6.3)/},{s:"Windows 8",r:/(Windows 8|Windows NT 6.2)/},{s:"Windows 7",r:/(Windows 7|Windows NT 6.1)/},{s:"Windows Vista",r:/Windows NT 6.0/},{s:"Windows Server 2003",r:/Windows NT 5.2/},{s:"Windows XP",r:/(Windows NT 5.1|Windows XP)/},{s:"Windows 2000",r:/(Windows NT 5.0|Windows 2000)/},{s:"Windows ME",r:/(Win 9x 4.90|Windows ME)/},{s:"Windows 98",r:/(Windows 98|Win98)/},{s:"Windows 95",r:/(Windows 95|Win95|Windows_95)/},{s:"Windows NT 4.0",r:/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},{s:"Windows CE",r:/Windows CE/},{s:"Windows 3.11",r:/Win16/},{s:"Android",r:/Android/},{s:"Open BSD",r:/OpenBSD/},{s:"Sun OS",r:/SunOS/},{s:"Linux",r:/(Linux|X11)/},{s:"iOS",r:/(iPhone|iPad|iPod)/},{s:"Mac OS X",r:/Mac OS X/},{s:"Mac OS",r:/(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},{s:"QNX",r:/QNX/},{s:"UNIX",r:/UNIX/},{s:"BeOS",r:/BeOS/},{s:"OS/2",r:/OS\/2/},{s:"Search Bot",r:/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/}],o=0;e=r[o];o++)if(e.r.test(n)){i=e.s;break}var a="-";switch(/Windows/.test(i)&&(/Windows (.*)/.test(i)&&(a=/Windows (.*)/.exec(i)[1]),i="Windows"),i){case"Mac OS X":/Mac OS X (10[\.\_\d]+)/.test(n)&&(a=/Mac OS X (10[\.\_\d]+)/.exec(n)[1]);break;case"Android":/Android ([\.\_\d]+)/.test(n)&&(a=/Android ([\.\_\d]+)/.exec(n)[1]);break;case"iOS":/OS (\d+)_(\d+)_?(\d+)?/.test(n)&&(a=(a=/OS (\d+)_(\d+)_?(\d+)?/.exec(t))[1]+"."+a[2]+"."+(0|a[3]))}return{osName:i,osVersion:a}}();S&&S.osName&&"-"!=S.osName?(h=S.osName,C=S.osVersion):g.any()&&"Android"==(h=g.getOsName())&&(C=!!(y=(w=(w||s.userAgent).toLowerCase()).match(/android\s([0-9\.]*)/))&&y[1]);var b="object"==typeof r&&"object"==typeof r.versions&&r.versions.node;"Unknown OS"===h&&b&&(h="Nodejs",C=r.versions.node.toString().replace("v",""));var T=!1,R=!1;["captureStream","mozCaptureStream","webkitCaptureStream"].forEach((function(e){"undefined"!=typeof document&&"function"==typeof document.createElement&&(!T&&e in document.createElement("canvas")&&(T=!0),!R&&e in document.createElement("video")&&(R=!0))}));var P=/^(192\.168\.|169\.254\.|10\.|172\.(1[6-9]|2\d|3[01]))/,k=/([0-9]{1,3}(\.[0-9]{1,3}){3})/,E=/[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7}/;var D=[],_=[],M=[],O=[];s.mediaDevices&&s.mediaDevices.enumerateDevices&&(s.enumerateDevices=function(e){var t=s.mediaDevices.enumerateDevices();t&&t.then?s.mediaDevices.enumerateDevices().then(e).catch((function(){e([])})):e([])});var I=!1;(void 0!==x&&"getSources"in x||s.mediaDevices&&s.mediaDevices.enumerateDevices)&&(I=!0);var A=!1,L=!1,N=!1,U=!1,W=!1;function j(e){if(I)if(!s.enumerateDevices&&window.MediaStreamTrack&&window.MediaStreamTrack.getSources&&(s.enumerateDevices=window.MediaStreamTrack.getSources.bind(window.MediaStreamTrack)),!s.enumerateDevices&&s.enumerateDevices&&(s.enumerateDevices=s.enumerateDevices.bind(s)),s.enumerateDevices){D=[],_=[],M=[],O=[],A=!1,L=!1,N=!1,U=!1,W=!1;var t={};s.enumerateDevices((function(n){n.forEach((function(e){var n={};for(var i in e)try{"function"!=typeof e[i]&&(n[i]=e[i])}catch(e){}t[n.deviceId+n.label+n.kind]||("audio"===n.kind&&(n.kind="audioinput"),"video"===n.kind&&(n.kind="videoinput"),n.deviceId||(n.deviceId=n.id),n.id||(n.id=n.deviceId),n.label?("videoinput"!==n.kind||W||(W=!0),"audioinput"!==n.kind||U||(U=!0)):(n.isCustomLabel=!0,"videoinput"===n.kind?n.label="Camera "+(O.length+1):"audioinput"===n.kind?n.label="Microphone "+(_.length+1):"audiooutput"===n.kind?n.label="Speaker "+(M.length+1):n.label="Please invoke getUserMedia once.",void 0!==B&&B.browser.isChrome&&B.browser.version>=46&&!/^(https:|chrome-extension:)$/g.test(location.protocol||"")&&"undefined"!=typeof document&&"string"==typeof document.domain&&document.domain.search&&-1===document.domain.search(/localhost|127.0./g)&&(n.label="HTTPs is required to get label of this "+n.kind+" device.")),"audioinput"===n.kind&&(A=!0,-1===_.indexOf(n)&&_.push(n)),"audiooutput"===n.kind&&(L=!0,-1===M.indexOf(n)&&M.push(n)),"videoinput"===n.kind&&(N=!0,-1===O.indexOf(n)&&O.push(n)),D.push(n),t[n.deviceId+n.label+n.kind]=n)})),void 0!==B&&(B.MediaDevices=D,B.hasMicrophone=A,B.hasSpeakers=L,B.hasWebcam=N,B.isWebsiteHasWebcamPermissions=W,B.isWebsiteHasMicrophonePermissions=U,B.audioInputDevices=_,B.audioOutputDevices=M,B.videoInputDevices=O),e&&e()}))}else e&&e();else e&&e()}var B=window.DetectRTC||{};B.browser=function(){s.appVersion;var e,t,n,i=s.userAgent,r=s.appName,o=""+parseFloat(s.appVersion),a=parseInt(s.appVersion,10);if(p&&!m&&-1!==i.indexOf("CriOS")&&(p=!1,m=!0),u){r="Opera";try{a=(o=s.userAgent.split("OPR/")[1].split(" ")[0]).split(".")[0]}catch(e){o="0.0.0.0",a=0}}else f?((t=i.indexOf("rv:"))>0?o=i.substring(t+3):(t=i.indexOf("MSIE"),o=i.substring(t+5)),r="IE"):m?(t=i.indexOf("Chrome"),r="Chrome",o=i.substring(t+7)):p?(t=i.indexOf("Safari"),r="Safari",o=i.substring(t+7),-1!==(t=i.indexOf("Version"))&&(o=i.substring(t+8)),-1!==s.userAgent.indexOf("Version/")&&(o=s.userAgent.split("Version/")[1].split(" ")[0])):l?(t=i.indexOf("Firefox"),r="Firefox",o=i.substring(t+8)):(e=i.lastIndexOf(" ")+1)<(t=i.lastIndexOf("/"))&&(r=i.substring(e,t),o=i.substring(t+1),r.toLowerCase()===r.toUpperCase()&&(r=s.appName));return d&&(r="Edge",o=s.userAgent.split("Edge/")[1]),-1!==(n=o.search(/[; \)]/))&&(o=o.substring(0,n)),a=parseInt(""+o,10),isNaN(a)&&(o=""+parseFloat(s.appVersion),a=parseInt(s.appVersion,10)),{fullVersion:o,version:a,name:r,isPrivateBrowsing:!1}}(),function(e){var t;try{if(window.webkitRequestFileSystem)window.webkitRequestFileSystem(window.TEMPORARY,1,(function(){t=!1}),(function(e){t=!0}));else if(window.indexedDB&&/Firefox/.test(window.navigator.userAgent)){var n;try{(n=window.indexedDB.open("test")).onerror=function(){return!0}}catch(e){t=!0}void 0===t&&v((function(){return"done"===n.readyState}),(function(e){e||(t=!n.result)}))}else if(function(e){var t=e.toLowerCase();if(0===t.indexOf("msie")&&0===t.indexOf("trident"))return!1;var n=/(?:msie|rv:)\s?([\d\.]+)/.exec(t);return!!(n&&parseInt(n[1],10)>=10)}(window.navigator.userAgent)){t=!1;try{window.indexedDB||(t=!0)}catch(e){t=!0}}else if(window.localStorage&&/Safari/.test(window.navigator.userAgent)){try{window.localStorage.setItem("test",1)}catch(e){t=!0}void 0===t&&(t=!1,window.localStorage.removeItem("test"))}}catch(e){t=!1}v((function(){return void 0!==t}),(function(n){e(t)}))}((function(e){B.browser.isPrivateBrowsing=!!e})),B.browser["is"+B.browser.name]=!0,B.osName=h,B.osVersion=C;"object"==typeof r&&"object"==typeof r.versions&&r.versions["node-webkit"];var V=!1;["RTCPeerConnection","webkitRTCPeerConnection","mozRTCPeerConnection","RTCIceGatherer"].forEach((function(e){V||e in window&&(V=!0)})),B.isWebRTCSupported=V,B.isORTCSupported="undefined"!=typeof RTCIceGatherer;var G=!1;((B.browser.isChrome&&B.browser.version>=35||B.browser.isFirefox&&B.browser.version>=34||B.browser.isEdge&&B.browser.version>=17||"Android"===B.osName&&B.browser.isChrome)&&(G=!0),/^(https:|chrome-extension:)$/g.test(location.protocol||""))||("undefined"!=typeof document&&"string"==typeof document.domain&&document.domain.search&&-1===document.domain.search(/localhost|127.0./g)&&(B.browser.isChrome||B.browser.isEdge||B.browser.isOpera)||B.browser.isFirefox)&&(G=!1);B.isScreenCapturingSupported=G;var F={isSupported:!1,isCreateMediaStreamSourceSupported:!1};["AudioContext","webkitAudioContext","mozAudioContext","msAudioContext"].forEach((function(e){F.isSupported||e in window&&(F.isSupported=!0,window[e]&&"createMediaStreamSource"in window[e].prototype&&(F.isCreateMediaStreamSourceSupported=!0))})),B.isAudioContextSupported=F.isSupported,B.isCreateMediaStreamSourceSupported=F.isCreateMediaStreamSourceSupported;var z=!1;B.browser.isChrome&&B.browser.version>31&&(z=!0),B.isRtpDataChannelsSupported=z;var q=!1;(B.browser.isFirefox&&B.browser.version>28||B.browser.isChrome&&B.browser.version>25||B.browser.isOpera&&B.browser.version>=11)&&(q=!0),B.isSctpDataChannelsSupported=q,B.isMobileDevice=c;var H=!1;(s.getUserMedia||s.mediaDevices&&s.mediaDevices.getUserMedia)&&(H=!0),B.browser.isChrome&&B.browser.version>=46&&!/^(https:|chrome-extension:)$/g.test(location.protocol||"")&&"undefined"!=typeof document&&"string"==typeof document.domain&&document.domain.search&&-1===document.domain.search(/localhost|127.0./g)&&(H="Requires HTTPs"),"Nodejs"===B.osName&&(H=!1),B.isGetUserMediaSupported=H;var J,$,K,X="";screen.width&&(X+=(screen.width?screen.width:"")+" x "+(screen.height?screen.height:""));B.displayResolution=X,B.displayAspectRatio=(J=screen.width,$=screen.height,K=function e(t,n){return 0==n?t:e(n,t%n)}(J,$),J/K/($/K)).toFixed(2),B.isCanvasSupportsStreamCapturing=T,B.isVideoSupportsStreamCapturing=R,"Chrome"==B.browser.name&&B.browser.version>=53&&(B.isCanvasSupportsStreamCapturing||(B.isCanvasSupportsStreamCapturing="Requires chrome flag: enable-experimental-web-platform-features"),B.isVideoSupportsStreamCapturing||(B.isVideoSupportsStreamCapturing="Requires chrome flag: enable-experimental-web-platform-features")),B.DetectLocalIPAddress=function(e,t){if(B.isWebRTCSupported){var n=!0,i=!0;!function(e,t){if("undefined"==typeof document||"function"!=typeof document.getElementById)return;var n={},i=window.RTCPeerConnection||window.mozRTCPeerConnection||window.webkitRTCPeerConnection;if(!i){var r=document.getElementById("iframe");if(!r)return;var o=r.contentWindow;i=o.RTCPeerConnection||o.mozRTCPeerConnection||o.webkitRTCPeerConnection}if(!i)return;var a=null;"Chrome"===B.browser&&B.browser.version<58&&(a={optional:[{RtpDataChannels:!0}]});var s=new i({iceServers:[{urls:"stun:stun.l.google.com:19302"}]},a);t&&(s.addStream?s.addStream(t):s.addTrack&&t.getTracks()[0]&&s.addTrack(t.getTracks()[0],t));function c(t){if(t){var i=k.exec(t);if(i){var r=i[1],o=t.match(P),a=!0;void 0===n[r]&&e(r,o,a),n[r]=!0}}else e()}if(s.onicecandidate=function(e){e.candidate&&e.candidate.candidate?c(e.candidate.candidate):c()},!t)try{s.createDataChannel("sctp",{})}catch(e){}B.isPromisesSupported?s.createOffer().then((function(e){s.setLocalDescription(e).then(d)})):s.createOffer((function(e){s.setLocalDescription(e,d,(function(){}))}),(function(){}));function d(){s.localDescription.sdp.split("\n").forEach((function(e){e&&0===e.indexOf("a=candidate:")&&c(e)}))}}((function(t){t?t.match(P)?e("Local: "+t,n=!1,i):t.match(E)?e("Public: "+t,n,i=!1):e("Public: "+t,n,i):e()}),t)}},B.isWebSocketsSupported="WebSocket"in window&&2===window.WebSocket.CLOSING,B.isWebSocketsBlocked=!B.isWebSocketsSupported,"Nodejs"===B.osName&&(B.isWebSocketsSupported=!0,B.isWebSocketsBlocked=!1),B.checkWebSocketsSupport=function(e){e=e||function(){};try{var t,n=new WebSocket("wss://echo.websocket.org:443/");n.onopen=function(){B.isWebSocketsBlocked=!1,t=(new Date).getTime(),n.send("ping")},n.onmessage=function(){B.WebsocketLatency=(new Date).getTime()-t+"ms",e(),n.close(),n=null},n.onerror=function(){B.isWebSocketsBlocked=!0,e()}}catch(t){B.isWebSocketsBlocked=!0,e()}},B.load=function(e){j(e=e||function(){})},B.MediaDevices=void 0!==D?D:[],B.hasMicrophone=A,B.hasSpeakers=L,B.hasWebcam=N,B.isWebsiteHasWebcamPermissions=W,B.isWebsiteHasMicrophonePermissions=U,B.audioInputDevices=_,B.audioOutputDevices=M,B.videoInputDevices=O;var Y=!1;"undefined"!=typeof document&&"function"==typeof document.createElement&&"setSinkId"in document.createElement("video")&&(Y=!0),B.isSetSinkIdSupported=Y;var Q=!1;B.browser.isFirefox&&"undefined"!=typeof mozRTCPeerConnection?"getSenders"in mozRTCPeerConnection.prototype&&(Q=!0):B.browser.isChrome&&"undefined"!=typeof webkitRTCPeerConnection&&"getSenders"in webkitRTCPeerConnection.prototype&&(Q=!0),B.isRTPSenderReplaceTracksSupported=Q;var Z=!1;B.browser.isFirefox&&B.browser.version>38&&(Z=!0),B.isRemoteStreamProcessingSupported=Z;var ee=!1;void 0!==x&&"applyConstraints"in x.prototype&&(ee=!0),B.isApplyConstraintsSupported=ee;var te=!1;B.browser.isFirefox&&B.browser.version>=43&&(te=!0),B.isMultiMonitorScreenCapturingSupported=te,B.isPromisesSupported=!!("Promise"in window),B.version="1.3.9",void 0===B&&(window.DetectRTC={});var ne=window.MediaStream;void 0===ne&&"undefined"!=typeof webkitMediaStream&&(ne=webkitMediaStream),B.MediaStream=void 0!==ne&&"function"==typeof ne&&Object.keys(ne.prototype),B.MediaStreamTrack=void 0!==x&&Object.keys(x.prototype);var ie=window.RTCPeerConnection||window.mozRTCPeerConnection||window.webkitRTCPeerConnection;B.RTCPeerConnection=void 0!==ie&&Object.keys(ie.prototype),window.DetectRTC=B,e.exports=B,void 0===(i=function(){return B}.apply(t,[]))||(e.exports=i)}(),"undefined"!=typeof cordova&&(DetectRTC.isMobileDevice=!0,DetectRTC.browser.name="Chrome"),navigator&&navigator.userAgent&&-1!==navigator.userAgent.indexOf("Crosswalk")&&(DetectRTC.isMobileDevice=!0,DetectRTC.browser.name="Chrome"),window.addEventListener||(window.addEventListener=function(e,t,n){e.attachEvent&&e.attachEvent("on"+t,n)}),window.attachEventListener=function(e,t,n,i){e.addEventListener(t,n,i)};var C=window.MediaStream;function w(e,t){return(!e.session.audio||"two-way"!==e.session.audio)&&("Firefox"===DetectRTC.browser.name&&!1!==t||!("Chrome"!==DetectRTC.browser.name||DetectRTC.browser.version<50)&&(!0===typeof t||!(void 0!==t||!e.session.audio||!e.session.screen||e.session.video)&&(t=!0,!0)))}function y(e,t){return e&&e.getTracks?e.getTracks().filter((function(e){return e.kind===(t||"audio")})):[]}function S(){var e=!1;try{if("undefined"==typeof RTCRtpTransceiver)return!1;if(!("currentDirection"in RTCRtpTransceiver.prototype))return!1;var t=new T;try{t.addTransceiver("audio"),e=!0}catch(e){}t.close()}catch(t){e=!1}return e&&function(){var e=!1;try{var t=new T({sdpSemantics:"unified-plan"});try{var n=t.getConfiguration();e="unified-plan"==n.sdpSemantics||(n.sdpSemantics,!1)}catch(t){e=!1}}catch(t){e=!1}return e}()}function b(){if("undefined"!=typeof cordova&&void 0!==cordova.plugins&&void 0!==cordova.plugins.iosrtc){var e=cordova.plugins.iosrtc;window.webkitRTCPeerConnection=e.RTCPeerConnection,window.RTCSessionDescription=e.RTCSessionDescription,window.RTCIceCandidate=e.RTCIceCandidate,window.MediaStream=e.MediaStream,window.MediaStreamTrack=e.MediaStreamTrack,navigator.getUserMedia=navigator.webkitGetUserMedia=e.getUserMedia,e.debug.enable("iosrtc*"),"function"==typeof e.selectAudioOutput&&e.selectAudioOutput(window.iOSDefaultAudioOutputDevice||"speaker"),e.registerGlobals()}}void 0===C&&"undefined"!=typeof webkitMediaStream&&(C=webkitMediaStream),void 0!==C&&("stop"in C.prototype||(C.prototype.stop=function(){this.getTracks().forEach((function(e){e.stop()}))})),window.iOSDefaultAudioOutputDevice=window.iOSDefaultAudioOutputDevice||"speaker",document.addEventListener("deviceready",b,!1),b();var T,R={};function P(e){return{OfferToReceiveAudio:!!e.OfferToReceiveAudio,OfferToReceiveVideo:!!e.OfferToReceiveVideo}}void 0!==window.RTCPeerConnection?T=window.RTCPeerConnection:"undefined"!=typeof mozRTCPeerConnection?T=mozRTCPeerConnection:"undefined"!=typeof webkitRTCPeerConnection&&(T=webkitRTCPeerConnection);var k=window.RTCSessionDescription||window.mozRTCSessionDescription,E=window.RTCIceCandidate||window.mozRTCIceCandidate,x=window.MediaStreamTrack;function D(e){if(void 0!==window.RTCPeerConnection?T=window.RTCPeerConnection:"undefined"!=typeof mozRTCPeerConnection?T=mozRTCPeerConnection:"undefined"!=typeof webkitRTCPeerConnection&&(T=webkitRTCPeerConnection),k=window.RTCSessionDescription||window.mozRTCSessionDescription,E=window.RTCIceCandidate||window.mozRTCIceCandidate,x=window.MediaStreamTrack,!T)throw"WebRTC 1.0 (RTCPeerConnection) API are NOT available in this browser.";var t=e.rtcMultiConnection;this.extra=e.remoteSdp?e.remoteSdp.extra:t.extra,this.userid=e.userid,this.streams=[],this.channels=e.channels||[],this.connectionDescription=e.connectionDescription,this.addStream=function(e){t.addStream(e,n.userid)},this.removeStream=function(e){t.removeStream(e,n.userid)};var n=this;e.remoteSdp&&(this.connectionDescription=e.remoteSdp.connectionDescription);var i,r={};R.sdpConstraints=P({OfferToReceiveAudio:!0,OfferToReceiveVideo:!0});var o=!!e.renegotiatingPeer;e.remoteSdp&&(o=!!e.remoteSdp.renegotiatingPeer);var a=[];if(t.attachStreams.forEach((function(e){e&&a.push(e)})),o)i=e.peerRef;else{var s="all";(t.candidates.turn||t.candidates.relay)&&(t.candidates.stun||t.candidates.reflexive||t.candidates.host||(s="relay"));try{var c={iceServers:t.iceServers,iceTransportPolicy:t.iceTransportPolicy||s};void 0!==t.iceCandidatePoolSize&&(c.iceCandidatePoolSize=t.iceCandidatePoolSize),void 0!==t.bundlePolicy&&(c.bundlePolicy=t.bundlePolicy),void 0!==t.rtcpMuxPolicy&&(c.rtcpMuxPolicy=t.rtcpMuxPolicy),t.sdpSemantics&&(c.sdpSemantics=t.sdpSemantics||"unified-plan"),t.iceServers&&t.iceServers.length||(c=null,t.optionalArgument=null),i=new T(c,t.optionalArgument)}catch(e){try{c={iceServers:t.iceServers};i=new T(c)}catch(e){i=new T}}}!i.getRemoteStreams&&i.getReceivers&&(i.getRemoteStreams=function(){var e=new C;return i.getReceivers().forEach((function(t){e.addTrack(t.track)})),[e]}),!i.getLocalStreams&&i.getSenders&&(i.getLocalStreams=function(){var e=new C;return i.getSenders().forEach((function(t){e.addTrack(t.track)})),[e]}),i.onicecandidate=function(r){if(r.candidate)t.trickleIce&&e.onLocalCandidate({candidate:r.candidate.candidate,sdpMid:r.candidate.sdpMid,sdpMLineIndex:r.candidate.sdpMLineIndex});else if(!t.trickleIce){var o=i.localDescription;e.onLocalSdp({type:o.type,sdp:o.sdp,remotePeerSdpConstraints:e.remotePeerSdpConstraints||!1,renegotiatingPeer:!!e.renegotiatingPeer||!1,connectionDescription:n.connectionDescription,dontGetRemoteStream:!!e.dontGetRemoteStream,extra:t?t.extra:{},streamsToShare:m})}},a.forEach((function(r){e.remoteSdp&&e.remoteSdp.remotePeerSdpConstraints&&e.remoteSdp.remotePeerSdpConstraints.dontGetRemoteStream||e.dontAttachLocalStream||(r=t.beforeAddingStream(r,n))&&(i.getLocalStreams().forEach((function(e){r&&e.id==r.id&&(r=null)})),r&&r.getTracks&&r.getTracks().forEach((function(e){try{i.addTrack(e,r)}catch(e){}})))})),i.oniceconnectionstatechange=i.onsignalingstatechange=function(){var r=n.extra;t.peers[n.userid]&&(r=t.peers[n.userid].extra||r),i&&(e.onPeerStateChanged({iceConnectionState:i.iceConnectionState,iceGatheringState:i.iceGatheringState,signalingState:i.signalingState,extra:r,userid:n.userid}),i&&i.iceConnectionState&&-1!==i.iceConnectionState.search(/closed|failed/gi)&&n.streams instanceof Array&&n.streams.forEach((function(e){var n=t.streamEvents[e.id]||{streamid:e.id,stream:e,type:"remote"};t.onstreamended(n)})))};var d={OfferToReceiveAudio:!!a.length,OfferToReceiveVideo:!!a.length};e.localPeerSdpConstraints&&(d=e.localPeerSdpConstraints),R.sdpConstraints=P(d);var u={};i.ontrack=function(t){if(t&&"track"===t.type)if(t.stream=t.streams[t.streams.length-1],t.stream.id||(t.stream.id=t.track.id),u[t.stream.id]&&"Safari"!==DetectRTC.browser.name)t.track&&(t.track.onended=function(){i&&i.onremovestream(t)});else{u[t.stream.id]=t.stream.id;var n={};e.remoteSdp&&e.remoteSdp.streamsToShare?n=e.remoteSdp.streamsToShare:e.streamsToShare&&(n=e.streamsToShare);var o=n[t.stream.id];o?(t.stream.isAudio=o.isAudio,t.stream.isVideo=o.isVideo,t.stream.isScreen=o.isScreen):(t.stream.isVideo=!!y(t.stream,"video").length,t.stream.isAudio=!t.stream.isVideo,t.stream.isScreen=!1),t.stream.streamid=t.stream.id,r[t.stream.id]=t.stream,e.onRemoteStream(t.stream),t.stream.getTracks().forEach((function(e){e.onended=function(){i&&i.onremovestream(t)}})),t.stream.onremovetrack=function(){i&&i.onremovestream(t)}}},i.onremovestream=function(t){t.stream.streamid=t.stream.id,r[t.stream.id]&&delete r[t.stream.id],e.onRemoteStreamRemoved(t.stream)},"function"!=typeof i.removeStream&&(i.removeStream=function(e){e.getTracks().forEach((function(t){i.removeTrack(t,e)}))}),this.addRemoteCandidate=function(e){i.addIceCandidate(new E(e))},this.addRemoteSdp=function(e,n){n=n||function(){},"Safari"!==DetectRTC.browser.name&&(e.sdp=t.processSdp(e.sdp)),i.setRemoteDescription(new k(e)).then(n,(function(i){t.enableLogs&&console.error("setRemoteDescription failed","\n",i,"\n",e.sdp),n()})).catch((function(i){t.enableLogs&&console.error("setRemoteDescription failed","\n",i,"\n",e.sdp),n()}))};var l=!0;function p(t){t.binaryType="arraybuffer",t.onmessage=function(t){e.onDataChannelMessage(t.data)},t.onopen=function(){e.onDataChannelOpened(t)},t.onerror=function(t){e.onDataChannelError(t)},t.onclose=function(t){e.onDataChannelClosed(t)},t.internalSend=t.send,t.send=function(e){"open"===t.readyState&&t.internalSend(e)},i.channel=t}e.remoteSdp&&(l=!1),this.createDataChannel=function(){p(i.createDataChannel("sctp",{}))},!0!==t.session.data||o||(l?this.createDataChannel():i.ondatachannel=function(e){p(e.channel)}),this.enableDisableVideoEncoding=function(e){var t;if(i.getSenders().forEach((function(e){t||"video"!==e.track.kind||(t=e)})),t&&t.getParameters){var n=t.getParameters();n.encodings[1]&&(n.encodings[1].active=!!e),n.encodings[2]&&(n.encodings[2].active=!!e),t.setParameters(n)}},e.remoteSdp&&(e.remoteSdp.remotePeerSdpConstraints&&(d=e.remoteSdp.remotePeerSdpConstraints),R.sdpConstraints=P(d),this.addRemoteSdp(e.remoteSdp,(function(){f("createAnswer")}))),"two-way"!=t.session.audio&&"two-way"!=t.session.video&&"two-way"!=t.session.screen||(R.sdpConstraints=P({OfferToReceiveAudio:"two-way"==t.session.audio||e.remoteSdp&&e.remoteSdp.remotePeerSdpConstraints&&e.remoteSdp.remotePeerSdpConstraints.OfferToReceiveAudio,OfferToReceiveVideo:"two-way"==t.session.video||"two-way"==t.session.screen||e.remoteSdp&&e.remoteSdp.remotePeerSdpConstraints&&e.remoteSdp.remotePeerSdpConstraints.OfferToReceiveAudio}));var m={};function f(r){i[r](R.sdpConstraints).then((function(r){"Safari"!==DetectRTC.browser.name&&(r.sdp=t.processSdp(r.sdp)),i.setLocalDescription(r).then((function(){t.trickleIce&&(e.onLocalSdp({type:r.type,sdp:r.sdp,remotePeerSdpConstraints:e.remotePeerSdpConstraints||!1,renegotiatingPeer:!!e.renegotiatingPeer||!1,connectionDescription:n.connectionDescription,dontGetRemoteStream:!!e.dontGetRemoteStream,extra:t?t.extra:{},streamsToShare:m}),t.onSettingLocalDescription(n))}),(function(e){t.enableLogs&&console.error("setLocalDescription error",e)}))}),(function(e){t.enableLogs&&console.error("sdp-error",e)}))}i.getLocalStreams().forEach((function(e){m[e.streamid]={isAudio:!!e.isAudio,isVideo:!!e.isVideo,isScreen:!!e.isScreen}})),l&&f("createOffer"),i.nativeClose=i.close,i.close=function(){if(i){try{i.nativeClose!==i.close&&i.nativeClose()}catch(e){}i=null,n.peer=null}},this.peer=i}var _=function(){function e(e,i){var r=n(e);return r.videoCodecNumbers?"vp8"===i&&r.vp8LineNumber===r.videoCodecNumbers[0]||"vp9"===i&&r.vp9LineNumber===r.videoCodecNumbers[0]||"h264"===i&&r.h264LineNumber===r.videoCodecNumbers[0]?e:e=t(e,i,r):e}function t(e,t,n,i){var r="";if("vp8"===t){if(!n.vp8LineNumber)return e;r=n.vp8LineNumber}if("vp9"===t){if(!n.vp9LineNumber)return e;r=n.vp9LineNumber}if("h264"===t){if(!n.h264LineNumber)return e;r=n.h264LineNumber}var o=n.videoCodecNumbersOriginal.split("SAVPF")[0]+"SAVPF ",a=[r];return i&&(a=[]),n.videoCodecNumbers.forEach((function(e){e!==r&&a.push(e)})),o+=a.join(" "),e=e.replace(n.videoCodecNumbersOriginal,o)}function n(e){var t={};return e.split("\n").forEach((function(e){0===e.indexOf("m=video")&&(t.videoCodecNumbers=[],e.split("SAVPF")[1].split(" ").forEach((function(n){(n=n.trim())&&n.length&&(t.videoCodecNumbers.push(n),t.videoCodecNumbersOriginal=e)}))),-1===e.indexOf("VP8/90000")||t.vp8LineNumber||(t.vp8LineNumber=e.replace("a=rtpmap:","").split(" ")[0]),-1===e.indexOf("VP9/90000")||t.vp9LineNumber||(t.vp9LineNumber=e.replace("a=rtpmap:","").split(" ")[0]),-1===e.indexOf("H264/90000")||t.h264LineNumber||(t.h264LineNumber=e.replace("a=rtpmap:","").split(" ")[0])})),t}function i(e,t,n){return function(e,t,n,i,r){for(var o=-1!==n?n:e.length,a=t;a<o;++a)if(0===e[a].indexOf(i)&&(!r||-1!==e[a].toLowerCase().indexOf(r.toLowerCase())))return a;return null}(e,0,-1,t,n)}function r(e){var t=new RegExp("a=rtpmap:(\\d+) \\w+\\/\\d+"),n=e.match(t);return n&&2===n.length?n[1]:null}return{removeVPX:function(e){var i=n(e);return e=t(e,"vp9",i,!0),e=t(e,"vp8",i,!0)},disableNACK:function(e){if(!e||"string"!=typeof e)throw"Invalid arguments.";return e=(e=(e=(e=e.replace("a=rtcp-fb:126 nack\r\n","")).replace("a=rtcp-fb:126 nack pli\r\n","a=rtcp-fb:126 pli\r\n")).replace("a=rtcp-fb:97 nack\r\n","")).replace("a=rtcp-fb:97 nack pli\r\n","a=rtcp-fb:97 pli\r\n")},prioritize:function(e,t){if(t&&t.getSenders&&t.getSenders().length){if(!e||"string"!=typeof e)throw"Invalid arguments.";t.getSenders().forEach((function(t){for(var n=t.getParameters(),i=0;i<n.codecs.length;i++)if(n.codecs[i].mimeType==e){n.codecs.unshift(n.codecs.splice(i,1));break}t.setParameters(n)}))}},removeNonG722:function(e){return e.replace(/m=audio ([0-9]+) RTP\/SAVPF ([0-9 ]*)/g,"m=audio $1 RTP/SAVPF 9")},setApplicationSpecificBandwidth:function(e,t,n){return function(e,t,n){return t?("undefined"!=typeof isFirefox&&isFirefox||(n&&(t.screen?t.screen<300&&console.warn("It seems that you are using wrong bandwidth value for screen. Screen sharing is expected to fail."):console.warn("It seems that you are not using bandwidth for screen. Screen sharing is expected to fail.")),t.screen&&n&&(e=(e=e.replace(/b=AS([^\r\n]+\r\n)/g,"")).replace(/a=mid:video\r\n/g,"a=mid:video\r\nb=AS:"+t.screen+"\r\n")),(t.audio||t.video)&&(e=e.replace(/b=AS([^\r\n]+\r\n)/g,"")),t.audio&&(e=e.replace(/a=mid:audio\r\n/g,"a=mid:audio\r\nb=AS:"+t.audio+"\r\n")),t.screen?e=e.replace(/a=mid:video\r\n/g,"a=mid:video\r\nb=AS:"+t.screen+"\r\n"):t.video&&(e=e.replace(/a=mid:video\r\n/g,"a=mid:video\r\nb=AS:"+t.video+"\r\n"))),e):e}(e,t,n)},setVideoBitrates:function(e,t){return function(e,t){var n,o=(t=t||{}).min,a=t.max,s=e.split("\r\n"),c=i(s,"a=rtpmap","VP8/90000");if(c&&(n=r(s[c])),!n)return e;var d,u=i(s,"a=rtpmap","rtx/90000");if(u&&(d=r(s[u])),!u)return e;var l=i(s,"a=fmtp:"+d.toString());if(null!==l){var p="\r\n";p+="a=fmtp:"+n+" x-google-min-bitrate="+(o||"228")+"; x-google-max-bitrate="+(a||"228"),s[l]=s[l].concat(p),e=s.join("\r\n")}return e}(e,t)},setOpusAttributes:function(e,t){return function(e,t){t=t||{};var n,o=e.split("\r\n"),a=i(o,"a=rtpmap","opus/48000");if(a&&(n=r(o[a])),!n)return e;var s=i(o,"a=fmtp:"+n.toString());if(null===s)return e;var c="";return c+="; stereo="+(void 0!==t.stereo?t.stereo:"1"),c+="; sprop-stereo="+(void 0!==t["sprop-stereo"]?t["sprop-stereo"]:"1"),void 0!==t.maxaveragebitrate&&(c+="; maxaveragebitrate="+(t.maxaveragebitrate||1048576)),void 0!==t.maxplaybackrate&&(c+="; maxplaybackrate="+(t.maxplaybackrate||1048576)),void 0!==t.cbr&&(c+="; cbr="+(void 0!==t.cbr?t.cbr:"1")),void 0!==t.useinbandfec&&(c+="; useinbandfec="+t.useinbandfec),void 0!==t.usedtx&&(c+="; usedtx="+t.usedtx),void 0!==t.maxptime&&(c+="\r\na=maxptime:"+t.maxptime),o[s]=o[s].concat(c),o.join("\r\n")}(e,t)},preferVP9:function(t){return e(t,"vp9")},preferCodec:e,forceStereoAudio:function(e){for(var t=e.split("\r\n"),n=null,i=0;i<t.length;i++)if(-1!==t[i].search("opus/48000")){var r=extractSdp(t[i],/:(\d+) opus\/48000/i);break}for(i=0;i<t.length;i++){if(-1!==t[i].search("a=fmtp"))if(extractSdp(t[i],/a=fmtp:(\d+)/)===r){n=i;break}}return null===n?e:(t[n]=t[n].concat("; stereo=1; sprop-stereo=1"),e=t.join("\r\n"))}}}();window.BandwidthHandler=_;var M={processCandidates:function(e,t){var n=t.candidate,i=e.candidates,r=i.stun,o=i.turn;if(h(i.reflexive)||(r=i.reflexive),h(i.relay)||(o=i.relay),(i.host||!n.match(/typ host/g))&&(o||!n.match(/typ relay/g))&&(r||!n.match(/typ srflx/g))){var a=e.iceProtocols;if((a.udp||!n.match(/ udp /g))&&(a.tcp||!n.match(/ tcp /g)))return e.enableLogs&&console.debug("Your candidate pairs:",n),{candidate:n,sdpMid:t.sdpMid,sdpMLineIndex:t.sdpMLineIndex}}}},O={getIceServers:function(e){return[{urls:["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302","stun:stun2.l.google.com:19302","stun:stun.l.google.com:19302?transport=udp"]}]}};function I(e){if(!0!==currentUserMediaRequest.mutex){currentUserMediaRequest.mutex=!0;var t=JSON.stringify(e.localMediaConstraints);if(currentUserMediaRequest.streams[t])o(currentUserMediaRequest.streams[t].stream,!0);else{if(!!/BB10|BlackBerry/i.test(navigator.userAgent||"")||void 0===navigator.mediaDevices||"function"!=typeof navigator.mediaDevices.getUserMedia)return navigator.getUserMedia=navigator.getUserMedia||navigator.webkitGetUserMedia||navigator.mozGetUserMedia,void navigator.getUserMedia(e.localMediaConstraints,(function(e){e.streamid=e.streamid||e.id||p(),e.idInstance=t,o(e)}),(function(t){e.onLocalMediaError(t,e.localMediaConstraints)}));if(void 0===navigator.mediaDevices){navigator.getUserMedia=navigator.getUserMedia||navigator.webkitGetUserMedia||navigator.mozGetUserMedia;var n,i,r=function(){};navigator.mediaDevices={getUserMedia:function(e){return navigator.getUserMedia(e,(function(e){e(stream),n=stream}),(function(e){r(e),i=e})),{then:function(e){if(!n)return e,{then:function(e){i?e(i):r=e}};e(n)}}}}}if(!0===e.localMediaConstraints.isScreen){if(navigator.mediaDevices.getDisplayMedia)navigator.mediaDevices.getDisplayMedia(e.localMediaConstraints).then((function(e){e.streamid=e.streamid||e.id||p(),e.idInstance=t,o(e)})).catch((function(t){e.onLocalMediaError(t,e.localMediaConstraints)}));else{if(!navigator.getDisplayMedia)throw new Error("getDisplayMedia API is not availabe in this browser.");navigator.getDisplayMedia(e.localMediaConstraints).then((function(e){e.streamid=e.streamid||e.id||p(),e.idInstance=t,o(e)})).catch((function(t){e.onLocalMediaError(t,e.localMediaConstraints)}))}return}navigator.mediaDevices.getUserMedia(e.localMediaConstraints).then((function(e){e.streamid=e.streamid||e.id||p(),e.idInstance=t,o(e)})).catch((function(t){e.onLocalMediaError(t,e.localMediaConstraints)}))}}else currentUserMediaRequest.queueRequests.push(e);function o(n,i){!function(e,t){e.mandatory&&e.mandatory.chromeMediaSource||e.mozMediaSource||e.mediaSource?t.isScreen=!0:e.video?t.isVideo=!0:e.audio&&(t.isAudio=!0)}(e.localMediaConstraints,n);var r="ended";"oninactive"in n&&(r="inactive"),n.addEventListener(r,(function(){delete currentUserMediaRequest.streams[t],currentUserMediaRequest.mutex=!1,currentUserMediaRequest.queueRequests.indexOf(e)&&(delete currentUserMediaRequest.queueRequests[currentUserMediaRequest.queueRequests.indexOf(e)],currentUserMediaRequest.queueRequests=v(currentUserMediaRequest.queueRequests))}),!1),currentUserMediaRequest.streams[t]={stream:n},currentUserMediaRequest.mutex=!1,currentUserMediaRequest.queueRequests.length&&I(currentUserMediaRequest.queueRequests.shift()),e.onGettingLocalMedia(n,i)}}window.currentUserMediaRequest={streams:[],mutex:!1,queueRequests:[],remove:function(e){this.mutex=!1;var t=this.streams[e];if(t){var n=(t=t.stream).currentUserMediaRequestOptions;this.queueRequests.indexOf(n)&&(delete this.queueRequests[this.queueRequests.indexOf(n)],this.queueRequests=v(this.queueRequests)),this.streams[e].stream=null,delete this.streams[e]}}};var A=function(){function e(e){if(e)return"string"==typeof e||void 0===e?e:e.audio&&e.video?null:e.audio?"audio":e.video?"video":void 0}function t(e,n,i,r){(r=(r||0)+1)>=n||setTimeout((function(){i(),t(e,n,i,r)}),e)}return{setHandlers:function(n,i,r){if(n&&n.addEventListener){if(void 0===i||1==i){var o="ended";"oninactive"in n&&(o="inactive"),n.addEventListener(o,(function(){A.onSyncNeeded(this.streamid,o)}),!1)}n.mute=function(t,o){t=e(t),void 0!==o&&(i=o),void 0!==t&&"audio"!=t||y(n,"audio").forEach((function(e){e.enabled=!1,r.streamEvents[n.streamid].isAudioMuted=!0})),void 0!==t&&"video"!=t||y(n,"video").forEach((function(e){e.enabled=!1})),void 0!==i&&1!=i||A.onSyncNeeded(n.streamid,"mute",t),r.streamEvents[n.streamid].muteType=t||"both",u(n,"mute",t)},n.unmute=function(o,a){o=e(o),void 0!==a&&(i=a),function(){if(!r.streamEvents[n.streamid].mediaElement)return;var e=r.streamEvents[n.streamid].mediaElement;e.volume=0,t(200,5,(function(){try{e.volume+=.2}catch(t){e.volume=1}}))}(),void 0!==o&&"audio"!=o||y(n,"audio").forEach((function(e){e.enabled=!0,r.streamEvents[n.streamid].isAudioMuted=!1})),void 0!==o&&"video"!=o||(y(n,"video").forEach((function(e){e.enabled=!0})),void 0!==o&&"video"==o&&r.streamEvents[n.streamid].isAudioMuted&&function e(t){t||(t=0),++t<100&&r.streamEvents[n.streamid].isAudioMuted&&(n.mute("audio"),setTimeout((function(){e(t)}),50))}()),void 0!==i&&1!=i||A.onSyncNeeded(n.streamid,"unmute",o),r.streamEvents[n.streamid].unmuteType=o||"both",u(n,"unmute",o)}}},onSyncNeeded:function(e,t,n){}}}();function L(e){var t={};return{receive:function(n,i,r){var o=n.uuid;if(t[o]||(t[o]=[]),t[o].push(n.message),n.last){var a=t[o].join("");n.isobject&&(a=JSON.parse(a));var s={data:a,userid:i,extra:r,latency:(new Date).getTime()-n.sendingTime};e.autoTranslateText?(s.original=s.data,e.Translator.TranslateText(s.data,(function(t){s.data=t,e.onmessage(s)}))):e.onmessage(s),delete t[o]}}}}var N={send:function(e){var t=e.connection,n=e.channel,i=e.remoteUserId,r=e.text,o=t.chunkSize||1e3,a="",s=!1;"string"!=typeof r&&(s=!0,r=JSON.stringify(r));var c=p(),d=(new Date).getTime();!function e(r,u){var l={type:"text",uuid:c,sendingTime:d};r&&(u=r,l.packets=parseInt(u.length/o));u.length>o?l.message=u.slice(0,o):(l.message=u,l.last=!0,l.isobject=s);n.send(l,i),(a=u.slice(l.message.length)).length&&setTimeout((function(){e(null,a)}),t.chunkInterval||100)}(r)}},U={handle:function(e){var t={};e.onFileStart=function(n){var i=document.createElement("div");if(i.title=n.name,i.innerHTML="<label>0%</label> <progress></progress>",n.remoteUserId&&(i.innerHTML+=" (Sharing with:"+n.remoteUserId+")"),e.filesContainer||(e.filesContainer=document.body||document.documentElement),e.filesContainer.insertBefore(i,e.filesContainer.firstChild),!n.remoteUserId)return t[n.uuid]={div:i,progress:i.querySelector("progress"),label:i.querySelector("label")},void(t[n.uuid].progress.max=n.maxChunks);t[n.uuid]||(t[n.uuid]={}),t[n.uuid][n.remoteUserId]={div:i,progress:i.querySelector("progress"),label:i.querySelector("label")},t[n.uuid][n.remoteUserId].progress.max=n.maxChunks},e.onFileProgress=function(e){var n=t[e.uuid];n&&(e.remoteUserId&&!(n=t[e.uuid][e.remoteUserId])||(n.progress.value=e.currentPosition||e.maxChunks||n.progress.max,function(e,t){if(-1!==e.position){var n=+e.position.toFixed(2).split(".")[1]||100;t.innerHTML=n+"%"}}(n.progress,n.label)))},e.onFileEnd=function(e){var n=t[e.uuid];if(n){if(!e.remoteUserId||(n=t[e.uuid][e.remoteUserId])){var i=n.div;-1!=e.type.indexOf("image")?i.innerHTML='<a href="'+e.url+'" download="'+e.name+'">Download <strong style="color:red;">'+e.name+'</strong> </a><br /><img src="'+e.url+'" title="'+e.name+'" style="max-width: 80%;">':i.innerHTML='<a href="'+e.url+'" download="'+e.name+'">Download <strong style="color:red;">'+e.name+'</strong> </a><br /><iframe src="'+e.url+'" title="'+e.name+'" style="width: 80%;border: 0;height: inherit;margin-top:1em;"></iframe>'}}else console.error("No such progress-helper element exist.",e)}}},W={handle:function(e){e.autoTranslateText=!1,e.language="en",e.googKey="AIzaSyCgB5hmFY74WYB-EoWkhr9cAGr6TiTHrEE",e.Translator={TranslateText:function(t,n){var i=document.createElement("script");i.type="text/javascript";var r=encodeURIComponent(t),o="method"+e.token();window[o]=function(e){e.data&&e.data.translations[0]&&n?n(e.data.translations[0].translatedText):e.error&&"Daily Limit Exceeded"===e.error.message?console.error('Text translation failed. Error message: "Daily Limit Exceeded."'):e.error?console.error(e.error.message):console.error(e)};var a="https://www.googleapis.com/language/translate/v2?key="+e.googKey+"&target="+(e.language||"en-US")+"&callback=window."+o+"&q="+r;i.src=a,document.getElementsByTagName("head")[0].appendChild(i)},getListOfLanguages:function(t){var n=new XMLHttpRequest;n.onreadystatechange=function(){if(n.readyState==XMLHttpRequest.DONE){var e=JSON.parse(n.responseText);if(e&&e.data&&e.data.languages)return void t(e.data.languages);if(e.error&&"Daily Limit Exceeded"===e.error.message)return void console.error('Text translation failed. Error message: "Daily Limit Exceeded."');if(e.error)return void console.error(e.error.message);console.error(e)}};var i="https://www.googleapis.com/language/translate/v2/languages?key="+e.googKey+"&target=en";n.open("GET",i,!0),n.send(null)}}}};!function(e){a=a||{useDefaultDevices:!0},e.channel=e.sessionid=(o||location.href.replace(/\/|:|#|\?|\$|\^|%|\.|`|~|!|\+|@|\[|\||]|\|*. /g,"").split("\n").join("").split("\r").join(""))+"";var t=new d(e),n={};function i(t){if(e.socketAutoReConnect=!0,e.socket)t&&t(e.socket);else{if(void 0===c)if("undefined"!=typeof FirebaseConnection)window.SocketConnection=FirebaseConnection;else{if("undefined"==typeof PubNubConnection)throw"SocketConnection.js seems missed.";window.SocketConnection=PubNubConnection}new c(e,(function(n){t&&t(e.socket)}))}}function r(n,i){e.socket.emit("join-room",{sessionid:e.sessionid,session:e.session,mediaConstraints:e.mediaConstraints,sdpConstraints:e.sdpConstraints,streams:u(),extra:e.extra,password:void 0!==e.password&&"object"!=typeof e.password?e.password:""},(function(r,o){if(!0===r){if(e.enableLogs&&console.log("isRoomJoined: ",r," roomid: ",e.sessionid),e.peers[e.sessionid])return;t.onNegotiationNeeded(n)}!1===r&&e.enableLogs&&console.warn("isRoomJoined: ",o," roomid: ",e.sessionid),i(r,e.sessionid,o)}))}function s(t){e.enableLogs&&console.log("Sending open-room signal to socket.io"),e.waitingForLocalMedia=!1,e.socket.emit("open-room",{sessionid:e.sessionid,session:e.session,mediaConstraints:e.mediaConstraints,sdpConstraints:e.sdpConstraints,streams:u(),extra:e.extra,identifier:e.publicRoomIdentifier,password:void 0!==e.password&&"object"!=typeof e.password?e.password:""},(function(n,i){!0===n&&(e.enableLogs&&console.log("isRoomOpened: ",n," roomid: ",e.sessionid),t(n,e.sessionid)),!1===n&&(e.enableLogs&&console.warn("isRoomOpened: ",i," roomid: ",e.sessionid),t(n,e.sessionid,i))}))}function u(){try{return e.streamEvents.selectAll("local").map((function(e){return{streamid:e.streamid,tracks:e.stream.getTracks().length}}))}catch(e){return[]}}function v(n,i){if(e.dontCaptureUserMedia||n.isDataOnly)i();else{var r={};n.localPeerSdpConstraints.OfferToReceiveAudio&&(r.audio=e.mediaConstraints.audio),n.localPeerSdpConstraints.OfferToReceiveVideo&&(r.video=e.mediaConstraints.video);var o=n.session||e.session;o.oneway&&"two-way"!==o.audio&&"two-way"!==o.video&&"two-way"!==o.screen?i():(o.oneway&&o.audio&&"two-way"===o.audio&&(o={audio:!0}),(o.audio||o.video||o.screen)&&(o.screen?"Edge"===DetectRTC.browser.name?navigator.getDisplayMedia({video:!0,audio:w(e)}).then((function(n){n.isScreen=!0,t.onGettingLocalMedia(n),!o.audio&&!o.video||w(e)?i(n):e.invokeGetUserMedia(null,i)}),(function(e){console.error("Unable to capture screen on Edge. HTTPs and version 17+ is required.")})):e.invokeGetUserMedia({audio:w(e),video:!0,isScreen:!0},!o.audio&&!o.video||w(e)?i:e.invokeGetUserMedia(null,i)):(o.audio||o.video)&&e.invokeGetUserMedia(null,i,o)))}}function h(t,n){t?(n.audio&&y(t,"audio").forEach((function(e){e.applyConstraints(n.audio)})),n.video&&y(t,"video").forEach((function(e){e.applyConstraints(n.video)}))):e.enableLogs&&console.error("No stream to applyConstraints.")}function b(n,i,r){i?t.replaceTrack(n,i,r):e.peers.getAllParticipants().forEach((function(e){t.replaceTrack(n,e,r)}))}t.onGettingLocalMedia=function(t,i){if(i=i||function(){},n[t.streamid])i();else{n[t.streamid]=!0;try{t.type="local"}catch(e){}e.setStreamEndHandler(t),m(t,(function(n){n.id=t.streamid,n.muted=!0,n.volume=0,-1===e.attachStreams.indexOf(t)&&e.attachStreams.push(t),void 0!==A&&A.setHandlers(t,!0,e),e.streamEvents[t.streamid]={stream:t,type:"local",mediaElement:n,userid:e.userid,extra:e.extra,streamid:t.streamid,isAudioMuted:!0};try{!function(e,t){if(t.stream&&y(t.stream,"audio").length){if(!e||!t)throw"Both arguments are required.";if(e.onspeaking&&e.onsilence){if("undefined"==typeof hark)throw"hark.js not found.";hark(t.stream,{onspeaking:function(){e.onspeaking(t)},onsilence:function(){e.onsilence(t)},onvolumechange:function(n,i){e.onvolumechange&&e.onvolumechange(merge({volume:n,threshold:i},t))}})}}}(e,e.streamEvents[t.streamid]),l(e,e.streamEvents[t.streamid]),e.onstream(e.streamEvents[t.streamid])}catch(e){}i()}),e)}},t.onGettingRemoteMedia=function(t,n){try{t.type="remote"}catch(e){}e.setStreamEndHandler(t,"remote-stream"),m(t,(function(i){i.id=t.streamid,void 0!==A&&A.setHandlers(t,!1,e),e.streamEvents[t.streamid]={stream:t,type:"remote",userid:n,extra:e.peers[n]?e.peers[n].extra:{},mediaElement:i,streamid:t.streamid},l(e,e.streamEvents[t.streamid]),e.onstream(e.streamEvents[t.streamid])}),e)},t.onRemovingRemoteMedia=function(t,n){var i=e.streamEvents[t.streamid];i||(i={stream:t,type:"remote",userid:n,extra:e.peers[n]?e.peers[n].extra:{},streamid:t.streamid,mediaElement:e.streamEvents[t.streamid]?e.streamEvents[t.streamid].mediaElement:null}),e.peersBackup[i.userid]&&(i.extra=e.peersBackup[i.userid].extra),e.onstreamended(i),delete e.streamEvents[t.streamid]},t.onNegotiationNeeded=function(t,n,r){r=r||function(){};var o={remoteUserId:n=n||t.remoteUserId,message:t=t||"",sender:e.userid};t.remoteUserId&&t.message&&t.sender&&(o=t),i((function(){e.socket.emit(e.socketMessageEvent,o,r)}))},t.onUserLeft=function(t){e.deletePeer(t)},t.disconnectWith=function(t,n){e.socket&&e.socket.emit("disconnect-with",t,n||function(){}),e.deletePeer(t)},e.socketOptions={transport:"polling"},e.openOrJoin=function(t,n){n=n||function(){},e.checkPresence(t,(function(t,i){if(t){e.sessionid=i;var o,a,c=!!e.session.oneway,d=g(e.session);a={OfferToReceiveAudio:e.sdpConstraints.mandatory.OfferToReceiveAudio,OfferToReceiveVideo:e.sdpConstraints.mandatory.OfferToReceiveVideo},o={OfferToReceiveAudio:c?!!e.session.audio:e.sdpConstraints.mandatory.OfferToReceiveAudio,OfferToReceiveVideo:c?!!e.session.video||!!e.session.screen:e.sdpConstraints.mandatory.OfferToReceiveVideo};var u={remoteUserId:e.sessionid,message:{newParticipationRequest:!0,isOneWay:c,isDataOnly:d,localPeerSdpConstraints:o,remotePeerSdpConstraints:a},sender:e.userid};v(u.message,(function(){r(u,n)}))}else e.waitingForLocalMedia=!0,e.isInitiator=!0,e.sessionid=i||e.sessionid,g(e.session)?s(n):e.captureUserMedia((function(){s(n)}))}))},e.waitingForLocalMedia=!1,e.open=function(t,n){n=n||function(){},e.waitingForLocalMedia=!0,e.isInitiator=!0,e.sessionid=t||e.sessionid,i((function(){g(e.session)?s(n):e.captureUserMedia((function(){s(n)}))}))},e.peersBackup={},e.deletePeer=function(t){if(t&&e.peers[t]){var n={userid:t,extra:e.peers[t]?e.peers[t].extra:{}};if(e.peersBackup[n.userid]&&(n.extra=e.peersBackup[n.userid].extra),e.onleave(n),e.peers[t]){e.peers[t].streams.forEach((function(e){e.stop()}));var i=e.peers[t].peer;if(i&&"closed"!==i.iceConnectionState)try{i.close()}catch(e){}e.peers[t]&&(e.peers[t].peer=null,delete e.peers[t])}}},e.rejoin=function(t){if(!e.isInitiator&&t&&Object.keys(t).length){var n={};e.peers[t.remoteUserId]&&(n=e.peers[t.remoteUserId].extra,e.deletePeer(t.remoteUserId)),t&&t.remoteUserId&&(e.join(t.remoteUserId),e.onReConnecting({userid:t.remoteUserId,extra:n}))}},e.join=function(t,n){e.sessionid=!!t&&(t.sessionid||t.remoteUserId||t)||e.sessionid,e.sessionid+="";var o=!1,a=!1,s=!1,c=!1;if(t&&t.session||!t||"string"==typeof t){var d=t&&t.session||e.session;s=!!d.oneway,c=g(d),a={OfferToReceiveAudio:e.sdpConstraints.mandatory.OfferToReceiveAudio,OfferToReceiveVideo:e.sdpConstraints.mandatory.OfferToReceiveVideo},o={OfferToReceiveAudio:s?!!e.session.audio:e.sdpConstraints.mandatory.OfferToReceiveAudio,OfferToReceiveVideo:s?!!e.session.video||!!e.session.screen:e.sdpConstraints.mandatory.OfferToReceiveVideo}}var u=function(){};"function"==typeof(n=n||{})&&(u=n,n={}),void 0!==n.localPeerSdpConstraints&&(o=n.localPeerSdpConstraints),void 0!==n.remotePeerSdpConstraints&&(a=n.remotePeerSdpConstraints),void 0!==n.isOneWay&&(s=n.isOneWay),void 0!==n.isDataOnly&&(c=n.isDataOnly);var l={remoteUserId:e.sessionid,message:{newParticipationRequest:!0,isOneWay:s,isDataOnly:c,localPeerSdpConstraints:o,remotePeerSdpConstraints:a},sender:e.userid};return v(l.message,(function(){i((function(){r(l,u)}))})),l},e.publicRoomIdentifier="",e.getUserMedia=e.captureUserMedia=function(n,i){n=n||function(){};var r=i||e.session;e.dontCaptureUserMedia||g(r)?n():(r.audio||r.video||r.screen)&&(r.screen?"Edge"===DetectRTC.browser.name?navigator.getDisplayMedia({video:!0,audio:w(e)}).then((function(o){if(o.isScreen=!0,t.onGettingLocalMedia(o),!r.audio&&!r.video||w(e))n(o);else{var a={};for(var s in r)"screen"!==s&&(a[s]=r[s]);e.invokeGetUserMedia(i,n,a)}}),(function(e){console.error("Unable to capture screen on Edge. HTTPs and version 17+ is required.")})):e.invokeGetUserMedia({audio:w(e),video:!0,isScreen:!0},(function(t){if(!r.audio&&!r.video||w(e))n(t);else{var o={};for(var a in r)"screen"!==a&&(o[a]=r[a]);e.invokeGetUserMedia(i,n,o)}})):(r.audio||r.video)&&e.invokeGetUserMedia(i,n,r))},e.onbeforeunload=function(n,i){e.closeBeforeUnload&&(e.peers.getAllParticipants().forEach((function(n){t.onNegotiationNeeded({userLeft:!0},n),e.peers[n]&&e.peers[n].peer&&e.peers[n].peer.close(),delete e.peers[n]})),i||e.closeSocket(),e.isInitiator=!1)},window.ignoreBeforeUnload?e.closeBeforeUnload=!1:(e.closeBeforeUnload=!0,window.addEventListener("beforeunload",e.onbeforeunload,!1)),e.userid=p(),e.changeUserId=function(t,n){n=n||function(){},e.userid=t||p(),e.socket.emit("changed-uuid",e.userid,n)},e.extra={},e.attachStreams=[],e.session={audio:!0,video:!0},e.enableFileSharing=!1,e.bandwidth={screen:!1,audio:!1,video:!1},e.codecs={audio:"opus",video:"VP9"},e.processSdp=function(t){return S()||"Safari"===DetectRTC.browser.name?t:("VP8"===e.codecs.video.toUpperCase()&&(t=_.preferCodec(t,"vp8")),"VP9"===e.codecs.video.toUpperCase()&&(t=_.preferCodec(t,"vp9")),"H264"===e.codecs.video.toUpperCase()&&(t=_.preferCodec(t,"h264")),"G722"===e.codecs.audio&&(t=_.removeNonG722(t)),"Firefox"===DetectRTC.browser.name||((e.bandwidth.video||e.bandwidth.screen)&&(t=_.setApplicationSpecificBandwidth(t,e.bandwidth,!!e.session.screen)),e.bandwidth.video&&(t=_.setVideoBitrates(t,{min:8*e.bandwidth.video*1024,max:8*e.bandwidth.video*1024})),e.bandwidth.audio&&(t=_.setOpusAttributes(t,{maxaveragebitrate:8*e.bandwidth.audio*1024,maxplaybackrate:8*e.bandwidth.audio*1024,stereo:1,maxptime:3}))),t)},void 0!==_&&(e.BandwidthHandler=e.CodecsHandler=_),e.mediaConstraints={audio:{mandatory:{},optional:e.bandwidth.audio?[{bandwidth:8*e.bandwidth.audio*1024||1048576}]:[]},video:{mandatory:{},optional:e.bandwidth.video?[{bandwidth:8*e.bandwidth.video*1024||1048576},{facingMode:"user"}]:[{facingMode:"user"}]}},"Firefox"===DetectRTC.browser.name&&(e.mediaConstraints={audio:!0,video:!0}),a.useDefaultDevices||DetectRTC.isMobileDevice||DetectRTC.load((function(){var t,n;if(DetectRTC.MediaDevices.forEach((function(i){"audioinput"===i.kind&&!1!==e.mediaConstraints.audio&&(t=i),"videoinput"===i.kind&&!1!==e.mediaConstraints.video&&(n=i)})),t){if("Firefox"===DetectRTC.browser.name)return void(!0!==e.mediaConstraints.audio?e.mediaConstraints.audio.deviceId=t.id:e.mediaConstraints.audio={deviceId:t.id});1==e.mediaConstraints.audio&&(e.mediaConstraints.audio={mandatory:{},optional:[]}),e.mediaConstraints.audio.optional||(e.mediaConstraints.audio.optional=[]);var i=[{sourceId:t.id}];e.mediaConstraints.audio.optional=i.concat(e.mediaConstraints.audio.optional)}if(n){if("Firefox"===DetectRTC.browser.name)return void(!0!==e.mediaConstraints.video?e.mediaConstraints.video.deviceId=n.id:e.mediaConstraints.video={deviceId:n.id});1==e.mediaConstraints.video&&(e.mediaConstraints.video={mandatory:{},optional:[]}),e.mediaConstraints.video.optional||(e.mediaConstraints.video.optional=[]);i=[{sourceId:n.id}];e.mediaConstraints.video.optional=i.concat(e.mediaConstraints.video.optional)}})),e.sdpConstraints={mandatory:{OfferToReceiveAudio:!0,OfferToReceiveVideo:!0},optional:[{VoiceActivityDetection:!1}]},e.sdpSemantics=null,e.iceCandidatePoolSize=null,e.bundlePolicy=null,e.rtcpMuxPolicy=null,e.iceTransportPolicy=null,e.optionalArgument={optional:[{DtlsSrtpKeyAgreement:!0},{googImprovedWifiBwe:!0},{googScreencastMinBitrate:300},{googIPv6:!0},{googDscp:!0},{googCpuUnderuseThreshold:55},{googCpuOveruseThreshold:85},{googSuspendBelowMinBitrate:!0},{googCpuOveruseDetection:!0}],mandatory:{}},e.iceServers=O.getIceServers(e),e.candidates={host:!0,stun:!0,turn:!0},e.iceProtocols={tcp:!0,udp:!0},e.onopen=function(t){e.enableLogs&&console.info("Data connection has been opened between you & ",t.userid)},e.onclose=function(t){e.enableLogs&&console.warn("Data connection has been closed between you & ",t.userid)},e.onerror=function(t){e.enableLogs&&console.error(t.userid,"data-error",t)},e.onmessage=function(t){e.enableLogs&&console.debug("data-message",t.userid,t.data)},e.send=function(t,n){e.peers.send(t,n)},e.close=e.disconnect=e.leave=function(){e.onbeforeunload(!1,!0)},e.closeEntireSession=function(t){t=t||function(){},e.socket.emit("close-entire-session",(function n(){e.getAllParticipants().length?setTimeout(n,100):(e.onEntireSessionClosed({sessionid:e.sessionid,userid:e.userid,extra:e.extra}),e.changeUserId(null,(function(){e.close(),t()})))}))},e.onEntireSessionClosed=function(t){e.enableLogs&&console.info("Entire session is closed: ",t.sessionid,t.extra)},e.onstream=function(t){var n=e.videosContainer;n.insertBefore(t.mediaElement,n.firstChild);var i=t.mediaElement.play();void 0===i?setTimeout((function(){t.mediaElement.play()}),2e3):i.catch((function(){})).then((function(){setTimeout((function(){t.mediaElement.play()}),2e3)}))},e.onstreamended=function(e){e.mediaElement||(e.mediaElement=document.getElementById(e.streamid)),e.mediaElement&&e.mediaElement.parentNode&&e.mediaElement.parentNode.removeChild(e.mediaElement)},e.direction="many-to-many",e.removeStream=function(t,n){var i;e.attachStreams.forEach((function(e){e.id===t&&(i=e)})),i?(e.peers.getAllParticipants().forEach((function(t){if(!n||t===n){var r=e.peers[t];try{r.peer.removeStream(i)}catch(e){}}})),e.renegotiate()):console.warn("No such stream exist.",t)},e.addStream=function(n,i){if(n.getTracks)return-1===e.attachStreams.indexOf(n)&&(n.streamid||(n.streamid=n.id),e.attachStreams.push(n)),void e.renegotiate(i);function r(t){n.streamCallback&&n.streamCallback(t),e.renegotiate(i)}g(n)?e.renegotiate(i):(n.audio||n.video||n.screen)&&(n.screen?"Edge"===DetectRTC.browser.name?navigator.getDisplayMedia({video:!0,audio:w(e)}).then((function(i){i.isScreen=!0,t.onGettingLocalMedia(i),!n.audio&&!n.video||w(e)?r(i):e.invokeGetUserMedia(null,(function(e){r(e)}))}),(function(e){console.error("Unable to capture screen on Edge. HTTPs and version 17+ is required.")})):e.invokeGetUserMedia({audio:w(e),video:!0,isScreen:!0},(function(t){!n.audio&&!n.video||w(e)?r(t):e.invokeGetUserMedia(null,(function(e){r(e)}))})):(n.audio||n.video)&&e.invokeGetUserMedia(null,r))},e.invokeGetUserMedia=function(n,i,r){r||(r=e.session),n||(n=e.mediaConstraints),I({onGettingLocalMedia:function(e){var r=n.video;r&&(r.mediaSource||r.mozMediaSource||r.mandatory&&r.mandatory.chromeMediaSource)&&(e.isScreen=!0),e.isScreen||(e.isVideo=!!y(e,"video").length,e.isAudio=!e.isVideo&&y(e,"audio").length),t.onGettingLocalMedia(e,(function(){"function"==typeof i&&i(e)}))},onLocalMediaError:function(e,n){t.onLocalMediaError(e,n)},localMediaConstraints:n||{audio:!!r.audio&&n.audio,video:!!r.video&&n.video}})},e.applyConstraints=function(t,n){if(x&&x.prototype.applyConstraints){var i;if(n)return e.streamEvents[n]&&(i=e.streamEvents[n].stream),void h(i,t);e.attachStreams.forEach((function(e){h(e,t)}))}else alert("track.applyConstraints is NOT supported in your browser.")},e.replaceTrack=function(n,i,r){if(n=n||{},T.prototype.getSenders)if(n instanceof x)b(n,i,r);else{if(n instanceof C)return y(n,"video").length&&b(y(n,"video")[0],i,!0),void(y(n,"audio").length&&b(y(n,"audio")[0],i,!1));if(g(n))throw"connection.replaceTrack requires audio and/or video and/or screen.";(n.audio||n.video||n.screen)&&(n.screen?"Edge"===DetectRTC.browser.name?navigator.getDisplayMedia({video:!0,audio:w(e)}).then((function(i){i.isScreen=!0,t.onGettingLocalMedia(i),!n.audio&&!n.video||w(e)?o(i):e.invokeGetUserMedia(null,o)}),(function(e){console.error("Unable to capture screen on Edge. HTTPs and version 17+ is required.")})):e.invokeGetUserMedia({audio:w(e),video:!0,isScreen:!0},!n.audio&&!n.video||w(e)?o:e.invokeGetUserMedia(null,o)):(n.audio||n.video)&&e.invokeGetUserMedia(null,o))}else e.addStream(n);function o(t){e.replaceTrack(t,i,r||n.video||n.screen)}},e.resetTrack=function(t,n){t||(t=e.getAllParticipants()),"string"==typeof t&&(t=[t]),t.forEach((function(t){var i=e.peers[t].peer;void 0!==n&&!0!==n||!i.lastVideoTrack||e.replaceTrack(i.lastVideoTrack,t,!0),void 0!==n&&!1!==n||!i.lastAudioTrack||e.replaceTrack(i.lastAudioTrack,t,!1)}))},e.renegotiate=function(n){n?t.renegotiatePeer(n):e.peers.getAllParticipants().forEach((function(e){t.renegotiatePeer(e)}))},e.setStreamEndHandler=function(t,n){if(t&&t.addEventListener&&(n=!!n,!t.alreadySetEndHandler)){t.alreadySetEndHandler=!0;var i="ended";"oninactive"in t&&(i="inactive"),t.addEventListener(i,(function(){if(t.idInstance&&currentUserMediaRequest.remove(t.idInstance),!n){var i=[];e.attachStreams.forEach((function(e){e.id!=t.id&&i.push(e)})),e.attachStreams=i}var r=e.streamEvents[t.streamid];if(r||(r={stream:t,streamid:t.streamid,type:n?"remote":"local",userid:e.userid,extra:e.extra,mediaElement:e.streamEvents[t.streamid]?e.streamEvents[t.streamid].mediaElement:null}),n&&e.peers[r.userid]){var o=e.peers[r.userid].peer;i=[];o.getRemoteStreams().forEach((function(e){e.id!=t.id&&i.push(e)})),e.peers[r.userid].streams=i}r.userid===e.userid&&"remote"===r.type||(e.peersBackup[r.userid]&&(r.extra=e.peersBackup[r.userid].extra),e.onstreamended(r),delete e.streamEvents[t.streamid])}),!1)}},e.onMediaError=function(t,n){e.enableLogs&&console.error(t,n)},e.autoCloseEntireSession=!1,e.filesContainer=e.videosContainer=document.body||document.documentElement,e.isInitiator=!1,e.shareFile=t.shareFile,void 0!==U&&U.handle(e),void 0!==W&&W.handle(e),e.token=p,e.onNewParticipant=function(t,n){e.acceptParticipationRequest(t,n)},e.acceptParticipationRequest=function(e,n){n.successCallback&&(n.successCallback(),delete n.successCallback),t.createNewPeer(e,n)},void 0!==A&&(e.StreamsHandler=A),e.onleave=function(e){},e.invokeSelectFileDialog=function(e){var t=new FileSelector;t.accept="*.*",t.selectSingleFile(e)},e.onmute=function(e){if(e&&e.mediaElement)if("both"===e.muteType||"video"===e.muteType){e.mediaElement.src=null;var t=e.mediaElement.pause();void 0!==t?t.then((function(){e.mediaElement.poster=e.snapshot||"https://cdn.webrtc-experiment.com/images/muted.png"})):e.mediaElement.poster=e.snapshot||"https://cdn.webrtc-experiment.com/images/muted.png"}else"audio"===e.muteType&&(e.mediaElement.muted=!0)},e.onunmute=function(e){e&&e.mediaElement&&e.stream&&("both"===e.unmuteType||"video"===e.unmuteType?(e.mediaElement.poster=null,e.mediaElement.srcObject=e.stream,e.mediaElement.play()):"audio"===e.unmuteType&&(e.mediaElement.muted=!1))},e.onExtraDataUpdated=function(t){t.status="online",e.onUserStatusChanged(t,!0)},e.getAllParticipants=function(t){return e.peers.getAllParticipants(t)},void 0!==A&&(A.onSyncNeeded=function(n,i,r){e.peers.getAllParticipants().forEach((function(e){t.onNegotiationNeeded({streamid:n,action:i,streamSyncNeeded:!0,type:r||"both"},e)}))}),e.connectSocket=function(e){i(e)},e.closeSocket=function(){try{io.sockets={}}catch(e){}e.socket&&("function"==typeof e.socket.disconnect&&e.socket.disconnect(),"function"==typeof e.socket.resetProps&&e.socket.resetProps(),e.socket=null)},e.getSocket=function(t){return!t&&e.enableLogs&&console.warn("getSocket.callback paramter is required."),t=t||function(){},e.socket?t(e.socket):i((function(){t(e.socket)})),e.socket},e.getRemoteStreams=t.getRemoteStreams;var R=["selectFirst","selectAll","forEach"];if(e.streamEvents={selectFirst:function(t){return e.streamEvents.selectAll(t)[0]},selectAll:function(t){t||(t={local:!0,remote:!0,isScreen:!0,isAudio:!0,isVideo:!0}),"local"==t&&(t={local:!0}),"remote"==t&&(t={remote:!0}),"screen"==t&&(t={isScreen:!0}),"audio"==t&&(t={isAudio:!0}),"video"==t&&(t={isVideo:!0});var n=[];return Object.keys(e.streamEvents).forEach((function(i){var r=e.streamEvents[i];if(-1===R.indexOf(i)){var o=!0;t.local&&"local"===r.type&&(o=!1),t.remote&&"remote"===r.type&&(o=!1),t.isScreen&&r.stream.isScreen&&(o=!1),t.isVideo&&r.stream.isVideo&&(o=!1),t.isAudio&&r.stream.isAudio&&(o=!1),t.userid&&r.userid===t.userid&&(o=!1),!1===o&&n.push(r)}})),n}},e.socketURL="/",e.socketMessageEvent="RTCMultiConnection-Message",e.socketCustomEvent="RTCMultiConnection-Custom-Message",e.DetectRTC=DetectRTC,e.setCustomSocketEvent=function(t){t&&(e.socketCustomEvent=t),e.socket&&e.socket.emit("set-custom-socket-event-listener",e.socketCustomEvent)},e.getNumberOfBroadcastViewers=function(t,n){e.socket&&t&&n&&e.socket.emit("get-number-of-users-in-specific-broadcast",t,n)},e.onNumberOfBroadcastViewersUpdated=function(t){e.enableLogs&&e.isInitiator&&console.info("Number of broadcast (",t.broadcastId,") viewers",t.numberOfBroadcastViewers)},e.onUserStatusChanged=function(t,n){e.enableLogs&&!n&&console.info(t.userid,t.status)},e.getUserMediaHandler=I,e.multiPeersHandler=t,e.enableLogs=!0,e.setCustomSocketHandler=function(e){void 0!==c&&(c=e)},e.chunkSize=4e4,e.maxParticipantsAllowed=1e3,e.disconnectWith=t.disconnectWith,e.checkPresence=function(t,n){t=t||e.sessionid,"SSEConnection"!==c.name?e.socket?e.socket.emit("check-presence",t+"",(function(t,i,r){e.enableLogs&&console.log("checkPresence.isRoomExist: ",t," roomid: ",i),n(t,i,r)})):e.connectSocket((function(){e.checkPresence(t,n)})):SSEConnection.checkPresence(t,(function(t,i,r){if(!e.socket)return t||(e.userid=i),void e.connectSocket((function(){n(t,i,r)}));n(t,i)}))},e.onReadyForOffer=function(t,n){e.multiPeersHandler.createNewPeer(t,n)},e.setUserPreferences=function(t){return e.dontAttachStream&&(t.dontAttachLocalStream=!0),e.dontGetRemoteStream&&(t.dontGetRemoteStream=!0),t},e.updateExtraData=function(){e.socket.emit("extra-data-updated",e.extra)},e.enableScalableBroadcast=!1,e.maxRelayLimitPerUser=3,e.dontCaptureUserMedia=!1,e.dontAttachStream=!1,e.dontGetRemoteStream=!1,e.onReConnecting=function(t){e.enableLogs&&console.info("ReConnecting with",t.userid,"...")},e.beforeAddingStream=function(e){return e},e.beforeRemovingStream=function(e){return e},"undefined"!=typeof isChromeExtensionAvailable&&(e.checkIfChromeExtensionAvailable=isChromeExtensionAvailable),"undefined"!=typeof isFirefoxExtensionAvailable&&(e.checkIfChromeExtensionAvailable=isFirefoxExtensionAvailable),"undefined"!=typeof getChromeExtensionStatus&&(e.getChromeExtensionStatus=getChromeExtensionStatus),e.modifyScreenConstraints=function(e){return e},e.onPeerStateChanged=function(t){e.enableLogs&&-1!==t.iceConnectionState.search(/closed|failed/gi)&&console.error("Peer connection is closed between you & ",t.userid,t.extra,"state:",t.iceConnectionState)},e.isOnline=!0,f("online",(function(){e.isOnline=!0})),f("offline",(function(){e.isOnline=!1})),e.isLowBandwidth=!1,navigator&&navigator.connection&&navigator.connection.type&&(e.isLowBandwidth=-1!==navigator.connection.type.toString().toLowerCase().search(/wifi|cell/g),e.isLowBandwidth)){if(e.bandwidth={audio:!1,video:!1,screen:!1},e.mediaConstraints.audio&&e.mediaConstraints.audio.optional&&e.mediaConstraints.audio.optional.length){var P=[];e.mediaConstraints.audio.optional.forEach((function(e){void 0===e.bandwidth&&P.push(e)})),e.mediaConstraints.audio.optional=P}if(e.mediaConstraints.video&&e.mediaConstraints.video.optional&&e.mediaConstraints.video.optional.length){P=[];e.mediaConstraints.video.optional.forEach((function(e){void 0===e.bandwidth&&P.push(e)})),e.mediaConstraints.video.optional=P}}e.getExtraData=function(t,n){if(!t)throw"remoteUserId is required.";if("function"!=typeof n)return e.peers[t]?e.peers[t].extra:e.peersBackup[t]?e.peersBackup[t].extra:{};e.socket.emit("get-remote-user-extra-data",t,(function(e,t,i){n(e,t,i)}))},a.autoOpenOrJoin&&e.openOrJoin(e.sessionid),e.onUserIdAlreadyTaken=function(t,n){e.close(),e.closeSocket(),e.isInitiator=!1,e.userid=e.token(),e.join(e.sessionid),e.enableLogs&&console.warn("Userid already taken.",t,"Your new userid:",e.userid)},e.trickleIce=!0,e.version="3.6.9",e.onSettingLocalDescription=function(t){e.enableLogs&&console.info("Set local description for remote user",t.userid)},e.resetScreen=function(){sourceId=null,DetectRTC&&DetectRTC.screen&&delete DetectRTC.screen.sourceId,currentUserMediaRequest={streams:[],mutex:!1,queueRequests:[]}},e.autoCreateMediaElement=!0,e.password=null,e.setPassword=function(t,n){n=n||function(){},e.socket?e.socket.emit("set-password",t,n):(e.password=t,n(!0,e.sessionid,null))},e.onSocketDisconnect=function(t){e.enableLogs&&console.warn("socket.io connection is closed")},e.onSocketError=function(t){e.enableLogs&&console.warn("socket.io connection is failed")},e.errors={ROOM_NOT_AVAILABLE:"Room not available",INVALID_PASSWORD:"Invalid password",USERID_NOT_AVAILABLE:"User ID does not exist",ROOM_PERMISSION_DENIED:"Room permission denied",ROOM_FULL:"Room full",DID_NOT_JOIN_ANY_ROOM:"Did not join any room yet",INVALID_SOCKET:"Invalid socket",PUBLIC_IDENTIFIER_MISSING:"publicRoomIdentifier is required",INVALID_ADMIN_CREDENTIAL:"Invalid username or password attempted"}}(this)};e.exports=t=o,void 0===(i=function(){return o}.apply(t,[]))||(e.exports=i)},38497:(e,t,n)=>{"use strict";n.r(t),n.d(t,{default:()=>u});var i=n(58656),r=n.n(i);n(66737);const o={components:{RTCMultiConnection:r()},data:function(){return{uuid:this.$route.params.uuid,meeting:{},attachments:[],roomId:"",is_joined:!1,is_duplicate:!1,can_share_screen:!1,is_screen_shared:!1,screen_share_stream:{},socketURL:null,enableAudio:!0,enableVideo:!0,enableLogs:!1,autoplay:!0,cameraHeight:160,rtcmConnection:null,localVideo:null,screen_width:window.innerWidth,videoList:[],canvas:null,is_owner:!1,scrollOptions:{vuescroll:{mode:"native"},bar:{background:"#171A23"}}}},mounted:function(){helper.hasPermission("list-meeting")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),window.IsDuplicate()&&(this.is_duplicate=!0),this.getMeeting()},beforeRouteLeave:function(e,t,n){this.is_joined&&this.leave(),n()},methods:{getMeeting:function(){var e=this,t=this.$loading.show();axios.get("/api/meeting/"+this.uuid+"?live=true").then((function(n){e.meeting=n.meeting,e.attachments=n.attachments,e.socketURL=n.socket,e.meeting.user_id===helper.getAuthUser("id")&&(e.is_owner=!0);var i=e;e.rtcmConnection=new(r()),e.rtcmConnection.socketURL=e.socketURL,e.rtcmConnection.autoCreateMediaElement=!1,e.rtcmConnection.enableLogs=e.enableLogs,e.rtcmConnection.session={audio:e.enableAudio,video:e.enableVideo},e.rtcmConnection.iceServers=n.ice_servers||[],e.rtcmConnection.sdpConstraints.mandatory={OfferToReceiveAudio:e.enableAudio,OfferToReceiveVideo:e.enableVideo},e.rtcmConnection.onstream=function(e){if(void 0===i.videoList.find((function(t){return t.id===e.streamid}))){var t=!1;e.hasOwnProperty("stream")&&!1===e.stream.isVideo&&!1===e.stream.isAudio&&(t=!0);var n={id:e.streamid,muted:"local"===e.type,fullName:e.extra.fullName,userUuid:e.extra.userUuid,screenSharing:t,isOwner:e.extra.isOwner,maximized:0===i.videoList.length?-1:e.extra.maximized},r=i.videoList.findIndex((function(e){return e.userUuid===n.userUuid&&e.screenSharing===n.screenSharing}));r>=0&&i.videoList.splice(r,1),n.screenSharing&&n.userUuid===helper.getAuthUser("uuid")||(i.meeting.audience_video_preference?(i.is_owner||!i.is_owner&&(n.isOwner||n.userUuid===helper.getAuthUser("uuid")))&&i.videoList.push(n):i.videoList.push(n)),"local"===e.type&&(n.maximized=-1,i.localVideo=n)}setTimeout((function(){if(i.$refs.hasOwnProperty("videos"))for(var t=0,n=i.$refs.videos.length;t<n;t++)if(i.$refs.videos[t].id===e.streamid){i.$refs.videos[t].srcObject=e.stream;break}}),1e3)},e.rtcmConnection.onstreamended=function(e){i.videoList=i.videoList.filter((function(t){return t.id!=e.streamid}))},t.hide()})).catch((function(n){t.hide(),helper.showErrorMsg(n),e.$router.push("/communication/meeting")}))},highlight:function(e){this.videoList.forEach((function(t){t.maximized=t.id===e.id?-1:0}))},join:function(){var e=this,t=this.$loading.show();axios.post("/api/meeting/"+this.uuid+"/join").then((function(n){if(e.roomId=n.code,!e.roomId)return toastr.error(i18n.general.something_wrong),void t.hide();var i=e;e.rtcmConnection.extra={fullName:helper.getAuthUser("name"),userUuid:helper.getAuthUser("uuid"),isOwner:!!e.is_owner,maximized:0},e.rtcmConnection.openOrJoin(e.roomId,(function(e,t){!1===e&&i.rtcmConnection.isInitiator,i.is_joined=!0,i.meeting.user_id==helper.getAuthUser("id")&&(i.can_share_screen=!0)})),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},leave:function(){var e=this,t=this.$loading.show();axios.post("/api/meeting/"+this.uuid+"/leave").then((function(n){e.is_joined&&(e.rtcmConnection.attachStreams.forEach((function(e){e.stop()})),e.videoList=[],e.is_joined=!1),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},share:function(){var e=this;if(navigator.getDisplayMedia||navigator.mediaDevices.getDisplayMedia){var t=function(t){t.screenSharing=!0,e.rtcmConnection.addStream(t),e.screen_share_stream=t,e.is_screen_shared=!0,function(e,t){var n="ended";"oninactive"in e&&(n="inactive"),e.addEventListener(n,(function(){t(),t=function(){}}),!1)}(t,(function(){e.rtcmConnection.removeStream(t.streamid),e.is_screen_shared=!1}))},n=function(e){console.log("Media error: "+JSON.stringify(e))};navigator.mediaDevices.getDisplayMedia?navigator.mediaDevices.getDisplayMedia({video:!0,audio:!1}).then((function(e){t(e)}),n).catch(n):navigator.getDisplayMedia&&navigator.getDisplayMedia({video:!0}).then((function(e){t(e)}),n).catch(n)}},logEvent:function(e){},formatDate:function(e){return helper.formatDate(e)},formatTime:function(e){return helper.formatTime(e)},fullScreen:function(e){var t=document.getElementById(e.id);t.requestFullscreen?t.requestFullscreen():t.mozRequestFullScreen?t.mozRequestFullScreen():t.webkitRequestFullscreen?t.webkitRequestFullscreen():t.msRequestFullscreen&&t.msRequestFullscreen()}},filters:{moment:function(e){return helper.formatDate(e)},momentDateTime:function(e){return helper.formatDateTime(e)},momentTime:function(e){return helper.formatTime(e)}},computed:{authToken:function(){return helper.getAuthToken()},isDemo:function(){return!helper.getConfig("mode")},maximizeVideoHeight:function(){return this.screen_width<400?180:this.screen_width<640?220:this.screen_width<=768?360:400},minimizeVideoHeight:function(){return this.screen_width<400?180:this.screen_width<640?220:this.screen_width<=768?360:220},orderedVideoList:function(){var e=this.videoList;return e.sort((function(e,t){var n=new Date(e.maximized),i=new Date(t.maximized);return n<i?-1:n>i?1:0})),e}}};var a=n(93379),s=n.n(a),c=n(84518),d={insert:"head",singleton:!1};s()(c.Z,d);c.Z.locals;const u=(0,n(51900).Z)(o,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticStyle:{width:"100vw","min-height":"100vh",background:"#000000",padding:"20px"}},[e.is_duplicate?n("div",[n("p",[e._v("\n              "+e._s(e.trans("communication.duplicate_tab"))+"\n          ")])]):n("div",[n("vue-scroll",{attrs:{ops:e.scrollOptions}},[n("div",{staticStyle:{padding:"10px 20px",background:"#171A23"}},[n("div",{staticClass:"d-flex"},[n("p",{staticClass:"mr-auto p-1",staticStyle:{color:"#AEB5C0",padding:"0",margin:"0"}},[e._v("\n                          "+e._s(e.meeting.title)+"\n                          "),e.meeting.is_live?n("span",{staticClass:"ml-2 label label-success"},[e._v(e._s(e.trans("communication.live")))]):e._e(),e._v(" "),e.meeting.is_expired?n("span",{staticClass:"ml-2 label label-danger"},[e._v(e._s(e.trans("communication.expired")))]):e._e()]),e._v(" "),n("div",{staticClass:"p-1"}),e._v(" "),n("div",{staticClass:"p-1"},[n("span",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("communication.back_to_meeting"),expression:"trans('communication.back_to_meeting')"}],staticClass:"icon custom-button",on:{click:function(t){return e.$router.push("/communication/meeting/"+e.meeting.uuid)}}},[n("i",{staticClass:"fa fa-arrow-circle-left"})])])])]),e._v(" "),n("div",{staticClass:"container-fluid"},[e.meeting.is_live?n("div",{staticClass:"row mt-3"},[e.is_joined?e._e():n("div",{staticClass:"col"},[n("button",{staticClass:"btn btn-block btn-success",on:{click:e.join}},[e._v(e._s(e.trans("communication.join_meeting")))])]),e._v(" "),e.is_joined&&e.can_share_screen?n("div",{staticClass:"col"},[e.is_screen_shared?e._e():n("button",{staticClass:"btn btn-block btn-info",on:{click:e.share}},[e._v(e._s(e.trans("communication.share_screen")))]),e._v(" "),e.is_screen_shared?n("button",{staticClass:"btn btn-block btn-info",attrs:{disabled:""}},[e._v(e._s(e.trans("communication.stop_share_screen")))]):e._e()]):e._e(),e._v(" "),e.is_joined?n("div",{staticClass:"col"},[n("button",{staticClass:"btn btn-block btn-danger",on:{click:e.leave}},[e._v(e._s(e.trans("communication.leave_meeting")))])]):e._e()]):e._e(),e._v(" "),n("div",{staticStyle:{display:"flex",height:"auto","flex-wrap":"wrap","justify-content":"flex-start","margin-top":"10px"}},[n("div",{staticClass:"video-item mr-1",staticStyle:{flex:"1 0 49.5%"}},[n("vue-scroll",{attrs:{ops:e.scrollOptions}},[n("p",[e._v(e._s(e.trans("communication.meeting_start_time"))+": "+e._s(e._f("moment")(e.meeting.date))+" "+e._s(e._f("momentTime")(e.meeting.start_time)))]),e._v(" "),n("p",[e._v(e._s(e.trans("communication.meeting_end_time"))+": "+e._s(e._f("moment")(e.meeting.date))+" "+e._s(e._f("momentTime")(e.meeting.end_time)))]),e._v(" "),e.attachments.length?n("div",[n("ul",{staticClass:"m-t-10 upload-file-list"},e._l(e.attachments,(function(t){return n("li",{key:t.uuid,staticClass:"upload-file-list-item"},[n("a",{staticClass:"no-link-color",attrs:{href:"/communication/meeting/"+e.meeting.uuid+"/attachment/"+t.uuid+"/download?token="+e.authToken}},[n("i",{class:["file-icon","fas","fa-lg",t.file_info.icon]}),e._v(" "),n("span",{staticClass:"upload-file-list-item-size"},[e._v(e._s(t.file_info.size))]),e._v(" "+e._s(t.user_filename))])])})),0)]):e._e(),e._v(" "),n("div",{domProps:{innerHTML:e._s(e.meeting.description)}})])],1),e._v(" "),e.meeting.is_live||e.meeting.is_expired?e._e():[n("div",{staticClass:"video-item",staticStyle:{flex:"1 0 49.5%"}},[n("p",{staticClass:"text-center"},[e._v(e._s(e.trans("communication.meeting_scheduled",{date:e.formatDate(e.meeting.date),time:e.formatTime(e.meeting.start_time)})))])])],e._v(" "),e.meeting.is_expired?[n("div",{staticClass:"video-item",staticStyle:{flex:"1 0 49.5%"}},[n("p",{staticClass:"text-center"},[e._v(e._s(e.trans("communication.meeting_ended",{date:e.formatDate(e.meeting.date),time:e.formatTime(e.meeting.end_time)})))])])]:e._e(),e._v(" "),e.meeting.is_live?[e.is_joined?e._e():n("div",{staticClass:"video-item",staticStyle:{flex:"1 0 49.5%"}},[n("p",{staticClass:"text-center"},[e._v(e._s(e.trans("communication.join_meeting_instruction")))])]),e._v(" "),e.is_joined?e._l(e.orderedVideoList,(function(t,i){return n("div",{key:t.id,class:["video-item",0===i||e.screen_width<=768?"video-maximized":"video-minimized",t.maximized?"maxmized":""]},[n("video",{ref:"videos",refInFor:!0,attrs:{autoplay:"",height:0===i?e.maximizeVideoHeight:e.minimizeVideoHeight,playsinline:"",id:t.id},domProps:{muted:t.muted}}),e._v(" "),n("p",{staticClass:"mt-3"},[e._v("\n                                      "+e._s(t.fullName)+" "),t.screenSharing?n("span",[e._v(e._s(e.trans("communication.screen")))]):e._e(),e._v(" "),-1!=t.maximized?n("span",{staticClass:"ml-2 custom-button",on:{click:function(n){return e.highlight(t)}}},[n("i",{staticClass:"fas fa-expand-arrows-alt"})]):e._e(),e._v(" "),0===i?n("span",{staticClass:"ml-2 custom-button",on:{click:function(n){return e.fullScreen(t)}}},[n("i",{staticClass:"fas fa-expand"})]):e._e()])])})):e._e()]:e._e()],2)])])],1)])}),[],!1,null,"6ee276c6",null).exports}}]);
-//# sourceMappingURL=live.js.map?id=e8b9092d6fa7732881cd
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/communication/meeting/live"],{
+
+/***/ "./node_modules/adapterjs/publish/adapter.min.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/adapterjs/publish/adapter.min.js ***!
+  \*******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/*! adapterjs - v0.15.5 - 2020-07-14 */
+var AdapterJS=AdapterJS||window.AdapterJS||{};if(AdapterJS.options=AdapterJS.options||{},AdapterJS.options.getAllCams=!!AdapterJS.options.getAllCams,AdapterJS.options.hidePluginInstallPrompt=!!AdapterJS.options.hidePluginInstallPrompt,AdapterJS.options.forceSafariPlugin=!!AdapterJS.options.forceSafariPlugin,AdapterJS.VERSION="0.15.5",AdapterJS.onwebrtcready=AdapterJS.onwebrtcready||function(isUsingPlugin){},AdapterJS._onwebrtcreadies=[],AdapterJS.webRTCReady=function(baseCallback){if("function"!=typeof baseCallback)throw new Error("Callback provided is not a function");var callback=function(){"function"==typeof window.require&&"function"==typeof AdapterJS._defineMediaSourcePolyfill&&AdapterJS._defineMediaSourcePolyfill(),baseCallback(null!==AdapterJS.WebRTCPlugin.plugin)};!0===AdapterJS.onwebrtcreadyDone?callback():AdapterJS._onwebrtcreadies.push(callback)},AdapterJS.WebRTCPlugin=AdapterJS.WebRTCPlugin||{},AdapterJS.WebRTCPlugin.pluginInfo=AdapterJS.WebRTCPlugin.pluginInfo||{prefix:"Tem",plugName:"TemWebRTCPlugin",pluginId:"plugin0",type:"application/x-temwebrtcplugin",onload:"__TemWebRTCReady0",portalLink:"https://skylink.io/plugin/",downloadLink:null,companyName:"Temasys",downloadLinks:{mac:"https://bit.ly/webrtcpluginpkg",win:"https://bit.ly/webrtcpluginmsi"}},void 0!==AdapterJS.WebRTCPlugin.pluginInfo.downloadLinks&&null!==AdapterJS.WebRTCPlugin.pluginInfo.downloadLinks&&(navigator.platform.match(/^Mac/i)?AdapterJS.WebRTCPlugin.pluginInfo.downloadLink=AdapterJS.WebRTCPlugin.pluginInfo.downloadLinks.mac:navigator.platform.match(/^Win/i)&&(AdapterJS.WebRTCPlugin.pluginInfo.downloadLink=AdapterJS.WebRTCPlugin.pluginInfo.downloadLinks.win)),AdapterJS.WebRTCPlugin.TAGS={NONE:"none",AUDIO:"audio",VIDEO:"video"},AdapterJS.WebRTCPlugin.pageId=Math.random().toString(36).slice(2),AdapterJS.WebRTCPlugin.plugin=null,AdapterJS.WebRTCPlugin.setLogLevel=null,AdapterJS.WebRTCPlugin.defineWebRTCInterface=null,AdapterJS.WebRTCPlugin.isPluginInstalled=null,AdapterJS.WebRTCPlugin.pluginInjectionInterval=null,AdapterJS.WebRTCPlugin.injectPlugin=null,AdapterJS.WebRTCPlugin.PLUGIN_STATES={NONE:0,INITIALIZING:1,INJECTING:2,INJECTED:3,READY:4},AdapterJS.WebRTCPlugin.pluginState=AdapterJS.WebRTCPlugin.PLUGIN_STATES.NONE,AdapterJS.onwebrtcreadyDone=!1,AdapterJS.WebRTCPlugin.PLUGIN_LOG_LEVELS={NONE:"NONE",ERROR:"ERROR",WARNING:"WARNING",INFO:"INFO",VERBOSE:"VERBOSE",SENSITIVE:"SENSITIVE"},AdapterJS.WebRTCPlugin.WaitForPluginReady=null,AdapterJS.WebRTCPlugin.callWhenPluginReady=null,AdapterJS.documentReady=function(){return"interactive"===document.readyState&&!!document.body||"complete"===document.readyState},window.__TemWebRTCReady0=function(){AdapterJS.documentReady()?(AdapterJS.WebRTCPlugin.pluginState=AdapterJS.WebRTCPlugin.PLUGIN_STATES.READY,AdapterJS.maybeThroughWebRTCReady()):setTimeout(__TemWebRTCReady0,100)},AdapterJS.maybeThroughWebRTCReady=function(){AdapterJS.onwebrtcreadyDone||(AdapterJS.onwebrtcreadyDone=!0,AdapterJS._onwebrtcreadies.length?AdapterJS._onwebrtcreadies.forEach(function(callback){"function"==typeof callback&&callback(null!==AdapterJS.WebRTCPlugin.plugin)}):"function"==typeof AdapterJS.onwebrtcready&&AdapterJS.onwebrtcready(null!==AdapterJS.WebRTCPlugin.plugin))},AdapterJS.TEXT={PLUGIN:{REQUIRE_INSTALLATION:"This website requires you to install a WebRTC-enabling plugin to work on this browser.",REQUIRE_RESTART:"Your plugin is being downloaded. Please run the installer, and restart your browser to begin using it.",NOT_SUPPORTED:"Your browser does not support WebRTC.",BUTTON:"Install Now"},REFRESH:{REQUIRE_REFRESH:"Please refresh page",BUTTON:"Refresh Page"}},AdapterJS._iceConnectionStates={starting:"starting",checking:"checking",connected:"connected",completed:"connected",done:"completed",disconnected:"disconnected",failed:"failed",closed:"closed"},AdapterJS._iceConnectionFiredStates=[],AdapterJS.isDefined=null,window.webrtcDetectedType=null,window.MediaStream="function"==typeof MediaStream?MediaStream:null,window.MediaStreamTrack="function"==typeof MediaStreamTrack?MediaStreamTrack:null,window.RTCPeerConnection="function"==typeof RTCPeerConnection?RTCPeerConnection:null,window.RTCSessionDescription="function"==typeof RTCSessionDescription?RTCSessionDescription:null,window.RTCIceCandidate="function"==typeof RTCIceCandidate?RTCIceCandidate:null,window.getUserMedia="function"==typeof getUserMedia?getUserMedia:null,window.attachMediaStream=null,window.reattachMediaStream=null,window.webrtcDetectedBrowser=null,window.webrtcDetectedVersion=null,window.webrtcMinimumVersion=null,window.webrtcDetectedDCSupport=null,AdapterJS.parseWebrtcDetectedBrowser=function(){var hasMatch=null;if(window.opr&&opr.addons||window.opera||navigator.userAgent.indexOf(" OPR/")>=0)hasMatch=navigator.userAgent.match(/OPR\/(\d+)/i)||[],window.webrtcDetectedBrowser="opera",window.webrtcDetectedVersion=parseInt(hasMatch[1]||"0",10),window.webrtcMinimumVersion=26,window.webrtcDetectedType="webkit",window.webrtcDetectedDCSupport="SCTP";else if(navigator.userAgent.match(/Bowser\/[0-9.]*/g)){hasMatch=navigator.userAgent.match(/Bowser\/[0-9.]*/g)||[];var chromiumVersion=parseInt((navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./i)||[])[2]||"0",10);window.webrtcDetectedBrowser="bowser",window.webrtcDetectedVersion=parseFloat((hasMatch[0]||"0/0").split("/")[1],10),window.webrtcMinimumVersion=0,window.webrtcDetectedType="webkit",window.webrtcDetectedDCSupport=chromiumVersion>30?"SCTP":"RTP"}else if(navigator.userAgent.indexOf("OPiOS")>0)hasMatch=navigator.userAgent.match(/OPiOS\/([0-9]+)\./),window.webrtcDetectedBrowser="opera",window.webrtcDetectedVersion=parseInt(hasMatch[1]||"0",10),window.webrtcMinimumVersion=0,window.webrtcDetectedType=null,window.webrtcDetectedDCSupport=null;else if(navigator.userAgent.indexOf("CriOS")>0)hasMatch=navigator.userAgent.match(/CriOS\/([0-9]+)\./)||[],window.webrtcDetectedVersion=parseInt(hasMatch[1]||"0",10),window.webrtcMinimumVersion=0,window.webrtcDetectedType=null,window.webrtcDetectedBrowser="chrome",window.webrtcDetectedDCSupport=null;else if(navigator.userAgent.indexOf("FxiOS")>0)hasMatch=navigator.userAgent.match(/FxiOS\/([0-9]+)\./)||[],window.webrtcDetectedBrowser="firefox",window.webrtcDetectedVersion=parseInt(hasMatch[1]||"0",10),window.webrtcMinimumVersion=0,window.webrtcDetectedType=null,window.webrtcDetectedDCSupport=null;else if(document.documentMode)hasMatch=/\brv[ :]+(\d+)/g.exec(navigator.userAgent)||[],window.webrtcDetectedBrowser="IE",window.webrtcDetectedVersion=parseInt(hasMatch[1],10),window.webrtcMinimumVersion=9,window.webrtcDetectedType="plugin",window.webrtcDetectedDCSupport="SCTP",webrtcDetectedVersion||(hasMatch=/\bMSIE[ :]+(\d+)/g.exec(navigator.userAgent)||[],window.webrtcDetectedVersion=parseInt(hasMatch[1]||"0",10));else if(window.StyleMedia||navigator.userAgent.match(/Edge\/(\d+).(\d+)$/))hasMatch=navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)||[],window.webrtcDetectedBrowser="edge",window.webrtcDetectedVersion=parseFloat((hasMatch[0]||"0/0").split("/")[1],10),window.webrtcMinimumVersion=13.10547,window.webrtcDetectedType="ms",window.webrtcDetectedDCSupport=null;else if("undefined"!=typeof InstallTrigger||navigator.userAgent.indexOf("irefox")>0)hasMatch=navigator.userAgent.match(/Firefox\/([0-9]+)\./)||[],window.webrtcDetectedBrowser="firefox",window.webrtcDetectedVersion=parseInt(hasMatch[1]||"0",10),window.webrtcMinimumVersion=33,window.webrtcDetectedType="moz",window.webrtcDetectedDCSupport="SCTP";else if(window.chrome&&window.chrome.webstore||navigator.userAgent.indexOf("Chrom")>0)hasMatch=navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./i)||[],window.webrtcDetectedBrowser="chrome",window.webrtcDetectedVersion=parseInt(hasMatch[2]||"0",10),window.webrtcMinimumVersion=38,window.webrtcDetectedType="webkit",window.webrtcDetectedDCSupport=window.webrtcDetectedVersion>30?"SCTP":"RTP";else if(/constructor/i.test(window.HTMLElement)||function(p){return"[object SafariRemoteNotification]"===p.toString()}(!window.safari||safari.pushNotification)||navigator.userAgent.match(/AppleWebKit\/(\d+)\./)||navigator.userAgent.match(/Version\/(\d+).(\d+)/)){hasMatch=navigator.userAgent.match(/version\/(\d+)\.(\d+)/i)||[];var AppleWebKitBuild=navigator.userAgent.match(/AppleWebKit\/(\d+)/i)||[],isMobile=navigator.userAgent.match(/(iPhone|iPad)/gi),hasNativeImpl=AppleWebKitBuild.length>=1&&AppleWebKitBuild[1]>=604;if(window.webrtcDetectedBrowser="safari",window.webrtcDetectedVersion=parseInt(hasMatch[1]||"0",10),window.webrtcMinimumVersion=7,isMobile)window.webrtcDetectedType=hasNativeImpl?"AppleWebKit":null;else{var majorVersion=window.webrtcDetectedVersion,minorVersion=parseInt(hasMatch[2]||"0",10),nativeImplIsOverridable=11==majorVersion&&minorVersion<2;window.webrtcDetectedType=!hasNativeImpl||AdapterJS.options.forceSafariPlugin&&nativeImplIsOverridable?"plugin":"AppleWebKit"}window.webrtcDetectedDCSupport="SCTP"}AdapterJS.webrtcDetectedBrowser=window.webrtcDetectedBrowser,AdapterJS.webrtcDetectedVersion=window.webrtcDetectedVersion,AdapterJS.webrtcMinimumVersion=window.webrtcMinimumVersion,AdapterJS.webrtcDetectedType=window.webrtcDetectedType,AdapterJS.webrtcDetectedDCSupport=window.webrtcDetectedDCSupport},AdapterJS.addEvent=function(elem,evnt,func){elem.addEventListener?elem.addEventListener(evnt,func,!1):elem.attachEvent?elem.attachEvent("on"+evnt,func):elem[evnt]=func},AdapterJS.renderNotificationBar=function(message,buttonText,buttonCallback){if(AdapterJS.documentReady()){var w=window,i=document.createElement("iframe");i.name="adapterjs-alert",i.style.position="fixed",i.style.top="-41px",i.style.left=0,i.style.right=0,i.style.width="100%",i.style.height="40px",i.style.backgroundColor="#ffffe1",i.style.border="none",i.style.borderBottom="1px solid #888888",i.style.zIndex="9999999","string"==typeof i.style.webkitTransition?i.style.webkitTransition="all .5s ease-out":"string"==typeof i.style.transition&&(i.style.transition="all .5s ease-out"),document.body.appendChild(i);var c=i.contentWindow?i.contentWindow:i.contentDocument.document?i.contentDocument.document:i.contentDocument;c.document.open(),c.document.write('<span style="display: inline-block; font-family: Helvetica, Arial,sans-serif; font-size: .9rem; padding: 4px; vertical-align: middle; cursor: default;">'+message+"</span>"),buttonText&&"function"==typeof buttonCallback?(c.document.write('<button id="okay">'+buttonText+'</button><button id="cancel">Cancel</button>'),c.document.close(),AdapterJS.addEvent(c.document.getElementById("okay"),"click",function(e){e.preventDefault();try{e.cancelBubble=!0}catch(error){}buttonCallback(e)}),AdapterJS.addEvent(c.document.getElementById("cancel"),"click",function(e){w.document.body.removeChild(i)})):c.document.close(),setTimeout(function(){"string"==typeof i.style.webkitTransform?i.style.webkitTransform="translateY(40px)":"string"==typeof i.style.transform?i.style.transform="translateY(40px)":i.style.top="0px"},300)}},window.requestUserMedia="function"==typeof requestUserMedia?requestUserMedia:null,AdapterJS.parseWebrtcDetectedBrowser(),["webkit","moz","ms","AppleWebKit"].indexOf(AdapterJS.webrtcDetectedType)>-1){navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)&&window.RTCPeerConnection&&(window.msRTCPeerConnection=window.RTCPeerConnection),function(f){if(true)module.exports=f();else { var g; }}(function(){return function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=undefined;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n||e)},l,l.exports,e,t,n,r)}return n[o].exports}for(var i=undefined,o=0;o<r.length;o++)s(r[o]);return s}({1:[function(requirecopy,module,exports){function fixStatsType(stat){return{inboundrtp:"inbound-rtp",outboundrtp:"outbound-rtp",candidatepair:"candidate-pair",localcandidate:"local-candidate",remotecandidate:"remote-candidate"}[stat.type]||stat.type}function writeMediaSection(transceiver,caps,type,stream,dtlsRole){var sdp=SDPUtils.writeRtpDescription(transceiver.kind,caps);if(sdp+=SDPUtils.writeIceParameters(transceiver.iceGatherer.getLocalParameters()),sdp+=SDPUtils.writeDtlsParameters(transceiver.dtlsTransport.getLocalParameters(),"offer"===type?"actpass":dtlsRole||"active"),sdp+="a=mid:"+transceiver.mid+"\r\n",transceiver.rtpSender&&transceiver.rtpReceiver?sdp+="a=sendrecv\r\n":transceiver.rtpSender?sdp+="a=sendonly\r\n":transceiver.rtpReceiver?sdp+="a=recvonly\r\n":sdp+="a=inactive\r\n",transceiver.rtpSender){var trackId=transceiver.rtpSender._initialTrackId||transceiver.rtpSender.track.id;transceiver.rtpSender._initialTrackId=trackId;var msid="msid:"+(stream?stream.id:"-")+" "+trackId+"\r\n";sdp+="a="+msid,sdp+="a=ssrc:"+transceiver.sendEncodingParameters[0].ssrc+" "+msid,transceiver.sendEncodingParameters[0].rtx&&(sdp+="a=ssrc:"+transceiver.sendEncodingParameters[0].rtx.ssrc+" "+msid,sdp+="a=ssrc-group:FID "+transceiver.sendEncodingParameters[0].ssrc+" "+transceiver.sendEncodingParameters[0].rtx.ssrc+"\r\n")}return sdp+="a=ssrc:"+transceiver.sendEncodingParameters[0].ssrc+" cname:"+SDPUtils.localCName+"\r\n",transceiver.rtpSender&&transceiver.sendEncodingParameters[0].rtx&&(sdp+="a=ssrc:"+transceiver.sendEncodingParameters[0].rtx.ssrc+" cname:"+SDPUtils.localCName+"\r\n"),sdp}function filterIceServers(iceServers,edgeVersion){var hasTurn=!1;return iceServers=JSON.parse(JSON.stringify(iceServers)),iceServers.filter(function(server){if(server&&(server.urls||server.url)){var urls=server.urls||server.url;server.url&&server.urls;var isString="string"==typeof urls;return isString&&(urls=[urls]),urls=urls.filter(function(url){return 0!==url.indexOf("turn:")||-1===url.indexOf("transport=udp")||-1!==url.indexOf("turn:[")||hasTurn?0===url.indexOf("stun:")&&edgeVersion>=14393&&-1===url.indexOf("?transport=udp"):(hasTurn=!0,!0)}),delete server.url,server.urls=isString?urls[0]:urls,!!urls.length}})}function getCommonCapabilities(localCapabilities,remoteCapabilities){var commonCapabilities={codecs:[],headerExtensions:[],fecMechanisms:[]},findCodecByPayloadType=function(pt,codecs){pt=parseInt(pt,10);for(var i=0;i<codecs.length;i++)if(codecs[i].payloadType===pt||codecs[i].preferredPayloadType===pt)return codecs[i]},rtxCapabilityMatches=function(lRtx,rRtx,lCodecs,rCodecs){var lCodec=findCodecByPayloadType(lRtx.parameters.apt,lCodecs),rCodec=findCodecByPayloadType(rRtx.parameters.apt,rCodecs);return lCodec&&rCodec&&lCodec.name.toLowerCase()===rCodec.name.toLowerCase()};return localCapabilities.codecs.forEach(function(lCodec){for(var i=0;i<remoteCapabilities.codecs.length;i++){var rCodec=remoteCapabilities.codecs[i];if(lCodec.name.toLowerCase()===rCodec.name.toLowerCase()&&lCodec.clockRate===rCodec.clockRate){if("rtx"===lCodec.name.toLowerCase()&&lCodec.parameters&&rCodec.parameters.apt&&!rtxCapabilityMatches(lCodec,rCodec,localCapabilities.codecs,remoteCapabilities.codecs))continue;rCodec=JSON.parse(JSON.stringify(rCodec)),rCodec.numChannels=Math.min(lCodec.numChannels,rCodec.numChannels),commonCapabilities.codecs.push(rCodec),rCodec.rtcpFeedback=rCodec.rtcpFeedback.filter(function(fb){for(var j=0;j<lCodec.rtcpFeedback.length;j++)if(lCodec.rtcpFeedback[j].type===fb.type&&lCodec.rtcpFeedback[j].parameter===fb.parameter)return!0;return!1});break}}}),localCapabilities.headerExtensions.forEach(function(lHeaderExtension){for(var i=0;i<remoteCapabilities.headerExtensions.length;i++){var rHeaderExtension=remoteCapabilities.headerExtensions[i];if(lHeaderExtension.uri===rHeaderExtension.uri){commonCapabilities.headerExtensions.push(rHeaderExtension);break}}}),commonCapabilities}function isActionAllowedInSignalingState(action,type,signalingState){return-1!=={offer:{setLocalDescription:["stable","have-local-offer"],setRemoteDescription:["stable","have-remote-offer"]},answer:{setLocalDescription:["have-remote-offer","have-local-pranswer"],setRemoteDescription:["have-local-offer","have-remote-pranswer"]}}[type][action].indexOf(signalingState)}function maybeAddCandidate(iceTransport,candidate){var alreadyAdded=iceTransport.getRemoteCandidates().find(function(remoteCandidate){return candidate.foundation===remoteCandidate.foundation&&candidate.ip===remoteCandidate.ip&&candidate.port===remoteCandidate.port&&candidate.priority===remoteCandidate.priority&&candidate.protocol===remoteCandidate.protocol&&candidate.type===remoteCandidate.type});return alreadyAdded||iceTransport.addRemoteCandidate(candidate),!alreadyAdded}function makeError(name,description){var e=new Error(description);return e.name=name,e.code={NotSupportedError:9,InvalidStateError:11,InvalidAccessError:15,TypeError:void 0,OperationError:void 0}[name],e}var SDPUtils=requirecopy("sdp");module.exports=function(window,edgeVersion){function addTrackToStreamAndFireEvent(track,stream){stream.addTrack(track),stream.dispatchEvent(new window.MediaStreamTrackEvent("addtrack",{track:track}))}function removeTrackFromStreamAndFireEvent(track,stream){stream.removeTrack(track),stream.dispatchEvent(new window.MediaStreamTrackEvent("removetrack",{track:track}))}function fireAddTrack(pc,track,receiver,streams){var trackEvent=new Event("track");trackEvent.track=track,trackEvent.receiver=receiver,trackEvent.transceiver={receiver:receiver},trackEvent.streams=streams,window.setTimeout(function(){pc._dispatchEvent("track",trackEvent)})}var RTCPeerConnection=function(config){var pc=this,_eventTarget=document.createDocumentFragment();if(["addEventListener","removeEventListener","dispatchEvent"].forEach(function(method){pc[method]=_eventTarget[method].bind(_eventTarget)}),this.canTrickleIceCandidates=null,this.needNegotiation=!1,this.localStreams=[],this.remoteStreams=[],this._localDescription=null,this._remoteDescription=null,this.signalingState="stable",this.iceConnectionState="new",this.connectionState="new",this.iceGatheringState="new",config=JSON.parse(JSON.stringify(config||{})),this.usingBundle="max-bundle"===config.bundlePolicy,"negotiate"===config.rtcpMuxPolicy)throw makeError("NotSupportedError","rtcpMuxPolicy 'negotiate' is not supported");switch(config.rtcpMuxPolicy||(config.rtcpMuxPolicy="require"),config.iceTransportPolicy){case"all":case"relay":break;default:config.iceTransportPolicy="all"}switch(config.bundlePolicy){case"balanced":case"max-compat":case"max-bundle":break;default:config.bundlePolicy="balanced"}if(config.iceServers=filterIceServers(config.iceServers||[],edgeVersion),this._iceGatherers=[],config.iceCandidatePoolSize)for(var i=config.iceCandidatePoolSize;i>0;i--)this._iceGatherers.push(new window.RTCIceGatherer({iceServers:config.iceServers,gatherPolicy:config.iceTransportPolicy}));else config.iceCandidatePoolSize=0;this._config=config,this.transceivers=[],this._sdpSessionId=SDPUtils.generateSessionId(),this._sdpSessionVersion=0,this._dtlsRole=void 0,this._isClosed=!1};Object.defineProperty(RTCPeerConnection.prototype,"localDescription",{configurable:!0,get:function(){return this._localDescription}}),Object.defineProperty(RTCPeerConnection.prototype,"remoteDescription",{configurable:!0,get:function(){return this._remoteDescription}}),RTCPeerConnection.prototype.onicecandidate=null,RTCPeerConnection.prototype.onaddstream=null,RTCPeerConnection.prototype.ontrack=null,RTCPeerConnection.prototype.onremovestream=null,RTCPeerConnection.prototype.onsignalingstatechange=null,RTCPeerConnection.prototype.oniceconnectionstatechange=null,RTCPeerConnection.prototype.onconnectionstatechange=null,RTCPeerConnection.prototype.onicegatheringstatechange=null,RTCPeerConnection.prototype.onnegotiationneeded=null,RTCPeerConnection.prototype.ondatachannel=null,RTCPeerConnection.prototype._dispatchEvent=function(name,event){this._isClosed||(this.dispatchEvent(event),"function"==typeof this["on"+name]&&this["on"+name](event))},RTCPeerConnection.prototype._emitGatheringStateChange=function(){var event=new Event("icegatheringstatechange");this._dispatchEvent("icegatheringstatechange",event)},RTCPeerConnection.prototype.getConfiguration=function(){return this._config},RTCPeerConnection.prototype.getLocalStreams=function(){return this.localStreams},RTCPeerConnection.prototype.getRemoteStreams=function(){return this.remoteStreams},RTCPeerConnection.prototype._createTransceiver=function(kind,doNotAdd){var hasBundleTransport=this.transceivers.length>0,transceiver={track:null,iceGatherer:null,iceTransport:null,dtlsTransport:null,localCapabilities:null,remoteCapabilities:null,rtpSender:null,rtpReceiver:null,kind:kind,mid:null,sendEncodingParameters:null,recvEncodingParameters:null,stream:null,associatedRemoteMediaStreams:[],wantReceive:!0};if(this.usingBundle&&hasBundleTransport)transceiver.iceTransport=this.transceivers[0].iceTransport,transceiver.dtlsTransport=this.transceivers[0].dtlsTransport;else{var transports=this._createIceAndDtlsTransports();transceiver.iceTransport=transports.iceTransport,transceiver.dtlsTransport=transports.dtlsTransport}return doNotAdd||this.transceivers.push(transceiver),transceiver},RTCPeerConnection.prototype.addTrack=function(track,stream){if(this._isClosed)throw makeError("InvalidStateError","Attempted to call addTrack on a closed peerconnection.");if(this.transceivers.find(function(s){return s.track===track}))throw makeError("InvalidAccessError","Track already exists.");for(var transceiver,i=0;i<this.transceivers.length;i++)this.transceivers[i].track||this.transceivers[i].kind!==track.kind||(transceiver=this.transceivers[i]);return transceiver||(transceiver=this._createTransceiver(track.kind)),this._maybeFireNegotiationNeeded(),-1===this.localStreams.indexOf(stream)&&this.localStreams.push(stream),transceiver.track=track,transceiver.stream=stream,transceiver.rtpSender=new window.RTCRtpSender(track,transceiver.dtlsTransport),transceiver.rtpSender},RTCPeerConnection.prototype.addStream=function(stream){var pc=this;if(edgeVersion>=15025)stream.getTracks().forEach(function(track){pc.addTrack(track,stream)});else{var clonedStream=stream.clone();stream.getTracks().forEach(function(track,idx){var clonedTrack=clonedStream.getTracks()[idx];track.addEventListener("enabled",function(event){clonedTrack.enabled=event.enabled})}),clonedStream.getTracks().forEach(function(track){pc.addTrack(track,clonedStream)})}},RTCPeerConnection.prototype.removeTrack=function(sender){if(this._isClosed)throw makeError("InvalidStateError","Attempted to call removeTrack on a closed peerconnection.");if(!(sender instanceof window.RTCRtpSender))throw new TypeError("Argument 1 of RTCPeerConnection.removeTrack does not implement interface RTCRtpSender.");var transceiver=this.transceivers.find(function(t){return t.rtpSender===sender});if(!transceiver)throw makeError("InvalidAccessError","Sender was not created by this connection.");var stream=transceiver.stream;transceiver.rtpSender.stop(),transceiver.rtpSender=null,transceiver.track=null,transceiver.stream=null,-1===this.transceivers.map(function(t){return t.stream}).indexOf(stream)&&this.localStreams.indexOf(stream)>-1&&this.localStreams.splice(this.localStreams.indexOf(stream),1),this._maybeFireNegotiationNeeded()},RTCPeerConnection.prototype.removeStream=function(stream){var pc=this;stream.getTracks().forEach(function(track){var sender=pc.getSenders().find(function(s){return s.track===track});sender&&pc.removeTrack(sender)})},RTCPeerConnection.prototype.getSenders=function(){return this.transceivers.filter(function(transceiver){return!!transceiver.rtpSender}).map(function(transceiver){return transceiver.rtpSender})},RTCPeerConnection.prototype.getReceivers=function(){return this.transceivers.filter(function(transceiver){return!!transceiver.rtpReceiver}).map(function(transceiver){return transceiver.rtpReceiver})},RTCPeerConnection.prototype._createIceGatherer=function(sdpMLineIndex,usingBundle){var pc=this;if(usingBundle&&sdpMLineIndex>0)return this.transceivers[0].iceGatherer;if(this._iceGatherers.length)return this._iceGatherers.shift();var iceGatherer=new window.RTCIceGatherer({iceServers:this._config.iceServers,gatherPolicy:this._config.iceTransportPolicy});return Object.defineProperty(iceGatherer,"state",{value:"new",writable:!0}),this.transceivers[sdpMLineIndex].bufferedCandidateEvents=[],this.transceivers[sdpMLineIndex].bufferCandidates=function(event){var end=!event.candidate||0===Object.keys(event.candidate).length;iceGatherer.state=end?"completed":"gathering",null!==pc.transceivers[sdpMLineIndex].bufferedCandidateEvents&&pc.transceivers[sdpMLineIndex].bufferedCandidateEvents.push(event)},iceGatherer.addEventListener("localcandidate",this.transceivers[sdpMLineIndex].bufferCandidates),iceGatherer},RTCPeerConnection.prototype._gather=function(mid,sdpMLineIndex){var pc=this,iceGatherer=this.transceivers[sdpMLineIndex].iceGatherer;if(!iceGatherer.onlocalcandidate){var bufferedCandidateEvents=this.transceivers[sdpMLineIndex].bufferedCandidateEvents;this.transceivers[sdpMLineIndex].bufferedCandidateEvents=null,iceGatherer.removeEventListener("localcandidate",this.transceivers[sdpMLineIndex].bufferCandidates),iceGatherer.onlocalcandidate=function(evt){if(!(pc.usingBundle&&sdpMLineIndex>0)){var event=new Event("icecandidate");event.candidate={sdpMid:mid,sdpMLineIndex:sdpMLineIndex};var cand=evt.candidate,end=!cand||0===Object.keys(cand).length;if(end)"new"!==iceGatherer.state&&"gathering"!==iceGatherer.state||(iceGatherer.state="completed");else{"new"===iceGatherer.state&&(iceGatherer.state="gathering"),cand.component=1,cand.ufrag=iceGatherer.getLocalParameters().usernameFragment;var serializedCandidate=SDPUtils.writeCandidate(cand);event.candidate=Object.assign(event.candidate,SDPUtils.parseCandidate(serializedCandidate)),event.candidate.candidate=serializedCandidate,event.candidate.toJSON=function(){return{candidate:event.candidate.candidate,sdpMid:event.candidate.sdpMid,sdpMLineIndex:event.candidate.sdpMLineIndex,usernameFragment:event.candidate.usernameFragment}}}var sections=SDPUtils.getMediaSections(pc._localDescription.sdp);sections[event.candidate.sdpMLineIndex]+=end?"a=end-of-candidates\r\n":"a="+event.candidate.candidate+"\r\n",pc._localDescription.sdp=SDPUtils.getDescription(pc._localDescription.sdp)+sections.join("");var complete=pc.transceivers.every(function(transceiver){return transceiver.iceGatherer&&"completed"===transceiver.iceGatherer.state});"gathering"!==pc.iceGatheringState&&(pc.iceGatheringState="gathering",pc._emitGatheringStateChange()),end||pc._dispatchEvent("icecandidate",event),complete&&(pc._dispatchEvent("icecandidate",new Event("icecandidate")),pc.iceGatheringState="complete",pc._emitGatheringStateChange())}},window.setTimeout(function(){bufferedCandidateEvents.forEach(function(e){iceGatherer.onlocalcandidate(e)})},0)}},RTCPeerConnection.prototype._createIceAndDtlsTransports=function(){var pc=this,iceTransport=new window.RTCIceTransport(null);iceTransport.onicestatechange=function(){pc._updateIceConnectionState(),pc._updateConnectionState()};var dtlsTransport=new window.RTCDtlsTransport(iceTransport);return dtlsTransport.ondtlsstatechange=function(){pc._updateConnectionState()},dtlsTransport.onerror=function(){Object.defineProperty(dtlsTransport,"state",{value:"failed",writable:!0}),pc._updateConnectionState()},{iceTransport:iceTransport,dtlsTransport:dtlsTransport}},RTCPeerConnection.prototype._disposeIceAndDtlsTransports=function(sdpMLineIndex){var iceGatherer=this.transceivers[sdpMLineIndex].iceGatherer;iceGatherer&&(delete iceGatherer.onlocalcandidate,delete this.transceivers[sdpMLineIndex].iceGatherer);var iceTransport=this.transceivers[sdpMLineIndex].iceTransport;iceTransport&&(delete iceTransport.onicestatechange,delete this.transceivers[sdpMLineIndex].iceTransport);var dtlsTransport=this.transceivers[sdpMLineIndex].dtlsTransport;dtlsTransport&&(delete dtlsTransport.ondtlsstatechange,delete dtlsTransport.onerror,delete this.transceivers[sdpMLineIndex].dtlsTransport)},RTCPeerConnection.prototype._transceive=function(transceiver,send,recv){var params=getCommonCapabilities(transceiver.localCapabilities,transceiver.remoteCapabilities);send&&transceiver.rtpSender&&(params.encodings=transceiver.sendEncodingParameters,params.rtcp={cname:SDPUtils.localCName,compound:transceiver.rtcpParameters.compound},transceiver.recvEncodingParameters.length&&(params.rtcp.ssrc=transceiver.recvEncodingParameters[0].ssrc),transceiver.rtpSender.send(params)),recv&&transceiver.rtpReceiver&&params.codecs.length>0&&("video"===transceiver.kind&&transceiver.recvEncodingParameters&&edgeVersion<15019&&transceiver.recvEncodingParameters.forEach(function(p){delete p.rtx}),transceiver.recvEncodingParameters.length?params.encodings=transceiver.recvEncodingParameters:params.encodings=[{}],params.rtcp={compound:transceiver.rtcpParameters.compound},transceiver.rtcpParameters.cname&&(params.rtcp.cname=transceiver.rtcpParameters.cname),transceiver.sendEncodingParameters.length&&(params.rtcp.ssrc=transceiver.sendEncodingParameters[0].ssrc),transceiver.rtpReceiver.receive(params))},RTCPeerConnection.prototype.setLocalDescription=function(description){var pc=this;if(-1===["offer","answer"].indexOf(description.type))return Promise.reject(makeError("TypeError",'Unsupported type "'+description.type+'"'));if(!isActionAllowedInSignalingState("setLocalDescription",description.type,pc.signalingState)||pc._isClosed)return Promise.reject(makeError("InvalidStateError","Can not set local "+description.type+" in state "+pc.signalingState));var sections,sessionpart;if("offer"===description.type)sections=SDPUtils.splitSections(description.sdp),sessionpart=sections.shift(),sections.forEach(function(mediaSection,sdpMLineIndex){var caps=SDPUtils.parseRtpParameters(mediaSection);pc.transceivers[sdpMLineIndex].localCapabilities=caps}),pc.transceivers.forEach(function(transceiver,sdpMLineIndex){pc._gather(transceiver.mid,sdpMLineIndex)});else if("answer"===description.type){sections=SDPUtils.splitSections(pc._remoteDescription.sdp),sessionpart=sections.shift();var isIceLite=SDPUtils.matchPrefix(sessionpart,"a=ice-lite").length>0;sections.forEach(function(mediaSection,sdpMLineIndex){var transceiver=pc.transceivers[sdpMLineIndex],iceGatherer=transceiver.iceGatherer,iceTransport=transceiver.iceTransport,dtlsTransport=transceiver.dtlsTransport,localCapabilities=transceiver.localCapabilities,remoteCapabilities=transceiver.remoteCapabilities;if(!(SDPUtils.isRejected(mediaSection)&&0===SDPUtils.matchPrefix(mediaSection,"a=bundle-only").length||transceiver.rejected)){var remoteIceParameters=SDPUtils.getIceParameters(mediaSection,sessionpart),remoteDtlsParameters=SDPUtils.getDtlsParameters(mediaSection,sessionpart);isIceLite&&(remoteDtlsParameters.role="server"),pc.usingBundle&&0!==sdpMLineIndex||(pc._gather(transceiver.mid,sdpMLineIndex),"new"===iceTransport.state&&iceTransport.start(iceGatherer,remoteIceParameters,isIceLite?"controlling":"controlled"),"new"===dtlsTransport.state&&dtlsTransport.start(remoteDtlsParameters));var params=getCommonCapabilities(localCapabilities,remoteCapabilities);pc._transceive(transceiver,params.codecs.length>0,!1)}})}return pc._localDescription={type:description.type,sdp:description.sdp},"offer"===description.type?pc._updateSignalingState("have-local-offer"):pc._updateSignalingState("stable"),Promise.resolve()},RTCPeerConnection.prototype.setRemoteDescription=function(description){var pc=this;if(-1===["offer","answer"].indexOf(description.type))return Promise.reject(makeError("TypeError",'Unsupported type "'+description.type+'"'))
+;if(!isActionAllowedInSignalingState("setRemoteDescription",description.type,pc.signalingState)||pc._isClosed)return Promise.reject(makeError("InvalidStateError","Can not set remote "+description.type+" in state "+pc.signalingState));var streams={};pc.remoteStreams.forEach(function(stream){streams[stream.id]=stream});var receiverList=[],sections=SDPUtils.splitSections(description.sdp),sessionpart=sections.shift(),isIceLite=SDPUtils.matchPrefix(sessionpart,"a=ice-lite").length>0,usingBundle=SDPUtils.matchPrefix(sessionpart,"a=group:BUNDLE ").length>0;pc.usingBundle=usingBundle;var iceOptions=SDPUtils.matchPrefix(sessionpart,"a=ice-options:")[0];return pc.canTrickleIceCandidates=!!iceOptions&&iceOptions.substr(14).split(" ").indexOf("trickle")>=0,sections.forEach(function(mediaSection,sdpMLineIndex){var lines=SDPUtils.splitLines(mediaSection),kind=SDPUtils.getKind(mediaSection),rejected=SDPUtils.isRejected(mediaSection)&&0===SDPUtils.matchPrefix(mediaSection,"a=bundle-only").length,protocol=lines[0].substr(2).split(" ")[2],direction=SDPUtils.getDirection(mediaSection,sessionpart),remoteMsid=SDPUtils.parseMsid(mediaSection),mid=SDPUtils.getMid(mediaSection)||SDPUtils.generateIdentifier();if(rejected||"application"===kind&&("DTLS/SCTP"===protocol||"UDP/DTLS/SCTP"===protocol))return void(pc.transceivers[sdpMLineIndex]={mid:mid,kind:kind,protocol:protocol,rejected:!0});!rejected&&pc.transceivers[sdpMLineIndex]&&pc.transceivers[sdpMLineIndex].rejected&&(pc.transceivers[sdpMLineIndex]=pc._createTransceiver(kind,!0));var transceiver,iceGatherer,iceTransport,dtlsTransport,rtpReceiver,sendEncodingParameters,recvEncodingParameters,localCapabilities,track,remoteIceParameters,remoteDtlsParameters,remoteCapabilities=SDPUtils.parseRtpParameters(mediaSection);rejected||(remoteIceParameters=SDPUtils.getIceParameters(mediaSection,sessionpart),remoteDtlsParameters=SDPUtils.getDtlsParameters(mediaSection,sessionpart),remoteDtlsParameters.role="client"),recvEncodingParameters=SDPUtils.parseRtpEncodingParameters(mediaSection);var rtcpParameters=SDPUtils.parseRtcpParameters(mediaSection),isComplete=SDPUtils.matchPrefix(mediaSection,"a=end-of-candidates",sessionpart).length>0,cands=SDPUtils.matchPrefix(mediaSection,"a=candidate:").map(function(cand){return SDPUtils.parseCandidate(cand)}).filter(function(cand){return 1===cand.component});if(("offer"===description.type||"answer"===description.type)&&!rejected&&usingBundle&&sdpMLineIndex>0&&pc.transceivers[sdpMLineIndex]&&(pc._disposeIceAndDtlsTransports(sdpMLineIndex),pc.transceivers[sdpMLineIndex].iceGatherer=pc.transceivers[0].iceGatherer,pc.transceivers[sdpMLineIndex].iceTransport=pc.transceivers[0].iceTransport,pc.transceivers[sdpMLineIndex].dtlsTransport=pc.transceivers[0].dtlsTransport,pc.transceivers[sdpMLineIndex].rtpSender&&pc.transceivers[sdpMLineIndex].rtpSender.setTransport(pc.transceivers[0].dtlsTransport),pc.transceivers[sdpMLineIndex].rtpReceiver&&pc.transceivers[sdpMLineIndex].rtpReceiver.setTransport(pc.transceivers[0].dtlsTransport)),"offer"!==description.type||rejected)"answer"!==description.type||rejected||(transceiver=pc.transceivers[sdpMLineIndex],iceGatherer=transceiver.iceGatherer,iceTransport=transceiver.iceTransport,dtlsTransport=transceiver.dtlsTransport,rtpReceiver=transceiver.rtpReceiver,sendEncodingParameters=transceiver.sendEncodingParameters,localCapabilities=transceiver.localCapabilities,pc.transceivers[sdpMLineIndex].recvEncodingParameters=recvEncodingParameters,pc.transceivers[sdpMLineIndex].remoteCapabilities=remoteCapabilities,pc.transceivers[sdpMLineIndex].rtcpParameters=rtcpParameters,cands.length&&"new"===iceTransport.state&&(!isIceLite&&!isComplete||usingBundle&&0!==sdpMLineIndex?cands.forEach(function(candidate){maybeAddCandidate(transceiver.iceTransport,candidate)}):iceTransport.setRemoteCandidates(cands)),usingBundle&&0!==sdpMLineIndex||("new"===iceTransport.state&&iceTransport.start(iceGatherer,remoteIceParameters,"controlling"),"new"===dtlsTransport.state&&dtlsTransport.start(remoteDtlsParameters)),pc._transceive(transceiver,"sendrecv"===direction||"recvonly"===direction,"sendrecv"===direction||"sendonly"===direction),!rtpReceiver||"sendrecv"!==direction&&"sendonly"!==direction?delete transceiver.rtpReceiver:(track=rtpReceiver.track,remoteMsid?(streams[remoteMsid.stream]||(streams[remoteMsid.stream]=new window.MediaStream),addTrackToStreamAndFireEvent(track,streams[remoteMsid.stream]),receiverList.push([track,rtpReceiver,streams[remoteMsid.stream]])):(streams.default||(streams.default=new window.MediaStream),addTrackToStreamAndFireEvent(track,streams.default),receiverList.push([track,rtpReceiver,streams.default]))));else{transceiver=pc.transceivers[sdpMLineIndex]||pc._createTransceiver(kind),transceiver.mid=mid,transceiver.iceGatherer||(transceiver.iceGatherer=pc._createIceGatherer(sdpMLineIndex,usingBundle)),cands.length&&"new"===transceiver.iceTransport.state&&(!isComplete||usingBundle&&0!==sdpMLineIndex?cands.forEach(function(candidate){maybeAddCandidate(transceiver.iceTransport,candidate)}):transceiver.iceTransport.setRemoteCandidates(cands)),localCapabilities=window.RTCRtpReceiver.getCapabilities(kind),edgeVersion<15019&&(localCapabilities.codecs=localCapabilities.codecs.filter(function(codec){return"rtx"!==codec.name})),sendEncodingParameters=transceiver.sendEncodingParameters||[{ssrc:1001*(2*sdpMLineIndex+2)}];var isNewTrack=!1;if("sendrecv"===direction||"sendonly"===direction){if(isNewTrack=!transceiver.rtpReceiver,rtpReceiver=transceiver.rtpReceiver||new window.RTCRtpReceiver(transceiver.dtlsTransport,kind),isNewTrack){var stream;track=rtpReceiver.track,remoteMsid&&"-"===remoteMsid.stream||(remoteMsid?(streams[remoteMsid.stream]||(streams[remoteMsid.stream]=new window.MediaStream,Object.defineProperty(streams[remoteMsid.stream],"id",{get:function(){return remoteMsid.stream}})),Object.defineProperty(track,"id",{get:function(){return remoteMsid.track}}),stream=streams[remoteMsid.stream]):(streams.default||(streams.default=new window.MediaStream),stream=streams.default)),stream&&(addTrackToStreamAndFireEvent(track,stream),transceiver.associatedRemoteMediaStreams.push(stream)),receiverList.push([track,rtpReceiver,stream])}}else transceiver.rtpReceiver&&transceiver.rtpReceiver.track&&(transceiver.associatedRemoteMediaStreams.forEach(function(s){var nativeTrack=s.getTracks().find(function(t){return t.id===transceiver.rtpReceiver.track.id});nativeTrack&&removeTrackFromStreamAndFireEvent(nativeTrack,s)}),transceiver.associatedRemoteMediaStreams=[]);transceiver.localCapabilities=localCapabilities,transceiver.remoteCapabilities=remoteCapabilities,transceiver.rtpReceiver=rtpReceiver,transceiver.rtcpParameters=rtcpParameters,transceiver.sendEncodingParameters=sendEncodingParameters,transceiver.recvEncodingParameters=recvEncodingParameters,pc._transceive(pc.transceivers[sdpMLineIndex],!1,isNewTrack)}}),void 0===pc._dtlsRole&&(pc._dtlsRole="offer"===description.type?"active":"passive"),pc._remoteDescription={type:description.type,sdp:description.sdp},"offer"===description.type?pc._updateSignalingState("have-remote-offer"):pc._updateSignalingState("stable"),Object.keys(streams).forEach(function(sid){var stream=streams[sid];if(stream.getTracks().length){if(-1===pc.remoteStreams.indexOf(stream)){pc.remoteStreams.push(stream);var event=new Event("addstream");event.stream=stream,window.setTimeout(function(){pc._dispatchEvent("addstream",event)})}receiverList.forEach(function(item){var track=item[0],receiver=item[1];stream.id===item[2].id&&fireAddTrack(pc,track,receiver,[stream])})}}),receiverList.forEach(function(item){item[2]||fireAddTrack(pc,item[0],item[1],[])}),window.setTimeout(function(){pc&&pc.transceivers&&pc.transceivers.forEach(function(transceiver){transceiver.iceTransport&&"new"===transceiver.iceTransport.state&&transceiver.iceTransport.getRemoteCandidates().length>0&&transceiver.iceTransport.addRemoteCandidate({})})},4e3),Promise.resolve()},RTCPeerConnection.prototype.close=function(){this.transceivers.forEach(function(transceiver){transceiver.iceTransport&&transceiver.iceTransport.stop(),transceiver.dtlsTransport&&transceiver.dtlsTransport.stop(),transceiver.rtpSender&&transceiver.rtpSender.stop(),transceiver.rtpReceiver&&transceiver.rtpReceiver.stop()}),this._isClosed=!0,this._updateSignalingState("closed")},RTCPeerConnection.prototype._updateSignalingState=function(newState){this.signalingState=newState;var event=new Event("signalingstatechange");this._dispatchEvent("signalingstatechange",event)},RTCPeerConnection.prototype._maybeFireNegotiationNeeded=function(){var pc=this;"stable"===this.signalingState&&!0!==this.needNegotiation&&(this.needNegotiation=!0,window.setTimeout(function(){if(pc.needNegotiation){pc.needNegotiation=!1;var event=new Event("negotiationneeded");pc._dispatchEvent("negotiationneeded",event)}},0))},RTCPeerConnection.prototype._updateIceConnectionState=function(){var newState,states={new:0,closed:0,checking:0,connected:0,completed:0,disconnected:0,failed:0};if(this.transceivers.forEach(function(transceiver){states[transceiver.iceTransport.state]++}),newState="new",states.failed>0?newState="failed":states.checking>0?newState="checking":states.disconnected>0?newState="disconnected":states.new>0?newState="new":states.connected>0?newState="connected":states.completed>0&&(newState="completed"),newState!==this.iceConnectionState){this.iceConnectionState=newState;var event=new Event("iceconnectionstatechange");this._dispatchEvent("iceconnectionstatechange",event)}},RTCPeerConnection.prototype._updateConnectionState=function(){var newState,states={new:0,closed:0,connecting:0,connected:0,completed:0,disconnected:0,failed:0};if(this.transceivers.forEach(function(transceiver){states[transceiver.iceTransport.state]++,states[transceiver.dtlsTransport.state]++}),states.connected+=states.completed,newState="new",states.failed>0?newState="failed":states.connecting>0?newState="connecting":states.disconnected>0?newState="disconnected":states.new>0?newState="new":states.connected>0&&(newState="connected"),newState!==this.connectionState){this.connectionState=newState;var event=new Event("connectionstatechange");this._dispatchEvent("connectionstatechange",event)}},RTCPeerConnection.prototype.createOffer=function(){var pc=this;if(pc._isClosed)return Promise.reject(makeError("InvalidStateError","Can not call createOffer after close"));var numAudioTracks=pc.transceivers.filter(function(t){return"audio"===t.kind}).length,numVideoTracks=pc.transceivers.filter(function(t){return"video"===t.kind}).length,offerOptions=arguments[0];if(offerOptions){if(offerOptions.mandatory||offerOptions.optional)throw new TypeError("Legacy mandatory/optional constraints not supported.");void 0!==offerOptions.offerToReceiveAudio&&(numAudioTracks=!0===offerOptions.offerToReceiveAudio?1:!1===offerOptions.offerToReceiveAudio?0:offerOptions.offerToReceiveAudio),void 0!==offerOptions.offerToReceiveVideo&&(numVideoTracks=!0===offerOptions.offerToReceiveVideo?1:!1===offerOptions.offerToReceiveVideo?0:offerOptions.offerToReceiveVideo)}for(pc.transceivers.forEach(function(transceiver){"audio"===transceiver.kind?--numAudioTracks<0&&(transceiver.wantReceive=!1):"video"===transceiver.kind&&--numVideoTracks<0&&(transceiver.wantReceive=!1)});numAudioTracks>0||numVideoTracks>0;)numAudioTracks>0&&(pc._createTransceiver("audio"),numAudioTracks--),numVideoTracks>0&&(pc._createTransceiver("video"),numVideoTracks--);var sdp=SDPUtils.writeSessionBoilerplate(pc._sdpSessionId,pc._sdpSessionVersion++);pc.transceivers.forEach(function(transceiver,sdpMLineIndex){var track=transceiver.track,kind=transceiver.kind,mid=transceiver.mid||SDPUtils.generateIdentifier();transceiver.mid=mid,transceiver.iceGatherer||(transceiver.iceGatherer=pc._createIceGatherer(sdpMLineIndex,pc.usingBundle));var localCapabilities=window.RTCRtpSender.getCapabilities(kind);edgeVersion<15019&&(localCapabilities.codecs=localCapabilities.codecs.filter(function(codec){return"rtx"!==codec.name})),localCapabilities.codecs.forEach(function(codec){"H264"===codec.name&&void 0===codec.parameters["level-asymmetry-allowed"]&&(codec.parameters["level-asymmetry-allowed"]="1"),transceiver.remoteCapabilities&&transceiver.remoteCapabilities.codecs&&transceiver.remoteCapabilities.codecs.forEach(function(remoteCodec){codec.name.toLowerCase()===remoteCodec.name.toLowerCase()&&codec.clockRate===remoteCodec.clockRate&&(codec.preferredPayloadType=remoteCodec.payloadType)})}),localCapabilities.headerExtensions.forEach(function(hdrExt){(transceiver.remoteCapabilities&&transceiver.remoteCapabilities.headerExtensions||[]).forEach(function(rHdrExt){hdrExt.uri===rHdrExt.uri&&(hdrExt.id=rHdrExt.id)})});var sendEncodingParameters=transceiver.sendEncodingParameters||[{ssrc:1001*(2*sdpMLineIndex+1)}];track&&edgeVersion>=15019&&"video"===kind&&!sendEncodingParameters[0].rtx&&(sendEncodingParameters[0].rtx={ssrc:sendEncodingParameters[0].ssrc+1}),transceiver.wantReceive&&(transceiver.rtpReceiver=new window.RTCRtpReceiver(transceiver.dtlsTransport,kind)),transceiver.localCapabilities=localCapabilities,transceiver.sendEncodingParameters=sendEncodingParameters}),"max-compat"!==pc._config.bundlePolicy&&(sdp+="a=group:BUNDLE "+pc.transceivers.map(function(t){return t.mid}).join(" ")+"\r\n"),sdp+="a=ice-options:trickle\r\n",pc.transceivers.forEach(function(transceiver,sdpMLineIndex){sdp+=writeMediaSection(transceiver,transceiver.localCapabilities,"offer",transceiver.stream,pc._dtlsRole),sdp+="a=rtcp-rsize\r\n",!transceiver.iceGatherer||"new"===pc.iceGatheringState||0!==sdpMLineIndex&&pc.usingBundle||(transceiver.iceGatherer.getLocalCandidates().forEach(function(cand){cand.component=1,sdp+="a="+SDPUtils.writeCandidate(cand)+"\r\n"}),"completed"===transceiver.iceGatherer.state&&(sdp+="a=end-of-candidates\r\n"))});var desc=new window.RTCSessionDescription({type:"offer",sdp:sdp});return Promise.resolve(desc)},RTCPeerConnection.prototype.createAnswer=function(){var pc=this;if(pc._isClosed)return Promise.reject(makeError("InvalidStateError","Can not call createAnswer after close"));if("have-remote-offer"!==pc.signalingState&&"have-local-pranswer"!==pc.signalingState)return Promise.reject(makeError("InvalidStateError","Can not call createAnswer in signalingState "+pc.signalingState));var sdp=SDPUtils.writeSessionBoilerplate(pc._sdpSessionId,pc._sdpSessionVersion++);pc.usingBundle&&(sdp+="a=group:BUNDLE "+pc.transceivers.map(function(t){return t.mid}).join(" ")+"\r\n");var mediaSectionsInOffer=SDPUtils.getMediaSections(pc._remoteDescription.sdp).length;pc.transceivers.forEach(function(transceiver,sdpMLineIndex){if(!(sdpMLineIndex+1>mediaSectionsInOffer)){if(transceiver.rejected)return"application"===transceiver.kind?"DTLS/SCTP"===transceiver.protocol?sdp+="m=application 0 DTLS/SCTP 5000\r\n":sdp+="m=application 0 "+transceiver.protocol+" webrtc-datachannel\r\n":"audio"===transceiver.kind?sdp+="m=audio 0 UDP/TLS/RTP/SAVPF 0\r\na=rtpmap:0 PCMU/8000\r\n":"video"===transceiver.kind&&(sdp+="m=video 0 UDP/TLS/RTP/SAVPF 120\r\na=rtpmap:120 VP8/90000\r\n"),void(sdp+="c=IN IP4 0.0.0.0\r\na=inactive\r\na=mid:"+transceiver.mid+"\r\n");if(transceiver.stream){var localTrack;"audio"===transceiver.kind?localTrack=transceiver.stream.getAudioTracks()[0]:"video"===transceiver.kind&&(localTrack=transceiver.stream.getVideoTracks()[0]),localTrack&&edgeVersion>=15019&&"video"===transceiver.kind&&!transceiver.sendEncodingParameters[0].rtx&&(transceiver.sendEncodingParameters[0].rtx={ssrc:transceiver.sendEncodingParameters[0].ssrc+1})}var commonCapabilities=getCommonCapabilities(transceiver.localCapabilities,transceiver.remoteCapabilities);!commonCapabilities.codecs.filter(function(c){return"rtx"===c.name.toLowerCase()}).length&&transceiver.sendEncodingParameters[0].rtx&&delete transceiver.sendEncodingParameters[0].rtx,sdp+=writeMediaSection(transceiver,commonCapabilities,"answer",transceiver.stream,pc._dtlsRole),transceiver.rtcpParameters&&transceiver.rtcpParameters.reducedSize&&(sdp+="a=rtcp-rsize\r\n")}});var desc=new window.RTCSessionDescription({type:"answer",sdp:sdp});return Promise.resolve(desc)},RTCPeerConnection.prototype.addIceCandidate=function(candidate){var sections,pc=this;return candidate&&void 0===candidate.sdpMLineIndex&&!candidate.sdpMid?Promise.reject(new TypeError("sdpMLineIndex or sdpMid required")):new Promise(function(resolve,reject){if(!pc._remoteDescription)return reject(makeError("InvalidStateError","Can not add ICE candidate without a remote description"));if(candidate&&""!==candidate.candidate){var sdpMLineIndex=candidate.sdpMLineIndex;if(candidate.sdpMid)for(var i=0;i<pc.transceivers.length;i++)if(pc.transceivers[i].mid===candidate.sdpMid){sdpMLineIndex=i;break}var transceiver=pc.transceivers[sdpMLineIndex];if(!transceiver)return reject(makeError("OperationError","Can not add ICE candidate"));if(transceiver.rejected)return resolve();var cand=Object.keys(candidate.candidate).length>0?SDPUtils.parseCandidate(candidate.candidate):{};if("tcp"===cand.protocol&&(0===cand.port||9===cand.port))return resolve();if(cand.component&&1!==cand.component)return resolve();if((0===sdpMLineIndex||sdpMLineIndex>0&&transceiver.iceTransport!==pc.transceivers[0].iceTransport)&&!maybeAddCandidate(transceiver.iceTransport,cand))return reject(makeError("OperationError","Can not add ICE candidate"));var candidateString=candidate.candidate.trim();0===candidateString.indexOf("a=")&&(candidateString=candidateString.substr(2)),sections=SDPUtils.getMediaSections(pc._remoteDescription.sdp),sections[sdpMLineIndex]+="a="+(cand.type?candidateString:"end-of-candidates")+"\r\n",pc._remoteDescription.sdp=SDPUtils.getDescription(pc._remoteDescription.sdp)+sections.join("")}else for(var j=0;j<pc.transceivers.length&&(pc.transceivers[j].rejected||(pc.transceivers[j].iceTransport.addRemoteCandidate({}),sections=SDPUtils.getMediaSections(pc._remoteDescription.sdp),sections[j]+="a=end-of-candidates\r\n",pc._remoteDescription.sdp=SDPUtils.getDescription(pc._remoteDescription.sdp)+sections.join(""),!pc.usingBundle));j++);resolve()})},RTCPeerConnection.prototype.getStats=function(selector){if(selector&&selector instanceof window.MediaStreamTrack){var senderOrReceiver=null;if(this.transceivers.forEach(function(transceiver){transceiver.rtpSender&&transceiver.rtpSender.track===selector?senderOrReceiver=transceiver.rtpSender:transceiver.rtpReceiver&&transceiver.rtpReceiver.track===selector&&(senderOrReceiver=transceiver.rtpReceiver)}),!senderOrReceiver)throw makeError("InvalidAccessError","Invalid selector.");return senderOrReceiver.getStats()}var promises=[];return this.transceivers.forEach(function(transceiver){["rtpSender","rtpReceiver","iceGatherer","iceTransport","dtlsTransport"].forEach(function(method){transceiver[method]&&promises.push(transceiver[method].getStats())})}),Promise.all(promises).then(function(allStats){var results=new Map;return allStats.forEach(function(stats){stats.forEach(function(stat){results.set(stat.id,stat)})}),results})},["RTCRtpSender","RTCRtpReceiver","RTCIceGatherer","RTCIceTransport","RTCDtlsTransport"].forEach(function(ortcObjectName){var obj=window[ortcObjectName];if(obj&&obj.prototype&&obj.prototype.getStats){var nativeGetstats=obj.prototype.getStats;obj.prototype.getStats=function(){return nativeGetstats.apply(this).then(function(nativeStats){var mapStats=new Map;return Object.keys(nativeStats).forEach(function(id){nativeStats[id].type=fixStatsType(nativeStats[id]),mapStats.set(id,nativeStats[id])}),mapStats})}}});var methods=["createOffer","createAnswer"];return methods.forEach(function(method){var nativeMethod=RTCPeerConnection.prototype[method];RTCPeerConnection.prototype[method]=function(){var args=arguments;return"function"==typeof args[0]||"function"==typeof args[1]?nativeMethod.apply(this,[arguments[2]]).then(function(description){"function"==typeof args[0]&&args[0].apply(null,[description])},function(error){"function"==typeof args[1]&&args[1].apply(null,[error])}):nativeMethod.apply(this,arguments)}}),methods=["setLocalDescription","setRemoteDescription","addIceCandidate"],methods.forEach(function(method){var nativeMethod=RTCPeerConnection.prototype[method];RTCPeerConnection.prototype[method]=function(){var args=arguments;return"function"==typeof args[1]||"function"==typeof args[2]?nativeMethod.apply(this,arguments).then(function(){"function"==typeof args[1]&&args[1].apply(null)},function(error){"function"==typeof args[2]&&args[2].apply(null,[error])}):nativeMethod.apply(this,arguments)}}),["getStats"].forEach(function(method){var nativeMethod=RTCPeerConnection.prototype[method];RTCPeerConnection.prototype[method]=function(){var args=arguments;return"function"==typeof args[1]?nativeMethod.apply(this,arguments).then(function(){"function"==typeof args[1]&&args[1].apply(null)}):nativeMethod.apply(this,arguments)}}),RTCPeerConnection}},{sdp:2}],2:[function(requirecopy,module,exports){var SDPUtils={};SDPUtils.generateIdentifier=function(){return Math.random().toString(36).substr(2,10)},SDPUtils.localCName=SDPUtils.generateIdentifier(),SDPUtils.splitLines=function(blob){return blob.trim().split("\n").map(function(line){return line.trim()})},SDPUtils.splitSections=function(blob){return blob.split("\nm=").map(function(part,index){return(index>0?"m="+part:part).trim()+"\r\n"})},SDPUtils.getDescription=function(blob){var sections=SDPUtils.splitSections(blob);return sections&&sections[0]},SDPUtils.getMediaSections=function(blob){var sections=SDPUtils.splitSections(blob);return sections.shift(),sections},SDPUtils.matchPrefix=function(blob,prefix){return SDPUtils.splitLines(blob).filter(function(line){return 0===line.indexOf(prefix)})},SDPUtils.parseCandidate=function(line){var parts;parts=0===line.indexOf("a=candidate:")?line.substring(12).split(" "):line.substring(10).split(" ");for(var candidate={foundation:parts[0],component:parseInt(parts[1],10),protocol:parts[2].toLowerCase(),priority:parseInt(parts[3],10),ip:parts[4],port:parseInt(parts[5],10),type:parts[7]},i=8;i<parts.length;i+=2)switch(parts[i]){case"raddr":candidate.relatedAddress=parts[i+1];break;case"rport":candidate.relatedPort=parseInt(parts[i+1],10);break;case"tcptype":candidate.tcpType=parts[i+1];break;case"ufrag":candidate.ufrag=parts[i+1],candidate.usernameFragment=parts[i+1];break;default:candidate[parts[i]]=parts[i+1]}return candidate},SDPUtils.writeCandidate=function(candidate){var sdp=[];sdp.push(candidate.foundation),sdp.push(candidate.component),sdp.push(candidate.protocol.toUpperCase()),sdp.push(candidate.priority),sdp.push(candidate.ip),sdp.push(candidate.port);var type=candidate.type;return sdp.push("typ"),sdp.push(type),"host"!==type&&candidate.relatedAddress&&candidate.relatedPort&&(sdp.push("raddr"),sdp.push(candidate.relatedAddress),sdp.push("rport"),sdp.push(candidate.relatedPort)),candidate.tcpType&&"tcp"===candidate.protocol.toLowerCase()&&(sdp.push("tcptype"),sdp.push(candidate.tcpType)),(candidate.usernameFragment||candidate.ufrag)&&(sdp.push("ufrag"),sdp.push(candidate.usernameFragment||candidate.ufrag)),"candidate:"+sdp.join(" ")},SDPUtils.parseIceOptions=function(line){return line.substr(14).split(" ")},SDPUtils.parseRtpMap=function(line){var parts=line.substr(9).split(" "),parsed={payloadType:parseInt(parts.shift(),10)};return parts=parts[0].split("/"),parsed.name=parts[0],parsed.clockRate=parseInt(parts[1],10),parsed.channels=3===parts.length?parseInt(parts[2],10):1,parsed.numChannels=parsed.channels,parsed},SDPUtils.writeRtpMap=function(codec){var pt=codec.payloadType;void 0!==codec.preferredPayloadType&&(pt=codec.preferredPayloadType);var channels=codec.channels||codec.numChannels||1;return"a=rtpmap:"+pt+" "+codec.name+"/"+codec.clockRate+(1!==channels?"/"+channels:"")+"\r\n"},SDPUtils.parseExtmap=function(line){var parts=line.substr(9).split(" ");return{id:parseInt(parts[0],10),direction:parts[0].indexOf("/")>0?parts[0].split("/")[1]:"sendrecv",uri:parts[1]}},SDPUtils.writeExtmap=function(headerExtension){return"a=extmap:"+(headerExtension.id||headerExtension.preferredId)+(headerExtension.direction&&"sendrecv"!==headerExtension.direction?"/"+headerExtension.direction:"")+" "+headerExtension.uri+"\r\n"},SDPUtils.parseFmtp=function(line){for(var kv,parsed={},parts=line.substr(line.indexOf(" ")+1).split(";"),j=0;j<parts.length;j++)kv=parts[j].trim().split("="),parsed[kv[0].trim()]=kv[1];return parsed},SDPUtils.writeFmtp=function(codec){var line="",pt=codec.payloadType;if(void 0!==codec.preferredPayloadType&&(pt=codec.preferredPayloadType),codec.parameters&&Object.keys(codec.parameters).length){var params=[];Object.keys(codec.parameters).forEach(function(param){codec.parameters[param]?params.push(param+"="+codec.parameters[param]):params.push(param)}),line+="a=fmtp:"+pt+" "+params.join(";")+"\r\n"}return line},SDPUtils.parseRtcpFb=function(line){var parts=line.substr(line.indexOf(" ")+1).split(" ");return{type:parts.shift(),parameter:parts.join(" ")}},SDPUtils.writeRtcpFb=function(codec){var lines="",pt=codec.payloadType;return void 0!==codec.preferredPayloadType&&(pt=codec.preferredPayloadType),codec.rtcpFeedback&&codec.rtcpFeedback.length&&codec.rtcpFeedback.forEach(function(fb){lines+="a=rtcp-fb:"+pt+" "+fb.type+(fb.parameter&&fb.parameter.length?" "+fb.parameter:"")+"\r\n"}),lines},SDPUtils.parseSsrcMedia=function(line){var sp=line.indexOf(" "),parts={ssrc:parseInt(line.substr(7,sp-7),10)},colon=line.indexOf(":",sp);return colon>-1?(parts.attribute=line.substr(sp+1,colon-sp-1),parts.value=line.substr(colon+1)):parts.attribute=line.substr(sp+1),parts},SDPUtils.parseSsrcGroup=function(line){var parts=line.substr(13).split(" ");return{semantics:parts.shift(),ssrcs:parts.map(function(ssrc){return parseInt(ssrc,10)})}},SDPUtils.getMid=function(mediaSection){var mid=SDPUtils.matchPrefix(mediaSection,"a=mid:")[0];if(mid)return mid.substr(6)},SDPUtils.parseFingerprint=function(line){var parts=line.substr(14).split(" ");return{algorithm:parts[0].toLowerCase(),value:parts[1]}},SDPUtils.getDtlsParameters=function(mediaSection,sessionpart){return{role:"auto",fingerprints:SDPUtils.matchPrefix(mediaSection+sessionpart,"a=fingerprint:").map(SDPUtils.parseFingerprint)}},SDPUtils.writeDtlsParameters=function(params,setupType){var sdp="a=setup:"+setupType+"\r\n";return params.fingerprints.forEach(function(fp){sdp+="a=fingerprint:"+fp.algorithm+" "+fp.value+"\r\n"}),sdp},SDPUtils.getIceParameters=function(mediaSection,sessionpart){var lines=SDPUtils.splitLines(mediaSection);return lines=lines.concat(SDPUtils.splitLines(sessionpart)),{usernameFragment:lines.filter(function(line){return 0===line.indexOf("a=ice-ufrag:")})[0].substr(12),password:lines.filter(function(line){return 0===line.indexOf("a=ice-pwd:")})[0].substr(10)}},SDPUtils.writeIceParameters=function(params){return"a=ice-ufrag:"+params.usernameFragment+"\r\na=ice-pwd:"+params.password+"\r\n"},SDPUtils.parseRtpParameters=function(mediaSection){for(var description={codecs:[],headerExtensions:[],fecMechanisms:[],rtcp:[]},lines=SDPUtils.splitLines(mediaSection),mline=lines[0].split(" "),i=3;i<mline.length;i++){var pt=mline[i],rtpmapline=SDPUtils.matchPrefix(mediaSection,"a=rtpmap:"+pt+" ")[0];if(rtpmapline){var codec=SDPUtils.parseRtpMap(rtpmapline),fmtps=SDPUtils.matchPrefix(mediaSection,"a=fmtp:"+pt+" ");switch(codec.parameters=fmtps.length?SDPUtils.parseFmtp(fmtps[0]):{},codec.rtcpFeedback=SDPUtils.matchPrefix(mediaSection,"a=rtcp-fb:"+pt+" ").map(SDPUtils.parseRtcpFb),description.codecs.push(codec),codec.name.toUpperCase()){case"RED":case"ULPFEC":description.fecMechanisms.push(codec.name.toUpperCase())}}}return SDPUtils.matchPrefix(mediaSection,"a=extmap:").forEach(function(line){description.headerExtensions.push(SDPUtils.parseExtmap(line))}),description},SDPUtils.writeRtpDescription=function(kind,caps){var sdp="";sdp+="m="+kind+" ",sdp+=caps.codecs.length>0?"9":"0",sdp+=" UDP/TLS/RTP/SAVPF ",sdp+=caps.codecs.map(function(codec){return void 0!==codec.preferredPayloadType?codec.preferredPayloadType:codec.payloadType}).join(" ")+"\r\n",sdp+="c=IN IP4 0.0.0.0\r\n",sdp+="a=rtcp:9 IN IP4 0.0.0.0\r\n",caps.codecs.forEach(function(codec){sdp+=SDPUtils.writeRtpMap(codec),sdp+=SDPUtils.writeFmtp(codec),sdp+=SDPUtils.writeRtcpFb(codec)});var maxptime=0;return caps.codecs.forEach(function(codec){codec.maxptime>maxptime&&(maxptime=codec.maxptime)}),maxptime>0&&(sdp+="a=maxptime:"+maxptime+"\r\n"),sdp+="a=rtcp-mux\r\n",caps.headerExtensions&&caps.headerExtensions.forEach(function(extension){sdp+=SDPUtils.writeExtmap(extension)}),sdp},SDPUtils.parseRtpEncodingParameters=function(mediaSection){var secondarySsrc,encodingParameters=[],description=SDPUtils.parseRtpParameters(mediaSection),hasRed=-1!==description.fecMechanisms.indexOf("RED"),hasUlpfec=-1!==description.fecMechanisms.indexOf("ULPFEC"),ssrcs=SDPUtils.matchPrefix(mediaSection,"a=ssrc:").map(function(line){return SDPUtils.parseSsrcMedia(line)}).filter(function(parts){return"cname"===parts.attribute}),primarySsrc=ssrcs.length>0&&ssrcs[0].ssrc,flows=SDPUtils.matchPrefix(mediaSection,"a=ssrc-group:FID").map(function(line){return line.substr(17).split(" ").map(function(part){return parseInt(part,10)})});flows.length>0&&flows[0].length>1&&flows[0][0]===primarySsrc&&(secondarySsrc=flows[0][1]),description.codecs.forEach(function(codec){if("RTX"===codec.name.toUpperCase()&&codec.parameters.apt){var encParam={ssrc:primarySsrc,codecPayloadType:parseInt(codec.parameters.apt,10)};primarySsrc&&secondarySsrc&&(encParam.rtx={ssrc:secondarySsrc}),encodingParameters.push(encParam),hasRed&&(encParam=JSON.parse(JSON.stringify(encParam)),encParam.fec={ssrc:secondarySsrc,mechanism:hasUlpfec?"red+ulpfec":"red"},encodingParameters.push(encParam))}}),0===encodingParameters.length&&primarySsrc&&encodingParameters.push({ssrc:primarySsrc});var bandwidth=SDPUtils.matchPrefix(mediaSection,"b=");return bandwidth.length&&(bandwidth=0===bandwidth[0].indexOf("b=TIAS:")?parseInt(bandwidth[0].substr(7),10):0===bandwidth[0].indexOf("b=AS:")?1e3*parseInt(bandwidth[0].substr(5),10)*.95-16e3:void 0,encodingParameters.forEach(function(params){params.maxBitrate=bandwidth})),encodingParameters},SDPUtils.parseRtcpParameters=function(mediaSection){var rtcpParameters={},remoteSsrc=SDPUtils.matchPrefix(mediaSection,"a=ssrc:").map(function(line){return SDPUtils.parseSsrcMedia(line)}).filter(function(obj){return"cname"===obj.attribute})[0];remoteSsrc&&(rtcpParameters.cname=remoteSsrc.value,rtcpParameters.ssrc=remoteSsrc.ssrc);var rsize=SDPUtils.matchPrefix(mediaSection,"a=rtcp-rsize");rtcpParameters.reducedSize=rsize.length>0,rtcpParameters.compound=0===rsize.length;var mux=SDPUtils.matchPrefix(mediaSection,"a=rtcp-mux");return rtcpParameters.mux=mux.length>0,rtcpParameters},SDPUtils.parseMsid=function(mediaSection){var parts,spec=SDPUtils.matchPrefix(mediaSection,"a=msid:");if(1===spec.length)return parts=spec[0].substr(7).split(" "),{stream:parts[0],track:parts[1]};var planB=SDPUtils.matchPrefix(mediaSection,"a=ssrc:").map(function(line){return SDPUtils.parseSsrcMedia(line)}).filter(function(msidParts){return"msid"===msidParts.attribute});return planB.length>0?(parts=planB[0].value.split(" "),{stream:parts[0],track:parts[1]}):void 0},SDPUtils.generateSessionId=function(){return Math.random().toString().substr(2,21)},SDPUtils.writeSessionBoilerplate=function(sessId,sessVer){var version=void 0!==sessVer?sessVer:2;return"v=0\r\no=thisisadapterortc "+(sessId||SDPUtils.generateSessionId())+" "+version+" IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\n"},SDPUtils.writeMediaSection=function(transceiver,caps,type,stream){var sdp=SDPUtils.writeRtpDescription(transceiver.kind,caps);if(sdp+=SDPUtils.writeIceParameters(transceiver.iceGatherer.getLocalParameters()),sdp+=SDPUtils.writeDtlsParameters(transceiver.dtlsTransport.getLocalParameters(),"offer"===type?"actpass":"active"),sdp+="a=mid:"+transceiver.mid+"\r\n",
+transceiver.direction?sdp+="a="+transceiver.direction+"\r\n":transceiver.rtpSender&&transceiver.rtpReceiver?sdp+="a=sendrecv\r\n":transceiver.rtpSender?sdp+="a=sendonly\r\n":transceiver.rtpReceiver?sdp+="a=recvonly\r\n":sdp+="a=inactive\r\n",transceiver.rtpSender){var msid="msid:"+stream.id+" "+transceiver.rtpSender.track.id+"\r\n";sdp+="a="+msid,sdp+="a=ssrc:"+transceiver.sendEncodingParameters[0].ssrc+" "+msid,transceiver.sendEncodingParameters[0].rtx&&(sdp+="a=ssrc:"+transceiver.sendEncodingParameters[0].rtx.ssrc+" "+msid,sdp+="a=ssrc-group:FID "+transceiver.sendEncodingParameters[0].ssrc+" "+transceiver.sendEncodingParameters[0].rtx.ssrc+"\r\n")}return sdp+="a=ssrc:"+transceiver.sendEncodingParameters[0].ssrc+" cname:"+SDPUtils.localCName+"\r\n",transceiver.rtpSender&&transceiver.sendEncodingParameters[0].rtx&&(sdp+="a=ssrc:"+transceiver.sendEncodingParameters[0].rtx.ssrc+" cname:"+SDPUtils.localCName+"\r\n"),sdp},SDPUtils.getDirection=function(mediaSection,sessionpart){for(var lines=SDPUtils.splitLines(mediaSection),i=0;i<lines.length;i++)switch(lines[i]){case"a=sendrecv":case"a=sendonly":case"a=recvonly":case"a=inactive":return lines[i].substr(2)}return sessionpart?SDPUtils.getDirection(sessionpart):"sendrecv"},SDPUtils.getKind=function(mediaSection){return SDPUtils.splitLines(mediaSection)[0].split(" ")[0].substr(2)},SDPUtils.isRejected=function(mediaSection){return"0"===mediaSection.split(" ",2)[1]},SDPUtils.parseMLine=function(mediaSection){var lines=SDPUtils.splitLines(mediaSection),parts=lines[0].substr(2).split(" ");return{kind:parts[0],port:parseInt(parts[1],10),protocol:parts[2],fmt:parts.slice(3).join(" ")}},SDPUtils.parseOLine=function(mediaSection){var line=SDPUtils.matchPrefix(mediaSection,"o=")[0],parts=line.substr(2).split(" ");return{username:parts[0],sessionId:parts[1],sessionVersion:parseInt(parts[2],10),netType:parts[3],addressType:parts[4],address:parts[5]}},SDPUtils.isValidSDP=function(blob){if("string"!=typeof blob||0===blob.length)return!1;for(var lines=SDPUtils.splitLines(blob),i=0;i<lines.length;i++)if(lines[i].length<2||"="!==lines[i].charAt(1))return!1;return!0},"object"==typeof module&&(module.exports=SDPUtils)},{}],3:[function(requirecopy,module,exports){(function(global){var adapterFactory=requirecopy("./adapter_factory.js");module.exports=adapterFactory({window:global.window})}).call(this,"undefined"!=typeof __webpack_require__.g?__webpack_require__.g:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{"./adapter_factory.js":4}],4:[function(requirecopy,module,exports){var utils=requirecopy("./utils");module.exports=function(dependencies,opts){var window=dependencies&&dependencies.window,options={shimChrome:!0,shimFirefox:!0,shimEdge:!0,shimSafari:!0};for(var key in opts)hasOwnProperty.call(opts,key)&&(options[key]=opts[key]);var logging=utils.log,browserDetails=utils.detectBrowser(window),chromeShim=requirecopy("./chrome/chrome_shim")||null,edgeShim=requirecopy("./edge/edge_shim")||null,firefoxShim=requirecopy("./firefox/firefox_shim")||null,safariShim=requirecopy("./safari/safari_shim")||null,commonShim=requirecopy("./common_shim")||null,adapter={browserDetails:browserDetails,commonShim:commonShim,extractVersion:utils.extractVersion,disableLog:utils.disableLog,disableWarnings:utils.disableWarnings};switch(browserDetails.browser){case"chrome":if(!chromeShim||!chromeShim.shimPeerConnection||!options.shimChrome)return logging("Chrome shim is not included in this adapter release."),adapter;logging("adapter.js shimming chrome."),adapter.browserShim=chromeShim,commonShim.shimCreateObjectURL(window),chromeShim.shimGetUserMedia(window),chromeShim.shimMediaStream(window),chromeShim.shimSourceObject(window),chromeShim.shimPeerConnection(window),chromeShim.shimOnTrack(window),chromeShim.shimAddTrackRemoveTrack(window),chromeShim.shimGetSendersWithDtmf(window),chromeShim.shimSenderReceiverGetStats(window),chromeShim.fixNegotiationNeeded(window),commonShim.shimRTCIceCandidate(window),commonShim.shimMaxMessageSize(window),commonShim.shimSendThrowTypeError(window);break;case"firefox":if(!firefoxShim||!firefoxShim.shimPeerConnection||!options.shimFirefox)return logging("Firefox shim is not included in this adapter release."),adapter;logging("adapter.js shimming firefox."),adapter.browserShim=firefoxShim,commonShim.shimCreateObjectURL(window),firefoxShim.shimGetUserMedia(window),firefoxShim.shimSourceObject(window),firefoxShim.shimPeerConnection(window),firefoxShim.shimOnTrack(window),firefoxShim.shimRemoveStream(window),firefoxShim.shimSenderGetStats(window),firefoxShim.shimReceiverGetStats(window),firefoxShim.shimRTCDataChannel(window),commonShim.shimRTCIceCandidate(window),commonShim.shimMaxMessageSize(window),commonShim.shimSendThrowTypeError(window);break;case"edge":if(!edgeShim||!edgeShim.shimPeerConnection||!options.shimEdge)return logging("MS edge shim is not included in this adapter release."),adapter;logging("adapter.js shimming edge."),adapter.browserShim=edgeShim,commonShim.shimCreateObjectURL(window),edgeShim.shimGetUserMedia(window),edgeShim.shimPeerConnection(window),edgeShim.shimReplaceTrack(window),commonShim.shimMaxMessageSize(window),commonShim.shimSendThrowTypeError(window);break;case"safari":if(!safariShim||!options.shimSafari)return logging("Safari shim is not included in this adapter release."),adapter;logging("adapter.js shimming safari."),adapter.browserShim=safariShim,commonShim.shimCreateObjectURL(window),safariShim.shimRTCIceServerUrls(window),safariShim.shimCreateOfferLegacy(window),safariShim.shimCallbacksAPI(window),safariShim.shimLocalStreamsAPI(window),safariShim.shimRemoteStreamsAPI(window),safariShim.shimTrackEventTransceiver(window),safariShim.shimGetUserMedia(window),commonShim.shimRTCIceCandidate(window),commonShim.shimMaxMessageSize(window),commonShim.shimSendThrowTypeError(window);break;default:logging("Unsupported browser!")}return adapter}},{"./chrome/chrome_shim":5,"./common_shim":7,"./edge/edge_shim":8,"./firefox/firefox_shim":11,"./safari/safari_shim":13,"./utils":14}],5:[function(requirecopy,module,exports){function walkStats(stats,base,resultSet){base&&!resultSet.has(base.id)&&(resultSet.set(base.id,base),Object.keys(base).forEach(function(name){name.endsWith("Id")?walkStats(stats,stats.get(base[name]),resultSet):name.endsWith("Ids")&&base[name].forEach(function(id){walkStats(stats,stats.get(id),resultSet)})}))}function filterStats(result,track,outbound){var streamStatsType=outbound?"outbound-rtp":"inbound-rtp",filteredResult=new Map;if(null===track)return filteredResult;var trackStats=[];return result.forEach(function(value){"track"===value.type&&value.trackIdentifier===track.id&&trackStats.push(value)}),trackStats.forEach(function(trackStat){result.forEach(function(stats){stats.type===streamStatsType&&stats.trackId===trackStat.id&&walkStats(result,stats,filteredResult)})}),filteredResult}var utils=requirecopy("../utils.js"),logging=utils.log;module.exports={shimGetUserMedia:requirecopy("./getusermedia"),shimMediaStream:function(window){window.MediaStream=window.MediaStream||window.webkitMediaStream},shimOnTrack:function(window){if("object"!=typeof window||!window.RTCPeerConnection||"ontrack"in window.RTCPeerConnection.prototype)"RTCRtpTransceiver"in window||utils.wrapPeerConnectionEvent(window,"track",function(e){return e.transceiver||(e.transceiver={receiver:e.receiver}),e});else{Object.defineProperty(window.RTCPeerConnection.prototype,"ontrack",{get:function(){return this._ontrack},set:function(f){this._ontrack&&this.removeEventListener("track",this._ontrack),this.addEventListener("track",this._ontrack=f)},enumerable:!0,configurable:!0});var origSetRemoteDescription=window.RTCPeerConnection.prototype.setRemoteDescription;window.RTCPeerConnection.prototype.setRemoteDescription=function(){var pc=this;return pc._ontrackpoly||(pc._ontrackpoly=function(e){e.stream.addEventListener("addtrack",function(te){var receiver;receiver=window.RTCPeerConnection.prototype.getReceivers?pc.getReceivers().find(function(r){return r.track&&r.track.id===te.track.id}):{track:te.track};var event=new Event("track");event.track=te.track,event.receiver=receiver,event.transceiver={receiver:receiver},event.streams=[e.stream],pc.dispatchEvent(event)}),e.stream.getTracks().forEach(function(track){var receiver;receiver=window.RTCPeerConnection.prototype.getReceivers?pc.getReceivers().find(function(r){return r.track&&r.track.id===track.id}):{track:track};var event=new Event("track");event.track=track,event.receiver=receiver,event.transceiver={receiver:receiver},event.streams=[e.stream],pc.dispatchEvent(event)})},pc.addEventListener("addstream",pc._ontrackpoly)),origSetRemoteDescription.apply(pc,arguments)}}},shimGetSendersWithDtmf:function(window){if("object"==typeof window&&window.RTCPeerConnection&&!("getSenders"in window.RTCPeerConnection.prototype)&&"createDTMFSender"in window.RTCPeerConnection.prototype){var shimSenderWithDtmf=function(pc,track){return{track:track,get dtmf(){return void 0===this._dtmf&&("audio"===track.kind?this._dtmf=pc.createDTMFSender(track):this._dtmf=null),this._dtmf},_pc:pc}};if(!window.RTCPeerConnection.prototype.getSenders){window.RTCPeerConnection.prototype.getSenders=function(){return this._senders=this._senders||[],this._senders.slice()};var origAddTrack=window.RTCPeerConnection.prototype.addTrack;window.RTCPeerConnection.prototype.addTrack=function(track,stream){var pc=this,sender=origAddTrack.apply(pc,arguments);return sender||(sender=shimSenderWithDtmf(pc,track),pc._senders.push(sender)),sender};var origRemoveTrack=window.RTCPeerConnection.prototype.removeTrack;window.RTCPeerConnection.prototype.removeTrack=function(sender){var pc=this;origRemoveTrack.apply(pc,arguments);var idx=pc._senders.indexOf(sender);-1!==idx&&pc._senders.splice(idx,1)}}var origAddStream=window.RTCPeerConnection.prototype.addStream;window.RTCPeerConnection.prototype.addStream=function(stream){var pc=this;pc._senders=pc._senders||[],origAddStream.apply(pc,[stream]),stream.getTracks().forEach(function(track){pc._senders.push(shimSenderWithDtmf(pc,track))})};var origRemoveStream=window.RTCPeerConnection.prototype.removeStream;window.RTCPeerConnection.prototype.removeStream=function(stream){var pc=this;pc._senders=pc._senders||[],origRemoveStream.apply(pc,[stream]),stream.getTracks().forEach(function(track){var sender=pc._senders.find(function(s){return s.track===track});sender&&pc._senders.splice(pc._senders.indexOf(sender),1)})}}else if("object"==typeof window&&window.RTCPeerConnection&&"getSenders"in window.RTCPeerConnection.prototype&&"createDTMFSender"in window.RTCPeerConnection.prototype&&window.RTCRtpSender&&!("dtmf"in window.RTCRtpSender.prototype)){var origGetSenders=window.RTCPeerConnection.prototype.getSenders;window.RTCPeerConnection.prototype.getSenders=function(){var pc=this,senders=origGetSenders.apply(pc,[]);return senders.forEach(function(sender){sender._pc=pc}),senders},Object.defineProperty(window.RTCRtpSender.prototype,"dtmf",{get:function(){return void 0===this._dtmf&&("audio"===this.track.kind?this._dtmf=this._pc.createDTMFSender(this.track):this._dtmf=null),this._dtmf}})}},shimSenderReceiverGetStats:function(window){if("object"==typeof window&&window.RTCPeerConnection&&window.RTCRtpSender&&window.RTCRtpReceiver){if(!("getStats"in window.RTCRtpSender.prototype)){var origGetSenders=window.RTCPeerConnection.prototype.getSenders;origGetSenders&&(window.RTCPeerConnection.prototype.getSenders=function(){var pc=this,senders=origGetSenders.apply(pc,[]);return senders.forEach(function(sender){sender._pc=pc}),senders});var origAddTrack=window.RTCPeerConnection.prototype.addTrack;origAddTrack&&(window.RTCPeerConnection.prototype.addTrack=function(){var sender=origAddTrack.apply(this,arguments);return sender._pc=this,sender}),window.RTCRtpSender.prototype.getStats=function(){var sender=this;return this._pc.getStats().then(function(result){return filterStats(result,sender.track,!0)})}}if(!("getStats"in window.RTCRtpReceiver.prototype)){var origGetReceivers=window.RTCPeerConnection.prototype.getReceivers;origGetReceivers&&(window.RTCPeerConnection.prototype.getReceivers=function(){var pc=this,receivers=origGetReceivers.apply(pc,[]);return receivers.forEach(function(receiver){receiver._pc=pc}),receivers}),utils.wrapPeerConnectionEvent(window,"track",function(e){return e.receiver._pc=e.srcElement,e}),window.RTCRtpReceiver.prototype.getStats=function(){var receiver=this;return this._pc.getStats().then(function(result){return filterStats(result,receiver.track,!1)})}}if("getStats"in window.RTCRtpSender.prototype&&"getStats"in window.RTCRtpReceiver.prototype){var origGetStats=window.RTCPeerConnection.prototype.getStats;window.RTCPeerConnection.prototype.getStats=function(){var pc=this;if(arguments.length>0&&arguments[0]instanceof window.MediaStreamTrack){var sender,receiver,err,track=arguments[0];return pc.getSenders().forEach(function(s){s.track===track&&(sender?err=!0:sender=s)}),pc.getReceivers().forEach(function(r){return r.track===track&&(receiver?err=!0:receiver=r),r.track===track}),err||sender&&receiver?Promise.reject(new DOMException("There are more than one sender or receiver for the track.","InvalidAccessError")):sender?sender.getStats():receiver?receiver.getStats():Promise.reject(new DOMException("There is no sender or receiver for the track.","InvalidAccessError"))}return origGetStats.apply(pc,arguments)}}}},shimSourceObject:function(window){var URL=window&&window.URL;"object"==typeof window&&(!window.HTMLMediaElement||"srcObject"in window.HTMLMediaElement.prototype||Object.defineProperty(window.HTMLMediaElement.prototype,"srcObject",{get:function(){return this._srcObject},set:function(stream){var self=this;if(this._srcObject=stream,this.src&&URL.revokeObjectURL(this.src),!stream)return void(this.src="");this.src=URL.createObjectURL(stream),stream.addEventListener("addtrack",function(){self.src&&URL.revokeObjectURL(self.src),self.src=URL.createObjectURL(stream)}),stream.addEventListener("removetrack",function(){self.src&&URL.revokeObjectURL(self.src),self.src=URL.createObjectURL(stream)})}}))},shimAddTrackRemoveTrackWithNative:function(window){window.RTCPeerConnection.prototype.getLocalStreams=function(){var pc=this;return this._shimmedLocalStreams=this._shimmedLocalStreams||{},Object.keys(this._shimmedLocalStreams).map(function(streamId){return pc._shimmedLocalStreams[streamId][0]})};var origAddTrack=window.RTCPeerConnection.prototype.addTrack;window.RTCPeerConnection.prototype.addTrack=function(track,stream){if(!stream)return origAddTrack.apply(this,arguments);this._shimmedLocalStreams=this._shimmedLocalStreams||{};var sender=origAddTrack.apply(this,arguments);return this._shimmedLocalStreams[stream.id]?-1===this._shimmedLocalStreams[stream.id].indexOf(sender)&&this._shimmedLocalStreams[stream.id].push(sender):this._shimmedLocalStreams[stream.id]=[stream,sender],sender};var origAddStream=window.RTCPeerConnection.prototype.addStream;window.RTCPeerConnection.prototype.addStream=function(stream){var pc=this;this._shimmedLocalStreams=this._shimmedLocalStreams||{},stream.getTracks().forEach(function(track){if(pc.getSenders().find(function(s){return s.track===track}))throw new DOMException("Track already exists.","InvalidAccessError")});var existingSenders=pc.getSenders();origAddStream.apply(this,arguments);var newSenders=pc.getSenders().filter(function(newSender){return-1===existingSenders.indexOf(newSender)});this._shimmedLocalStreams[stream.id]=[stream].concat(newSenders)};var origRemoveStream=window.RTCPeerConnection.prototype.removeStream;window.RTCPeerConnection.prototype.removeStream=function(stream){return this._shimmedLocalStreams=this._shimmedLocalStreams||{},delete this._shimmedLocalStreams[stream.id],origRemoveStream.apply(this,arguments)};var origRemoveTrack=window.RTCPeerConnection.prototype.removeTrack;window.RTCPeerConnection.prototype.removeTrack=function(sender){var pc=this;return this._shimmedLocalStreams=this._shimmedLocalStreams||{},sender&&Object.keys(this._shimmedLocalStreams).forEach(function(streamId){var idx=pc._shimmedLocalStreams[streamId].indexOf(sender);-1!==idx&&pc._shimmedLocalStreams[streamId].splice(idx,1),1===pc._shimmedLocalStreams[streamId].length&&delete pc._shimmedLocalStreams[streamId]}),origRemoveTrack.apply(this,arguments)}},shimAddTrackRemoveTrack:function(window){function replaceInternalStreamId(pc,description){var sdp=description.sdp;return Object.keys(pc._reverseStreams||[]).forEach(function(internalId){var externalStream=pc._reverseStreams[internalId],internalStream=pc._streams[externalStream.id];sdp=sdp.replace(new RegExp(internalStream.id,"g"),externalStream.id)}),new RTCSessionDescription({type:description.type,sdp:sdp})}function replaceExternalStreamId(pc,description){var sdp=description.sdp;return Object.keys(pc._reverseStreams||[]).forEach(function(internalId){var externalStream=pc._reverseStreams[internalId],internalStream=pc._streams[externalStream.id];sdp=sdp.replace(new RegExp(externalStream.id,"g"),internalStream.id)}),new RTCSessionDescription({type:description.type,sdp:sdp})}var browserDetails=utils.detectBrowser(window);if(window.RTCPeerConnection.prototype.addTrack&&browserDetails.version>=65)return this.shimAddTrackRemoveTrackWithNative(window);var origGetLocalStreams=window.RTCPeerConnection.prototype.getLocalStreams;window.RTCPeerConnection.prototype.getLocalStreams=function(){var pc=this,nativeStreams=origGetLocalStreams.apply(this);return pc._reverseStreams=pc._reverseStreams||{},nativeStreams.map(function(stream){return pc._reverseStreams[stream.id]})};var origAddStream=window.RTCPeerConnection.prototype.addStream;window.RTCPeerConnection.prototype.addStream=function(stream){var pc=this;if(pc._streams=pc._streams||{},pc._reverseStreams=pc._reverseStreams||{},stream.getTracks().forEach(function(track){if(pc.getSenders().find(function(s){return s.track===track}))throw new DOMException("Track already exists.","InvalidAccessError")}),!pc._reverseStreams[stream.id]){var newStream=new window.MediaStream(stream.getTracks());pc._streams[stream.id]=newStream,pc._reverseStreams[newStream.id]=stream,stream=newStream}origAddStream.apply(pc,[stream])};var origRemoveStream=window.RTCPeerConnection.prototype.removeStream;window.RTCPeerConnection.prototype.removeStream=function(stream){var pc=this;pc._streams=pc._streams||{},pc._reverseStreams=pc._reverseStreams||{},origRemoveStream.apply(pc,[pc._streams[stream.id]||stream]),delete pc._reverseStreams[pc._streams[stream.id]?pc._streams[stream.id].id:stream.id],delete pc._streams[stream.id]},window.RTCPeerConnection.prototype.addTrack=function(track,stream){var pc=this;if("closed"===pc.signalingState)throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.","InvalidStateError");var streams=[].slice.call(arguments,1);if(1!==streams.length||!streams[0].getTracks().find(function(t){return t===track}))throw new DOMException("The adapter.js addTrack polyfill only supports a single  stream which is associated with the specified track.","NotSupportedError");if(pc.getSenders().find(function(s){return s.track===track}))throw new DOMException("Track already exists.","InvalidAccessError");pc._streams=pc._streams||{},pc._reverseStreams=pc._reverseStreams||{};var oldStream=pc._streams[stream.id];if(oldStream)oldStream.addTrack(track),Promise.resolve().then(function(){pc.dispatchEvent(new Event("negotiationneeded"))});else{var newStream=new window.MediaStream([track]);pc._streams[stream.id]=newStream,pc._reverseStreams[newStream.id]=stream,pc.addStream(newStream)}return pc.getSenders().find(function(s){return s.track===track})},["createOffer","createAnswer"].forEach(function(method){var nativeMethod=window.RTCPeerConnection.prototype[method];window.RTCPeerConnection.prototype[method]=function(){var pc=this,args=arguments;return arguments.length&&"function"==typeof arguments[0]?nativeMethod.apply(pc,[function(description){var desc=replaceInternalStreamId(pc,description);args[0].apply(null,[desc])},function(err){args[1]&&args[1].apply(null,err)},arguments[2]]):nativeMethod.apply(pc,arguments).then(function(description){return replaceInternalStreamId(pc,description)})}});var origSetLocalDescription=window.RTCPeerConnection.prototype.setLocalDescription;window.RTCPeerConnection.prototype.setLocalDescription=function(){var pc=this;return arguments.length&&arguments[0].type?(arguments[0]=replaceExternalStreamId(pc,arguments[0]),origSetLocalDescription.apply(pc,arguments)):origSetLocalDescription.apply(pc,arguments)};var origLocalDescription=Object.getOwnPropertyDescriptor(window.RTCPeerConnection.prototype,"localDescription");Object.defineProperty(window.RTCPeerConnection.prototype,"localDescription",{get:function(){var pc=this,description=origLocalDescription.get.apply(this);return""===description.type?description:replaceInternalStreamId(pc,description)}}),window.RTCPeerConnection.prototype.removeTrack=function(sender){var pc=this;if("closed"===pc.signalingState)throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.","InvalidStateError");if(!sender._pc)throw new DOMException("Argument 1 of RTCPeerConnection.removeTrack does not implement interface RTCRtpSender.","TypeError");if(sender._pc!==pc)throw new DOMException("Sender was not created by this connection.","InvalidAccessError");pc._streams=pc._streams||{};var stream;Object.keys(pc._streams).forEach(function(streamid){pc._streams[streamid].getTracks().find(function(track){return sender.track===track})&&(stream=pc._streams[streamid])}),stream&&(1===stream.getTracks().length?pc.removeStream(pc._reverseStreams[stream.id]):stream.removeTrack(sender.track),pc.dispatchEvent(new Event("negotiationneeded")))}},shimPeerConnection:function(window){var browserDetails=utils.detectBrowser(window);if(!window.RTCPeerConnection&&window.webkitRTCPeerConnection)window.RTCPeerConnection=function(pcConfig,pcConstraints){return logging("PeerConnection"),pcConfig&&pcConfig.iceTransportPolicy&&(pcConfig.iceTransports=pcConfig.iceTransportPolicy),new window.webkitRTCPeerConnection(pcConfig,pcConstraints)},window.RTCPeerConnection.prototype=window.webkitRTCPeerConnection.prototype,window.webkitRTCPeerConnection.generateCertificate&&Object.defineProperty(window.RTCPeerConnection,"generateCertificate",{get:function(){return window.webkitRTCPeerConnection.generateCertificate}});else{var OrigPeerConnection=window.RTCPeerConnection;window.RTCPeerConnection=function(pcConfig,pcConstraints){if(pcConfig&&pcConfig.iceServers){for(var newIceServers=[],i=0;i<pcConfig.iceServers.length;i++){var server=pcConfig.iceServers[i];!server.hasOwnProperty("urls")&&server.hasOwnProperty("url")?(utils.deprecated("RTCIceServer.url","RTCIceServer.urls"),server=JSON.parse(JSON.stringify(server)),server.urls=server.url,newIceServers.push(server)):newIceServers.push(pcConfig.iceServers[i])}pcConfig.iceServers=newIceServers}return new OrigPeerConnection(pcConfig,pcConstraints)},window.RTCPeerConnection.prototype=OrigPeerConnection.prototype,Object.defineProperty(window.RTCPeerConnection,"generateCertificate",{get:function(){return OrigPeerConnection.generateCertificate}})}var origGetStats=window.RTCPeerConnection.prototype.getStats;window.RTCPeerConnection.prototype.getStats=function(selector,successCallback,errorCallback){var pc=this,args=arguments;if(arguments.length>0&&"function"==typeof selector)return origGetStats.apply(this,arguments);if(0===origGetStats.length&&(0===arguments.length||"function"!=typeof arguments[0]))return origGetStats.apply(this,[]);var fixChromeStats_=function(response){var standardReport={};return response.result().forEach(function(report){var standardStats={id:report.id,timestamp:report.timestamp,type:{localcandidate:"local-candidate",remotecandidate:"remote-candidate"}[report.type]||report.type};report.names().forEach(function(name){standardStats[name]=report.stat(name)}),standardReport[standardStats.id]=standardStats}),standardReport},makeMapStats=function(stats){return new Map(Object.keys(stats).map(function(key){return[key,stats[key]]}))};if(arguments.length>=2){var successCallbackWrapper_=function(response){args[1](makeMapStats(fixChromeStats_(response)))};return origGetStats.apply(this,[successCallbackWrapper_,arguments[0]])}return new Promise(function(resolve,reject){origGetStats.apply(pc,[function(response){resolve(makeMapStats(fixChromeStats_(response)))},reject])}).then(successCallback,errorCallback)},browserDetails.version<51&&["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach(function(method){var nativeMethod=window.RTCPeerConnection.prototype[method];window.RTCPeerConnection.prototype[method]=function(){var args=arguments,pc=this,promise=new Promise(function(resolve,reject){nativeMethod.apply(pc,[args[0],resolve,reject])});return args.length<2?promise:promise.then(function(){args[1].apply(null,[])},function(err){args.length>=3&&args[2].apply(null,[err])})}}),browserDetails.version<52&&["createOffer","createAnswer"].forEach(function(method){var nativeMethod=window.RTCPeerConnection.prototype[method];window.RTCPeerConnection.prototype[method]=function(){var pc=this;if(arguments.length<1||1===arguments.length&&"object"==typeof arguments[0]){var opts=1===arguments.length?arguments[0]:void 0;return new Promise(function(resolve,reject){nativeMethod.apply(pc,[resolve,reject,opts])})}return nativeMethod.apply(this,arguments)}}),["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach(function(method){var nativeMethod=window.RTCPeerConnection.prototype[method];window.RTCPeerConnection.prototype[method]=function(){return arguments[0]=new("addIceCandidate"===method?window.RTCIceCandidate:window.RTCSessionDescription)(arguments[0]),nativeMethod.apply(this,arguments)}});var nativeAddIceCandidate=window.RTCPeerConnection.prototype.addIceCandidate;window.RTCPeerConnection.prototype.addIceCandidate=function(){return arguments[0]?nativeAddIceCandidate.apply(this,arguments):(arguments[1]&&arguments[1].apply(null),Promise.resolve())}},fixNegotiationNeeded:function(window){utils.wrapPeerConnectionEvent(window,"negotiationneeded",function(e){if("stable"===e.target.signalingState)return e})},shimGetDisplayMedia:function(window,getSourceId){"getDisplayMedia"in window.navigator||"function"==typeof getSourceId&&(navigator.getDisplayMedia=function(constraints){return getSourceId(constraints).then(function(sourceId){return constraints.video={mandatory:{chromeMediaSource:"desktop",chromeMediaSourceId:sourceId,maxFrameRate:constraints.video.frameRate||3}},navigator.mediaDevices.getUserMedia(constraints)})})}}},{"../utils.js":14,"./getusermedia":6}],6:[function(requirecopy,module,exports){var utils=requirecopy("../utils.js"),logging=utils.log;module.exports=function(window){var browserDetails=utils.detectBrowser(window),navigator=window&&window.navigator,constraintsToChrome_=function(c){if("object"!=typeof c||c.mandatory||c.optional)return c;var cc={};return Object.keys(c).forEach(function(key){if("require"!==key&&"advanced"!==key&&"mediaSource"!==key){var r="object"==typeof c[key]?c[key]:{ideal:c[key]};void 0!==r.exact&&"number"==typeof r.exact&&(r.min=r.max=r.exact);var oldname_=function(prefix,name){return prefix?prefix+name.charAt(0).toUpperCase()+name.slice(1):"deviceId"===name?"sourceId":name};if(void 0!==r.ideal){cc.optional=cc.optional||[];var oc={};"number"==typeof r.ideal?(oc[oldname_("min",key)]=r.ideal,cc.optional.push(oc),oc={},oc[oldname_("max",key)]=r.ideal,cc.optional.push(oc)):(oc[oldname_("",key)]=r.ideal,cc.optional.push(oc))}void 0!==r.exact&&"number"!=typeof r.exact?(cc.mandatory=cc.mandatory||{},cc.mandatory[oldname_("",key)]=r.exact):["min","max"].forEach(function(mix){void 0!==r[mix]&&(cc.mandatory=cc.mandatory||{},cc.mandatory[oldname_(mix,key)]=r[mix])})}}),c.advanced&&(cc.optional=(cc.optional||[]).concat(c.advanced)),cc},shimConstraints_=function(constraints,func){if(browserDetails.version>=61)return func(constraints);if((constraints=JSON.parse(JSON.stringify(constraints)))&&"object"==typeof constraints.audio){var remap=function(obj,a,b){a in obj&&!(b in obj)&&(obj[b]=obj[a],delete obj[a])};constraints=JSON.parse(JSON.stringify(constraints)),remap(constraints.audio,"autoGainControl","googAutoGainControl"),remap(constraints.audio,"noiseSuppression","googNoiseSuppression"),constraints.audio=constraintsToChrome_(constraints.audio)}if(constraints&&"object"==typeof constraints.video){var face=constraints.video.facingMode;face=face&&("object"==typeof face?face:{ideal:face});var getSupportedFacingModeLies=browserDetails.version<66;if(face&&("user"===face.exact||"environment"===face.exact||"user"===face.ideal||"environment"===face.ideal)&&(!navigator.mediaDevices.getSupportedConstraints||!navigator.mediaDevices.getSupportedConstraints().facingMode||getSupportedFacingModeLies)){delete constraints.video.facingMode;var matches;if("environment"===face.exact||"environment"===face.ideal?matches=["back","rear"]:"user"!==face.exact&&"user"!==face.ideal||(matches=["front"]),matches)return navigator.mediaDevices.enumerateDevices().then(function(devices){devices=devices.filter(function(d){return"videoinput"===d.kind});var dev=devices.find(function(d){return matches.some(function(match){return-1!==d.label.toLowerCase().indexOf(match)})});return!dev&&devices.length&&-1!==matches.indexOf("back")&&(dev=devices[devices.length-1]),dev&&(constraints.video.deviceId=face.exact?{exact:dev.deviceId}:{ideal:dev.deviceId}),constraints.video=constraintsToChrome_(constraints.video),logging("chrome: "+JSON.stringify(constraints)),func(constraints)})}constraints.video=constraintsToChrome_(constraints.video)}return logging("chrome: "+JSON.stringify(constraints)),func(constraints)},shimError_=function(e){return browserDetails.version>=64?e:{name:{PermissionDeniedError:"NotAllowedError",PermissionDismissedError:"NotAllowedError",InvalidStateError:"NotAllowedError",DevicesNotFoundError:"NotFoundError",ConstraintNotSatisfiedError:"OverconstrainedError",TrackStartError:"NotReadableError",MediaDeviceFailedDueToShutdown:"NotAllowedError",MediaDeviceKillSwitchOn:"NotAllowedError",TabCaptureError:"AbortError",ScreenCaptureError:"AbortError",DeviceCaptureError:"AbortError"}[e.name]||e.name,message:e.message,constraint:e.constraint||e.constraintName,toString:function(){return this.name+(this.message&&": ")+this.message}}},getUserMedia_=function(constraints,onSuccess,onError){shimConstraints_(constraints,function(c){navigator.webkitGetUserMedia(c,onSuccess,function(e){onError&&onError(shimError_(e))})})};navigator.getUserMedia=getUserMedia_;var getUserMediaPromise_=function(constraints){return new Promise(function(resolve,reject){navigator.getUserMedia(constraints,resolve,reject)})};if(navigator.mediaDevices||(navigator.mediaDevices={getUserMedia:getUserMediaPromise_,enumerateDevices:function(){return new Promise(function(resolve){var kinds={audio:"audioinput",video:"videoinput"};return window.MediaStreamTrack.getSources(function(devices){resolve(devices.map(function(device){return{label:device.label,kind:kinds[device.kind],deviceId:device.id,groupId:""}}))})})},getSupportedConstraints:function(){return{deviceId:!0,echoCancellation:!0,facingMode:!0,frameRate:!0,height:!0,width:!0}}}),navigator.mediaDevices.getUserMedia){var origGetUserMedia=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);navigator.mediaDevices.getUserMedia=function(cs){return shimConstraints_(cs,function(c){return origGetUserMedia(c).then(function(stream){if(c.audio&&!stream.getAudioTracks().length||c.video&&!stream.getVideoTracks().length)throw stream.getTracks().forEach(function(track){track.stop()}),new DOMException("","NotFoundError");return stream},function(e){return Promise.reject(shimError_(e))})})}}else navigator.mediaDevices.getUserMedia=function(constraints){return getUserMediaPromise_(constraints)}
+;void 0===navigator.mediaDevices.addEventListener&&(navigator.mediaDevices.addEventListener=function(){logging("Dummy mediaDevices.addEventListener called.")}),void 0===navigator.mediaDevices.removeEventListener&&(navigator.mediaDevices.removeEventListener=function(){logging("Dummy mediaDevices.removeEventListener called.")})}},{"../utils.js":14}],7:[function(requirecopy,module,exports){var SDPUtils=requirecopy("sdp"),utils=requirecopy("./utils");module.exports={shimRTCIceCandidate:function(window){if(window.RTCIceCandidate&&!(window.RTCIceCandidate&&"foundation"in window.RTCIceCandidate.prototype)){var NativeRTCIceCandidate=window.RTCIceCandidate;window.RTCIceCandidate=function(args){if("object"==typeof args&&args.candidate&&0===args.candidate.indexOf("a=")&&(args=JSON.parse(JSON.stringify(args)),args.candidate=args.candidate.substr(2)),args.candidate&&args.candidate.length){var nativeCandidate=new NativeRTCIceCandidate(args),parsedCandidate=SDPUtils.parseCandidate(args.candidate),augmentedCandidate=Object.assign(nativeCandidate,parsedCandidate);return augmentedCandidate.toJSON=function(){return{candidate:augmentedCandidate.candidate,sdpMid:augmentedCandidate.sdpMid,sdpMLineIndex:augmentedCandidate.sdpMLineIndex,usernameFragment:augmentedCandidate.usernameFragment}},augmentedCandidate}return new NativeRTCIceCandidate(args)},window.RTCIceCandidate.prototype=NativeRTCIceCandidate.prototype,utils.wrapPeerConnectionEvent(window,"icecandidate",function(e){return e.candidate&&Object.defineProperty(e,"candidate",{value:new window.RTCIceCandidate(e.candidate),writable:"false"}),e})}},shimCreateObjectURL:function(window){var URL=window&&window.URL;if("object"==typeof window&&window.HTMLMediaElement&&"srcObject"in window.HTMLMediaElement.prototype&&URL.createObjectURL&&URL.revokeObjectURL){var nativeCreateObjectURL=URL.createObjectURL.bind(URL),nativeRevokeObjectURL=URL.revokeObjectURL.bind(URL),streams=new Map,newId=0;URL.createObjectURL=function(stream){if("getTracks"in stream){var url="polyblob:"+ ++newId;return streams.set(url,stream),utils.deprecated("URL.createObjectURL(stream)","elem.srcObject = stream"),url}return nativeCreateObjectURL(stream)},URL.revokeObjectURL=function(url){nativeRevokeObjectURL(url),streams.delete(url)};var dsc=Object.getOwnPropertyDescriptor(window.HTMLMediaElement.prototype,"src");Object.defineProperty(window.HTMLMediaElement.prototype,"src",{get:function(){return dsc.get.apply(this)},set:function(url){return this.srcObject=streams.get(url)||null,dsc.set.apply(this,[url])}});var nativeSetAttribute=window.HTMLMediaElement.prototype.setAttribute;window.HTMLMediaElement.prototype.setAttribute=function(){return 2===arguments.length&&"src"===(""+arguments[0]).toLowerCase()&&(this.srcObject=streams.get(arguments[1])||null),nativeSetAttribute.apply(this,arguments)}}},shimMaxMessageSize:function(window){if(!window.RTCSctpTransport&&window.RTCPeerConnection){var browserDetails=utils.detectBrowser(window);"sctp"in window.RTCPeerConnection.prototype||Object.defineProperty(window.RTCPeerConnection.prototype,"sctp",{get:function(){return void 0===this._sctp?null:this._sctp}});var sctpInDescription=function(description){var sections=SDPUtils.splitSections(description.sdp);return sections.shift(),sections.some(function(mediaSection){var mLine=SDPUtils.parseMLine(mediaSection);return mLine&&"application"===mLine.kind&&-1!==mLine.protocol.indexOf("SCTP")})},getRemoteFirefoxVersion=function(description){var match=description.sdp.match(/mozilla...THIS_IS_SDPARTA-(\d+)/);if(null===match||match.length<2)return-1;var version=parseInt(match[1],10);return version!==version?-1:version},getCanSendMaxMessageSize=function(remoteIsFirefox){var canSendMaxMessageSize=65536;return"firefox"===browserDetails.browser&&(canSendMaxMessageSize=browserDetails.version<57?-1===remoteIsFirefox?16384:2147483637:browserDetails.version<60?57===browserDetails.version?65535:65536:2147483637),canSendMaxMessageSize},getMaxMessageSize=function(description,remoteIsFirefox){var maxMessageSize=65536;"firefox"===browserDetails.browser&&57===browserDetails.version&&(maxMessageSize=65535);var match=SDPUtils.matchPrefix(description.sdp,"a=max-message-size:");return match.length>0?maxMessageSize=parseInt(match[0].substr(19),10):"firefox"===browserDetails.browser&&-1!==remoteIsFirefox&&(maxMessageSize=2147483637),maxMessageSize},origSetRemoteDescription=window.RTCPeerConnection.prototype.setRemoteDescription;window.RTCPeerConnection.prototype.setRemoteDescription=function(){var pc=this;if(pc._sctp=null,sctpInDescription(arguments[0])){var maxMessageSize,isFirefox=getRemoteFirefoxVersion(arguments[0]),canSendMMS=getCanSendMaxMessageSize(isFirefox),remoteMMS=getMaxMessageSize(arguments[0],isFirefox);maxMessageSize=0===canSendMMS&&0===remoteMMS?Number.POSITIVE_INFINITY:0===canSendMMS||0===remoteMMS?Math.max(canSendMMS,remoteMMS):Math.min(canSendMMS,remoteMMS);var sctp={};Object.defineProperty(sctp,"maxMessageSize",{get:function(){return maxMessageSize}}),pc._sctp=sctp}return origSetRemoteDescription.apply(pc,arguments)}}},shimSendThrowTypeError:function(window){function wrapDcSend(dc,pc){var origDataChannelSend=dc.send;dc.send=function(){var data=arguments[0],length=data.length||data.size||data.byteLength;if("open"===dc.readyState&&pc.sctp&&length>pc.sctp.maxMessageSize)throw new TypeError("Message too large (can send a maximum of "+pc.sctp.maxMessageSize+" bytes)");return origDataChannelSend.apply(dc,arguments)}}if(window.RTCPeerConnection&&"createDataChannel"in window.RTCPeerConnection.prototype){var origCreateDataChannel=window.RTCPeerConnection.prototype.createDataChannel;window.RTCPeerConnection.prototype.createDataChannel=function(){var pc=this,dataChannel=origCreateDataChannel.apply(pc,arguments);return wrapDcSend(dataChannel,pc),dataChannel},utils.wrapPeerConnectionEvent(window,"datachannel",function(e){return wrapDcSend(e.channel,e.target),e})}}}},{"./utils":14,sdp:2}],8:[function(requirecopy,module,exports){var utils=requirecopy("../utils"),filterIceServers=requirecopy("./filtericeservers"),shimRTCPeerConnection=requirecopy("rtcpeerconnection-shim");module.exports={shimGetUserMedia:requirecopy("./getusermedia"),shimPeerConnection:function(window){var browserDetails=utils.detectBrowser(window);if(window.RTCIceGatherer&&(window.RTCIceCandidate||(window.RTCIceCandidate=function(args){return args}),window.RTCSessionDescription||(window.RTCSessionDescription=function(args){return args}),browserDetails.version<15025)){var origMSTEnabled=Object.getOwnPropertyDescriptor(window.MediaStreamTrack.prototype,"enabled");Object.defineProperty(window.MediaStreamTrack.prototype,"enabled",{set:function(value){origMSTEnabled.set.call(this,value);var ev=new Event("enabled");ev.enabled=value,this.dispatchEvent(ev)}})}!window.RTCRtpSender||"dtmf"in window.RTCRtpSender.prototype||Object.defineProperty(window.RTCRtpSender.prototype,"dtmf",{get:function(){return void 0===this._dtmf&&("audio"===this.track.kind?this._dtmf=new window.RTCDtmfSender(this):"video"===this.track.kind&&(this._dtmf=null)),this._dtmf}}),window.RTCDtmfSender&&!window.RTCDTMFSender&&(window.RTCDTMFSender=window.RTCDtmfSender);var RTCPeerConnectionShim=shimRTCPeerConnection(window,browserDetails.version);window.RTCPeerConnection=function(config){return config&&config.iceServers&&(config.iceServers=filterIceServers(config.iceServers)),new RTCPeerConnectionShim(config)},window.RTCPeerConnection.prototype=RTCPeerConnectionShim.prototype},shimReplaceTrack:function(window){!window.RTCRtpSender||"replaceTrack"in window.RTCRtpSender.prototype||(window.RTCRtpSender.prototype.replaceTrack=window.RTCRtpSender.prototype.setTrack)}}},{"../utils":14,"./filtericeservers":9,"./getusermedia":10,"rtcpeerconnection-shim":1}],9:[function(requirecopy,module,exports){var utils=requirecopy("../utils");module.exports=function(iceServers,edgeVersion){var hasTurn=!1;return iceServers=JSON.parse(JSON.stringify(iceServers)),iceServers.filter(function(server){if(server&&(server.urls||server.url)){var urls=server.urls||server.url;server.url&&!server.urls&&utils.deprecated("RTCIceServer.url","RTCIceServer.urls");var isString="string"==typeof urls;return isString&&(urls=[urls]),urls=urls.filter(function(url){return 0!==url.indexOf("turn:")||-1===url.indexOf("transport=udp")||-1!==url.indexOf("turn:[")||hasTurn?0===url.indexOf("stun:")&&edgeVersion>=14393&&-1===url.indexOf("?transport=udp"):(hasTurn=!0,!0)}),delete server.url,server.urls=isString?urls[0]:urls,!!urls.length}})}},{"../utils":14}],10:[function(requirecopy,module,exports){module.exports=function(window){var navigator=window&&window.navigator,shimError_=function(e){return{name:{PermissionDeniedError:"NotAllowedError"}[e.name]||e.name,message:e.message,constraint:e.constraint,toString:function(){return this.name}}},origGetUserMedia=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);navigator.mediaDevices.getUserMedia=function(c){return origGetUserMedia(c).catch(function(e){return Promise.reject(shimError_(e))})}}},{}],11:[function(requirecopy,module,exports){var utils=requirecopy("../utils");module.exports={shimGetUserMedia:requirecopy("./getusermedia"),shimOnTrack:function(window){"object"!=typeof window||!window.RTCPeerConnection||"ontrack"in window.RTCPeerConnection.prototype||Object.defineProperty(window.RTCPeerConnection.prototype,"ontrack",{get:function(){return this._ontrack},set:function(f){this._ontrack&&(this.removeEventListener("track",this._ontrack),this.removeEventListener("addstream",this._ontrackpoly)),this.addEventListener("track",this._ontrack=f),this.addEventListener("addstream",this._ontrackpoly=function(e){e.stream.getTracks().forEach(function(track){var event=new Event("track");event.track=track,event.receiver={track:track},event.transceiver={receiver:event.receiver},event.streams=[e.stream],this.dispatchEvent(event)}.bind(this))}.bind(this))},enumerable:!0,configurable:!0}),"object"==typeof window&&window.RTCTrackEvent&&"receiver"in window.RTCTrackEvent.prototype&&!("transceiver"in window.RTCTrackEvent.prototype)&&Object.defineProperty(window.RTCTrackEvent.prototype,"transceiver",{get:function(){return{receiver:this.receiver}}})},shimSourceObject:function(window){"object"==typeof window&&(!window.HTMLMediaElement||"srcObject"in window.HTMLMediaElement.prototype||Object.defineProperty(window.HTMLMediaElement.prototype,"srcObject",{get:function(){return this.mozSrcObject},set:function(stream){this.mozSrcObject=stream}}))},shimPeerConnection:function(window){var browserDetails=utils.detectBrowser(window);if("object"==typeof window&&(window.RTCPeerConnection||window.mozRTCPeerConnection)){window.RTCPeerConnection||(window.RTCPeerConnection=function(pcConfig,pcConstraints){if(browserDetails.version<38&&pcConfig&&pcConfig.iceServers){for(var newIceServers=[],i=0;i<pcConfig.iceServers.length;i++){var server=pcConfig.iceServers[i];if(server.hasOwnProperty("urls"))for(var j=0;j<server.urls.length;j++){var newServer={url:server.urls[j]};0===server.urls[j].indexOf("turn")&&(newServer.username=server.username,newServer.credential=server.credential),newIceServers.push(newServer)}else newIceServers.push(pcConfig.iceServers[i])}pcConfig.iceServers=newIceServers}return new window.mozRTCPeerConnection(pcConfig,pcConstraints)},window.RTCPeerConnection.prototype=window.mozRTCPeerConnection.prototype,window.mozRTCPeerConnection.generateCertificate&&Object.defineProperty(window.RTCPeerConnection,"generateCertificate",{get:function(){return window.mozRTCPeerConnection.generateCertificate}}),window.RTCSessionDescription=window.mozRTCSessionDescription,window.RTCIceCandidate=window.mozRTCIceCandidate),["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach(function(method){var nativeMethod=window.RTCPeerConnection.prototype[method];window.RTCPeerConnection.prototype[method]=function(){return arguments[0]=new("addIceCandidate"===method?window.RTCIceCandidate:window.RTCSessionDescription)(arguments[0]),nativeMethod.apply(this,arguments)}});var nativeAddIceCandidate=window.RTCPeerConnection.prototype.addIceCandidate;window.RTCPeerConnection.prototype.addIceCandidate=function(){return arguments[0]?nativeAddIceCandidate.apply(this,arguments):(arguments[1]&&arguments[1].apply(null),Promise.resolve())};var makeMapStats=function(stats){var map=new Map;return Object.keys(stats).forEach(function(key){map.set(key,stats[key]),map[key]=stats[key]}),map},modernStatsTypes={inboundrtp:"inbound-rtp",outboundrtp:"outbound-rtp",candidatepair:"candidate-pair",localcandidate:"local-candidate",remotecandidate:"remote-candidate"},nativeGetStats=window.RTCPeerConnection.prototype.getStats;window.RTCPeerConnection.prototype.getStats=function(selector,onSucc,onErr){return nativeGetStats.apply(this,[selector||null]).then(function(stats){if(browserDetails.version<48&&(stats=makeMapStats(stats)),browserDetails.version<53&&!onSucc)try{stats.forEach(function(stat){stat.type=modernStatsTypes[stat.type]||stat.type})}catch(e){if("TypeError"!==e.name)throw e;stats.forEach(function(stat,i){stats.set(i,Object.assign({},stat,{type:modernStatsTypes[stat.type]||stat.type}))})}return stats}).then(onSucc,onErr)}}},shimSenderGetStats:function(window){if("object"==typeof window&&window.RTCPeerConnection&&window.RTCRtpSender&&!(window.RTCRtpSender&&"getStats"in window.RTCRtpSender.prototype)){var origGetSenders=window.RTCPeerConnection.prototype.getSenders;origGetSenders&&(window.RTCPeerConnection.prototype.getSenders=function(){var pc=this,senders=origGetSenders.apply(pc,[]);return senders.forEach(function(sender){sender._pc=pc}),senders});var origAddTrack=window.RTCPeerConnection.prototype.addTrack;origAddTrack&&(window.RTCPeerConnection.prototype.addTrack=function(){var sender=origAddTrack.apply(this,arguments);return sender._pc=this,sender}),window.RTCRtpSender.prototype.getStats=function(){return this.track?this._pc.getStats(this.track):Promise.resolve(new Map)}}},shimReceiverGetStats:function(window){if("object"==typeof window&&window.RTCPeerConnection&&window.RTCRtpSender&&!(window.RTCRtpSender&&"getStats"in window.RTCRtpReceiver.prototype)){var origGetReceivers=window.RTCPeerConnection.prototype.getReceivers;origGetReceivers&&(window.RTCPeerConnection.prototype.getReceivers=function(){var pc=this,receivers=origGetReceivers.apply(pc,[]);return receivers.forEach(function(receiver){receiver._pc=pc}),receivers}),utils.wrapPeerConnectionEvent(window,"track",function(e){return e.receiver._pc=e.srcElement,e}),window.RTCRtpReceiver.prototype.getStats=function(){return this._pc.getStats(this.track)}}},shimRemoveStream:function(window){!window.RTCPeerConnection||"removeStream"in window.RTCPeerConnection.prototype||(window.RTCPeerConnection.prototype.removeStream=function(stream){var pc=this;utils.deprecated("removeStream","removeTrack"),this.getSenders().forEach(function(sender){sender.track&&-1!==stream.getTracks().indexOf(sender.track)&&pc.removeTrack(sender)})})},shimRTCDataChannel:function(window){window.DataChannel&&!window.RTCDataChannel&&(window.RTCDataChannel=window.DataChannel)},shimGetDisplayMedia:function(window,preferredMediaSource){"getDisplayMedia"in window.navigator||(navigator.getDisplayMedia=function(constraints){if(!constraints||!constraints.video){var err=new DOMException("getDisplayMedia without video constraints is undefined");return err.name="NotFoundError",err.code=8,Promise.reject(err)}return!0===constraints.video?constraints.video={mediaSource:preferredMediaSource}:constraints.video.mediaSource=preferredMediaSource,navigator.mediaDevices.getUserMedia(constraints)})}}},{"../utils":14,"./getusermedia":12}],12:[function(requirecopy,module,exports){var utils=requirecopy("../utils"),logging=utils.log;module.exports=function(window){var browserDetails=utils.detectBrowser(window),navigator=window&&window.navigator,MediaStreamTrack=window&&window.MediaStreamTrack,shimError_=function(e){return{name:{InternalError:"NotReadableError",NotSupportedError:"TypeError",PermissionDeniedError:"NotAllowedError",SecurityError:"NotAllowedError"}[e.name]||e.name,message:{"The operation is insecure.":"The request is not allowed by the user agent or the platform in the current context."}[e.message]||e.message,constraint:e.constraint,toString:function(){return this.name+(this.message&&": ")+this.message}}},getUserMedia_=function(constraints,onSuccess,onError){var constraintsToFF37_=function(c){if("object"!=typeof c||c.require)return c;var require=[];return Object.keys(c).forEach(function(key){if("require"!==key&&"advanced"!==key&&"mediaSource"!==key){var r=c[key]="object"==typeof c[key]?c[key]:{ideal:c[key]};if(void 0===r.min&&void 0===r.max&&void 0===r.exact||require.push(key),void 0!==r.exact&&("number"==typeof r.exact?r.min=r.max=r.exact:c[key]=r.exact,delete r.exact),void 0!==r.ideal){c.advanced=c.advanced||[];var oc={};"number"==typeof r.ideal?oc[key]={min:r.ideal,max:r.ideal}:oc[key]=r.ideal,c.advanced.push(oc),delete r.ideal,Object.keys(r).length||delete c[key]}}}),require.length&&(c.require=require),c};return constraints=JSON.parse(JSON.stringify(constraints)),browserDetails.version<38&&(logging("spec: "+JSON.stringify(constraints)),constraints.audio&&(constraints.audio=constraintsToFF37_(constraints.audio)),constraints.video&&(constraints.video=constraintsToFF37_(constraints.video)),logging("ff37: "+JSON.stringify(constraints))),navigator.mozGetUserMedia(constraints,onSuccess,function(e){onError(shimError_(e))})},getUserMediaPromise_=function(constraints){return new Promise(function(resolve,reject){getUserMedia_(constraints,resolve,reject)})};if(navigator.mediaDevices||(navigator.mediaDevices={getUserMedia:getUserMediaPromise_,addEventListener:function(){},removeEventListener:function(){}}),navigator.mediaDevices.enumerateDevices=navigator.mediaDevices.enumerateDevices||function(){return new Promise(function(resolve){resolve([{kind:"audioinput",deviceId:"default",label:"",groupId:""},{kind:"videoinput",deviceId:"default",label:"",groupId:""}])})},browserDetails.version<41){var orgEnumerateDevices=navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices);navigator.mediaDevices.enumerateDevices=function(){return orgEnumerateDevices().then(void 0,function(e){if("NotFoundError"===e.name)return[];throw e})}}if(browserDetails.version<49){var origGetUserMedia=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);navigator.mediaDevices.getUserMedia=function(c){return origGetUserMedia(c).then(function(stream){if(c.audio&&!stream.getAudioTracks().length||c.video&&!stream.getVideoTracks().length)throw stream.getTracks().forEach(function(track){track.stop()}),new DOMException("The object can not be found here.","NotFoundError");return stream},function(e){return Promise.reject(shimError_(e))})}}if(!(browserDetails.version>55&&"autoGainControl"in navigator.mediaDevices.getSupportedConstraints())){var remap=function(obj,a,b){a in obj&&!(b in obj)&&(obj[b]=obj[a],delete obj[a])},nativeGetUserMedia=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);if(navigator.mediaDevices.getUserMedia=function(c){return"object"==typeof c&&"object"==typeof c.audio&&(c=JSON.parse(JSON.stringify(c)),remap(c.audio,"autoGainControl","mozAutoGainControl"),remap(c.audio,"noiseSuppression","mozNoiseSuppression")),nativeGetUserMedia(c)},MediaStreamTrack&&MediaStreamTrack.prototype.getSettings){var nativeGetSettings=MediaStreamTrack.prototype.getSettings;MediaStreamTrack.prototype.getSettings=function(){var obj=nativeGetSettings.apply(this,arguments);return remap(obj,"mozAutoGainControl","autoGainControl"),remap(obj,"mozNoiseSuppression","noiseSuppression"),obj}}if(MediaStreamTrack&&MediaStreamTrack.prototype.applyConstraints){var nativeApplyConstraints=MediaStreamTrack.prototype.applyConstraints;MediaStreamTrack.prototype.applyConstraints=function(c){return"audio"===this.kind&&"object"==typeof c&&(c=JSON.parse(JSON.stringify(c)),remap(c,"autoGainControl","mozAutoGainControl"),remap(c,"noiseSuppression","mozNoiseSuppression")),nativeApplyConstraints.apply(this,[c])}}}navigator.getUserMedia=function(constraints,onSuccess,onError){if(browserDetails.version<44)return getUserMedia_(constraints,onSuccess,onError);utils.deprecated("navigator.getUserMedia","navigator.mediaDevices.getUserMedia"),navigator.mediaDevices.getUserMedia(constraints).then(onSuccess,onError)}}},{"../utils":14}],13:[function(requirecopy,module,exports){var utils=requirecopy("../utils");module.exports={shimLocalStreamsAPI:function(window){if("object"==typeof window&&window.RTCPeerConnection){if("getLocalStreams"in window.RTCPeerConnection.prototype||(window.RTCPeerConnection.prototype.getLocalStreams=function(){return this._localStreams||(this._localStreams=[]),this._localStreams}),"getStreamById"in window.RTCPeerConnection.prototype||(window.RTCPeerConnection.prototype.getStreamById=function(id){var result=null;return this._localStreams&&this._localStreams.forEach(function(stream){stream.id===id&&(result=stream)}),this._remoteStreams&&this._remoteStreams.forEach(function(stream){stream.id===id&&(result=stream)}),result}),!("addStream"in window.RTCPeerConnection.prototype)){var _addTrack=window.RTCPeerConnection.prototype.addTrack;window.RTCPeerConnection.prototype.addStream=function(stream){this._localStreams||(this._localStreams=[]),-1===this._localStreams.indexOf(stream)&&this._localStreams.push(stream);var pc=this;stream.getTracks().forEach(function(track){_addTrack.call(pc,track,stream)})},window.RTCPeerConnection.prototype.addTrack=function(track,stream){return stream&&(this._localStreams?-1===this._localStreams.indexOf(stream)&&this._localStreams.push(stream):this._localStreams=[stream]),_addTrack.call(this,track,stream)}}"removeStream"in window.RTCPeerConnection.prototype||(window.RTCPeerConnection.prototype.removeStream=function(stream){this._localStreams||(this._localStreams=[]);var index=this._localStreams.indexOf(stream);if(-1!==index){this._localStreams.splice(index,1);var pc=this,tracks=stream.getTracks();this.getSenders().forEach(function(sender){-1!==tracks.indexOf(sender.track)&&pc.removeTrack(sender)})}})}},shimRemoteStreamsAPI:function(window){if("object"==typeof window&&window.RTCPeerConnection&&("getRemoteStreams"in window.RTCPeerConnection.prototype||(window.RTCPeerConnection.prototype.getRemoteStreams=function(){return this._remoteStreams?this._remoteStreams:[]}),!("onaddstream"in window.RTCPeerConnection.prototype))){Object.defineProperty(window.RTCPeerConnection.prototype,"onaddstream",{get:function(){return this._onaddstream},set:function(f){this._onaddstream&&this.removeEventListener("addstream",this._onaddstream),this.addEventListener("addstream",this._onaddstream=f)}});var origSetRemoteDescription=window.RTCPeerConnection.prototype.setRemoteDescription;window.RTCPeerConnection.prototype.setRemoteDescription=function(){var pc=this;return this._onaddstreampoly||this.addEventListener("track",this._onaddstreampoly=function(e){e.streams.forEach(function(stream){if(pc._remoteStreams||(pc._remoteStreams=[]),!(pc._remoteStreams.indexOf(stream)>=0)){pc._remoteStreams.push(stream);var event=new Event("addstream");event.stream=stream,pc.dispatchEvent(event)}})}),origSetRemoteDescription.apply(pc,arguments)}}},shimCallbacksAPI:function(window){if("object"==typeof window&&window.RTCPeerConnection){var prototype=window.RTCPeerConnection.prototype,createOffer=prototype.createOffer,createAnswer=prototype.createAnswer,setLocalDescription=prototype.setLocalDescription,setRemoteDescription=prototype.setRemoteDescription,addIceCandidate=prototype.addIceCandidate;prototype.createOffer=function(successCallback,failureCallback){var options=arguments.length>=2?arguments[2]:arguments[0],promise=createOffer.apply(this,[options]);return failureCallback?(promise.then(successCallback,failureCallback),Promise.resolve()):promise},prototype.createAnswer=function(successCallback,failureCallback){var options=arguments.length>=2?arguments[2]:arguments[0],promise=createAnswer.apply(this,[options]);return failureCallback?(promise.then(successCallback,failureCallback),Promise.resolve()):promise};var withCallback=function(description,successCallback,failureCallback){var promise=setLocalDescription.apply(this,[description]);return failureCallback?(promise.then(successCallback,failureCallback),Promise.resolve()):promise};prototype.setLocalDescription=withCallback,withCallback=function(description,successCallback,failureCallback){var promise=setRemoteDescription.apply(this,[description]);return failureCallback?(promise.then(successCallback,failureCallback),Promise.resolve()):promise},prototype.setRemoteDescription=withCallback,withCallback=function(candidate,successCallback,failureCallback){var promise=addIceCandidate.apply(this,[candidate]);return failureCallback?(promise.then(successCallback,failureCallback),Promise.resolve()):promise},prototype.addIceCandidate=withCallback}},shimGetUserMedia:function(window){var navigator=window&&window.navigator;navigator.getUserMedia||(navigator.webkitGetUserMedia?navigator.getUserMedia=navigator.webkitGetUserMedia.bind(navigator):navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&(navigator.getUserMedia=function(constraints,cb,errcb){navigator.mediaDevices.getUserMedia(constraints).then(cb,errcb)}.bind(navigator)))},shimRTCIceServerUrls:function(window){var OrigPeerConnection=window.RTCPeerConnection;window.RTCPeerConnection=function(pcConfig,pcConstraints){if(pcConfig&&pcConfig.iceServers){for(var newIceServers=[],i=0;i<pcConfig.iceServers.length;i++){var server=pcConfig.iceServers[i];!server.hasOwnProperty("urls")&&server.hasOwnProperty("url")?(utils.deprecated("RTCIceServer.url","RTCIceServer.urls"),server=JSON.parse(JSON.stringify(server)),server.urls=server.url,delete server.url,newIceServers.push(server)):newIceServers.push(pcConfig.iceServers[i])}pcConfig.iceServers=newIceServers}return new OrigPeerConnection(pcConfig,pcConstraints)},window.RTCPeerConnection.prototype=OrigPeerConnection.prototype,"generateCertificate"in window.RTCPeerConnection&&Object.defineProperty(window.RTCPeerConnection,"generateCertificate",{get:function(){return OrigPeerConnection.generateCertificate}})},shimTrackEventTransceiver:function(window){"object"==typeof window&&window.RTCPeerConnection&&"receiver"in window.RTCTrackEvent.prototype&&!window.RTCTransceiver&&Object.defineProperty(window.RTCTrackEvent.prototype,"transceiver",{get:function(){return{receiver:this.receiver}}})},shimCreateOfferLegacy:function(window){var origCreateOffer=window.RTCPeerConnection.prototype.createOffer;window.RTCPeerConnection.prototype.createOffer=function(offerOptions){var pc=this;if(offerOptions){void 0!==offerOptions.offerToReceiveAudio&&(offerOptions.offerToReceiveAudio=!!offerOptions.offerToReceiveAudio);var audioTransceiver=pc.getTransceivers().find(function(transceiver){return transceiver.sender.track&&"audio"===transceiver.sender.track.kind});!1===offerOptions.offerToReceiveAudio&&audioTransceiver?"sendrecv"===audioTransceiver.direction?audioTransceiver.setDirection?audioTransceiver.setDirection("sendonly"):audioTransceiver.direction="sendonly":"recvonly"===audioTransceiver.direction&&(audioTransceiver.setDirection?audioTransceiver.setDirection("inactive"):audioTransceiver.direction="inactive"):!0!==offerOptions.offerToReceiveAudio||audioTransceiver||pc.addTransceiver("audio"),void 0!==offerOptions.offerToReceiveVideo&&(offerOptions.offerToReceiveVideo=!!offerOptions.offerToReceiveVideo);var videoTransceiver=pc.getTransceivers().find(function(transceiver){return transceiver.sender.track&&"video"===transceiver.sender.track.kind});!1===offerOptions.offerToReceiveVideo&&videoTransceiver?"sendrecv"===videoTransceiver.direction?videoTransceiver.setDirection("sendonly"):"recvonly"===videoTransceiver.direction&&videoTransceiver.setDirection("inactive"):!0!==offerOptions.offerToReceiveVideo||videoTransceiver||pc.addTransceiver("video")}return origCreateOffer.apply(pc,arguments)}}}},{"../utils":14}],14:[function(requirecopy,module,exports){function extractVersion(uastring,expr,pos){var match=uastring.match(expr);return match&&match.length>=pos&&parseInt(match[pos],10)}function wrapPeerConnectionEvent(window,eventNameToWrap,wrapper){if(window.RTCPeerConnection){var proto=window.RTCPeerConnection.prototype,nativeAddEventListener=proto.addEventListener;proto.addEventListener=function(nativeEventName,cb){if(nativeEventName!==eventNameToWrap)return nativeAddEventListener.apply(this,arguments);var wrappedCallback=function(e){var modifiedEvent=wrapper(e);modifiedEvent&&cb(modifiedEvent)};return this._eventMap=this._eventMap||{},this._eventMap[cb]=wrappedCallback,nativeAddEventListener.apply(this,[nativeEventName,wrappedCallback])};var nativeRemoveEventListener=proto.removeEventListener;proto.removeEventListener=function(nativeEventName,cb){if(nativeEventName!==eventNameToWrap||!this._eventMap||!this._eventMap[cb])return nativeRemoveEventListener.apply(this,arguments);var unwrappedCb=this._eventMap[cb];return delete this._eventMap[cb],nativeRemoveEventListener.apply(this,[nativeEventName,unwrappedCb])},Object.defineProperty(proto,"on"+eventNameToWrap,{get:function(){return this["_on"+eventNameToWrap]},set:function(cb){this["_on"+eventNameToWrap]&&(this.removeEventListener(eventNameToWrap,this["_on"+eventNameToWrap]),delete this["_on"+eventNameToWrap]),cb&&this.addEventListener(eventNameToWrap,this["_on"+eventNameToWrap]=cb)},enumerable:!0,configurable:!0})}}var logDisabled_=!0,deprecationWarnings_=!0;module.exports={extractVersion:extractVersion,wrapPeerConnectionEvent:wrapPeerConnectionEvent,disableLog:function(bool){return"boolean"!=typeof bool?new Error("Argument type: "+typeof bool+". Please use a boolean."):(logDisabled_=bool,bool?"adapter.js logging disabled":"adapter.js logging enabled")},disableWarnings:function(bool){return"boolean"!=typeof bool?new Error("Argument type: "+typeof bool+". Please use a boolean."):(deprecationWarnings_=!bool,"adapter.js deprecation warnings "+(bool?"disabled":"enabled"))},log:function(){if("object"==typeof window){if(logDisabled_)return;"undefined"!=typeof console&&console.log}},deprecated:function(oldMethod,newMethod){},detectBrowser:function(window){var navigator=window&&window.navigator,result={};if(result.browser=null,result.version=null,void 0===window||!window.navigator)return result.browser="Not a browser.",result;if(navigator.mozGetUserMedia)result.browser="firefox",result.version=extractVersion(navigator.userAgent,/Firefox\/(\d+)\./,1);else if(navigator.webkitGetUserMedia)result.browser="chrome",result.version=extractVersion(navigator.userAgent,/Chrom(e|ium)\/(\d+)\./,2);else if(navigator.mediaDevices&&navigator.userAgent.match(/Edge\/(\d+).(\d+)$/))result.browser="edge",result.version=extractVersion(navigator.userAgent,/Edge\/(\d+).(\d+)$/,2);else{if(!window.RTCPeerConnection||!navigator.userAgent.match(/AppleWebKit\/(\d+)\./))return result.browser="Not a supported browser.",result;result.browser="safari",result.version=extractVersion(navigator.userAgent,/AppleWebKit\/(\d+)\./,1)}return result}}},{}]},{},[3])(3)}),navigator.mozGetUserMedia?(MediaStreamTrack.getSources=function(successCb){setTimeout(function(){successCb([{kind:"audio",id:"default",label:"",facing:""},{kind:"video",id:"default",label:"",facing:""}])},0)},attachMediaStream=function(element,stream){return element.srcObject=stream,element},reattachMediaStream=function(to,from){return to.srcObject=from.srcObject,to}):navigator.webkitGetUserMedia?(attachMediaStream=function(element,stream){return AdapterJS.webrtcDetectedVersion>=43?element.srcObject=stream:void 0!==element.src&&(element.src=URL.createObjectURL(stream)),element},reattachMediaStream=function(to,from){return AdapterJS.webrtcDetectedVersion>=43?to.srcObject=from.srcObject:to.src=from.src,to}):"AppleWebKit"===AdapterJS.webrtcDetectedType?(attachMediaStream=function(element,stream){return element.srcObject=stream,element
+},reattachMediaStream=function(to,from){return to.srcObject=from.srcObject,to},navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&(navigator.getUserMedia=getUserMedia=function(constraints,successCb,errorCb){navigator.mediaDevices.getUserMedia(constraints).then(successCb).catch(errorCb)})):navigator.mediaDevices&&navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)&&(attachMediaStream=function(element,stream){return element.srcObject=stream,element},reattachMediaStream=function(to,from){return to.srcObject=from.srcObject,to});var attachMediaStream_base=attachMediaStream;"opera"===AdapterJS.webrtcDetectedBrowser&&(attachMediaStream_base=function(element,stream){AdapterJS.webrtcDetectedVersion>38?element.srcObject=stream:void 0!==element.src&&(element.src=URL.createObjectURL(stream))}),attachMediaStream=function(element,stream){return"chrome"!==AdapterJS.webrtcDetectedBrowser&&"opera"!==AdapterJS.webrtcDetectedBrowser||stream?attachMediaStream_base(element,stream):element.src="",element};var reattachMediaStream_base=reattachMediaStream;reattachMediaStream=function(to,from){return reattachMediaStream_base(to,from),to},window.attachMediaStream=attachMediaStream,window.reattachMediaStream=reattachMediaStream,window.getUserMedia=function(constraints,onSuccess,onFailure){navigator.getUserMedia(constraints,onSuccess,onFailure)},AdapterJS.attachMediaStream=attachMediaStream,AdapterJS.reattachMediaStream=reattachMediaStream,AdapterJS.getUserMedia=getUserMedia,"undefined"==typeof Promise&&(requestUserMedia=null),AdapterJS.maybeThroughWebRTCReady()}else"object"==typeof console&&"function"==typeof console.log||(console={}||console,console.log=function(arg){},console.info=function(arg){},console.error=function(arg){},console.dir=function(arg){},console.exception=function(arg){},console.trace=function(arg){},console.warn=function(arg){},console.count=function(arg){},console.debug=function(arg){},console.count=function(arg){},console.time=function(arg){},console.timeEnd=function(arg){},console.group=function(arg){},console.groupCollapsed=function(arg){},console.groupEnd=function(arg){}),AdapterJS.WebRTCPlugin.WaitForPluginReady=function(){for(;AdapterJS.WebRTCPlugin.pluginState!==AdapterJS.WebRTCPlugin.PLUGIN_STATES.READY;);},AdapterJS.WebRTCPlugin.callWhenPluginReady=function(callback){if(AdapterJS.WebRTCPlugin.pluginState===AdapterJS.WebRTCPlugin.PLUGIN_STATES.READY)callback();else var checkPluginReadyState=setInterval(function(){AdapterJS.WebRTCPlugin.pluginState===AdapterJS.WebRTCPlugin.PLUGIN_STATES.READY&&(clearInterval(checkPluginReadyState),callback())},100)},AdapterJS.WebRTCPlugin.setLogLevel=function(logLevel){AdapterJS.WebRTCPlugin.callWhenPluginReady(function(){AdapterJS.WebRTCPlugin.plugin.setLogLevel(logLevel)})},AdapterJS.WebRTCPlugin.injectPlugin=function(){if(AdapterJS.documentReady()&&AdapterJS.WebRTCPlugin.pluginState===AdapterJS.WebRTCPlugin.PLUGIN_STATES.INITIALIZING){AdapterJS.WebRTCPlugin.pluginState=AdapterJS.WebRTCPlugin.PLUGIN_STATES.INJECTING;var existing=document.getElementById(AdapterJS.WebRTCPlugin.pluginInfo.pluginId);if(existing)if(AdapterJS.WebRTCPlugin.plugin=existing,AdapterJS.WebRTCPlugin.pluginState=AdapterJS.WebRTCPlugin.PLUGIN_STATES.INJECTED,AdapterJS.WebRTCPlugin.plugin.valid)window[AdapterJS.WebRTCPlugin.pluginInfo.onload]();else var pluginValidInterval=setInterval(function(){AdapterJS.WebRTCPlugin.plugin.valid&&(clearInterval(pluginValidInterval),window[AdapterJS.WebRTCPlugin.pluginInfo.onload]())},100);else{if("IE"===AdapterJS.webrtcDetectedBrowser&&AdapterJS.webrtcDetectedVersion<=10){var frag=document.createDocumentFragment();for(AdapterJS.WebRTCPlugin.plugin=document.createElement("div"),AdapterJS.WebRTCPlugin.plugin.innerHTML='<object id="'+AdapterJS.WebRTCPlugin.pluginInfo.pluginId+'" type="'+AdapterJS.WebRTCPlugin.pluginInfo.type+'" width="1" height="1"><param name="pluginId" value="'+AdapterJS.WebRTCPlugin.pluginInfo.pluginId+'" /> <param name="windowless" value="false" /> <param name="pageId" value="'+AdapterJS.WebRTCPlugin.pageId+'" /> <param name="onload" value="'+AdapterJS.WebRTCPlugin.pluginInfo.onload+'" /><param name="tag" value="'+AdapterJS.WebRTCPlugin.TAGS.NONE+'" />'+(AdapterJS.options.getAllCams?'<param name="forceGetAllCams" value="True" />':"")+"</object>";AdapterJS.WebRTCPlugin.plugin.firstChild;)frag.appendChild(AdapterJS.WebRTCPlugin.plugin.firstChild);document.body.appendChild(frag),AdapterJS.WebRTCPlugin.plugin=document.getElementById(AdapterJS.WebRTCPlugin.pluginInfo.pluginId)}else AdapterJS.WebRTCPlugin.plugin=document.createElement("object"),AdapterJS.WebRTCPlugin.plugin.id=AdapterJS.WebRTCPlugin.pluginInfo.pluginId,"IE"===AdapterJS.webrtcDetectedBrowser?(AdapterJS.WebRTCPlugin.plugin.width="1px",AdapterJS.WebRTCPlugin.plugin.height="1px"):(AdapterJS.WebRTCPlugin.plugin.width="0px",AdapterJS.WebRTCPlugin.plugin.height="0px"),AdapterJS.WebRTCPlugin.plugin.type=AdapterJS.WebRTCPlugin.pluginInfo.type,AdapterJS.WebRTCPlugin.plugin.innerHTML='<param name="onload" value="'+AdapterJS.WebRTCPlugin.pluginInfo.onload+'"><param name="pluginId" value="'+AdapterJS.WebRTCPlugin.pluginInfo.pluginId+'"><param name="windowless" value="false" /> '+(AdapterJS.options.getAllCams?'<param name="forceGetAllCams" value="True" />':"")+'<param name="pageId" value="'+AdapterJS.WebRTCPlugin.pageId+'"><param name="tag" value="'+AdapterJS.WebRTCPlugin.TAGS.NONE+'" />',document.body.appendChild(AdapterJS.WebRTCPlugin.plugin);AdapterJS.WebRTCPlugin.pluginState=AdapterJS.WebRTCPlugin.PLUGIN_STATES.INJECTED}}},AdapterJS.WebRTCPlugin.isPluginInstalled=function(comName,plugName,plugType,installedCb,notInstalledCb){if("IE"!==AdapterJS.webrtcDetectedBrowser){var pluginArray=navigator.mimeTypes;if(void 0!==pluginArray){for(var i=0;i<pluginArray.length;i++)if(pluginArray[i].type.indexOf(plugType)>=0)return void installedCb();notInstalledCb()}else AdapterJS.renderNotificationBar(AdapterJS.TEXT.PLUGIN.NOT_SUPPORTED)}else{try{new ActiveXObject(comName+"."+plugName)}catch(e){return void notInstalledCb()}installedCb()}},AdapterJS.WebRTCPlugin.defineWebRTCInterface=function(){if(AdapterJS.WebRTCPlugin.pluginState!==AdapterJS.WebRTCPlugin.PLUGIN_STATES.READY){AdapterJS.WebRTCPlugin.pluginState=AdapterJS.WebRTCPlugin.PLUGIN_STATES.INITIALIZING,AdapterJS.isDefined=function(variable){return null!==variable&&void 0!==variable},RTCSessionDescription=function(info){return AdapterJS.WebRTCPlugin.WaitForPluginReady(),AdapterJS.WebRTCPlugin.plugin.ConstructSessionDescription(info.type,info.sdp)},MediaStream=function(mediaStreamOrTracks){return AdapterJS.WebRTCPlugin.WaitForPluginReady(),AdapterJS.WebRTCPlugin.plugin.MediaStream(mediaStreamOrTracks)},RTCPeerConnection=function(servers,constraints){if(void 0!==servers&&null!==servers&&!Array.isArray(servers.iceServers))throw new Error("Failed to construct 'RTCPeerConnection': Malformed RTCConfiguration");if(void 0!==constraints&&null!==constraints){var invalidConstraits=!1;if(invalidConstraits|="object"!=typeof constraints,invalidConstraits|=constraints.hasOwnProperty("mandatory")&&void 0!==constraints.mandatory&&null!==constraints.mandatory&&constraints.mandatory.constructor!==Object,invalidConstraits|=constraints.hasOwnProperty("optional")&&void 0!==constraints.optional&&null!==constraints.optional&&!Array.isArray(constraints.optional))throw new Error("Failed to construct 'RTCPeerConnection': Malformed constraints object")}AdapterJS.WebRTCPlugin.WaitForPluginReady();var iceServers=null;if(servers&&Array.isArray(servers.iceServers)){iceServers=servers.iceServers;for(var i=0;i<iceServers.length;i++)iceServers[i].urls&&!iceServers[i].url&&(iceServers[i].url=iceServers[i].urls),iceServers[i].hasCredentials=AdapterJS.isDefined(iceServers[i].username)&&AdapterJS.isDefined(iceServers[i].credential)}if(AdapterJS.WebRTCPlugin.plugin.PEER_CONNECTION_VERSION&&AdapterJS.WebRTCPlugin.plugin.PEER_CONNECTION_VERSION>1)return iceServers&&(servers.iceServers=iceServers),AdapterJS.WebRTCPlugin.plugin.PeerConnection(servers);var mandatory=constraints&&constraints.mandatory?constraints.mandatory:null,optional=constraints&&constraints.optional?constraints.optional:null;return AdapterJS.WebRTCPlugin.plugin.PeerConnection(AdapterJS.WebRTCPlugin.pageId,iceServers,mandatory,optional)},MediaStreamTrack=function(){},MediaStreamTrack.getSources=function(callback){AdapterJS.WebRTCPlugin.callWhenPluginReady(function(){AdapterJS.WebRTCPlugin.plugin.GetSources(callback)})};var constraintsToPlugin=function(c){if("object"!=typeof c||c.mandatory||c.optional)return c;var cc={};return Object.keys(c).forEach(function(key){if("require"!==key&&"advanced"!==key){if("string"==typeof c[key])return void(cc[key]=c[key]);var r="object"==typeof c[key]?c[key]:{ideal:c[key]};void 0!==r.exact&&"number"==typeof r.exact&&(r.min=r.max=r.exact);var oldname=function(prefix,name){return prefix?prefix+name.charAt(0).toUpperCase()+name.slice(1):"deviceId"===name?"sourceId":name};if("sourceId"===oldname("",key)&&void 0!==r.exact&&(r.ideal=r.exact,r.exact=void 0),void 0!==r.ideal){cc.optional=cc.optional||[];var oc={};"number"==typeof r.ideal?(oc[oldname("min",key)]=r.ideal,cc.optional.push(oc),oc={},oc[oldname("max",key)]=r.ideal,cc.optional.push(oc)):(oc[oldname("",key)]=r.ideal,cc.optional.push(oc))}void 0!==r.exact&&"number"!=typeof r.exact?(cc.mandatory=cc.mandatory||{},cc.mandatory[oldname("",key)]=r.exact):["min","max"].forEach(function(mix){void 0!==r[mix]&&(cc.mandatory=cc.mandatory||{},cc.mandatory[oldname(mix,key)]=r[mix])})}}),c.advanced&&(cc.optional=(cc.optional||[]).concat(c.advanced)),cc};getUserMedia=function(constraints,successCallback,failureCallback){var cc={};cc.audio=!!constraints.audio&&constraintsToPlugin(constraints.audio),cc.video=!!constraints.video&&constraintsToPlugin(constraints.video),AdapterJS.WebRTCPlugin.callWhenPluginReady(function(){AdapterJS.WebRTCPlugin.plugin.getUserMedia(cc,successCallback,failureCallback)})},window.navigator.getUserMedia=getUserMedia,"undefined"!=typeof Promise&&(requestUserMedia=function(constraints){return new Promise(function(resolve,reject){try{getUserMedia(constraints,resolve,reject)}catch(error){reject(error)}})},void 0===navigator.mediaDevices&&(navigator.mediaDevices={}),navigator.mediaDevices.getUserMedia=requestUserMedia,navigator.mediaDevices.enumerateDevices=function(){return new Promise(function(resolve){var kinds={audio:"audioinput",video:"videoinput"};return MediaStreamTrack.getSources(function(devices){resolve(devices.map(function(device){return{label:device.label,kind:kinds[device.kind],id:device.id,deviceId:device.id,groupId:""}}))})})}),attachMediaStream=function(element,stream){if(element&&element.parentNode){var streamId;null===stream?streamId="":(void 0!==stream.enableSoundTracks&&stream.enableSoundTracks(!0),streamId=stream.id);var elementId=0===element.id.length?Math.random().toString(36).slice(2):element.id,nodeName=element.nodeName.toLowerCase();if("object"!==nodeName){var tag;switch(nodeName){case"audio":tag=AdapterJS.WebRTCPlugin.TAGS.AUDIO;break;case"video":tag=AdapterJS.WebRTCPlugin.TAGS.VIDEO;break;default:tag=AdapterJS.WebRTCPlugin.TAGS.NONE}var frag=document.createDocumentFragment(),temp=document.createElement("div"),classHTML="";for(element.className?classHTML='class="'+element.className+'" ':element.attributes&&element.attributes.class&&(classHTML='class="'+element.attributes.class.value+'" '),temp.innerHTML='<object id="'+elementId+'" '+classHTML+'type="'+AdapterJS.WebRTCPlugin.pluginInfo.type+'"><param name="pluginId" value="'+elementId+'" /> <param name="pageId" value="'+AdapterJS.WebRTCPlugin.pageId+'" /> <param name="windowless" value="true" /> <param name="streamId" value="'+streamId+'" /> <param name="tag" value="'+tag+'" /> </object>';temp.firstChild;)frag.appendChild(temp.firstChild);var height="",width="";element.clientWidth||element.clientHeight?(width=element.clientWidth,height=element.clientHeight):(element.width||element.height)&&(width=element.width,height=element.height),element.parentNode.insertBefore(frag,element),frag=document.getElementById(elementId),frag.width=width,frag.height=height,element.parentNode.removeChild(element)}else{for(var children=element.children,i=0;i!==children.length;++i)if("streamId"===children[i].name){children[i].value=streamId;break}element.setStreamId(streamId)}var newElement=document.getElementById(elementId);return AdapterJS.forwardEventHandlers(newElement,element,Object.getPrototypeOf(element)),newElement}},reattachMediaStream=function(to,from){for(var stream=null,children=from.children,i=0;i!==children.length;++i)if("streamId"===children[i].name){AdapterJS.WebRTCPlugin.WaitForPluginReady(),stream=AdapterJS.WebRTCPlugin.plugin.getStreamWithId(AdapterJS.WebRTCPlugin.pageId,children[i].value);break}if(null!==stream)return attachMediaStream(to,stream)},window.attachMediaStream=attachMediaStream,window.reattachMediaStream=reattachMediaStream,window.getUserMedia=getUserMedia,AdapterJS.attachMediaStream=attachMediaStream,AdapterJS.reattachMediaStream=reattachMediaStream,AdapterJS.getUserMedia=getUserMedia,AdapterJS.forwardEventHandlers=function(destElem,srcElem,prototype){var properties=Object.getOwnPropertyNames(prototype);for(var prop in properties)if(prop){var propName=properties[prop];"function"==typeof propName.slice&&"on"===propName.slice(0,2)&&"function"==typeof srcElem[propName]&&AdapterJS.addEvent(destElem,propName.slice(2),srcElem[propName])}var subPrototype=Object.getPrototypeOf(prototype);subPrototype&&AdapterJS.forwardEventHandlers(destElem,srcElem,subPrototype)},RTCIceCandidate=function(candidate){return candidate.sdpMid||(candidate.sdpMid=""),AdapterJS.WebRTCPlugin.WaitForPluginReady(),AdapterJS.WebRTCPlugin.plugin.ConstructIceCandidate(candidate.sdpMid,candidate.sdpMLineIndex,candidate.candidate)},AdapterJS.addEvent(document,"readystatechange",AdapterJS.WebRTCPlugin.injectPlugin),AdapterJS.WebRTCPlugin.injectPlugin()}},AdapterJS.WebRTCPlugin.pluginNeededButNotInstalledCb=AdapterJS.WebRTCPlugin.pluginNeededButNotInstalledCb||function(){AdapterJS.addEvent(document,"readystatechange",AdapterJS.WebRTCPlugin.pluginNeededButNotInstalledCbPriv),AdapterJS.WebRTCPlugin.pluginNeededButNotInstalledCbPriv()},AdapterJS.WebRTCPlugin.pluginNeededButNotInstalledCbPriv=function(){if(AdapterJS.documentReady()&&(document.removeEventListener("readystatechange",AdapterJS.WebRTCPlugin.pluginNeededButNotInstalledCbPriv),!AdapterJS.options.hidePluginInstallPrompt)){var downloadLink=AdapterJS.WebRTCPlugin.pluginInfo.downloadLink;if(downloadLink){var popupString;AdapterJS.WebRTCPlugin.pluginInfo.companyName?(popupString="This website requires you to install the ",AdapterJS.WebRTCPlugin.pluginInfo.portalLink?popupString+=' <a href="'+AdapterJS.WebRTCPlugin.pluginInfo.portalLink+'" target="_blank">'+AdapterJS.WebRTCPlugin.pluginInfo.companyName+" WebRTC Plugin</a>":popupString+=AdapterJS.WebRTCPlugin.pluginInfo.companyName+" WebRTC Plugin",popupString+=" to work on this browser."):popupString=AdapterJS.TEXT.PLUGIN.REQUIRE_INSTALLATION,AdapterJS.renderNotificationBar(popupString,AdapterJS.TEXT.PLUGIN.BUTTON,function(){if(window.open(downloadLink,"_top"),"safari"===webrtcDetectedBrowser&&11==webrtcDetectedVersion)AdapterJS.renderNotificationBar(AdapterJS.TEXT.PLUGIN.REQUIRE_RESTART);else var pluginInstallInterval=setInterval(function(){"IE"!==AdapterJS.webrtcDetectedBrowser&&navigator.plugins.refresh(!1),AdapterJS.WebRTCPlugin.isPluginInstalled(AdapterJS.WebRTCPlugin.pluginInfo.prefix,AdapterJS.WebRTCPlugin.pluginInfo.plugName,AdapterJS.WebRTCPlugin.pluginInfo.type,function(){clearInterval(pluginInstallInterval),AdapterJS.WebRTCPlugin.defineWebRTCInterface()},function(){})},500)})}else AdapterJS.renderNotificationBar(AdapterJS.TEXT.PLUGIN.NOT_SUPPORTED)}},AdapterJS.WebRTCPlugin.isPluginInstalled(AdapterJS.WebRTCPlugin.pluginInfo.prefix,AdapterJS.WebRTCPlugin.pluginInfo.plugName,AdapterJS.WebRTCPlugin.pluginInfo.type,AdapterJS.WebRTCPlugin.defineWebRTCInterface,AdapterJS.WebRTCPlugin.pluginNeededButNotInstalledCb); true&&(module.exports=AdapterJS);
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var rtcmulticonnection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rtcmulticonnection */ "./node_modules/rtcmulticonnection/dist/RTCMultiConnection.js");
+/* harmony import */ var rtcmulticonnection__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(rtcmulticonnection__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var adapterjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! adapterjs */ "./node_modules/adapterjs/publish/adapter.min.js");
+/* harmony import */ var adapterjs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(adapterjs__WEBPACK_IMPORTED_MODULE_1__);
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    RTCMultiConnection: (rtcmulticonnection__WEBPACK_IMPORTED_MODULE_0___default())
+  },
+  data: function data() {
+    return {
+      uuid: this.$route.params.uuid,
+      meeting: {},
+      attachments: [],
+      roomId: '',
+      is_joined: false,
+      is_duplicate: false,
+      can_share_screen: false,
+      is_screen_shared: false,
+      screen_share_stream: {},
+      socketURL: null,
+      enableAudio: true,
+      enableVideo: true,
+      enableLogs: false,
+      autoplay: true,
+      cameraHeight: 160,
+      rtcmConnection: null,
+      localVideo: null,
+      screen_width: window.innerWidth,
+      videoList: [],
+      canvas: null,
+      is_owner: false,
+      scrollOptions: {
+        vuescroll: {
+          mode: 'native'
+        },
+        bar: {
+          background: '#171A23'
+        }
+      }
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('list-meeting')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    if (window.IsDuplicate()) {
+      this.is_duplicate = true;
+    }
+    this.getMeeting();
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.is_joined) {
+      this.leave();
+    }
+    next();
+  },
+  methods: {
+    getMeeting: function getMeeting() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/meeting/' + this.uuid + '?live=true').then(function (response) {
+        _this.meeting = response.meeting;
+        _this.attachments = response.attachments;
+        _this.socketURL = response.socket;
+        if (_this.meeting.user_id === helper.getAuthUser('id')) {
+          _this.is_owner = true;
+        }
+        var vm = _this;
+        _this.rtcmConnection = new (rtcmulticonnection__WEBPACK_IMPORTED_MODULE_0___default())();
+        _this.rtcmConnection.socketURL = _this.socketURL;
+        _this.rtcmConnection.autoCreateMediaElement = false;
+        _this.rtcmConnection.enableLogs = _this.enableLogs;
+        _this.rtcmConnection.session = {
+          audio: _this.enableAudio,
+          video: _this.enableVideo
+        };
+        _this.rtcmConnection.iceServers = response.ice_servers || [];
+        _this.rtcmConnection.sdpConstraints.mandatory = {
+          OfferToReceiveAudio: _this.enableAudio,
+          OfferToReceiveVideo: _this.enableVideo
+        };
+        _this.rtcmConnection.onstream = function (stream) {
+          var found = vm.videoList.find(function (video) {
+            return video.id === stream.streamid;
+          });
+          if (found === undefined) {
+            var screenSharing = false;
+            if (stream.hasOwnProperty('stream')) {
+              if (stream.stream.isVideo === false && stream.stream.isAudio === false) {
+                screenSharing = true;
+              }
+            }
+            var video = {
+              id: stream.streamid,
+              muted: stream.type === 'local',
+              fullName: stream.extra.fullName,
+              userUuid: stream.extra.userUuid,
+              screenSharing: screenSharing,
+              isOwner: stream.extra.isOwner,
+              maximized: vm.videoList.length === 0 ? -1 : stream.extra.maximized
+            };
+            var idx = vm.videoList.findIndex(function (o) {
+              return o.userUuid === video.userUuid && o.screenSharing === video.screenSharing;
+            });
+            if (idx >= 0) {
+              vm.videoList.splice(idx, 1);
+            }
+            if (video.screenSharing && video.userUuid === helper.getAuthUser('uuid')) {} else {
+              if (vm.meeting.audience_video_preference) {
+                if (vm.is_owner || !vm.is_owner && (video.isOwner || video.userUuid === helper.getAuthUser('uuid'))) {
+                  vm.videoList.push(video);
+                }
+              } else {
+                vm.videoList.push(video);
+              }
+            }
+            if (stream.type === 'local') {
+              video.maximized = -1;
+              vm.localVideo = video;
+            }
+          }
+          setTimeout(function () {
+            if (vm.$refs.hasOwnProperty('videos')) {
+              for (var i = 0, len = vm.$refs.videos.length; i < len; i++) {
+                if (vm.$refs.videos[i].id === stream.streamid) {
+                  vm.$refs.videos[i].srcObject = stream.stream;
+                  break;
+                }
+              }
+            }
+          }, 1000);
+        };
+        _this.rtcmConnection.onstreamended = function (stream) {
+          vm.videoList = vm.videoList.filter(function (o) {
+            return o.id != stream.streamid;
+          });
+        };
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this.$router.push('/communication/meeting');
+      });
+    },
+    highlight: function highlight(item) {
+      this.videoList.forEach(function (v) {
+        v.maximized = v.id === item.id ? -1 : 0;
+      });
+    },
+    join: function join() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      axios.post('/api/meeting/' + this.uuid + '/join').then(function (response) {
+        _this2.roomId = response.code;
+        if (!_this2.roomId) {
+          toastr.error(i18n.general.something_wrong);
+          loader.hide();
+          return;
+        }
+        var vm = _this2;
+        _this2.rtcmConnection.extra = {
+          fullName: helper.getAuthUser('name'),
+          userUuid: helper.getAuthUser('uuid'),
+          isOwner: _this2.is_owner ? true : false,
+          maximized: 0
+        };
+        _this2.rtcmConnection.openOrJoin(_this2.roomId, function (isRoomExist, roomid) {
+          if (isRoomExist === false && vm.rtcmConnection.isInitiator === true) {}
+          vm.is_joined = true;
+          if (vm.meeting.user_id == helper.getAuthUser('id')) {
+            vm.can_share_screen = true;
+          }
+        });
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    leave: function leave() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.post('/api/meeting/' + this.uuid + '/leave').then(function (response) {
+        if (_this3.is_joined) {
+          _this3.rtcmConnection.attachStreams.forEach(function (localStream) {
+            localStream.stop();
+          });
+          _this3.videoList = [];
+          _this3.is_joined = false;
+        }
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    share: function share() {
+      var vm = this;
+      if (navigator.getDisplayMedia || navigator.mediaDevices.getDisplayMedia) {
+        var addStreamStopListener = function addStreamStopListener(stream, callback) {
+          var streamEndedEvent = 'ended';
+          if ('oninactive' in stream) {
+            streamEndedEvent = 'inactive';
+          }
+          stream.addEventListener(streamEndedEvent, function () {
+            callback();
+            callback = function callback() {};
+          }, false);
+        };
+        var onGettingSteam = function onGettingSteam(stream) {
+          stream.screenSharing = true;
+          vm.rtcmConnection.addStream(stream);
+          vm.screen_share_stream = stream;
+          vm.is_screen_shared = true;
+          addStreamStopListener(stream, function () {
+            vm.rtcmConnection.removeStream(stream.streamid);
+            vm.is_screen_shared = false;
+          });
+        };
+        var getDisplayMediaError = function getDisplayMediaError(error) {
+          console.log('Media error: ' + JSON.stringify(error));
+        };
+        if (navigator.mediaDevices.getDisplayMedia) {
+          navigator.mediaDevices.getDisplayMedia({
+            video: true,
+            audio: false
+          }).then(function (stream) {
+            onGettingSteam(stream);
+          }, getDisplayMediaError)["catch"](getDisplayMediaError);
+        } else if (navigator.getDisplayMedia) {
+          navigator.getDisplayMedia({
+            video: true
+          }).then(function (stream) {
+            onGettingSteam(stream);
+          }, getDisplayMediaError)["catch"](getDisplayMediaError);
+        }
+      }
+    },
+    logEvent: function logEvent(event) {},
+    formatDate: function formatDate(date) {
+      return helper.formatDate(date);
+    },
+    formatTime: function formatTime(date) {
+      return helper.formatTime(date);
+    },
+    fullScreen: function fullScreen(item) {
+      var elem = document.getElementById(item.id);
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    },
+    momentTime: function momentTime(time) {
+      return helper.formatTime(time);
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    },
+    isDemo: function isDemo() {
+      return !helper.getConfig('mode') ? true : false;
+    },
+    maximizeVideoHeight: function maximizeVideoHeight() {
+      if (this.screen_width < 400) {
+        return 180;
+      } else if (this.screen_width < 640) {
+        return 220;
+      } else if (this.screen_width <= 768) {
+        return 360;
+      } else {
+        return 400;
+      }
+    },
+    minimizeVideoHeight: function minimizeVideoHeight() {
+      if (this.screen_width < 400) {
+        return 180;
+      } else if (this.screen_width < 640) {
+        return 220;
+      } else if (this.screen_width <= 768) {
+        return 360;
+      } else {
+        return 220;
+      }
+    },
+    orderedVideoList: function orderedVideoList() {
+      var arr = this.videoList;
+      arr.sort(function (a, b) {
+        var keyA = new Date(a.maximized),
+          keyB = new Date(b.maximized);
+        if (keyA < keyB) return -1;
+        if (keyA > keyB) return 1;
+        return 0;
+      });
+      return arr;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=template&id=3f6f6198&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=template&id=3f6f6198&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticStyle: {
+      width: "100vw",
+      "min-height": "100vh",
+      background: "#000000",
+      padding: "20px"
+    }
+  }, [_vm.is_duplicate ? _c("div", [_c("p", [_vm._v("\n              " + _vm._s(_vm.trans("communication.duplicate_tab")) + "\n          ")])]) : _c("div", [_c("vue-scroll", {
+    attrs: {
+      ops: _vm.scrollOptions
+    }
+  }, [_c("div", {
+    staticStyle: {
+      padding: "10px 20px",
+      background: "#171A23"
+    }
+  }, [_c("div", {
+    staticClass: "d-flex"
+  }, [_c("p", {
+    staticClass: "mr-auto p-1",
+    staticStyle: {
+      color: "#AEB5C0",
+      padding: "0",
+      margin: "0"
+    }
+  }, [_vm._v("\n                          " + _vm._s(_vm.meeting.title) + "\n                          "), _vm.meeting.is_live ? _c("span", {
+    staticClass: "ml-2 label label-success"
+  }, [_vm._v(_vm._s(_vm.trans("communication.live")))]) : _vm._e(), _vm._v(" "), _vm.meeting.is_expired ? _c("span", {
+    staticClass: "ml-2 label label-danger"
+  }, [_vm._v(_vm._s(_vm.trans("communication.expired")))]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "p-1"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "p-1"
+  }, [_c("span", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("communication.back_to_meeting"),
+      expression: "trans('communication.back_to_meeting')"
+    }],
+    staticClass: "icon custom-button",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/communication/meeting/" + _vm.meeting.uuid);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-arrow-circle-left"
+  })])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_vm.meeting.is_live ? _c("div", {
+    staticClass: "row mt-3"
+  }, [!_vm.is_joined ? _c("div", {
+    staticClass: "col"
+  }, [_c("button", {
+    staticClass: "btn btn-block btn-success",
+    on: {
+      click: _vm.join
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.join_meeting")))])]) : _vm._e(), _vm._v(" "), _vm.is_joined && _vm.can_share_screen ? _c("div", {
+    staticClass: "col"
+  }, [!_vm.is_screen_shared ? _c("button", {
+    staticClass: "btn btn-block btn-info",
+    on: {
+      click: _vm.share
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.share_screen")))]) : _vm._e(), _vm._v(" "), _vm.is_screen_shared ? _c("button", {
+    staticClass: "btn btn-block btn-info",
+    attrs: {
+      disabled: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.stop_share_screen")))]) : _vm._e()]) : _vm._e(), _vm._v(" "), _vm.is_joined ? _c("div", {
+    staticClass: "col"
+  }, [_c("button", {
+    staticClass: "btn btn-block btn-danger",
+    on: {
+      click: _vm.leave
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.leave_meeting")))])]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticStyle: {
+      display: "flex",
+      height: "auto",
+      "flex-wrap": "wrap",
+      "justify-content": "flex-start",
+      "margin-top": "10px"
+    }
+  }, [_c("div", {
+    staticClass: "video-item mr-1",
+    staticStyle: {
+      flex: "1 0 49.5%"
+    }
+  }, [_c("vue-scroll", {
+    attrs: {
+      ops: _vm.scrollOptions
+    }
+  }, [_c("p", [_vm._v(_vm._s(_vm.trans("communication.meeting_start_time")) + ": " + _vm._s(_vm._f("moment")(_vm.meeting.date)) + " " + _vm._s(_vm._f("momentTime")(_vm.meeting.start_time)))]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.trans("communication.meeting_end_time")) + ": " + _vm._s(_vm._f("moment")(_vm.meeting.date)) + " " + _vm._s(_vm._f("momentTime")(_vm.meeting.end_time)))]), _vm._v(" "), _vm.attachments.length ? _c("div", [_c("ul", {
+    staticClass: "m-t-10 upload-file-list"
+  }, _vm._l(_vm.attachments, function (attachment) {
+    return _c("li", {
+      key: attachment.uuid,
+      staticClass: "upload-file-list-item"
+    }, [_c("a", {
+      staticClass: "no-link-color",
+      attrs: {
+        href: "/communication/meeting/".concat(_vm.meeting.uuid, "/attachment/").concat(attachment.uuid, "/download?token=").concat(_vm.authToken)
+      }
+    }, [_c("i", {
+      "class": ["file-icon", "fas", "fa-lg", attachment.file_info.icon]
+    }), _vm._v(" "), _c("span", {
+      staticClass: "upload-file-list-item-size"
+    }, [_vm._v(_vm._s(attachment.file_info.size))]), _vm._v(" " + _vm._s(attachment.user_filename))])]);
+  }), 0)]) : _vm._e(), _vm._v(" "), _c("div", {
+    domProps: {
+      innerHTML: _vm._s(_vm.meeting.description)
+    }
+  })])], 1), _vm._v(" "), !_vm.meeting.is_live && !_vm.meeting.is_expired ? [_c("div", {
+    staticClass: "video-item",
+    staticStyle: {
+      flex: "1 0 49.5%"
+    }
+  }, [_c("p", {
+    staticClass: "text-center"
+  }, [_vm._v(_vm._s(_vm.trans("communication.meeting_scheduled", {
+    date: _vm.formatDate(_vm.meeting.date),
+    time: _vm.formatTime(_vm.meeting.start_time)
+  })))])])] : _vm._e(), _vm._v(" "), _vm.meeting.is_expired ? [_c("div", {
+    staticClass: "video-item",
+    staticStyle: {
+      flex: "1 0 49.5%"
+    }
+  }, [_c("p", {
+    staticClass: "text-center"
+  }, [_vm._v(_vm._s(_vm.trans("communication.meeting_ended", {
+    date: _vm.formatDate(_vm.meeting.date),
+    time: _vm.formatTime(_vm.meeting.end_time)
+  })))])])] : _vm._e(), _vm._v(" "), _vm.meeting.is_live ? [!_vm.is_joined ? _c("div", {
+    staticClass: "video-item",
+    staticStyle: {
+      flex: "1 0 49.5%"
+    }
+  }, [_c("p", {
+    staticClass: "text-center"
+  }, [_vm._v(_vm._s(_vm.trans("communication.join_meeting_instruction")))])]) : _vm._e(), _vm._v(" "), _vm.is_joined ? _vm._l(_vm.orderedVideoList, function (item, index) {
+    return _c("div", {
+      key: item.id,
+      "class": ["video-item", index === 0 || _vm.screen_width <= 768 ? "video-maximized" : "video-minimized", item.maximized ? "maxmized" : ""]
+    }, [_c("video", {
+      ref: "videos",
+      refInFor: true,
+      attrs: {
+        autoplay: "",
+        height: index === 0 ? _vm.maximizeVideoHeight : _vm.minimizeVideoHeight,
+        playsinline: "",
+        id: item.id
+      },
+      domProps: {
+        muted: item.muted
+      }
+    }), _vm._v(" "), _c("p", {
+      staticClass: "mt-3"
+    }, [_vm._v("\n                                      " + _vm._s(item.fullName) + " "), item.screenSharing ? _c("span", [_vm._v(_vm._s(_vm.trans("communication.screen")))]) : _vm._e(), _vm._v(" "), item.maximized != -1 ? _c("span", {
+      staticClass: "ml-2 custom-button",
+      on: {
+        click: function click($event) {
+          return _vm.highlight(item);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-expand-arrows-alt"
+    })]) : _vm._e(), _vm._v(" "), index === 0 ? _c("span", {
+      staticClass: "ml-2 custom-button",
+      on: {
+        click: function click($event) {
+          return _vm.fullScreen(item);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-expand"
+    })]) : _vm._e()])]);
+  }) : _vm._e()] : _vm._e()], 2)])])], 1)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.icon[data-v-3f6f6198] {\n    margin-right: 10px;\n}\n@media (max-width: 991px) {\n.col-t-m[data-v-3f6f6198] {\n        margin: 4px 0;\n}\n}\n.video-item[data-v-3f6f6198] {\n    display: flex; \n    flex-direction: column; \n    align-items: center; \n    justify-content: space-around; \n    align-self: stretch;\n    background: #171A23; \n    padding: 10px 20px;\n    margin-top: 0.25rem !important;\n    margin-right: 0.25rem !important;\n}\n.video-maximized[data-v-3f6f6198] {\n    flex: 1 0 49.5%;\n}\n.video-minimized[data-v-3f6f6198] {\n    padding-top: 20px;\n    flex: 0 0 19.7%;\n}\n.maximized[data-v-3f6f6198] {\n    order: -1;\n}\n", "",{"version":3,"sources":["webpack://./resources/js/views/communication/meeting/live.vue"],"names":[],"mappings":";AAqcA;IACA,kBAAA;AACA;AACA;AACA;QACA,aAAA;AACA;AACA;AACA;IACA,aAAA;IACA,sBAAA;IACA,mBAAA;IACA,6BAAA;IACA,mBAAA;IACA,mBAAA;IACA,kBAAA;IACA,8BAAA;IACA,gCAAA;AACA;AACA;IACA,eAAA;AACA;AACA;IACA,iBAAA;IACA,eAAA;AACA;AACA;IACA,SAAA;AACA","sourcesContent":["<template>\n    <div style=\"width: 100vw; min-height: 100vh; background: #000000; padding:20px;\">\n        <div v-if=\"is_duplicate\">\n            <p>\n                {{trans('communication.duplicate_tab')}}\n            </p>\n        </div>\n        <div v-else>\n            <vue-scroll :ops=\"scrollOptions\">\n                <div style=\"padding: 10px 20px; background: #171A23;\">\n                    <div class=\"d-flex\">\n                        <p class=\"mr-auto p-1\" style=\"color: #AEB5C0; padding:0; margin:0;\">\n                            {{meeting.title}}\n                            <span class=\"ml-2 label label-success\" v-if=\"meeting.is_live\">{{trans('communication.live')}}</span>\n                            <span class=\"ml-2 label label-danger\" v-if=\"meeting.is_expired\">{{trans('communication.expired')}}</span>\n                        </p>\n                        <div class=\"p-1\">\n                        </div>\n                        <div class=\"p-1\">\n                            <span class=\"icon custom-button\" @click=\"$router.push('/communication/meeting/' + meeting.uuid)\" v-tooltip=\"trans('communication.back_to_meeting')\"><i class=\"fa fa-arrow-circle-left\"></i></span>\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"container-fluid\">\n\n                    <div class=\"row mt-3\" v-if=\"meeting.is_live\">\n                        <div class=\"col\" v-if=\"! is_joined\">\n                            <button class=\"btn btn-block btn-success\" @click=\"join\">{{trans('communication.join_meeting')}}</button>\n                        </div>\n                        <div class=\"col\" v-if=\"is_joined && can_share_screen\">\n                            <button class=\"btn btn-block btn-info\" v-if=\"! is_screen_shared\" @click=\"share\">{{trans('communication.share_screen')}}</button>\n                            <button disabled class=\"btn btn-block btn-info\" v-if=\"is_screen_shared\">{{trans('communication.stop_share_screen')}}</button>\n                        </div>\n                        <div class=\"col\" v-if=\"is_joined\">\n                            <button class=\"btn btn-block btn-danger\" @click=\"leave\">{{trans('communication.leave_meeting')}}</button>\n                        </div>\n                    </div>\n\n                    <div style=\"display: flex; height: auto; flex-wrap: wrap; justify-content: flex-start; margin-top:10px; \">\n                        <div class=\"video-item mr-1\" style=\"flex: 1 0 49.5%;\">\n                            <vue-scroll :ops=\"scrollOptions\">\n                                <p>{{trans('communication.meeting_start_time')}}: {{meeting.date | moment}} {{meeting.start_time | momentTime}}</p>\n                                <p>{{trans('communication.meeting_end_time')}}: {{meeting.date | moment}} {{meeting.end_time | momentTime}}</p>\n                                <div v-if=\"attachments.length\">\n                                    <ul class=\"m-t-10 upload-file-list\">\n                                        <li class=\"upload-file-list-item\" v-for=\"attachment in attachments\" :key=\"attachment.uuid\">\n                                            <a :href=\"`/communication/meeting/${meeting.uuid}/attachment/${attachment.uuid}/download?token=${authToken}`\" class=\"no-link-color\"><i :class=\"['file-icon', 'fas', 'fa-lg', attachment.file_info.icon]\"></i> <span class=\"upload-file-list-item-size\">{{attachment.file_info.size}}</span> {{attachment.user_filename}}</a>\n                                        </li>\n                                    </ul>\n                                </div>\n                                <div v-html=\"meeting.description\">\n                                </div>\n                            </vue-scroll>\n                        </div>\n\n                        <template v-if=\"! meeting.is_live && ! meeting.is_expired\">\n                            <div class=\"video-item\" style=\"flex: 1 0 49.5%;\">\n                                <p class=\"text-center\">{{trans('communication.meeting_scheduled', {date: formatDate(meeting.date), time: formatTime(meeting.start_time)})}}</p>\n                            </div>\n                        </template>\n                        <template v-if=\"meeting.is_expired\">\n                            <div class=\"video-item\" style=\"flex: 1 0 49.5%;\">\n                                <p class=\"text-center\">{{trans('communication.meeting_ended', {date: formatDate(meeting.date), time: formatTime(meeting.end_time)})}}</p>\n                            </div>\n                        </template>\n                        <template v-if=\"meeting.is_live\">\n                            <div class=\"video-item\" style=\"flex: 1 0 49.5%;\" v-if=\"!is_joined\">\n                                <p class=\"text-center\">{{trans('communication.join_meeting_instruction')}}</p>\n                            </div>\n                            <template v-if=\"is_joined\">\n                                <div v-for=\"(item, index) in orderedVideoList\" :key=\"item.id\" :class=\"['video-item', index === 0 || screen_width <= 768 ? 'video-maximized' : 'video-minimized', item.maximized ? 'maxmized' : '' ]\">\n                                    <video autoplay ref=\"videos\" :height=\"index === 0 ? maximizeVideoHeight : minimizeVideoHeight\" playsinline :muted=\"item.muted\" :id=\"item.id\"></video>\n                                    <p class=\"mt-3\">\n                                        {{item.fullName}} <span v-if=\"item.screenSharing\">{{(trans('communication.screen'))}}</span>\n                                        <span v-if=\"item.maximized != -1\" class=\"ml-2 custom-button\" @click=\"highlight(item)\"><i class=\"fas fa-expand-arrows-alt\"></i></span> \n                                        <span v-if=\"index === 0\" class=\"ml-2 custom-button\" @click=\"fullScreen(item)\"><i class=\"fas fa-expand\"></i></span> \n                                    </p>\n                                </div>\n                            </template>\n                        </template>\n                    </div>\n                </div>\n            </vue-scroll>\n        </div>\n  </div>\n</template>\n\n<script>\nimport RTCMultiConnection from 'rtcmulticonnection'\nimport 'adapterjs'\n\nexport default {\n    components: {RTCMultiConnection},\n    data() {\n        return {\n            uuid:this.$route.params.uuid,\n            meeting: {},\n            attachments: [],\n            roomId: '',\n            is_joined: false,\n            is_duplicate: false,\n            can_share_screen: false,\n            is_screen_shared: false,\n            screen_share_stream: {},\n            socketURL: null,\n            enableAudio: true,\n            enableVideo: true,\n            enableLogs: false,\n            autoplay: true,\n            cameraHeight: 160,\n            rtcmConnection: null,\n            localVideo: null,\n            screen_width: window.innerWidth,\n            videoList: [],\n            canvas: null,\n            is_owner: false,\n            scrollOptions: {\n                vuescroll: {\n                    mode: 'native',\n                },\n                bar: {\n                    background: '#171A23'\n                }\n            }\n        }\n    },\n    mounted() {\n        if(!helper.hasPermission('list-meeting')){\n            helper.notAccessibleMsg();\n            this.$router.push('/dashboard');\n        }\n\n        if (window.IsDuplicate()) {\n            this.is_duplicate = true;\n        }\n\n        this.getMeeting();\n    },\n    beforeRouteLeave(to, from, next) {\n        if (this.is_joined) {\n            this.leave();\n        }\n        next()\n    },\n    methods: {\n        getMeeting(){\n            let loader = this.$loading.show();\n            axios.get('/api/meeting/'+this.uuid + '?live=true')\n                .then(response => {\n                    this.meeting = response.meeting;\n                    this.attachments = response.attachments;\n                    this.socketURL = response.socket;\n\n                    if (this.meeting.user_id === helper.getAuthUser('id')) {\n                        this.is_owner = true;\n                    }\n\n                    const vm = this\n\n                    this.rtcmConnection = new RTCMultiConnection()\n                    this.rtcmConnection.socketURL = this.socketURL\n                    this.rtcmConnection.autoCreateMediaElement = false\n                    this.rtcmConnection.enableLogs = this.enableLogs\n                    this.rtcmConnection.session = {\n                        audio: this.enableAudio,\n                        video: this.enableVideo\n                    }\n                    this.rtcmConnection.iceServers = response.ice_servers || [];\n\n                    this.rtcmConnection.sdpConstraints.mandatory = {\n                        OfferToReceiveAudio: this.enableAudio,\n                        OfferToReceiveVideo: this.enableVideo\n                    }\n                    this.rtcmConnection.onstream = function(stream) {\n                        let found = vm.videoList.find(video => {\n                            return video.id === stream.streamid\n                        })\n                        if (found === undefined) {\n\n                            let screenSharing = false;\n                            if (stream.hasOwnProperty('stream')) {\n                                if (stream.stream.isVideo === false && stream.stream.isAudio === false) {\n                                    screenSharing = true;\n                                }\n                            }\n\n                            let video = {\n                                id: stream.streamid,\n                                muted: stream.type === 'local',\n                                fullName: stream.extra.fullName,\n                                userUuid: stream.extra.userUuid,\n                                screenSharing: screenSharing,\n                                isOwner: stream.extra.isOwner,\n                                maximized: vm.videoList.length === 0 ? -1 : stream.extra.maximized,\n                            }\n\n                            let idx = vm.videoList.findIndex(o => {\n                                return o.userUuid === video.userUuid && o.screenSharing === video.screenSharing\n                            })\n                            if (idx >= 0) {\n                                vm.videoList.splice(idx, 1);\n                            }\n\n                            if (video.screenSharing && video.userUuid === helper.getAuthUser('uuid')) {\n                                \n                            } else {\n                                if (vm.meeting.audience_video_preference) {\n                                    if ((vm.is_owner) || (! vm.is_owner && (video.isOwner || video.userUuid === helper.getAuthUser('uuid')))) {\n                                        vm.videoList.push(video)\n                                    }\n                                } else {\n                                    vm.videoList.push(video)\n                                }\n                            }\n\n                            if (stream.type === 'local') {\n                                video.maximized = -1\n                                vm.localVideo = video\n                            }\n                        }\n\n                        setTimeout(function() {\n                            if (vm.$refs.hasOwnProperty('videos')) {\n                                for (let i = 0, len = vm.$refs.videos.length; i < len; i++) {\n                                    if (vm.$refs.videos[i].id === stream.streamid) {\n                                        vm.$refs.videos[i].srcObject = stream.stream\n                                        break\n                                    }\n                                }\n                            }\n                        }, 1000)\n                    }\n                    this.rtcmConnection.onstreamended = function(stream) {\n                        vm.videoList = vm.videoList.filter(o => o.id != stream.streamid)\n                    }\n\n                    loader.hide();\n                })\n                .catch(error => {\n                    loader.hide();\n                    helper.showErrorMsg(error);\n                    this.$router.push('/communication/meeting');\n                })\n        },\n        highlight(item) {\n            this.videoList.forEach(v => {\n                v.maximized = v.id === item.id ? -1 : 0\n            })\n        },\n        join() {\n            let loader = this.$loading.show();\n            axios.post('/api/meeting/'+this.uuid+'/join')\n                .then(response => {\n                    this.roomId = response.code;\n\n                    if (! this.roomId) {\n                        toastr.error(i18n.general.something_wrong);\n                        loader.hide();\n                        return;\n                    }\n\n                    const vm = this\n                    this.rtcmConnection.extra = {\n                        fullName: helper.getAuthUser('name'),\n                        userUuid: helper.getAuthUser('uuid'),\n                        isOwner: this.is_owner ? true : false,\n                        maximized: 0\n                    }\n                    this.rtcmConnection.openOrJoin(this.roomId, function(isRoomExist, roomid) {\n                        if (isRoomExist === false && vm.rtcmConnection.isInitiator === true) {\n                        }\n                        vm.is_joined = true;\n\n                        if (vm.meeting.user_id == helper.getAuthUser('id')) {\n                            vm.can_share_screen = true;\n                        }\n                    })\n\n                    loader.hide();\n                })\n                .catch(error => {\n                    loader.hide();\n                    helper.showErrorMsg(error);\n                })\n        },\n        leave() {\n            let loader = this.$loading.show();\n            axios.post('/api/meeting/'+this.uuid+'/leave')\n                .then(response => {\n                    if (this.is_joined) {\n                        this.rtcmConnection.attachStreams.forEach(function(localStream) {\n                            localStream.stop()\n                        })\n                        this.videoList = []\n                        this.is_joined = false;\n                    }\n                    loader.hide();\n                })\n                .catch(error => {\n                    loader.hide();\n                    helper.showErrorMsg(error);\n                })\n        },\n        share() {\n            var vm = this;\n            if (navigator.getDisplayMedia || navigator.mediaDevices.getDisplayMedia) {\n                function addStreamStopListener(stream, callback) {\n                    var streamEndedEvent = 'ended';\n                    if ('oninactive' in stream) {\n                        streamEndedEvent = 'inactive';\n                    }\n                    stream.addEventListener(streamEndedEvent, function() {\n                        callback();\n                        callback = function() {};\n                    }, false);\n                }\n\n                function onGettingSteam(stream) {\n                    stream.screenSharing = true\n                    vm.rtcmConnection.addStream(stream);\n                    vm.screen_share_stream = stream;\n                    vm.is_screen_shared = true;\n\n                    addStreamStopListener(stream, function() {\n                        vm.rtcmConnection.removeStream(stream.streamid);\n                        vm.is_screen_shared = false;\n                    });\n                }\n\n                function getDisplayMediaError(error) {\n                    console.log('Media error: ' + JSON.stringify(error));\n                }\n\n                if (navigator.mediaDevices.getDisplayMedia) {\n                    navigator.mediaDevices.getDisplayMedia({video: true, audio: false}).then(stream => {\n                    onGettingSteam(stream);\n                    }, getDisplayMediaError).catch(getDisplayMediaError);\n                }\n                else if (navigator.getDisplayMedia) {\n                    navigator.getDisplayMedia({video: true}).then(stream => {\n                    onGettingSteam(stream);\n                    }, getDisplayMediaError).catch(getDisplayMediaError);\n                }\n            }\n        },\n        logEvent(event) {},\n        formatDate(date) {\n            return helper.formatDate(date)\n        },\n        formatTime(date) {\n            return helper.formatTime(date)\n        },\n        fullScreen(item) {\n            let elem = document.getElementById(item.id);\n            if (elem.requestFullscreen) {\n                elem.requestFullscreen();\n            } else if (elem.mozRequestFullScreen) {\n                elem.mozRequestFullScreen();\n            } else if (elem.webkitRequestFullscreen) {\n                elem.webkitRequestFullscreen();\n            } else if (elem.msRequestFullscreen) {\n                elem.msRequestFullscreen();\n            }\n        }\n    },\n    filters: {\n        moment(date) {\n            return helper.formatDate(date);\n        },\n        momentDateTime(date) {\n            return helper.formatDateTime(date);\n        },\n        momentTime(time) {\n            return helper.formatTime(time);\n        }\n    },\n    computed: {\n        authToken(){\n            return helper.getAuthToken();\n        },\n        isDemo() {\n            return ! helper.getConfig('mode') ? true : false;\n        },\n        maximizeVideoHeight() {\n            if (this.screen_width < 400) {\n                return 180;\n            } else if (this.screen_width < 640) {\n                return 220;\n            } else if (this.screen_width <= 768) {\n                return 360;\n            } else {\n                return 400;\n            }\n        },\n        minimizeVideoHeight() {\n            if (this.screen_width < 400) {\n                return 180;\n            } else if (this.screen_width < 640) {\n                return 220;\n            } else if (this.screen_width <= 768) {\n                return 360;\n            } else {\n                return 220;\n            }\n        },\n        orderedVideoList() {\n            let arr = this.videoList\n            arr.sort(function(a, b) {\n                var keyA = new Date(a.maximized),\n                    keyB = new Date(b.maximized);\n                if (keyA < keyB) return -1;\n                if (keyA > keyB) return 1;\n                return 0;\n            });\n\n            return arr;\n        }\n    }\n}\n</script>\n\n<style scoped>\n    .icon {\n        margin-right: 10px;\n    }\n    @media (max-width: 991px) {\n        .col-t-m {\n            margin: 4px 0;\n        }\n    }\n    .video-item {\n        display: flex; \n        flex-direction: column; \n        align-items: center; \n        justify-content: space-around; \n        align-self: stretch;\n        background: #171A23; \n        padding: 10px 20px;\n        margin-top: 0.25rem !important;\n        margin-right: 0.25rem !important;\n    }\n    .video-maximized {\n        flex: 1 0 49.5%;\n    }\n    .video-minimized {\n        padding-top: 20px;\n        flex: 0 0 19.7%;\n    }\n    .maximized {\n        order: -1;\n    }\n</style>"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/rtcmulticonnection/dist/RTCMultiConnection.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/rtcmulticonnection/dist/RTCMultiConnection.js ***!
+  \********************************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+// Last time updated: 2020-08-26 8:55:13 AM UTC
+
+// _________________________
+// RTCMultiConnection v3.7.0
+
+// Open-Sourced: https://github.com/muaz-khan/RTCMultiConnection
+
+// --------------------------------------------------
+// Muaz Khan     - www.MuazKhan.com
+// MIT License   - www.WebRTC-Experiment.com/licence
+// --------------------------------------------------
+
+var RTCMultiConnection = function(roomid, forceOptions) {
+
+    var browserFakeUserAgent = 'Fake/5.0 (FakeOS) AppleWebKit/123 (KHTML, like Gecko) Fake/12.3.4567.89 Fake/123.45';
+
+    (function(that) {
+        if (!that) {
+            return;
+        }
+
+        if (typeof window !== 'undefined') {
+            return;
+        }
+
+        if (typeof __webpack_require__.g === 'undefined') {
+            return;
+        }
+
+        __webpack_require__.g.navigator = {
+            userAgent: browserFakeUserAgent,
+            getUserMedia: function() {}
+        };
+
+        if (!__webpack_require__.g.console) {
+            __webpack_require__.g.console = {};
+        }
+
+        if (typeof __webpack_require__.g.console.debug === 'undefined') {
+            __webpack_require__.g.console.debug = __webpack_require__.g.console.info = __webpack_require__.g.console.error = __webpack_require__.g.console.log = __webpack_require__.g.console.log || function() {
+                console.log(arguments);
+            };
+        }
+
+        if (typeof document === 'undefined') {
+            /*global document:true */
+            that.document = {};
+
+            document.createElement = document.captureStream = document.mozCaptureStream = function() {
+                var obj = {
+                    getContext: function() {
+                        return obj;
+                    },
+                    play: function() {},
+                    pause: function() {},
+                    drawImage: function() {},
+                    toDataURL: function() {
+                        return '';
+                    }
+                };
+                return obj;
+            };
+
+            document.addEventListener = document.removeEventListener = that.addEventListener = that.removeEventListener = function() {};
+
+            that.HTMLVideoElement = that.HTMLMediaElement = function() {};
+        }
+
+        if (typeof io === 'undefined') {
+            that.io = function() {
+                return {
+                    on: function(eventName, callback) {
+                        callback = callback || function() {};
+
+                        if (eventName === 'connect') {
+                            callback();
+                        }
+                    },
+                    emit: function(eventName, data, callback) {
+                        callback = callback || function() {};
+                        if (eventName === 'open-room' || eventName === 'join-room') {
+                            callback(true, data.sessionid, null);
+                        }
+                    }
+                };
+            };
+        }
+
+        if (typeof location === 'undefined') {
+            /*global location:true */
+            that.location = {
+                protocol: 'file:',
+                href: '',
+                hash: '',
+                origin: 'self'
+            };
+        }
+
+        if (typeof screen === 'undefined') {
+            /*global screen:true */
+            that.screen = {
+                width: 0,
+                height: 0
+            };
+        }
+
+        if (typeof URL === 'undefined') {
+            /*global screen:true */
+            that.URL = {
+                createObjectURL: function() {
+                    return '';
+                },
+                revokeObjectURL: function() {
+                    return '';
+                }
+            };
+        }
+
+        /*global window:true */
+        that.window = __webpack_require__.g;
+    })(typeof __webpack_require__.g !== 'undefined' ? __webpack_require__.g : null);
+
+    function SocketConnection(connection, connectCallback) {
+        function isData(session) {
+            return !session.audio && !session.video && !session.screen && session.data;
+        }
+
+        var parameters = '';
+
+        parameters += '?userid=' + connection.userid;
+        parameters += '&sessionid=' + connection.sessionid;
+        parameters += '&msgEvent=' + connection.socketMessageEvent;
+        parameters += '&socketCustomEvent=' + connection.socketCustomEvent;
+        parameters += '&autoCloseEntireSession=' + !!connection.autoCloseEntireSession;
+
+        if (connection.session.broadcast === true) {
+            parameters += '&oneToMany=true';
+        }
+
+        parameters += '&maxParticipantsAllowed=' + connection.maxParticipantsAllowed;
+
+        if (connection.enableScalableBroadcast) {
+            parameters += '&enableScalableBroadcast=true';
+            parameters += '&maxRelayLimitPerUser=' + (connection.maxRelayLimitPerUser || 2);
+        }
+
+        parameters += '&extra=' + JSON.stringify(connection.extra || {});
+
+        if (connection.socketCustomParameters) {
+            parameters += connection.socketCustomParameters;
+        }
+
+        try {
+            io.sockets = {};
+        } catch (e) {};
+
+        if (!connection.socketURL) {
+            connection.socketURL = '/';
+        }
+
+        if (connection.socketURL.substr(connection.socketURL.length - 1, 1) != '/') {
+            // connection.socketURL = 'https://domain.com:9001/';
+            throw '"socketURL" MUST end with a slash.';
+        }
+
+        if (connection.enableLogs) {
+            if (connection.socketURL == '/') {
+                console.info('socket.io url is: ', location.origin + '/');
+            } else {
+                console.info('socket.io url is: ', connection.socketURL);
+            }
+        }
+
+        try {
+            connection.socket = io(connection.socketURL + parameters);
+        } catch (e) {
+            connection.socket = io.connect(connection.socketURL + parameters, connection.socketOptions);
+        }
+
+        var mPeer = connection.multiPeersHandler;
+
+        connection.socket.on('extra-data-updated', function(remoteUserId, extra) {
+            if (!connection.peers[remoteUserId]) return;
+            connection.peers[remoteUserId].extra = extra;
+
+            connection.onExtraDataUpdated({
+                userid: remoteUserId,
+                extra: extra
+            });
+
+            updateExtraBackup(remoteUserId, extra);
+        });
+
+        function updateExtraBackup(remoteUserId, extra) {
+            if (!connection.peersBackup[remoteUserId]) {
+                connection.peersBackup[remoteUserId] = {
+                    userid: remoteUserId,
+                    extra: {}
+                };
+            }
+
+            connection.peersBackup[remoteUserId].extra = extra;
+        }
+
+        function onMessageEvent(message) {
+            if (message.remoteUserId != connection.userid) return;
+
+            if (connection.peers[message.sender] && connection.peers[message.sender].extra != message.message.extra) {
+                connection.peers[message.sender].extra = message.extra;
+                connection.onExtraDataUpdated({
+                    userid: message.sender,
+                    extra: message.extra
+                });
+
+                updateExtraBackup(message.sender, message.extra);
+            }
+
+            if (message.message.streamSyncNeeded && connection.peers[message.sender]) {
+                var stream = connection.streamEvents[message.message.streamid];
+                if (!stream || !stream.stream) {
+                    return;
+                }
+
+                var action = message.message.action;
+
+                if (action === 'ended' || action === 'inactive' || action === 'stream-removed') {
+                    if (connection.peersBackup[stream.userid]) {
+                        stream.extra = connection.peersBackup[stream.userid].extra;
+                    }
+                    connection.onstreamended(stream);
+                    return;
+                }
+
+                var type = message.message.type != 'both' ? message.message.type : null;
+
+                if (typeof stream.stream[action] == 'function') {
+                    stream.stream[action](type);
+                }
+                return;
+            }
+
+            if (message.message === 'dropPeerConnection') {
+                connection.deletePeer(message.sender);
+                return;
+            }
+
+            if (message.message.allParticipants) {
+                if (message.message.allParticipants.indexOf(message.sender) === -1) {
+                    message.message.allParticipants.push(message.sender);
+                }
+
+                message.message.allParticipants.forEach(function(participant) {
+                    mPeer[!connection.peers[participant] ? 'createNewPeer' : 'renegotiatePeer'](participant, {
+                        localPeerSdpConstraints: {
+                            OfferToReceiveAudio: connection.sdpConstraints.mandatory.OfferToReceiveAudio,
+                            OfferToReceiveVideo: connection.sdpConstraints.mandatory.OfferToReceiveVideo
+                        },
+                        remotePeerSdpConstraints: {
+                            OfferToReceiveAudio: connection.session.oneway ? !!connection.session.audio : connection.sdpConstraints.mandatory.OfferToReceiveAudio,
+                            OfferToReceiveVideo: connection.session.oneway ? !!connection.session.video || !!connection.session.screen : connection.sdpConstraints.mandatory.OfferToReceiveVideo
+                        },
+                        isOneWay: !!connection.session.oneway || connection.direction === 'one-way',
+                        isDataOnly: isData(connection.session)
+                    });
+                });
+                return;
+            }
+
+            if (message.message.newParticipant) {
+                if (message.message.newParticipant == connection.userid) return;
+                if (!!connection.peers[message.message.newParticipant]) return;
+
+                mPeer.createNewPeer(message.message.newParticipant, message.message.userPreferences || {
+                    localPeerSdpConstraints: {
+                        OfferToReceiveAudio: connection.sdpConstraints.mandatory.OfferToReceiveAudio,
+                        OfferToReceiveVideo: connection.sdpConstraints.mandatory.OfferToReceiveVideo
+                    },
+                    remotePeerSdpConstraints: {
+                        OfferToReceiveAudio: connection.session.oneway ? !!connection.session.audio : connection.sdpConstraints.mandatory.OfferToReceiveAudio,
+                        OfferToReceiveVideo: connection.session.oneway ? !!connection.session.video || !!connection.session.screen : connection.sdpConstraints.mandatory.OfferToReceiveVideo
+                    },
+                    isOneWay: !!connection.session.oneway || connection.direction === 'one-way',
+                    isDataOnly: isData(connection.session)
+                });
+                return;
+            }
+
+            if (message.message.readyForOffer) {
+                if (connection.attachStreams.length) {
+                    connection.waitingForLocalMedia = false;
+                }
+
+                if (connection.waitingForLocalMedia) {
+                    // if someone is waiting to join you
+                    // make sure that we've local media before making a handshake
+                    setTimeout(function() {
+                        onMessageEvent(message);
+                    }, 1);
+                    return;
+                }
+            }
+
+            if (message.message.newParticipationRequest && message.sender !== connection.userid) {
+                if (connection.peers[message.sender]) {
+                    connection.deletePeer(message.sender);
+                }
+
+                var userPreferences = {
+                    extra: message.extra || {},
+                    localPeerSdpConstraints: message.message.remotePeerSdpConstraints || {
+                        OfferToReceiveAudio: connection.sdpConstraints.mandatory.OfferToReceiveAudio,
+                        OfferToReceiveVideo: connection.sdpConstraints.mandatory.OfferToReceiveVideo
+                    },
+                    remotePeerSdpConstraints: message.message.localPeerSdpConstraints || {
+                        OfferToReceiveAudio: connection.session.oneway ? !!connection.session.audio : connection.sdpConstraints.mandatory.OfferToReceiveAudio,
+                        OfferToReceiveVideo: connection.session.oneway ? !!connection.session.video || !!connection.session.screen : connection.sdpConstraints.mandatory.OfferToReceiveVideo
+                    },
+                    isOneWay: typeof message.message.isOneWay !== 'undefined' ? message.message.isOneWay : !!connection.session.oneway || connection.direction === 'one-way',
+                    isDataOnly: typeof message.message.isDataOnly !== 'undefined' ? message.message.isDataOnly : isData(connection.session),
+                    dontGetRemoteStream: typeof message.message.isOneWay !== 'undefined' ? message.message.isOneWay : !!connection.session.oneway || connection.direction === 'one-way',
+                    dontAttachLocalStream: !!message.message.dontGetRemoteStream,
+                    connectionDescription: message,
+                    successCallback: function() {}
+                };
+
+                connection.onNewParticipant(message.sender, userPreferences);
+                return;
+            }
+
+            if (message.message.changedUUID) {
+                if (connection.peers[message.message.oldUUID]) {
+                    connection.peers[message.message.newUUID] = connection.peers[message.message.oldUUID];
+                    delete connection.peers[message.message.oldUUID];
+                }
+            }
+
+            if (message.message.userLeft) {
+                mPeer.onUserLeft(message.sender);
+
+                if (!!message.message.autoCloseEntireSession) {
+                    connection.leave();
+                }
+
+                return;
+            }
+
+            mPeer.addNegotiatedMessage(message.message, message.sender);
+        }
+
+        connection.socket.on(connection.socketMessageEvent, onMessageEvent);
+
+        var alreadyConnected = false;
+
+        connection.socket.resetProps = function() {
+            alreadyConnected = false;
+        };
+
+        connection.socket.on('connect', function() {
+            if (alreadyConnected) {
+                return;
+            }
+            alreadyConnected = true;
+
+            if (connection.enableLogs) {
+                console.info('socket.io connection is opened.');
+            }
+
+            setTimeout(function() {
+                connection.socket.emit('extra-data-updated', connection.extra);
+            }, 1000);
+
+            if (connectCallback) {
+                connectCallback(connection.socket);
+            }
+        });
+
+        connection.socket.on('disconnect', function(event) {
+            connection.onSocketDisconnect(event);
+        });
+
+        connection.socket.on('error', function(event) {
+            connection.onSocketError(event);
+        });
+
+        connection.socket.on('user-disconnected', function(remoteUserId) {
+            if (remoteUserId === connection.userid) {
+                return;
+            }
+
+            connection.onUserStatusChanged({
+                userid: remoteUserId,
+                status: 'offline',
+                extra: connection.peers[remoteUserId] ? connection.peers[remoteUserId].extra || {} : {}
+            });
+
+            connection.deletePeer(remoteUserId);
+        });
+
+        connection.socket.on('user-connected', function(userid) {
+            if (userid === connection.userid) {
+                return;
+            }
+
+            connection.onUserStatusChanged({
+                userid: userid,
+                status: 'online',
+                extra: connection.peers[userid] ? connection.peers[userid].extra || {} : {}
+            });
+        });
+
+        connection.socket.on('closed-entire-session', function(sessionid, extra) {
+            connection.leave();
+            connection.onEntireSessionClosed({
+                sessionid: sessionid,
+                userid: sessionid,
+                extra: extra
+            });
+        });
+
+        connection.socket.on('userid-already-taken', function(useridAlreadyTaken, yourNewUserId) {
+            connection.onUserIdAlreadyTaken(useridAlreadyTaken, yourNewUserId);
+        });
+
+        connection.socket.on('logs', function(log) {
+            if (!connection.enableLogs) return;
+            console.debug('server-logs', log);
+        });
+
+        connection.socket.on('number-of-broadcast-viewers-updated', function(data) {
+            connection.onNumberOfBroadcastViewersUpdated(data);
+        });
+
+        connection.socket.on('set-isInitiator-true', function(sessionid) {
+            if (sessionid != connection.sessionid) return;
+            connection.isInitiator = true;
+        });
+    }
+
+    function MultiPeers(connection) {
+        var self = this;
+
+        var skipPeers = ['getAllParticipants', 'getLength', 'selectFirst', 'streams', 'send', 'forEach'];
+        connection.peers = {
+            getLength: function() {
+                var numberOfPeers = 0;
+                for (var peer in this) {
+                    if (skipPeers.indexOf(peer) == -1) {
+                        numberOfPeers++;
+                    }
+                }
+                return numberOfPeers;
+            },
+            selectFirst: function() {
+                var firstPeer;
+                for (var peer in this) {
+                    if (skipPeers.indexOf(peer) == -1) {
+                        firstPeer = this[peer];
+                    }
+                }
+                return firstPeer;
+            },
+            getAllParticipants: function(sender) {
+                var allPeers = [];
+                for (var peer in this) {
+                    if (skipPeers.indexOf(peer) == -1 && peer != sender) {
+                        allPeers.push(peer);
+                    }
+                }
+                return allPeers;
+            },
+            forEach: function(callback) {
+                this.getAllParticipants().forEach(function(participant) {
+                    callback(connection.peers[participant]);
+                });
+            },
+            send: function(data, remoteUserId) {
+                var that = this;
+
+                if (!isNull(data.size) && !isNull(data.type)) {
+                    if (connection.enableFileSharing) {
+                        self.shareFile(data, remoteUserId);
+                        return;
+                    }
+
+                    if (typeof data !== 'string') {
+                        data = JSON.stringify(data);
+                    }
+                }
+
+                if (data.type !== 'text' && !(data instanceof ArrayBuffer) && !(data instanceof DataView)) {
+                    TextSender.send({
+                        text: data,
+                        channel: this,
+                        connection: connection,
+                        remoteUserId: remoteUserId
+                    });
+                    return;
+                }
+
+                if (data.type === 'text') {
+                    data = JSON.stringify(data);
+                }
+
+                if (remoteUserId) {
+                    var remoteUser = connection.peers[remoteUserId];
+                    if (remoteUser) {
+                        if (!remoteUser.channels.length) {
+                            connection.peers[remoteUserId].createDataChannel();
+                            connection.renegotiate(remoteUserId);
+                            setTimeout(function() {
+                                that.send(data, remoteUserId);
+                            }, 3000);
+                            return;
+                        }
+
+                        remoteUser.channels.forEach(function(channel) {
+                            channel.send(data);
+                        });
+                        return;
+                    }
+                }
+
+                this.getAllParticipants().forEach(function(participant) {
+                    if (!that[participant].channels.length) {
+                        connection.peers[participant].createDataChannel();
+                        connection.renegotiate(participant);
+                        setTimeout(function() {
+                            that[participant].channels.forEach(function(channel) {
+                                channel.send(data);
+                            });
+                        }, 3000);
+                        return;
+                    }
+
+                    that[participant].channels.forEach(function(channel) {
+                        channel.send(data);
+                    });
+                });
+            }
+        };
+
+        this.uuid = connection.userid;
+
+        this.getLocalConfig = function(remoteSdp, remoteUserId, userPreferences) {
+            if (!userPreferences) {
+                userPreferences = {};
+            }
+
+            return {
+                streamsToShare: userPreferences.streamsToShare || {},
+                rtcMultiConnection: connection,
+                connectionDescription: userPreferences.connectionDescription,
+                userid: remoteUserId,
+                localPeerSdpConstraints: userPreferences.localPeerSdpConstraints,
+                remotePeerSdpConstraints: userPreferences.remotePeerSdpConstraints,
+                dontGetRemoteStream: !!userPreferences.dontGetRemoteStream,
+                dontAttachLocalStream: !!userPreferences.dontAttachLocalStream,
+                renegotiatingPeer: !!userPreferences.renegotiatingPeer,
+                peerRef: userPreferences.peerRef,
+                channels: userPreferences.channels || [],
+                onLocalSdp: function(localSdp) {
+                    self.onNegotiationNeeded(localSdp, remoteUserId);
+                },
+                onLocalCandidate: function(localCandidate) {
+                    localCandidate = OnIceCandidateHandler.processCandidates(connection, localCandidate)
+                    if (localCandidate) {
+                        self.onNegotiationNeeded(localCandidate, remoteUserId);
+                    }
+                },
+                remoteSdp: remoteSdp,
+                onDataChannelMessage: function(message) {
+                    if (!connection.fbr && connection.enableFileSharing) initFileBufferReader();
+
+                    if (typeof message == 'string' || !connection.enableFileSharing) {
+                        self.onDataChannelMessage(message, remoteUserId);
+                        return;
+                    }
+
+                    var that = this;
+
+                    if (message instanceof ArrayBuffer || message instanceof DataView) {
+                        connection.fbr.convertToObject(message, function(object) {
+                            that.onDataChannelMessage(object);
+                        });
+                        return;
+                    }
+
+                    if (message.readyForNextChunk) {
+                        connection.fbr.getNextChunk(message, function(nextChunk, isLastChunk) {
+                            connection.peers[remoteUserId].channels.forEach(function(channel) {
+                                channel.send(nextChunk);
+                            });
+                        }, remoteUserId);
+                        return;
+                    }
+
+                    if (message.chunkMissing) {
+                        connection.fbr.chunkMissing(message);
+                        return;
+                    }
+
+                    connection.fbr.addChunk(message, function(promptNextChunk) {
+                        connection.peers[remoteUserId].peer.channel.send(promptNextChunk);
+                    });
+                },
+                onDataChannelError: function(error) {
+                    self.onDataChannelError(error, remoteUserId);
+                },
+                onDataChannelOpened: function(channel) {
+                    self.onDataChannelOpened(channel, remoteUserId);
+                },
+                onDataChannelClosed: function(event) {
+                    self.onDataChannelClosed(event, remoteUserId);
+                },
+                onRemoteStream: function(stream) {
+                    if (connection.peers[remoteUserId]) {
+                        connection.peers[remoteUserId].streams.push(stream);
+                    }
+
+                    self.onGettingRemoteMedia(stream, remoteUserId);
+                },
+                onRemoteStreamRemoved: function(stream) {
+                    self.onRemovingRemoteMedia(stream, remoteUserId);
+                },
+                onPeerStateChanged: function(states) {
+                    self.onPeerStateChanged(states);
+
+                    if (states.iceConnectionState === 'new') {
+                        self.onNegotiationStarted(remoteUserId, states);
+                    }
+
+                    if (states.iceConnectionState === 'connected') {
+                        self.onNegotiationCompleted(remoteUserId, states);
+                    }
+
+                    if (states.iceConnectionState.search(/closed|failed/gi) !== -1) {
+                        self.onUserLeft(remoteUserId);
+                        self.disconnectWith(remoteUserId);
+                    }
+                }
+            };
+        };
+
+        this.createNewPeer = function(remoteUserId, userPreferences) {
+            if (connection.maxParticipantsAllowed <= connection.getAllParticipants().length) {
+                return;
+            }
+
+            userPreferences = userPreferences || {};
+
+            if (connection.isInitiator && !!connection.session.audio && connection.session.audio === 'two-way' && !userPreferences.streamsToShare) {
+                userPreferences.isOneWay = false;
+                userPreferences.isDataOnly = false;
+                userPreferences.session = connection.session;
+            }
+
+            if (!userPreferences.isOneWay && !userPreferences.isDataOnly) {
+                userPreferences.isOneWay = true;
+                this.onNegotiationNeeded({
+                    enableMedia: true,
+                    userPreferences: userPreferences
+                }, remoteUserId);
+                return;
+            }
+
+            userPreferences = connection.setUserPreferences(userPreferences, remoteUserId);
+            var localConfig = this.getLocalConfig(null, remoteUserId, userPreferences);
+            connection.peers[remoteUserId] = new PeerInitiator(localConfig);
+        };
+
+        this.createAnsweringPeer = function(remoteSdp, remoteUserId, userPreferences) {
+            userPreferences = connection.setUserPreferences(userPreferences || {}, remoteUserId);
+
+            var localConfig = this.getLocalConfig(remoteSdp, remoteUserId, userPreferences);
+            connection.peers[remoteUserId] = new PeerInitiator(localConfig);
+        };
+
+        this.renegotiatePeer = function(remoteUserId, userPreferences, remoteSdp) {
+            if (!connection.peers[remoteUserId]) {
+                if (connection.enableLogs) {
+                    console.error('Peer (' + remoteUserId + ') does not exist. Renegotiation skipped.');
+                }
+                return;
+            }
+
+            if (!userPreferences) {
+                userPreferences = {};
+            }
+
+            userPreferences.renegotiatingPeer = true;
+            userPreferences.peerRef = connection.peers[remoteUserId].peer;
+            userPreferences.channels = connection.peers[remoteUserId].channels;
+
+            var localConfig = this.getLocalConfig(remoteSdp, remoteUserId, userPreferences);
+
+            connection.peers[remoteUserId] = new PeerInitiator(localConfig);
+        };
+
+        this.replaceTrack = function(track, remoteUserId, isVideoTrack) {
+            if (!connection.peers[remoteUserId]) {
+                throw 'This peer (' + remoteUserId + ') does not exist.';
+            }
+
+            var peer = connection.peers[remoteUserId].peer;
+
+            if (!!peer.getSenders && typeof peer.getSenders === 'function' && peer.getSenders().length) {
+                peer.getSenders().forEach(function(rtpSender) {
+                    if (isVideoTrack && rtpSender.track.kind === 'video') {
+                        connection.peers[remoteUserId].peer.lastVideoTrack = rtpSender.track;
+                        rtpSender.replaceTrack(track);
+                    }
+
+                    if (!isVideoTrack && rtpSender.track.kind === 'audio') {
+                        connection.peers[remoteUserId].peer.lastAudioTrack = rtpSender.track;
+                        rtpSender.replaceTrack(track);
+                    }
+                });
+                return;
+            }
+
+            console.warn('RTPSender.replaceTrack is NOT supported.');
+            this.renegotiatePeer(remoteUserId);
+        };
+
+        this.onNegotiationNeeded = function(message, remoteUserId) {};
+        this.addNegotiatedMessage = function(message, remoteUserId) {
+            if (message.type && message.sdp) {
+                if (message.type == 'answer') {
+                    if (connection.peers[remoteUserId]) {
+                        connection.peers[remoteUserId].addRemoteSdp(message);
+                    }
+                }
+
+                if (message.type == 'offer') {
+                    if (message.renegotiatingPeer) {
+                        this.renegotiatePeer(remoteUserId, null, message);
+                    } else {
+                        this.createAnsweringPeer(message, remoteUserId);
+                    }
+                }
+
+                if (connection.enableLogs) {
+                    console.log('Remote peer\'s sdp:', message.sdp);
+                }
+                return;
+            }
+
+            if (message.candidate) {
+                if (connection.peers[remoteUserId]) {
+                    connection.peers[remoteUserId].addRemoteCandidate(message);
+                }
+
+                if (connection.enableLogs) {
+                    console.log('Remote peer\'s candidate pairs:', message.candidate);
+                }
+                return;
+            }
+
+            if (message.enableMedia) {
+                connection.session = message.userPreferences.session || connection.session;
+
+                if (connection.session.oneway && connection.attachStreams.length) {
+                    connection.attachStreams = [];
+                }
+
+                if (message.userPreferences.isDataOnly && connection.attachStreams.length) {
+                    connection.attachStreams.length = [];
+                }
+
+                var streamsToShare = {};
+                connection.attachStreams.forEach(function(stream) {
+                    streamsToShare[stream.streamid] = {
+                        isAudio: !!stream.isAudio,
+                        isVideo: !!stream.isVideo,
+                        isScreen: !!stream.isScreen
+                    };
+                });
+                message.userPreferences.streamsToShare = streamsToShare;
+
+                self.onNegotiationNeeded({
+                    readyForOffer: true,
+                    userPreferences: message.userPreferences
+                }, remoteUserId);
+            }
+
+            if (message.readyForOffer) {
+                connection.onReadyForOffer(remoteUserId, message.userPreferences);
+            }
+
+            function cb(stream) {
+                gumCallback(stream, message, remoteUserId);
+            }
+        };
+
+        function gumCallback(stream, message, remoteUserId) {
+            var streamsToShare = {};
+            connection.attachStreams.forEach(function(stream) {
+                streamsToShare[stream.streamid] = {
+                    isAudio: !!stream.isAudio,
+                    isVideo: !!stream.isVideo,
+                    isScreen: !!stream.isScreen
+                };
+            });
+            message.userPreferences.streamsToShare = streamsToShare;
+
+            self.onNegotiationNeeded({
+                readyForOffer: true,
+                userPreferences: message.userPreferences
+            }, remoteUserId);
+        }
+
+        this.onGettingRemoteMedia = function(stream, remoteUserId) {};
+        this.onRemovingRemoteMedia = function(stream, remoteUserId) {};
+        this.onGettingLocalMedia = function(localStream) {};
+        this.onLocalMediaError = function(error, constraints) {
+            connection.onMediaError(error, constraints);
+        };
+
+        function initFileBufferReader() {
+            connection.fbr = new FileBufferReader();
+            connection.fbr.onProgress = function(chunk) {
+                connection.onFileProgress(chunk);
+            };
+            connection.fbr.onBegin = function(file) {
+                connection.onFileStart(file);
+            };
+            connection.fbr.onEnd = function(file) {
+                connection.onFileEnd(file);
+            };
+        }
+
+        this.shareFile = function(file, remoteUserId) {
+            initFileBufferReader();
+
+            connection.fbr.readAsArrayBuffer(file, function(uuid) {
+                var arrayOfUsers = connection.getAllParticipants();
+
+                if (remoteUserId) {
+                    arrayOfUsers = [remoteUserId];
+                }
+
+                arrayOfUsers.forEach(function(participant) {
+                    connection.fbr.getNextChunk(uuid, function(nextChunk) {
+                        connection.peers[participant].channels.forEach(function(channel) {
+                            channel.send(nextChunk);
+                        });
+                    }, participant);
+                });
+            }, {
+                userid: connection.userid,
+                // extra: connection.extra,
+                chunkSize: DetectRTC.browser.name === 'Firefox' ? 15 * 1000 : connection.chunkSize || 0
+            });
+        };
+
+        if (true) {
+            var textReceiver = new TextReceiver(connection);
+        }
+
+        this.onDataChannelMessage = function(message, remoteUserId) {
+            textReceiver.receive(JSON.parse(message), remoteUserId, connection.peers[remoteUserId] ? connection.peers[remoteUserId].extra : {});
+        };
+
+        this.onDataChannelClosed = function(event, remoteUserId) {
+            event.userid = remoteUserId;
+            event.extra = connection.peers[remoteUserId] ? connection.peers[remoteUserId].extra : {};
+            connection.onclose(event);
+        };
+
+        this.onDataChannelError = function(error, remoteUserId) {
+            error.userid = remoteUserId;
+            event.extra = connection.peers[remoteUserId] ? connection.peers[remoteUserId].extra : {};
+            connection.onerror(error);
+        };
+
+        this.onDataChannelOpened = function(channel, remoteUserId) {
+            // keep last channel only; we are not expecting parallel/channels channels
+            if (connection.peers[remoteUserId].channels.length) {
+                connection.peers[remoteUserId].channels = [channel];
+                return;
+            }
+
+            connection.peers[remoteUserId].channels.push(channel);
+            connection.onopen({
+                userid: remoteUserId,
+                extra: connection.peers[remoteUserId] ? connection.peers[remoteUserId].extra : {},
+                channel: channel
+            });
+        };
+
+        this.onPeerStateChanged = function(state) {
+            connection.onPeerStateChanged(state);
+        };
+
+        this.onNegotiationStarted = function(remoteUserId, states) {};
+        this.onNegotiationCompleted = function(remoteUserId, states) {};
+
+        this.getRemoteStreams = function(remoteUserId) {
+            remoteUserId = remoteUserId || connection.peers.getAllParticipants()[0];
+            return connection.peers[remoteUserId] ? connection.peers[remoteUserId].streams : [];
+        };
+    }
+
+    'use strict';
+
+    // Last Updated On: 2019-01-10 5:32:55 AM UTC
+
+    // ________________
+    // DetectRTC v1.3.9
+
+    // Open-Sourced: https://github.com/muaz-khan/DetectRTC
+
+    // --------------------------------------------------
+    // Muaz Khan     - www.MuazKhan.com
+    // MIT License   - www.WebRTC-Experiment.com/licence
+    // --------------------------------------------------
+
+    (function() {
+
+        var browserFakeUserAgent = 'Fake/5.0 (FakeOS) AppleWebKit/123 (KHTML, like Gecko) Fake/12.3.4567.89 Fake/123.45';
+
+        var isNodejs = typeof process === 'object' && typeof process.versions === 'object' && process.versions.node && /*node-process*/ !process.browser;
+        if (isNodejs) {
+            var version = process.versions.node.toString().replace('v', '');
+            browserFakeUserAgent = 'Nodejs/' + version + ' (NodeOS) AppleWebKit/' + version + ' (KHTML, like Gecko) Nodejs/' + version + ' Nodejs/' + version
+        }
+
+        (function(that) {
+            if (typeof window !== 'undefined') {
+                return;
+            }
+
+            if (typeof window === 'undefined' && typeof __webpack_require__.g !== 'undefined') {
+                __webpack_require__.g.navigator = {
+                    userAgent: browserFakeUserAgent,
+                    getUserMedia: function() {}
+                };
+
+                /*global window:true */
+                that.window = __webpack_require__.g;
+            } else if (typeof window === 'undefined') {
+                // window = this;
+            }
+
+            if (typeof location === 'undefined') {
+                /*global location:true */
+                that.location = {
+                    protocol: 'file:',
+                    href: '',
+                    hash: ''
+                };
+            }
+
+            if (typeof screen === 'undefined') {
+                /*global screen:true */
+                that.screen = {
+                    width: 0,
+                    height: 0
+                };
+            }
+        })(typeof __webpack_require__.g !== 'undefined' ? __webpack_require__.g : window);
+
+        /*global navigator:true */
+        var navigator = window.navigator;
+
+        if (typeof navigator !== 'undefined') {
+            if (typeof navigator.webkitGetUserMedia !== 'undefined') {
+                navigator.getUserMedia = navigator.webkitGetUserMedia;
+            }
+
+            if (typeof navigator.mozGetUserMedia !== 'undefined') {
+                navigator.getUserMedia = navigator.mozGetUserMedia;
+            }
+        } else {
+            navigator = {
+                getUserMedia: function() {},
+                userAgent: browserFakeUserAgent
+            };
+        }
+
+        var isMobileDevice = !!(/Android|webOS|iPhone|iPad|iPod|BB10|BlackBerry|IEMobile|Opera Mini|Mobile|mobile/i.test(navigator.userAgent || ''));
+
+        var isEdge = navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveOrOpenBlob || !!navigator.msSaveBlob);
+
+        var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+        var isFirefox = typeof window.InstallTrigger !== 'undefined';
+        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        var isChrome = !!window.chrome && !isOpera;
+        var isIE = typeof document !== 'undefined' && !!document.documentMode && !isEdge;
+
+        // this one can also be used:
+        // https://www.websocket.org/js/stuff.js (DetectBrowser.js)
+
+        function getBrowserInfo() {
+            var nVer = navigator.appVersion;
+            var nAgt = navigator.userAgent;
+            var browserName = navigator.appName;
+            var fullVersion = '' + parseFloat(navigator.appVersion);
+            var majorVersion = parseInt(navigator.appVersion, 10);
+            var nameOffset, verOffset, ix;
+
+            // both and safri and chrome has same userAgent
+            if (isSafari && !isChrome && nAgt.indexOf('CriOS') !== -1) {
+                isSafari = false;
+                isChrome = true;
+            }
+
+            // In Opera, the true version is after 'Opera' or after 'Version'
+            if (isOpera) {
+                browserName = 'Opera';
+                try {
+                    fullVersion = navigator.userAgent.split('OPR/')[1].split(' ')[0];
+                    majorVersion = fullVersion.split('.')[0];
+                } catch (e) {
+                    fullVersion = '0.0.0.0';
+                    majorVersion = 0;
+                }
+            }
+            // In MSIE version <=10, the true version is after 'MSIE' in userAgent
+            // In IE 11, look for the string after 'rv:'
+            else if (isIE) {
+                verOffset = nAgt.indexOf('rv:');
+                if (verOffset > 0) { //IE 11
+                    fullVersion = nAgt.substring(verOffset + 3);
+                } else { //IE 10 or earlier
+                    verOffset = nAgt.indexOf('MSIE');
+                    fullVersion = nAgt.substring(verOffset + 5);
+                }
+                browserName = 'IE';
+            }
+            // In Chrome, the true version is after 'Chrome' 
+            else if (isChrome) {
+                verOffset = nAgt.indexOf('Chrome');
+                browserName = 'Chrome';
+                fullVersion = nAgt.substring(verOffset + 7);
+            }
+            // In Safari, the true version is after 'Safari' or after 'Version' 
+            else if (isSafari) {
+                verOffset = nAgt.indexOf('Safari');
+
+                browserName = 'Safari';
+                fullVersion = nAgt.substring(verOffset + 7);
+
+                if ((verOffset = nAgt.indexOf('Version')) !== -1) {
+                    fullVersion = nAgt.substring(verOffset + 8);
+                }
+
+                if (navigator.userAgent.indexOf('Version/') !== -1) {
+                    fullVersion = navigator.userAgent.split('Version/')[1].split(' ')[0];
+                }
+            }
+            // In Firefox, the true version is after 'Firefox' 
+            else if (isFirefox) {
+                verOffset = nAgt.indexOf('Firefox');
+                browserName = 'Firefox';
+                fullVersion = nAgt.substring(verOffset + 8);
+            }
+
+            // In most other browsers, 'name/version' is at the end of userAgent 
+            else if ((nameOffset = nAgt.lastIndexOf(' ') + 1) < (verOffset = nAgt.lastIndexOf('/'))) {
+                browserName = nAgt.substring(nameOffset, verOffset);
+                fullVersion = nAgt.substring(verOffset + 1);
+
+                if (browserName.toLowerCase() === browserName.toUpperCase()) {
+                    browserName = navigator.appName;
+                }
+            }
+
+            if (isEdge) {
+                browserName = 'Edge';
+                fullVersion = navigator.userAgent.split('Edge/')[1];
+                // fullVersion = parseInt(navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)[2], 10).toString();
+            }
+
+            // trim the fullVersion string at semicolon/space/bracket if present
+            if ((ix = fullVersion.search(/[; \)]/)) !== -1) {
+                fullVersion = fullVersion.substring(0, ix);
+            }
+
+            majorVersion = parseInt('' + fullVersion, 10);
+
+            if (isNaN(majorVersion)) {
+                fullVersion = '' + parseFloat(navigator.appVersion);
+                majorVersion = parseInt(navigator.appVersion, 10);
+            }
+
+            return {
+                fullVersion: fullVersion,
+                version: majorVersion,
+                name: browserName,
+                isPrivateBrowsing: false
+            };
+        }
+
+        // via: https://gist.github.com/cou929/7973956
+
+        function retry(isDone, next) {
+            var currentTrial = 0,
+                maxRetry = 50,
+                interval = 10,
+                isTimeout = false;
+            var id = window.setInterval(
+                function() {
+                    if (isDone()) {
+                        window.clearInterval(id);
+                        next(isTimeout);
+                    }
+                    if (currentTrial++ > maxRetry) {
+                        window.clearInterval(id);
+                        isTimeout = true;
+                        next(isTimeout);
+                    }
+                },
+                10
+            );
+        }
+
+        function isIE10OrLater(userAgent) {
+            var ua = userAgent.toLowerCase();
+            if (ua.indexOf('msie') === 0 && ua.indexOf('trident') === 0) {
+                return false;
+            }
+            var match = /(?:msie|rv:)\s?([\d\.]+)/.exec(ua);
+            if (match && parseInt(match[1], 10) >= 10) {
+                return true;
+            }
+            return false;
+        }
+
+        function detectPrivateMode(callback) {
+            var isPrivate;
+
+            try {
+
+                if (window.webkitRequestFileSystem) {
+                    window.webkitRequestFileSystem(
+                        window.TEMPORARY, 1,
+                        function() {
+                            isPrivate = false;
+                        },
+                        function(e) {
+                            isPrivate = true;
+                        }
+                    );
+                } else if (window.indexedDB && /Firefox/.test(window.navigator.userAgent)) {
+                    var db;
+                    try {
+                        db = window.indexedDB.open('test');
+                        db.onerror = function() {
+                            return true;
+                        };
+                    } catch (e) {
+                        isPrivate = true;
+                    }
+
+                    if (typeof isPrivate === 'undefined') {
+                        retry(
+                            function isDone() {
+                                return db.readyState === 'done' ? true : false;
+                            },
+                            function next(isTimeout) {
+                                if (!isTimeout) {
+                                    isPrivate = db.result ? false : true;
+                                }
+                            }
+                        );
+                    }
+                } else if (isIE10OrLater(window.navigator.userAgent)) {
+                    isPrivate = false;
+                    try {
+                        if (!window.indexedDB) {
+                            isPrivate = true;
+                        }
+                    } catch (e) {
+                        isPrivate = true;
+                    }
+                } else if (window.localStorage && /Safari/.test(window.navigator.userAgent)) {
+                    try {
+                        window.localStorage.setItem('test', 1);
+                    } catch (e) {
+                        isPrivate = true;
+                    }
+
+                    if (typeof isPrivate === 'undefined') {
+                        isPrivate = false;
+                        window.localStorage.removeItem('test');
+                    }
+                }
+
+            } catch (e) {
+                isPrivate = false;
+            }
+
+            retry(
+                function isDone() {
+                    return typeof isPrivate !== 'undefined' ? true : false;
+                },
+                function next(isTimeout) {
+                    callback(isPrivate);
+                }
+            );
+        }
+
+        var isMobile = {
+            Android: function() {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function() {
+                return navigator.userAgent.match(/BlackBerry|BB10/i);
+            },
+            iOS: function() {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function() {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function() {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function() {
+                return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+            },
+            getOsName: function() {
+                var osName = 'Unknown OS';
+                if (isMobile.Android()) {
+                    osName = 'Android';
+                }
+
+                if (isMobile.BlackBerry()) {
+                    osName = 'BlackBerry';
+                }
+
+                if (isMobile.iOS()) {
+                    osName = 'iOS';
+                }
+
+                if (isMobile.Opera()) {
+                    osName = 'Opera Mini';
+                }
+
+                if (isMobile.Windows()) {
+                    osName = 'Windows';
+                }
+
+                return osName;
+            }
+        };
+
+        // via: http://jsfiddle.net/ChristianL/AVyND/
+        function detectDesktopOS() {
+            var unknown = '-';
+
+            var nVer = navigator.appVersion;
+            var nAgt = navigator.userAgent;
+
+            var os = unknown;
+            var clientStrings = [{
+                s: 'Windows 10',
+                r: /(Windows 10.0|Windows NT 10.0)/
+            }, {
+                s: 'Windows 8.1',
+                r: /(Windows 8.1|Windows NT 6.3)/
+            }, {
+                s: 'Windows 8',
+                r: /(Windows 8|Windows NT 6.2)/
+            }, {
+                s: 'Windows 7',
+                r: /(Windows 7|Windows NT 6.1)/
+            }, {
+                s: 'Windows Vista',
+                r: /Windows NT 6.0/
+            }, {
+                s: 'Windows Server 2003',
+                r: /Windows NT 5.2/
+            }, {
+                s: 'Windows XP',
+                r: /(Windows NT 5.1|Windows XP)/
+            }, {
+                s: 'Windows 2000',
+                r: /(Windows NT 5.0|Windows 2000)/
+            }, {
+                s: 'Windows ME',
+                r: /(Win 9x 4.90|Windows ME)/
+            }, {
+                s: 'Windows 98',
+                r: /(Windows 98|Win98)/
+            }, {
+                s: 'Windows 95',
+                r: /(Windows 95|Win95|Windows_95)/
+            }, {
+                s: 'Windows NT 4.0',
+                r: /(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/
+            }, {
+                s: 'Windows CE',
+                r: /Windows CE/
+            }, {
+                s: 'Windows 3.11',
+                r: /Win16/
+            }, {
+                s: 'Android',
+                r: /Android/
+            }, {
+                s: 'Open BSD',
+                r: /OpenBSD/
+            }, {
+                s: 'Sun OS',
+                r: /SunOS/
+            }, {
+                s: 'Linux',
+                r: /(Linux|X11)/
+            }, {
+                s: 'iOS',
+                r: /(iPhone|iPad|iPod)/
+            }, {
+                s: 'Mac OS X',
+                r: /Mac OS X/
+            }, {
+                s: 'Mac OS',
+                r: /(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/
+            }, {
+                s: 'QNX',
+                r: /QNX/
+            }, {
+                s: 'UNIX',
+                r: /UNIX/
+            }, {
+                s: 'BeOS',
+                r: /BeOS/
+            }, {
+                s: 'OS/2',
+                r: /OS\/2/
+            }, {
+                s: 'Search Bot',
+                r: /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/
+            }];
+            for (var i = 0, cs; cs = clientStrings[i]; i++) {
+                if (cs.r.test(nAgt)) {
+                    os = cs.s;
+                    break;
+                }
+            }
+
+            var osVersion = unknown;
+
+            if (/Windows/.test(os)) {
+                if (/Windows (.*)/.test(os)) {
+                    osVersion = /Windows (.*)/.exec(os)[1];
+                }
+                os = 'Windows';
+            }
+
+            switch (os) {
+                case 'Mac OS X':
+                    if (/Mac OS X (10[\.\_\d]+)/.test(nAgt)) {
+                        osVersion = /Mac OS X (10[\.\_\d]+)/.exec(nAgt)[1];
+                    }
+                    break;
+                case 'Android':
+                    if (/Android ([\.\_\d]+)/.test(nAgt)) {
+                        osVersion = /Android ([\.\_\d]+)/.exec(nAgt)[1];
+                    }
+                    break;
+                case 'iOS':
+                    if (/OS (\d+)_(\d+)_?(\d+)?/.test(nAgt)) {
+                        osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
+                        osVersion = osVersion[1] + '.' + osVersion[2] + '.' + (osVersion[3] | 0);
+                    }
+                    break;
+            }
+
+            return {
+                osName: os,
+                osVersion: osVersion
+            };
+        }
+
+        var osName = 'Unknown OS';
+        var osVersion = 'Unknown OS Version';
+
+        function getAndroidVersion(ua) {
+            ua = (ua || navigator.userAgent).toLowerCase();
+            var match = ua.match(/android\s([0-9\.]*)/);
+            return match ? match[1] : false;
+        }
+
+        var osInfo = detectDesktopOS();
+
+        if (osInfo && osInfo.osName && osInfo.osName != '-') {
+            osName = osInfo.osName;
+            osVersion = osInfo.osVersion;
+        } else if (isMobile.any()) {
+            osName = isMobile.getOsName();
+
+            if (osName == 'Android') {
+                osVersion = getAndroidVersion();
+            }
+        }
+
+        var isNodejs = typeof process === 'object' && typeof process.versions === 'object' && process.versions.node;
+
+        if (osName === 'Unknown OS' && isNodejs) {
+            osName = 'Nodejs';
+            osVersion = process.versions.node.toString().replace('v', '');
+        }
+
+        var isCanvasSupportsStreamCapturing = false;
+        var isVideoSupportsStreamCapturing = false;
+        ['captureStream', 'mozCaptureStream', 'webkitCaptureStream'].forEach(function(item) {
+            if (typeof document === 'undefined' || typeof document.createElement !== 'function') {
+                return;
+            }
+
+            if (!isCanvasSupportsStreamCapturing && item in document.createElement('canvas')) {
+                isCanvasSupportsStreamCapturing = true;
+            }
+
+            if (!isVideoSupportsStreamCapturing && item in document.createElement('video')) {
+                isVideoSupportsStreamCapturing = true;
+            }
+        });
+
+        var regexIpv4Local = /^(192\.168\.|169\.254\.|10\.|172\.(1[6-9]|2\d|3[01]))/,
+            regexIpv4 = /([0-9]{1,3}(\.[0-9]{1,3}){3})/,
+            regexIpv6 = /[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7}/;
+
+        // via: https://github.com/diafygi/webrtc-ips
+        function DetectLocalIPAddress(callback, stream) {
+            if (!DetectRTC.isWebRTCSupported) {
+                return;
+            }
+
+            var isPublic = true,
+                isIpv4 = true;
+            getIPs(function(ip) {
+                if (!ip) {
+                    callback(); // Pass nothing to tell that ICE-gathering-ended
+                } else if (ip.match(regexIpv4Local)) {
+                    isPublic = false;
+                    callback('Local: ' + ip, isPublic, isIpv4);
+                } else if (ip.match(regexIpv6)) { //via https://ourcodeworld.com/articles/read/257/how-to-get-the-client-ip-address-with-javascript-only
+                    isIpv4 = false;
+                    callback('Public: ' + ip, isPublic, isIpv4);
+                } else {
+                    callback('Public: ' + ip, isPublic, isIpv4);
+                }
+            }, stream);
+        }
+
+        function getIPs(callback, stream) {
+            if (typeof document === 'undefined' || typeof document.getElementById !== 'function') {
+                return;
+            }
+
+            var ipDuplicates = {};
+
+            var RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+
+            if (!RTCPeerConnection) {
+                var iframe = document.getElementById('iframe');
+                if (!iframe) {
+                    return;
+                }
+                var win = iframe.contentWindow;
+                RTCPeerConnection = win.RTCPeerConnection || win.mozRTCPeerConnection || win.webkitRTCPeerConnection;
+            }
+
+            if (!RTCPeerConnection) {
+                return;
+            }
+
+            var peerConfig = null;
+
+            if (DetectRTC.browser === 'Chrome' && DetectRTC.browser.version < 58) {
+                // todo: add support for older Opera
+                peerConfig = {
+                    optional: [{
+                        RtpDataChannels: true
+                    }]
+                };
+            }
+
+            var servers = {
+                iceServers: [{
+                    urls: 'stun:stun.l.google.com:19302'
+                }]
+            };
+
+            var pc = new RTCPeerConnection(servers, peerConfig);
+
+            if (stream) {
+                if (pc.addStream) {
+                    pc.addStream(stream);
+                } else if (pc.addTrack && stream.getTracks()[0]) {
+                    pc.addTrack(stream.getTracks()[0], stream);
+                }
+            }
+
+            function handleCandidate(candidate) {
+                if (!candidate) {
+                    callback(); // Pass nothing to tell that ICE-gathering-ended
+                    return;
+                }
+
+                var match = regexIpv4.exec(candidate);
+                if (!match) {
+                    return;
+                }
+                var ipAddress = match[1];
+                var isPublic = (candidate.match(regexIpv4Local)),
+                    isIpv4 = true;
+
+                if (ipDuplicates[ipAddress] === undefined) {
+                    callback(ipAddress, isPublic, isIpv4);
+                }
+
+                ipDuplicates[ipAddress] = true;
+            }
+
+            // listen for candidate events
+            pc.onicecandidate = function(event) {
+                if (event.candidate && event.candidate.candidate) {
+                    handleCandidate(event.candidate.candidate);
+                } else {
+                    handleCandidate(); // Pass nothing to tell that ICE-gathering-ended
+                }
+            };
+
+            // create data channel
+            if (!stream) {
+                try {
+                    pc.createDataChannel('sctp', {});
+                } catch (e) {}
+            }
+
+            // create an offer sdp
+            if (DetectRTC.isPromisesSupported) {
+                pc.createOffer().then(function(result) {
+                    pc.setLocalDescription(result).then(afterCreateOffer);
+                });
+            } else {
+                pc.createOffer(function(result) {
+                    pc.setLocalDescription(result, afterCreateOffer, function() {});
+                }, function() {});
+            }
+
+            function afterCreateOffer() {
+                var lines = pc.localDescription.sdp.split('\n');
+
+                lines.forEach(function(line) {
+                    if (line && line.indexOf('a=candidate:') === 0) {
+                        handleCandidate(line);
+                    }
+                });
+            }
+        }
+
+        var MediaDevices = [];
+
+        var audioInputDevices = [];
+        var audioOutputDevices = [];
+        var videoInputDevices = [];
+
+        if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+            // Firefox 38+ seems having support of enumerateDevices
+            // Thanks @xdumaine/enumerateDevices
+            navigator.enumerateDevices = function(callback) {
+                var enumerateDevices = navigator.mediaDevices.enumerateDevices();
+                if (enumerateDevices && enumerateDevices.then) {
+                    navigator.mediaDevices.enumerateDevices().then(callback).catch(function() {
+                        callback([]);
+                    });
+                } else {
+                    callback([]);
+                }
+            };
+        }
+
+        // Media Devices detection
+        var canEnumerate = false;
+
+        /*global MediaStreamTrack:true */
+        if (typeof MediaStreamTrack !== 'undefined' && 'getSources' in MediaStreamTrack) {
+            canEnumerate = true;
+        } else if (navigator.mediaDevices && !!navigator.mediaDevices.enumerateDevices) {
+            canEnumerate = true;
+        }
+
+        var hasMicrophone = false;
+        var hasSpeakers = false;
+        var hasWebcam = false;
+
+        var isWebsiteHasMicrophonePermissions = false;
+        var isWebsiteHasWebcamPermissions = false;
+
+        // http://dev.w3.org/2011/webrtc/editor/getusermedia.html#mediadevices
+        function checkDeviceSupport(callback) {
+            if (!canEnumerate) {
+                if (callback) {
+                    callback();
+                }
+                return;
+            }
+
+            if (!navigator.enumerateDevices && window.MediaStreamTrack && window.MediaStreamTrack.getSources) {
+                navigator.enumerateDevices = window.MediaStreamTrack.getSources.bind(window.MediaStreamTrack);
+            }
+
+            if (!navigator.enumerateDevices && navigator.enumerateDevices) {
+                navigator.enumerateDevices = navigator.enumerateDevices.bind(navigator);
+            }
+
+            if (!navigator.enumerateDevices) {
+                if (callback) {
+                    callback();
+                }
+                return;
+            }
+
+            MediaDevices = [];
+
+            audioInputDevices = [];
+            audioOutputDevices = [];
+            videoInputDevices = [];
+
+            hasMicrophone = false;
+            hasSpeakers = false;
+            hasWebcam = false;
+
+            isWebsiteHasMicrophonePermissions = false;
+            isWebsiteHasWebcamPermissions = false;
+
+            // to prevent duplication
+            var alreadyUsedDevices = {};
+
+            navigator.enumerateDevices(function(devices) {
+                devices.forEach(function(_device) {
+                    var device = {};
+                    for (var d in _device) {
+                        try {
+                            if (typeof _device[d] !== 'function') {
+                                device[d] = _device[d];
+                            }
+                        } catch (e) {}
+                    }
+
+                    if (alreadyUsedDevices[device.deviceId + device.label + device.kind]) {
+                        return;
+                    }
+
+                    // if it is MediaStreamTrack.getSources
+                    if (device.kind === 'audio') {
+                        device.kind = 'audioinput';
+                    }
+
+                    if (device.kind === 'video') {
+                        device.kind = 'videoinput';
+                    }
+
+                    if (!device.deviceId) {
+                        device.deviceId = device.id;
+                    }
+
+                    if (!device.id) {
+                        device.id = device.deviceId;
+                    }
+
+                    if (!device.label) {
+                        device.isCustomLabel = true;
+
+                        if (device.kind === 'videoinput') {
+                            device.label = 'Camera ' + (videoInputDevices.length + 1);
+                        } else if (device.kind === 'audioinput') {
+                            device.label = 'Microphone ' + (audioInputDevices.length + 1);
+                        } else if (device.kind === 'audiooutput') {
+                            device.label = 'Speaker ' + (audioOutputDevices.length + 1);
+                        } else {
+                            device.label = 'Please invoke getUserMedia once.';
+                        }
+
+                        if (typeof DetectRTC !== 'undefined' && DetectRTC.browser.isChrome && DetectRTC.browser.version >= 46 && !/^(https:|chrome-extension:)$/g.test(location.protocol || '')) {
+                            if (typeof document !== 'undefined' && typeof document.domain === 'string' && document.domain.search && document.domain.search(/localhost|127.0./g) === -1) {
+                                device.label = 'HTTPs is required to get label of this ' + device.kind + ' device.';
+                            }
+                        }
+                    } else {
+                        // Firefox on Android still returns empty label
+                        if (device.kind === 'videoinput' && !isWebsiteHasWebcamPermissions) {
+                            isWebsiteHasWebcamPermissions = true;
+                        }
+
+                        if (device.kind === 'audioinput' && !isWebsiteHasMicrophonePermissions) {
+                            isWebsiteHasMicrophonePermissions = true;
+                        }
+                    }
+
+                    if (device.kind === 'audioinput') {
+                        hasMicrophone = true;
+
+                        if (audioInputDevices.indexOf(device) === -1) {
+                            audioInputDevices.push(device);
+                        }
+                    }
+
+                    if (device.kind === 'audiooutput') {
+                        hasSpeakers = true;
+
+                        if (audioOutputDevices.indexOf(device) === -1) {
+                            audioOutputDevices.push(device);
+                        }
+                    }
+
+                    if (device.kind === 'videoinput') {
+                        hasWebcam = true;
+
+                        if (videoInputDevices.indexOf(device) === -1) {
+                            videoInputDevices.push(device);
+                        }
+                    }
+
+                    // there is no 'videoouput' in the spec.
+                    MediaDevices.push(device);
+
+                    alreadyUsedDevices[device.deviceId + device.label + device.kind] = device;
+                });
+
+                if (typeof DetectRTC !== 'undefined') {
+                    // to sync latest outputs
+                    DetectRTC.MediaDevices = MediaDevices;
+                    DetectRTC.hasMicrophone = hasMicrophone;
+                    DetectRTC.hasSpeakers = hasSpeakers;
+                    DetectRTC.hasWebcam = hasWebcam;
+
+                    DetectRTC.isWebsiteHasWebcamPermissions = isWebsiteHasWebcamPermissions;
+                    DetectRTC.isWebsiteHasMicrophonePermissions = isWebsiteHasMicrophonePermissions;
+
+                    DetectRTC.audioInputDevices = audioInputDevices;
+                    DetectRTC.audioOutputDevices = audioOutputDevices;
+                    DetectRTC.videoInputDevices = videoInputDevices;
+                }
+
+                if (callback) {
+                    callback();
+                }
+            });
+        }
+
+        var DetectRTC = window.DetectRTC || {};
+
+        // ----------
+        // DetectRTC.browser.name || DetectRTC.browser.version || DetectRTC.browser.fullVersion
+        DetectRTC.browser = getBrowserInfo();
+
+        detectPrivateMode(function(isPrivateBrowsing) {
+            DetectRTC.browser.isPrivateBrowsing = !!isPrivateBrowsing;
+        });
+
+        // DetectRTC.isChrome || DetectRTC.isFirefox || DetectRTC.isEdge
+        DetectRTC.browser['is' + DetectRTC.browser.name] = true;
+
+        // -----------
+        DetectRTC.osName = osName;
+        DetectRTC.osVersion = osVersion;
+
+        var isNodeWebkit = typeof process === 'object' && typeof process.versions === 'object' && process.versions['node-webkit'];
+
+        // --------- Detect if system supports WebRTC 1.0 or WebRTC 1.1.
+        var isWebRTCSupported = false;
+        ['RTCPeerConnection', 'webkitRTCPeerConnection', 'mozRTCPeerConnection', 'RTCIceGatherer'].forEach(function(item) {
+            if (isWebRTCSupported) {
+                return;
+            }
+
+            if (item in window) {
+                isWebRTCSupported = true;
+            }
+        });
+        DetectRTC.isWebRTCSupported = isWebRTCSupported;
+
+        //-------
+        DetectRTC.isORTCSupported = typeof RTCIceGatherer !== 'undefined';
+
+        // --------- Detect if system supports screen capturing API
+        var isScreenCapturingSupported = false;
+        if (DetectRTC.browser.isChrome && DetectRTC.browser.version >= 35) {
+            isScreenCapturingSupported = true;
+        } else if (DetectRTC.browser.isFirefox && DetectRTC.browser.version >= 34) {
+            isScreenCapturingSupported = true;
+        } else if (DetectRTC.browser.isEdge && DetectRTC.browser.version >= 17) {
+            isScreenCapturingSupported = true; // navigator.getDisplayMedia
+        } else if (DetectRTC.osName === 'Android' && DetectRTC.browser.isChrome) {
+            isScreenCapturingSupported = true;
+        }
+
+        if (!/^(https:|chrome-extension:)$/g.test(location.protocol || '')) {
+            var isNonLocalHost = typeof document !== 'undefined' && typeof document.domain === 'string' && document.domain.search && document.domain.search(/localhost|127.0./g) === -1;
+            if (isNonLocalHost && (DetectRTC.browser.isChrome || DetectRTC.browser.isEdge || DetectRTC.browser.isOpera)) {
+                isScreenCapturingSupported = false;
+            } else if (DetectRTC.browser.isFirefox) {
+                isScreenCapturingSupported = false;
+            }
+        }
+        DetectRTC.isScreenCapturingSupported = isScreenCapturingSupported;
+
+        // --------- Detect if WebAudio API are supported
+        var webAudio = {
+            isSupported: false,
+            isCreateMediaStreamSourceSupported: false
+        };
+
+        ['AudioContext', 'webkitAudioContext', 'mozAudioContext', 'msAudioContext'].forEach(function(item) {
+            if (webAudio.isSupported) {
+                return;
+            }
+
+            if (item in window) {
+                webAudio.isSupported = true;
+
+                if (window[item] && 'createMediaStreamSource' in window[item].prototype) {
+                    webAudio.isCreateMediaStreamSourceSupported = true;
+                }
+            }
+        });
+        DetectRTC.isAudioContextSupported = webAudio.isSupported;
+        DetectRTC.isCreateMediaStreamSourceSupported = webAudio.isCreateMediaStreamSourceSupported;
+
+        // ---------- Detect if SCTP/RTP channels are supported.
+
+        var isRtpDataChannelsSupported = false;
+        if (DetectRTC.browser.isChrome && DetectRTC.browser.version > 31) {
+            isRtpDataChannelsSupported = true;
+        }
+        DetectRTC.isRtpDataChannelsSupported = isRtpDataChannelsSupported;
+
+        var isSCTPSupportd = false;
+        if (DetectRTC.browser.isFirefox && DetectRTC.browser.version > 28) {
+            isSCTPSupportd = true;
+        } else if (DetectRTC.browser.isChrome && DetectRTC.browser.version > 25) {
+            isSCTPSupportd = true;
+        } else if (DetectRTC.browser.isOpera && DetectRTC.browser.version >= 11) {
+            isSCTPSupportd = true;
+        }
+        DetectRTC.isSctpDataChannelsSupported = isSCTPSupportd;
+
+        // ---------
+
+        DetectRTC.isMobileDevice = isMobileDevice; // "isMobileDevice" boolean is defined in "getBrowserInfo.js"
+
+        // ------
+        var isGetUserMediaSupported = false;
+        if (navigator.getUserMedia) {
+            isGetUserMediaSupported = true;
+        } else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            isGetUserMediaSupported = true;
+        }
+
+        if (DetectRTC.browser.isChrome && DetectRTC.browser.version >= 46 && !/^(https:|chrome-extension:)$/g.test(location.protocol || '')) {
+            if (typeof document !== 'undefined' && typeof document.domain === 'string' && document.domain.search && document.domain.search(/localhost|127.0./g) === -1) {
+                isGetUserMediaSupported = 'Requires HTTPs';
+            }
+        }
+
+        if (DetectRTC.osName === 'Nodejs') {
+            isGetUserMediaSupported = false;
+        }
+        DetectRTC.isGetUserMediaSupported = isGetUserMediaSupported;
+
+        var displayResolution = '';
+        if (screen.width) {
+            var width = (screen.width) ? screen.width : '';
+            var height = (screen.height) ? screen.height : '';
+            displayResolution += '' + width + ' x ' + height;
+        }
+        DetectRTC.displayResolution = displayResolution;
+
+        function getAspectRatio(w, h) {
+            function gcd(a, b) {
+                return (b == 0) ? a : gcd(b, a % b);
+            }
+            var r = gcd(w, h);
+            return (w / r) / (h / r);
+        }
+
+        DetectRTC.displayAspectRatio = getAspectRatio(screen.width, screen.height).toFixed(2);
+
+        // ----------
+        DetectRTC.isCanvasSupportsStreamCapturing = isCanvasSupportsStreamCapturing;
+        DetectRTC.isVideoSupportsStreamCapturing = isVideoSupportsStreamCapturing;
+
+        if (DetectRTC.browser.name == 'Chrome' && DetectRTC.browser.version >= 53) {
+            if (!DetectRTC.isCanvasSupportsStreamCapturing) {
+                DetectRTC.isCanvasSupportsStreamCapturing = 'Requires chrome flag: enable-experimental-web-platform-features';
+            }
+
+            if (!DetectRTC.isVideoSupportsStreamCapturing) {
+                DetectRTC.isVideoSupportsStreamCapturing = 'Requires chrome flag: enable-experimental-web-platform-features';
+            }
+        }
+
+        // ------
+        DetectRTC.DetectLocalIPAddress = DetectLocalIPAddress;
+
+        DetectRTC.isWebSocketsSupported = 'WebSocket' in window && 2 === window.WebSocket.CLOSING;
+        DetectRTC.isWebSocketsBlocked = !DetectRTC.isWebSocketsSupported;
+
+        if (DetectRTC.osName === 'Nodejs') {
+            DetectRTC.isWebSocketsSupported = true;
+            DetectRTC.isWebSocketsBlocked = false;
+        }
+
+        DetectRTC.checkWebSocketsSupport = function(callback) {
+            callback = callback || function() {};
+            try {
+                var starttime;
+                var websocket = new WebSocket('wss://echo.websocket.org:443/');
+                websocket.onopen = function() {
+                    DetectRTC.isWebSocketsBlocked = false;
+                    starttime = (new Date).getTime();
+                    websocket.send('ping');
+                };
+                websocket.onmessage = function() {
+                    DetectRTC.WebsocketLatency = (new Date).getTime() - starttime + 'ms';
+                    callback();
+                    websocket.close();
+                    websocket = null;
+                };
+                websocket.onerror = function() {
+                    DetectRTC.isWebSocketsBlocked = true;
+                    callback();
+                };
+            } catch (e) {
+                DetectRTC.isWebSocketsBlocked = true;
+                callback();
+            }
+        };
+
+        // -------
+        DetectRTC.load = function(callback) {
+            callback = callback || function() {};
+            checkDeviceSupport(callback);
+        };
+
+        // check for microphone/camera support!
+        if (typeof checkDeviceSupport === 'function') {
+            // checkDeviceSupport();
+        }
+
+        if (typeof MediaDevices !== 'undefined') {
+            DetectRTC.MediaDevices = MediaDevices;
+        } else {
+            DetectRTC.MediaDevices = [];
+        }
+
+        DetectRTC.hasMicrophone = hasMicrophone;
+        DetectRTC.hasSpeakers = hasSpeakers;
+        DetectRTC.hasWebcam = hasWebcam;
+
+        DetectRTC.isWebsiteHasWebcamPermissions = isWebsiteHasWebcamPermissions;
+        DetectRTC.isWebsiteHasMicrophonePermissions = isWebsiteHasMicrophonePermissions;
+
+        DetectRTC.audioInputDevices = audioInputDevices;
+        DetectRTC.audioOutputDevices = audioOutputDevices;
+        DetectRTC.videoInputDevices = videoInputDevices;
+
+        // ------
+        var isSetSinkIdSupported = false;
+        if (typeof document !== 'undefined' && typeof document.createElement === 'function' && 'setSinkId' in document.createElement('video')) {
+            isSetSinkIdSupported = true;
+        }
+        DetectRTC.isSetSinkIdSupported = isSetSinkIdSupported;
+
+        // -----
+        var isRTPSenderReplaceTracksSupported = false;
+        if (DetectRTC.browser.isFirefox && typeof mozRTCPeerConnection !== 'undefined' /*&& DetectRTC.browser.version > 39*/ ) {
+            /*global mozRTCPeerConnection:true */
+            if ('getSenders' in mozRTCPeerConnection.prototype) {
+                isRTPSenderReplaceTracksSupported = true;
+            }
+        } else if (DetectRTC.browser.isChrome && typeof webkitRTCPeerConnection !== 'undefined') {
+            /*global webkitRTCPeerConnection:true */
+            if ('getSenders' in webkitRTCPeerConnection.prototype) {
+                isRTPSenderReplaceTracksSupported = true;
+            }
+        }
+        DetectRTC.isRTPSenderReplaceTracksSupported = isRTPSenderReplaceTracksSupported;
+
+        //------
+        var isRemoteStreamProcessingSupported = false;
+        if (DetectRTC.browser.isFirefox && DetectRTC.browser.version > 38) {
+            isRemoteStreamProcessingSupported = true;
+        }
+        DetectRTC.isRemoteStreamProcessingSupported = isRemoteStreamProcessingSupported;
+
+        //-------
+        var isApplyConstraintsSupported = false;
+
+        /*global MediaStreamTrack:true */
+        if (typeof MediaStreamTrack !== 'undefined' && 'applyConstraints' in MediaStreamTrack.prototype) {
+            isApplyConstraintsSupported = true;
+        }
+        DetectRTC.isApplyConstraintsSupported = isApplyConstraintsSupported;
+
+        //-------
+        var isMultiMonitorScreenCapturingSupported = false;
+        if (DetectRTC.browser.isFirefox && DetectRTC.browser.version >= 43) {
+            // version 43 merely supports platforms for multi-monitors
+            // version 44 will support exact multi-monitor selection i.e. you can select any monitor for screen capturing.
+            isMultiMonitorScreenCapturingSupported = true;
+        }
+        DetectRTC.isMultiMonitorScreenCapturingSupported = isMultiMonitorScreenCapturingSupported;
+
+        DetectRTC.isPromisesSupported = !!('Promise' in window);
+
+        // version is generated by "grunt"
+        DetectRTC.version = '1.3.9';
+
+        if (typeof DetectRTC === 'undefined') {
+            window.DetectRTC = {};
+        }
+
+        var MediaStream = window.MediaStream;
+
+        if (typeof MediaStream === 'undefined' && typeof webkitMediaStream !== 'undefined') {
+            MediaStream = webkitMediaStream;
+        }
+
+        if (typeof MediaStream !== 'undefined' && typeof MediaStream === 'function') {
+            DetectRTC.MediaStream = Object.keys(MediaStream.prototype);
+        } else DetectRTC.MediaStream = false;
+
+        if (typeof MediaStreamTrack !== 'undefined') {
+            DetectRTC.MediaStreamTrack = Object.keys(MediaStreamTrack.prototype);
+        } else DetectRTC.MediaStreamTrack = false;
+
+        var RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+
+        if (typeof RTCPeerConnection !== 'undefined') {
+            DetectRTC.RTCPeerConnection = Object.keys(RTCPeerConnection.prototype);
+        } else DetectRTC.RTCPeerConnection = false;
+
+        window.DetectRTC = DetectRTC;
+
+        if (true /* && !!module.exports*/ ) {
+            module.exports = DetectRTC;
+        }
+
+        if (true) {
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
+                return DetectRTC;
+            }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+        }
+    })();
+
+    // globals.js
+
+    if (typeof cordova !== 'undefined') {
+        DetectRTC.isMobileDevice = true;
+        DetectRTC.browser.name = 'Chrome';
+    }
+
+    if (navigator && navigator.userAgent && navigator.userAgent.indexOf('Crosswalk') !== -1) {
+        DetectRTC.isMobileDevice = true;
+        DetectRTC.browser.name = 'Chrome';
+    }
+
+    function fireEvent(obj, eventName, args) {
+        if (typeof CustomEvent === 'undefined') {
+            return;
+        }
+
+        var eventDetail = {
+            arguments: args,
+            __exposedProps__: args
+        };
+
+        var event = new CustomEvent(eventName, eventDetail);
+        obj.dispatchEvent(event);
+    }
+
+    function setHarkEvents(connection, streamEvent) {
+        if (!streamEvent.stream || !getTracks(streamEvent.stream, 'audio').length) return;
+
+        if (!connection || !streamEvent) {
+            throw 'Both arguments are required.';
+        }
+
+        if (!connection.onspeaking || !connection.onsilence) {
+            return;
+        }
+
+        if (typeof hark === 'undefined') {
+            throw 'hark.js not found.';
+        }
+
+        hark(streamEvent.stream, {
+            onspeaking: function() {
+                connection.onspeaking(streamEvent);
+            },
+            onsilence: function() {
+                connection.onsilence(streamEvent);
+            },
+            onvolumechange: function(volume, threshold) {
+                if (!connection.onvolumechange) {
+                    return;
+                }
+                connection.onvolumechange(merge({
+                    volume: volume,
+                    threshold: threshold
+                }, streamEvent));
+            }
+        });
+    }
+
+    function setMuteHandlers(connection, streamEvent) {
+        if (!streamEvent.stream || !streamEvent.stream || !streamEvent.stream.addEventListener) return;
+
+        streamEvent.stream.addEventListener('mute', function(event) {
+            event = connection.streamEvents[streamEvent.streamid];
+
+            event.session = {
+                audio: event.muteType === 'audio',
+                video: event.muteType === 'video'
+            };
+
+            connection.onmute(event);
+        }, false);
+
+        streamEvent.stream.addEventListener('unmute', function(event) {
+            event = connection.streamEvents[streamEvent.streamid];
+
+            event.session = {
+                audio: event.unmuteType === 'audio',
+                video: event.unmuteType === 'video'
+            };
+
+            connection.onunmute(event);
+        }, false);
+    }
+
+    function getRandomString() {
+        if (window.crypto && window.crypto.getRandomValues && navigator.userAgent.indexOf('Safari') === -1) {
+            var a = window.crypto.getRandomValues(new Uint32Array(3)),
+                token = '';
+            for (var i = 0, l = a.length; i < l; i++) {
+                token += a[i].toString(36);
+            }
+            return token;
+        } else {
+            return (Math.random() * new Date().getTime()).toString(36).replace(/\./g, '');
+        }
+    }
+
+    // Get HTMLAudioElement/HTMLVideoElement accordingly
+    // todo: add API documentation for connection.autoCreateMediaElement
+
+    function getRMCMediaElement(stream, callback, connection) {
+        if (!connection.autoCreateMediaElement) {
+            callback({});
+            return;
+        }
+
+        var isAudioOnly = false;
+        if (!getTracks(stream, 'video').length && !stream.isVideo && !stream.isScreen) {
+            isAudioOnly = true;
+        }
+
+        if (DetectRTC.browser.name === 'Firefox') {
+            if (connection.session.video || connection.session.screen) {
+                isAudioOnly = false;
+            }
+        }
+
+        var mediaElement = document.createElement(isAudioOnly ? 'audio' : 'video');
+
+        mediaElement.srcObject = stream;
+
+        mediaElement.setAttribute('autoplay', true);
+        mediaElement.setAttribute('playsinline', true);
+        mediaElement.setAttribute('controls', true);
+        mediaElement.setAttribute('muted', false);
+        mediaElement.setAttribute('volume', 1);
+
+        // http://goo.gl/WZ5nFl
+        // Firefox don't yet support onended for any stream (remote/local)
+        if (DetectRTC.browser.name === 'Firefox') {
+            var streamEndedEvent = 'ended';
+
+            if ('oninactive' in mediaElement) {
+                streamEndedEvent = 'inactive';
+            }
+
+            mediaElement.addEventListener(streamEndedEvent, function() {
+                // fireEvent(stream, streamEndedEvent, stream);
+                currentUserMediaRequest.remove(stream.idInstance);
+
+                if (stream.type === 'local') {
+                    streamEndedEvent = 'ended';
+
+                    if ('oninactive' in stream) {
+                        streamEndedEvent = 'inactive';
+                    }
+
+                    StreamsHandler.onSyncNeeded(stream.streamid, streamEndedEvent);
+
+                    connection.attachStreams.forEach(function(aStream, idx) {
+                        if (stream.streamid === aStream.streamid) {
+                            delete connection.attachStreams[idx];
+                        }
+                    });
+
+                    var newStreamsArray = [];
+                    connection.attachStreams.forEach(function(aStream) {
+                        if (aStream) {
+                            newStreamsArray.push(aStream);
+                        }
+                    });
+                    connection.attachStreams = newStreamsArray;
+
+                    var streamEvent = connection.streamEvents[stream.streamid];
+
+                    if (streamEvent) {
+                        connection.onstreamended(streamEvent);
+                        return;
+                    }
+                    if (this.parentNode) {
+                        this.parentNode.removeChild(this);
+                    }
+                }
+            }, false);
+        }
+
+        var played = mediaElement.play();
+        if (typeof played !== 'undefined') {
+            var cbFired = false;
+            setTimeout(function() {
+                if (!cbFired) {
+                    cbFired = true;
+                    callback(mediaElement);
+                }
+            }, 1000);
+            played.then(function() {
+                if (cbFired) return;
+                cbFired = true;
+                callback(mediaElement);
+            }).catch(function(error) {
+                if (cbFired) return;
+                cbFired = true;
+                callback(mediaElement);
+            });
+        } else {
+            callback(mediaElement);
+        }
+    }
+
+    // if IE
+    if (!window.addEventListener) {
+        window.addEventListener = function(el, eventName, eventHandler) {
+            if (!el.attachEvent) {
+                return;
+            }
+            el.attachEvent('on' + eventName, eventHandler);
+        };
+    }
+
+    function listenEventHandler(eventName, eventHandler) {
+        window.removeEventListener(eventName, eventHandler);
+        window.addEventListener(eventName, eventHandler, false);
+    }
+
+    window.attachEventListener = function(video, type, listener, useCapture) {
+        video.addEventListener(type, listener, useCapture);
+    };
+
+    function removeNullEntries(array) {
+        var newArray = [];
+        array.forEach(function(item) {
+            if (item) {
+                newArray.push(item);
+            }
+        });
+        return newArray;
+    }
+
+
+    function isData(session) {
+        return !session.audio && !session.video && !session.screen && session.data;
+    }
+
+    function isNull(obj) {
+        return typeof obj === 'undefined';
+    }
+
+    function isString(obj) {
+        return typeof obj === 'string';
+    }
+
+    var MediaStream = window.MediaStream;
+
+    if (typeof MediaStream === 'undefined' && typeof webkitMediaStream !== 'undefined') {
+        MediaStream = webkitMediaStream;
+    }
+
+    /*global MediaStream:true */
+    if (typeof MediaStream !== 'undefined') {
+        if (!('stop' in MediaStream.prototype)) {
+            MediaStream.prototype.stop = function() {
+                this.getTracks().forEach(function(track) {
+                    track.stop();
+                });
+            };
+        }
+    }
+
+    function isAudioPlusTab(connection, audioPlusTab) {
+        if (connection.session.audio && connection.session.audio === 'two-way') {
+            return false;
+        }
+
+        if (DetectRTC.browser.name === 'Firefox' && audioPlusTab !== false) {
+            return true;
+        }
+
+        if (DetectRTC.browser.name !== 'Chrome' || DetectRTC.browser.version < 50) return false;
+
+        if (typeof audioPlusTab === true) {
+            return true;
+        }
+
+        if (typeof audioPlusTab === 'undefined' && connection.session.audio && connection.session.screen && !connection.session.video) {
+            audioPlusTab = true;
+            return true;
+        }
+
+        return false;
+    }
+
+    function getAudioScreenConstraints(screen_constraints) {
+        if (DetectRTC.browser.name === 'Firefox') {
+            return true;
+        }
+
+        if (DetectRTC.browser.name !== 'Chrome') return false;
+
+        return {
+            mandatory: {
+                chromeMediaSource: screen_constraints.mandatory.chromeMediaSource,
+                chromeMediaSourceId: screen_constraints.mandatory.chromeMediaSourceId
+            }
+        };
+    }
+
+    window.iOSDefaultAudioOutputDevice = window.iOSDefaultAudioOutputDevice || 'speaker'; // earpiece or speaker
+
+    function getTracks(stream, kind) {
+        if (!stream || !stream.getTracks) {
+            return [];
+        }
+
+        return stream.getTracks().filter(function(t) {
+            return t.kind === (kind || 'audio');
+        });
+    }
+
+    function isUnifiedPlanSupportedDefault() {
+        var canAddTransceiver = false;
+
+        try {
+            if (typeof RTCRtpTransceiver === 'undefined') return false;
+            if (!('currentDirection' in RTCRtpTransceiver.prototype)) return false;
+
+            var tempPc = new RTCPeerConnection();
+
+            try {
+                tempPc.addTransceiver('audio');
+                canAddTransceiver = true;
+            } catch (e) {}
+
+            tempPc.close();
+        } catch (e) {
+            canAddTransceiver = false;
+        }
+
+        return canAddTransceiver && isUnifiedPlanSuppored();
+    }
+
+    function isUnifiedPlanSuppored() {
+        var isUnifiedPlanSupported = false;
+
+        try {
+            var pc = new RTCPeerConnection({
+                sdpSemantics: 'unified-plan'
+            });
+
+            try {
+                var config = pc.getConfiguration();
+                if (config.sdpSemantics == 'unified-plan')
+                    isUnifiedPlanSupported = true;
+                else if (config.sdpSemantics == 'plan-b')
+                    isUnifiedPlanSupported = false;
+                else
+                    isUnifiedPlanSupported = false;
+            } catch (e) {
+                isUnifiedPlanSupported = false;
+            }
+        } catch (e) {
+            isUnifiedPlanSupported = false;
+        }
+
+        return isUnifiedPlanSupported;
+    }
+
+    // ios-hacks.js
+
+    function setCordovaAPIs() {
+        // if (DetectRTC.osName !== 'iOS') return;
+        if (typeof cordova === 'undefined' || typeof cordova.plugins === 'undefined' || typeof cordova.plugins.iosrtc === 'undefined') return;
+
+        var iosrtc = cordova.plugins.iosrtc;
+        window.webkitRTCPeerConnection = iosrtc.RTCPeerConnection;
+        window.RTCSessionDescription = iosrtc.RTCSessionDescription;
+        window.RTCIceCandidate = iosrtc.RTCIceCandidate;
+        window.MediaStream = iosrtc.MediaStream;
+        window.MediaStreamTrack = iosrtc.MediaStreamTrack;
+        navigator.getUserMedia = navigator.webkitGetUserMedia = iosrtc.getUserMedia;
+
+        iosrtc.debug.enable('iosrtc*');
+        if (typeof iosrtc.selectAudioOutput == 'function') {
+            iosrtc.selectAudioOutput(window.iOSDefaultAudioOutputDevice || 'speaker'); // earpiece or speaker
+        }
+        iosrtc.registerGlobals();
+    }
+
+    document.addEventListener('deviceready', setCordovaAPIs, false);
+    setCordovaAPIs();
+
+    // RTCPeerConnection.js
+
+    var defaults = {};
+
+    function setSdpConstraints(config) {
+        var sdpConstraints = {
+            OfferToReceiveAudio: !!config.OfferToReceiveAudio,
+            OfferToReceiveVideo: !!config.OfferToReceiveVideo
+        };
+
+        return sdpConstraints;
+    }
+
+    var RTCPeerConnection;
+    if (typeof window.RTCPeerConnection !== 'undefined') {
+        RTCPeerConnection = window.RTCPeerConnection;
+    } else if (typeof mozRTCPeerConnection !== 'undefined') {
+        RTCPeerConnection = mozRTCPeerConnection;
+    } else if (typeof webkitRTCPeerConnection !== 'undefined') {
+        RTCPeerConnection = webkitRTCPeerConnection;
+    }
+
+    var RTCSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription;
+    var RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate;
+    var MediaStreamTrack = window.MediaStreamTrack;
+
+    function PeerInitiator(config) {
+        if (typeof window.RTCPeerConnection !== 'undefined') {
+            RTCPeerConnection = window.RTCPeerConnection;
+        } else if (typeof mozRTCPeerConnection !== 'undefined') {
+            RTCPeerConnection = mozRTCPeerConnection;
+        } else if (typeof webkitRTCPeerConnection !== 'undefined') {
+            RTCPeerConnection = webkitRTCPeerConnection;
+        }
+
+        RTCSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription;
+        RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate;
+        MediaStreamTrack = window.MediaStreamTrack;
+
+        if (!RTCPeerConnection) {
+            throw 'WebRTC 1.0 (RTCPeerConnection) API are NOT available in this browser.';
+        }
+
+        var connection = config.rtcMultiConnection;
+
+        this.extra = config.remoteSdp ? config.remoteSdp.extra : connection.extra;
+        this.userid = config.userid;
+        this.streams = [];
+        this.channels = config.channels || [];
+        this.connectionDescription = config.connectionDescription;
+
+        this.addStream = function(session) {
+            connection.addStream(session, self.userid);
+        };
+
+        this.removeStream = function(streamid) {
+            connection.removeStream(streamid, self.userid);
+        };
+
+        var self = this;
+
+        if (config.remoteSdp) {
+            this.connectionDescription = config.remoteSdp.connectionDescription;
+        }
+
+        var allRemoteStreams = {};
+
+        defaults.sdpConstraints = setSdpConstraints({
+            OfferToReceiveAudio: true,
+            OfferToReceiveVideo: true
+        });
+
+        var peer;
+
+        var renegotiatingPeer = !!config.renegotiatingPeer;
+        if (config.remoteSdp) {
+            renegotiatingPeer = !!config.remoteSdp.renegotiatingPeer;
+        }
+
+        var localStreams = [];
+        connection.attachStreams.forEach(function(stream) {
+            if (!!stream) {
+                localStreams.push(stream);
+            }
+        });
+
+        if (!renegotiatingPeer) {
+            var iceTransports = 'all';
+            if (connection.candidates.turn || connection.candidates.relay) {
+                if (!connection.candidates.stun && !connection.candidates.reflexive && !connection.candidates.host) {
+                    iceTransports = 'relay';
+                }
+            }
+
+            try {
+                // ref: developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration
+                var params = {
+                    iceServers: connection.iceServers,
+                    iceTransportPolicy: connection.iceTransportPolicy || iceTransports
+                };
+
+                if (typeof connection.iceCandidatePoolSize !== 'undefined') {
+                    params.iceCandidatePoolSize = connection.iceCandidatePoolSize;
+                }
+
+                if (typeof connection.bundlePolicy !== 'undefined') {
+                    params.bundlePolicy = connection.bundlePolicy;
+                }
+
+                if (typeof connection.rtcpMuxPolicy !== 'undefined') {
+                    params.rtcpMuxPolicy = connection.rtcpMuxPolicy;
+                }
+
+                if (!!connection.sdpSemantics) {
+                    params.sdpSemantics = connection.sdpSemantics || 'unified-plan';
+                }
+
+                if (!connection.iceServers || !connection.iceServers.length) {
+                    params = null;
+                    connection.optionalArgument = null;
+                }
+
+                peer = new RTCPeerConnection(params, connection.optionalArgument);
+            } catch (e) {
+                try {
+                    var params = {
+                        iceServers: connection.iceServers
+                    };
+
+                    peer = new RTCPeerConnection(params);
+                } catch (e) {
+                    peer = new RTCPeerConnection();
+                }
+            }
+        } else {
+            peer = config.peerRef;
+        }
+
+        if (!peer.getRemoteStreams && peer.getReceivers) {
+            peer.getRemoteStreams = function() {
+                var stream = new MediaStream();
+                peer.getReceivers().forEach(function(receiver) {
+                    stream.addTrack(receiver.track);
+                });
+                return [stream];
+            };
+        }
+
+        if (!peer.getLocalStreams && peer.getSenders) {
+            peer.getLocalStreams = function() {
+                var stream = new MediaStream();
+                peer.getSenders().forEach(function(sender) {
+                    stream.addTrack(sender.track);
+                });
+                return [stream];
+            };
+        }
+
+        peer.onicecandidate = function(event) {
+            if (!event.candidate) {
+                if (!connection.trickleIce) {
+                    var localSdp = peer.localDescription;
+                    config.onLocalSdp({
+                        type: localSdp.type,
+                        sdp: localSdp.sdp,
+                        remotePeerSdpConstraints: config.remotePeerSdpConstraints || false,
+                        renegotiatingPeer: !!config.renegotiatingPeer || false,
+                        connectionDescription: self.connectionDescription,
+                        dontGetRemoteStream: !!config.dontGetRemoteStream,
+                        extra: connection ? connection.extra : {},
+                        streamsToShare: streamsToShare
+                    });
+                }
+                return;
+            }
+
+            if (!connection.trickleIce) return;
+            config.onLocalCandidate({
+                candidate: event.candidate.candidate,
+                sdpMid: event.candidate.sdpMid,
+                sdpMLineIndex: event.candidate.sdpMLineIndex
+            });
+        };
+
+        localStreams.forEach(function(localStream) {
+            if (config.remoteSdp && config.remoteSdp.remotePeerSdpConstraints && config.remoteSdp.remotePeerSdpConstraints.dontGetRemoteStream) {
+                return;
+            }
+
+            if (config.dontAttachLocalStream) {
+                return;
+            }
+
+            localStream = connection.beforeAddingStream(localStream, self);
+
+            if (!localStream) return;
+
+            peer.getLocalStreams().forEach(function(stream) {
+                if (localStream && stream.id == localStream.id) {
+                    localStream = null;
+                }
+            });
+
+            if (localStream && localStream.getTracks) {
+                localStream.getTracks().forEach(function(track) {
+                    try {
+                        // last parameter is redundant for unified-plan
+                        // starting from chrome version 72
+                        peer.addTrack(track, localStream);
+                    } catch (e) {}
+                });
+            }
+        });
+
+        peer.oniceconnectionstatechange = peer.onsignalingstatechange = function() {
+            var extra = self.extra;
+            if (connection.peers[self.userid]) {
+                extra = connection.peers[self.userid].extra || extra;
+            }
+
+            if (!peer) {
+                return;
+            }
+
+            config.onPeerStateChanged({
+                iceConnectionState: peer.iceConnectionState,
+                iceGatheringState: peer.iceGatheringState,
+                signalingState: peer.signalingState,
+                extra: extra,
+                userid: self.userid
+            });
+
+            if (peer && peer.iceConnectionState && peer.iceConnectionState.search(/closed|failed/gi) !== -1 && self.streams instanceof Array) {
+                self.streams.forEach(function(stream) {
+                    var streamEvent = connection.streamEvents[stream.id] || {
+                        streamid: stream.id,
+                        stream: stream,
+                        type: 'remote'
+                    };
+
+                    connection.onstreamended(streamEvent);
+                });
+            }
+        };
+
+        var sdpConstraints = {
+            OfferToReceiveAudio: !!localStreams.length,
+            OfferToReceiveVideo: !!localStreams.length
+        };
+
+        if (config.localPeerSdpConstraints) sdpConstraints = config.localPeerSdpConstraints;
+
+        defaults.sdpConstraints = setSdpConstraints(sdpConstraints);
+
+        var streamObject;
+        var dontDuplicate = {};
+
+        peer.ontrack = function(event) {
+            if (!event || event.type !== 'track') return;
+
+            event.stream = event.streams[event.streams.length - 1];
+
+            if (!event.stream.id) {
+                event.stream.id = event.track.id;
+            }
+
+            if (dontDuplicate[event.stream.id] && DetectRTC.browser.name !== 'Safari') {
+                if (event.track) {
+                    event.track.onended = function() { // event.track.onmute = 
+                        peer && peer.onremovestream(event);
+                    };
+                }
+                return;
+            }
+
+            dontDuplicate[event.stream.id] = event.stream.id;
+
+            var streamsToShare = {};
+            if (config.remoteSdp && config.remoteSdp.streamsToShare) {
+                streamsToShare = config.remoteSdp.streamsToShare;
+            } else if (config.streamsToShare) {
+                streamsToShare = config.streamsToShare;
+            }
+
+            var streamToShare = streamsToShare[event.stream.id];
+            if (streamToShare) {
+                event.stream.isAudio = streamToShare.isAudio;
+                event.stream.isVideo = streamToShare.isVideo;
+                event.stream.isScreen = streamToShare.isScreen;
+            } else {
+                event.stream.isVideo = !!getTracks(event.stream, 'video').length;
+                event.stream.isAudio = !event.stream.isVideo;
+                event.stream.isScreen = false;
+            }
+
+            event.stream.streamid = event.stream.id;
+
+            allRemoteStreams[event.stream.id] = event.stream;
+            config.onRemoteStream(event.stream);
+
+            event.stream.getTracks().forEach(function(track) {
+                track.onended = function() { // track.onmute = 
+                    peer && peer.onremovestream(event);
+                };
+            });
+
+            event.stream.onremovetrack = function() {
+                peer && peer.onremovestream(event);
+            };
+        };
+
+        peer.onremovestream = function(event) {
+            // this event doesn't works anymore
+            event.stream.streamid = event.stream.id;
+
+            if (allRemoteStreams[event.stream.id]) {
+                delete allRemoteStreams[event.stream.id];
+            }
+
+            config.onRemoteStreamRemoved(event.stream);
+        };
+
+        if (typeof peer.removeStream !== 'function') {
+            // removeStream backward compatibility
+            peer.removeStream = function(stream) {
+                stream.getTracks().forEach(function(track) {
+                    peer.removeTrack(track, stream);
+                });
+            };
+        }
+
+        this.addRemoteCandidate = function(remoteCandidate) {
+            peer.addIceCandidate(new RTCIceCandidate(remoteCandidate));
+        };
+
+        function oldAddRemoteSdp(remoteSdp, cb) {
+            cb = cb || function() {};
+
+            if (DetectRTC.browser.name !== 'Safari') {
+                remoteSdp.sdp = connection.processSdp(remoteSdp.sdp);
+            }
+            peer.setRemoteDescription(new RTCSessionDescription(remoteSdp), cb, function(error) {
+                if (!!connection.enableLogs) {
+                    console.error('setRemoteDescription failed', '\n', error, '\n', remoteSdp.sdp);
+                }
+
+                cb();
+            });
+        }
+
+        this.addRemoteSdp = function(remoteSdp, cb) {
+            cb = cb || function() {};
+
+            if (DetectRTC.browser.name !== 'Safari') {
+                remoteSdp.sdp = connection.processSdp(remoteSdp.sdp);
+            }
+
+            peer.setRemoteDescription(new RTCSessionDescription(remoteSdp)).then(cb, function(error) {
+                if (!!connection.enableLogs) {
+                    console.error('setRemoteDescription failed', '\n', error, '\n', remoteSdp.sdp);
+                }
+
+                cb();
+            }).catch(function(error) {
+                if (!!connection.enableLogs) {
+                    console.error('setRemoteDescription failed', '\n', error, '\n', remoteSdp.sdp);
+                }
+
+                cb();
+            });
+        };
+
+        var isOfferer = true;
+
+        if (config.remoteSdp) {
+            isOfferer = false;
+        }
+
+        this.createDataChannel = function() {
+            var channel = peer.createDataChannel('sctp', {});
+            setChannelEvents(channel);
+        };
+
+        if (connection.session.data === true && !renegotiatingPeer) {
+            if (!isOfferer) {
+                peer.ondatachannel = function(event) {
+                    var channel = event.channel;
+                    setChannelEvents(channel);
+                };
+            } else {
+                this.createDataChannel();
+            }
+        }
+
+        this.enableDisableVideoEncoding = function(enable) {
+            var rtcp;
+            peer.getSenders().forEach(function(sender) {
+                if (!rtcp && sender.track.kind === 'video') {
+                    rtcp = sender;
+                }
+            });
+
+            if (!rtcp || !rtcp.getParameters) return;
+
+            var parameters = rtcp.getParameters();
+            parameters.encodings[1] && (parameters.encodings[1].active = !!enable);
+            parameters.encodings[2] && (parameters.encodings[2].active = !!enable);
+            rtcp.setParameters(parameters);
+        };
+
+        if (config.remoteSdp) {
+            if (config.remoteSdp.remotePeerSdpConstraints) {
+                sdpConstraints = config.remoteSdp.remotePeerSdpConstraints;
+            }
+            defaults.sdpConstraints = setSdpConstraints(sdpConstraints);
+            this.addRemoteSdp(config.remoteSdp, function() {
+                createOfferOrAnswer('createAnswer');
+            });
+        }
+
+        function setChannelEvents(channel) {
+            // force ArrayBuffer in Firefox; which uses "Blob" by default.
+            channel.binaryType = 'arraybuffer';
+
+            channel.onmessage = function(event) {
+                config.onDataChannelMessage(event.data);
+            };
+
+            channel.onopen = function() {
+                config.onDataChannelOpened(channel);
+            };
+
+            channel.onerror = function(error) {
+                config.onDataChannelError(error);
+            };
+
+            channel.onclose = function(event) {
+                config.onDataChannelClosed(event);
+            };
+
+            channel.internalSend = channel.send;
+            channel.send = function(data) {
+                if (channel.readyState !== 'open') {
+                    return;
+                }
+
+                channel.internalSend(data);
+            };
+
+            peer.channel = channel;
+        }
+
+        if (connection.session.audio == 'two-way' || connection.session.video == 'two-way' || connection.session.screen == 'two-way') {
+            defaults.sdpConstraints = setSdpConstraints({
+                OfferToReceiveAudio: connection.session.audio == 'two-way' || (config.remoteSdp && config.remoteSdp.remotePeerSdpConstraints && config.remoteSdp.remotePeerSdpConstraints.OfferToReceiveAudio),
+                OfferToReceiveVideo: connection.session.video == 'two-way' || connection.session.screen == 'two-way' || (config.remoteSdp && config.remoteSdp.remotePeerSdpConstraints && config.remoteSdp.remotePeerSdpConstraints.OfferToReceiveAudio)
+            });
+        }
+
+        var streamsToShare = {};
+        peer.getLocalStreams().forEach(function(stream) {
+            streamsToShare[stream.streamid] = {
+                isAudio: !!stream.isAudio,
+                isVideo: !!stream.isVideo,
+                isScreen: !!stream.isScreen
+            };
+        });
+
+        function oldCreateOfferOrAnswer(_method) {
+            peer[_method](function(localSdp) {
+                if (DetectRTC.browser.name !== 'Safari') {
+                    localSdp.sdp = connection.processSdp(localSdp.sdp);
+                }
+                peer.setLocalDescription(localSdp, function() {
+                    if (!connection.trickleIce) return;
+
+                    config.onLocalSdp({
+                        type: localSdp.type,
+                        sdp: localSdp.sdp,
+                        remotePeerSdpConstraints: config.remotePeerSdpConstraints || false,
+                        renegotiatingPeer: !!config.renegotiatingPeer || false,
+                        connectionDescription: self.connectionDescription,
+                        dontGetRemoteStream: !!config.dontGetRemoteStream,
+                        extra: connection ? connection.extra : {},
+                        streamsToShare: streamsToShare
+                    });
+
+                    connection.onSettingLocalDescription(self);
+                }, function(error) {
+                    if (!!connection.enableLogs) {
+                        console.error('setLocalDescription-error', error);
+                    }
+                });
+            }, function(error) {
+                if (!!connection.enableLogs) {
+                    console.error('sdp-' + _method + '-error', error);
+                }
+            }, defaults.sdpConstraints);
+        }
+
+        function createOfferOrAnswer(_method) {
+            peer[_method](defaults.sdpConstraints).then(function(localSdp) {
+                if (DetectRTC.browser.name !== 'Safari') {
+                    localSdp.sdp = connection.processSdp(localSdp.sdp);
+                }
+                peer.setLocalDescription(localSdp).then(function() {
+                    if (!connection.trickleIce) return;
+
+                    config.onLocalSdp({
+                        type: localSdp.type,
+                        sdp: localSdp.sdp,
+                        remotePeerSdpConstraints: config.remotePeerSdpConstraints || false,
+                        renegotiatingPeer: !!config.renegotiatingPeer || false,
+                        connectionDescription: self.connectionDescription,
+                        dontGetRemoteStream: !!config.dontGetRemoteStream,
+                        extra: connection ? connection.extra : {},
+                        streamsToShare: streamsToShare
+                    });
+
+                    connection.onSettingLocalDescription(self);
+                }, function(error) {
+                    if (!connection.enableLogs) return;
+                    console.error('setLocalDescription error', error);
+                });
+            }, function(error) {
+                if (!!connection.enableLogs) {
+                    console.error('sdp-error', error);
+                }
+            });
+        }
+
+        if (isOfferer) {
+            createOfferOrAnswer('createOffer');
+        }
+
+        peer.nativeClose = peer.close;
+        peer.close = function() {
+            if (!peer) {
+                return;
+            }
+
+            try {
+                if (peer.nativeClose !== peer.close) {
+                    peer.nativeClose();
+                }
+            } catch (e) {}
+
+            peer = null;
+            self.peer = null;
+        };
+
+        this.peer = peer;
+    }
+
+    // CodecsHandler.js
+
+    var CodecsHandler = (function() {
+        // use "RTCRtpTransceiver.setCodecPreferences"
+        function preferCodec(sdp, codecName) {
+            var info = splitLines(sdp);
+
+            if (!info.videoCodecNumbers) {
+                return sdp;
+            }
+
+            if (codecName === 'vp8' && info.vp8LineNumber === info.videoCodecNumbers[0]) {
+                return sdp;
+            }
+
+            if (codecName === 'vp9' && info.vp9LineNumber === info.videoCodecNumbers[0]) {
+                return sdp;
+            }
+
+            if (codecName === 'h264' && info.h264LineNumber === info.videoCodecNumbers[0]) {
+                return sdp;
+            }
+
+            sdp = preferCodecHelper(sdp, codecName, info);
+
+            return sdp;
+        }
+
+        function preferCodecHelper(sdp, codec, info, ignore) {
+            var preferCodecNumber = '';
+
+            if (codec === 'vp8') {
+                if (!info.vp8LineNumber) {
+                    return sdp;
+                }
+                preferCodecNumber = info.vp8LineNumber;
+            }
+
+            if (codec === 'vp9') {
+                if (!info.vp9LineNumber) {
+                    return sdp;
+                }
+                preferCodecNumber = info.vp9LineNumber;
+            }
+
+            if (codec === 'h264') {
+                if (!info.h264LineNumber) {
+                    return sdp;
+                }
+
+                preferCodecNumber = info.h264LineNumber;
+            }
+
+            var newLine = info.videoCodecNumbersOriginal.split('SAVPF')[0] + 'SAVPF ';
+
+            var newOrder = [preferCodecNumber];
+
+            if (ignore) {
+                newOrder = [];
+            }
+
+            info.videoCodecNumbers.forEach(function(codecNumber) {
+                if (codecNumber === preferCodecNumber) return;
+                newOrder.push(codecNumber);
+            });
+
+            newLine += newOrder.join(' ');
+
+            sdp = sdp.replace(info.videoCodecNumbersOriginal, newLine);
+            return sdp;
+        }
+
+        function splitLines(sdp) {
+            var info = {};
+            sdp.split('\n').forEach(function(line) {
+                if (line.indexOf('m=video') === 0) {
+                    info.videoCodecNumbers = [];
+                    line.split('SAVPF')[1].split(' ').forEach(function(codecNumber) {
+                        codecNumber = codecNumber.trim();
+                        if (!codecNumber || !codecNumber.length) return;
+                        info.videoCodecNumbers.push(codecNumber);
+                        info.videoCodecNumbersOriginal = line;
+                    });
+                }
+
+                if (line.indexOf('VP8/90000') !== -1 && !info.vp8LineNumber) {
+                    info.vp8LineNumber = line.replace('a=rtpmap:', '').split(' ')[0];
+                }
+
+                if (line.indexOf('VP9/90000') !== -1 && !info.vp9LineNumber) {
+                    info.vp9LineNumber = line.replace('a=rtpmap:', '').split(' ')[0];
+                }
+
+                if (line.indexOf('H264/90000') !== -1 && !info.h264LineNumber) {
+                    info.h264LineNumber = line.replace('a=rtpmap:', '').split(' ')[0];
+                }
+            });
+
+            return info;
+        }
+
+        function removeVPX(sdp) {
+            var info = splitLines(sdp);
+
+            // last parameter below means: ignore these codecs
+            sdp = preferCodecHelper(sdp, 'vp9', info, true);
+            sdp = preferCodecHelper(sdp, 'vp8', info, true);
+
+            return sdp;
+        }
+
+        function disableNACK(sdp) {
+            if (!sdp || typeof sdp !== 'string') {
+                throw 'Invalid arguments.';
+            }
+
+            sdp = sdp.replace('a=rtcp-fb:126 nack\r\n', '');
+            sdp = sdp.replace('a=rtcp-fb:126 nack pli\r\n', 'a=rtcp-fb:126 pli\r\n');
+            sdp = sdp.replace('a=rtcp-fb:97 nack\r\n', '');
+            sdp = sdp.replace('a=rtcp-fb:97 nack pli\r\n', 'a=rtcp-fb:97 pli\r\n');
+
+            return sdp;
+        }
+
+        function prioritize(codecMimeType, peer) {
+            if (!peer || !peer.getSenders || !peer.getSenders().length) {
+                return;
+            }
+
+            if (!codecMimeType || typeof codecMimeType !== 'string') {
+                throw 'Invalid arguments.';
+            }
+
+            peer.getSenders().forEach(function(sender) {
+                var params = sender.getParameters();
+                for (var i = 0; i < params.codecs.length; i++) {
+                    if (params.codecs[i].mimeType == codecMimeType) {
+                        params.codecs.unshift(params.codecs.splice(i, 1));
+                        break;
+                    }
+                }
+                sender.setParameters(params);
+            });
+        }
+
+        function removeNonG722(sdp) {
+            return sdp.replace(/m=audio ([0-9]+) RTP\/SAVPF ([0-9 ]*)/g, 'm=audio $1 RTP\/SAVPF 9');
+        }
+
+        function setBAS(sdp, bandwidth, isScreen) {
+            if (!bandwidth) {
+                return sdp;
+            }
+
+            if (typeof isFirefox !== 'undefined' && isFirefox) {
+                return sdp;
+            }
+
+            if (isScreen) {
+                if (!bandwidth.screen) {
+                    console.warn('It seems that you are not using bandwidth for screen. Screen sharing is expected to fail.');
+                } else if (bandwidth.screen < 300) {
+                    console.warn('It seems that you are using wrong bandwidth value for screen. Screen sharing is expected to fail.');
+                }
+            }
+
+            // if screen; must use at least 300kbs
+            if (bandwidth.screen && isScreen) {
+                sdp = sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
+                sdp = sdp.replace(/a=mid:video\r\n/g, 'a=mid:video\r\nb=AS:' + bandwidth.screen + '\r\n');
+            }
+
+            // remove existing bandwidth lines
+            if (bandwidth.audio || bandwidth.video) {
+                sdp = sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
+            }
+
+            if (bandwidth.audio) {
+                sdp = sdp.replace(/a=mid:audio\r\n/g, 'a=mid:audio\r\nb=AS:' + bandwidth.audio + '\r\n');
+            }
+
+            if (bandwidth.screen) {
+                sdp = sdp.replace(/a=mid:video\r\n/g, 'a=mid:video\r\nb=AS:' + bandwidth.screen + '\r\n');
+            } else if (bandwidth.video) {
+                sdp = sdp.replace(/a=mid:video\r\n/g, 'a=mid:video\r\nb=AS:' + bandwidth.video + '\r\n');
+            }
+
+            return sdp;
+        }
+
+        // Find the line in sdpLines that starts with |prefix|, and, if specified,
+        // contains |substr| (case-insensitive search).
+        function findLine(sdpLines, prefix, substr) {
+            return findLineInRange(sdpLines, 0, -1, prefix, substr);
+        }
+
+        // Find the line in sdpLines[startLine...endLine - 1] that starts with |prefix|
+        // and, if specified, contains |substr| (case-insensitive search).
+        function findLineInRange(sdpLines, startLine, endLine, prefix, substr) {
+            var realEndLine = endLine !== -1 ? endLine : sdpLines.length;
+            for (var i = startLine; i < realEndLine; ++i) {
+                if (sdpLines[i].indexOf(prefix) === 0) {
+                    if (!substr ||
+                        sdpLines[i].toLowerCase().indexOf(substr.toLowerCase()) !== -1) {
+                        return i;
+                    }
+                }
+            }
+            return null;
+        }
+
+        // Gets the codec payload type from an a=rtpmap:X line.
+        function getCodecPayloadType(sdpLine) {
+            var pattern = new RegExp('a=rtpmap:(\\d+) \\w+\\/\\d+');
+            var result = sdpLine.match(pattern);
+            return (result && result.length === 2) ? result[1] : null;
+        }
+
+        function setVideoBitrates(sdp, params) {
+            params = params || {};
+            var xgoogle_min_bitrate = params.min;
+            var xgoogle_max_bitrate = params.max;
+
+            var sdpLines = sdp.split('\r\n');
+
+            // VP8
+            var vp8Index = findLine(sdpLines, 'a=rtpmap', 'VP8/90000');
+            var vp8Payload;
+            if (vp8Index) {
+                vp8Payload = getCodecPayloadType(sdpLines[vp8Index]);
+            }
+
+            if (!vp8Payload) {
+                return sdp;
+            }
+
+            var rtxIndex = findLine(sdpLines, 'a=rtpmap', 'rtx/90000');
+            var rtxPayload;
+            if (rtxIndex) {
+                rtxPayload = getCodecPayloadType(sdpLines[rtxIndex]);
+            }
+
+            if (!rtxIndex) {
+                return sdp;
+            }
+
+            var rtxFmtpLineIndex = findLine(sdpLines, 'a=fmtp:' + rtxPayload.toString());
+            if (rtxFmtpLineIndex !== null) {
+                var appendrtxNext = '\r\n';
+                appendrtxNext += 'a=fmtp:' + vp8Payload + ' x-google-min-bitrate=' + (xgoogle_min_bitrate || '228') + '; x-google-max-bitrate=' + (xgoogle_max_bitrate || '228');
+                sdpLines[rtxFmtpLineIndex] = sdpLines[rtxFmtpLineIndex].concat(appendrtxNext);
+                sdp = sdpLines.join('\r\n');
+            }
+
+            return sdp;
+        }
+
+        function setOpusAttributes(sdp, params) {
+            params = params || {};
+
+            var sdpLines = sdp.split('\r\n');
+
+            // Opus
+            var opusIndex = findLine(sdpLines, 'a=rtpmap', 'opus/48000');
+            var opusPayload;
+            if (opusIndex) {
+                opusPayload = getCodecPayloadType(sdpLines[opusIndex]);
+            }
+
+            if (!opusPayload) {
+                return sdp;
+            }
+
+            var opusFmtpLineIndex = findLine(sdpLines, 'a=fmtp:' + opusPayload.toString());
+            if (opusFmtpLineIndex === null) {
+                return sdp;
+            }
+
+            var appendOpusNext = '';
+            appendOpusNext += '; stereo=' + (typeof params.stereo != 'undefined' ? params.stereo : '1');
+            appendOpusNext += '; sprop-stereo=' + (typeof params['sprop-stereo'] != 'undefined' ? params['sprop-stereo'] : '1');
+
+            if (typeof params.maxaveragebitrate != 'undefined') {
+                appendOpusNext += '; maxaveragebitrate=' + (params.maxaveragebitrate || 128 * 1024 * 8);
+            }
+
+            if (typeof params.maxplaybackrate != 'undefined') {
+                appendOpusNext += '; maxplaybackrate=' + (params.maxplaybackrate || 128 * 1024 * 8);
+            }
+
+            if (typeof params.cbr != 'undefined') {
+                appendOpusNext += '; cbr=' + (typeof params.cbr != 'undefined' ? params.cbr : '1');
+            }
+
+            if (typeof params.useinbandfec != 'undefined') {
+                appendOpusNext += '; useinbandfec=' + params.useinbandfec;
+            }
+
+            if (typeof params.usedtx != 'undefined') {
+                appendOpusNext += '; usedtx=' + params.usedtx;
+            }
+
+            if (typeof params.maxptime != 'undefined') {
+                appendOpusNext += '\r\na=maxptime:' + params.maxptime;
+            }
+
+            sdpLines[opusFmtpLineIndex] = sdpLines[opusFmtpLineIndex].concat(appendOpusNext);
+
+            sdp = sdpLines.join('\r\n');
+            return sdp;
+        }
+
+        // forceStereoAudio => via webrtcexample.com
+        // requires getUserMedia => echoCancellation:false
+        function forceStereoAudio(sdp) {
+            var sdpLines = sdp.split('\r\n');
+            var fmtpLineIndex = null;
+            for (var i = 0; i < sdpLines.length; i++) {
+                if (sdpLines[i].search('opus/48000') !== -1) {
+                    var opusPayload = extractSdp(sdpLines[i], /:(\d+) opus\/48000/i);
+                    break;
+                }
+            }
+            for (var i = 0; i < sdpLines.length; i++) {
+                if (sdpLines[i].search('a=fmtp') !== -1) {
+                    var payload = extractSdp(sdpLines[i], /a=fmtp:(\d+)/);
+                    if (payload === opusPayload) {
+                        fmtpLineIndex = i;
+                        break;
+                    }
+                }
+            }
+            if (fmtpLineIndex === null) return sdp;
+            sdpLines[fmtpLineIndex] = sdpLines[fmtpLineIndex].concat('; stereo=1; sprop-stereo=1');
+            sdp = sdpLines.join('\r\n');
+            return sdp;
+        }
+
+        return {
+            removeVPX: removeVPX,
+            disableNACK: disableNACK,
+            prioritize: prioritize,
+            removeNonG722: removeNonG722,
+            setApplicationSpecificBandwidth: function(sdp, bandwidth, isScreen) {
+                return setBAS(sdp, bandwidth, isScreen);
+            },
+            setVideoBitrates: function(sdp, params) {
+                return setVideoBitrates(sdp, params);
+            },
+            setOpusAttributes: function(sdp, params) {
+                return setOpusAttributes(sdp, params);
+            },
+            preferVP9: function(sdp) {
+                return preferCodec(sdp, 'vp9');
+            },
+            preferCodec: preferCodec,
+            forceStereoAudio: forceStereoAudio
+        };
+    })();
+
+    // backward compatibility
+    window.BandwidthHandler = CodecsHandler;
+
+    // OnIceCandidateHandler.js
+
+    var OnIceCandidateHandler = (function() {
+        function processCandidates(connection, icePair) {
+            var candidate = icePair.candidate;
+
+            var iceRestrictions = connection.candidates;
+            var stun = iceRestrictions.stun;
+            var turn = iceRestrictions.turn;
+
+            if (!isNull(iceRestrictions.reflexive)) {
+                stun = iceRestrictions.reflexive;
+            }
+
+            if (!isNull(iceRestrictions.relay)) {
+                turn = iceRestrictions.relay;
+            }
+
+            if (!iceRestrictions.host && !!candidate.match(/typ host/g)) {
+                return;
+            }
+
+            if (!turn && !!candidate.match(/typ relay/g)) {
+                return;
+            }
+
+            if (!stun && !!candidate.match(/typ srflx/g)) {
+                return;
+            }
+
+            var protocol = connection.iceProtocols;
+
+            if (!protocol.udp && !!candidate.match(/ udp /g)) {
+                return;
+            }
+
+            if (!protocol.tcp && !!candidate.match(/ tcp /g)) {
+                return;
+            }
+
+            if (connection.enableLogs) {
+                console.debug('Your candidate pairs:', candidate);
+            }
+
+            return {
+                candidate: candidate,
+                sdpMid: icePair.sdpMid,
+                sdpMLineIndex: icePair.sdpMLineIndex
+            };
+        }
+
+        return {
+            processCandidates: processCandidates
+        };
+    })();
+
+    // IceServersHandler.js
+
+    var IceServersHandler = (function() {
+        function getIceServers(connection) {
+            // resiprocate: 3344+4433
+            // pions: 7575
+            var iceServers = [{
+                'urls': [
+                    'stun:stun.l.google.com:19302',
+                    'stun:stun1.l.google.com:19302',
+                    'stun:stun2.l.google.com:19302',
+                    'stun:stun.l.google.com:19302?transport=udp',
+                ]
+            }];
+
+            return iceServers;
+        }
+
+        return {
+            getIceServers: getIceServers
+        };
+    })();
+
+    // getUserMediaHandler.js
+
+    function setStreamType(constraints, stream) {
+        if (constraints.mandatory && constraints.mandatory.chromeMediaSource) {
+            stream.isScreen = true;
+        } else if (constraints.mozMediaSource || constraints.mediaSource) {
+            stream.isScreen = true;
+        } else if (constraints.video) {
+            stream.isVideo = true;
+        } else if (constraints.audio) {
+            stream.isAudio = true;
+        }
+    }
+
+    // allow users to manage this object (to support re-capturing of screen/etc.)
+    window.currentUserMediaRequest = {
+        streams: [],
+        mutex: false,
+        queueRequests: [],
+        remove: function(idInstance) {
+            this.mutex = false;
+
+            var stream = this.streams[idInstance];
+            if (!stream) {
+                return;
+            }
+
+            stream = stream.stream;
+
+            var options = stream.currentUserMediaRequestOptions;
+
+            if (this.queueRequests.indexOf(options)) {
+                delete this.queueRequests[this.queueRequests.indexOf(options)];
+                this.queueRequests = removeNullEntries(this.queueRequests);
+            }
+
+            this.streams[idInstance].stream = null;
+            delete this.streams[idInstance];
+        }
+    };
+
+    function getUserMediaHandler(options) {
+        if (currentUserMediaRequest.mutex === true) {
+            currentUserMediaRequest.queueRequests.push(options);
+            return;
+        }
+        currentUserMediaRequest.mutex = true;
+
+        // easy way to match
+        var idInstance = JSON.stringify(options.localMediaConstraints);
+
+        function streaming(stream, returnBack) {
+            setStreamType(options.localMediaConstraints, stream);
+
+            var streamEndedEvent = 'ended';
+
+            if ('oninactive' in stream) {
+                streamEndedEvent = 'inactive';
+            }
+            stream.addEventListener(streamEndedEvent, function() {
+                delete currentUserMediaRequest.streams[idInstance];
+
+                currentUserMediaRequest.mutex = false;
+                if (currentUserMediaRequest.queueRequests.indexOf(options)) {
+                    delete currentUserMediaRequest.queueRequests[currentUserMediaRequest.queueRequests.indexOf(options)];
+                    currentUserMediaRequest.queueRequests = removeNullEntries(currentUserMediaRequest.queueRequests);
+                }
+            }, false);
+
+            currentUserMediaRequest.streams[idInstance] = {
+                stream: stream
+            };
+            currentUserMediaRequest.mutex = false;
+
+            if (currentUserMediaRequest.queueRequests.length) {
+                getUserMediaHandler(currentUserMediaRequest.queueRequests.shift());
+            }
+
+            // callback
+            options.onGettingLocalMedia(stream, returnBack);
+        }
+
+        if (currentUserMediaRequest.streams[idInstance]) {
+            streaming(currentUserMediaRequest.streams[idInstance].stream, true);
+        } else {
+            var isBlackBerry = !!(/BB10|BlackBerry/i.test(navigator.userAgent || ''));
+            if (isBlackBerry || typeof navigator.mediaDevices === 'undefined' || typeof navigator.mediaDevices.getUserMedia !== 'function') {
+                navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                navigator.getUserMedia(options.localMediaConstraints, function(stream) {
+                    stream.streamid = stream.streamid || stream.id || getRandomString();
+                    stream.idInstance = idInstance;
+                    streaming(stream);
+                }, function(error) {
+                    options.onLocalMediaError(error, options.localMediaConstraints);
+                });
+                return;
+            }
+
+            if (typeof navigator.mediaDevices === 'undefined') {
+                navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                var getUserMediaSuccess = function() {};
+                var getUserMediaFailure = function() {};
+
+                var getUserMediaStream, getUserMediaError;
+                navigator.mediaDevices = {
+                    getUserMedia: function(hints) {
+                        navigator.getUserMedia(hints, function(getUserMediaSuccess) {
+                            getUserMediaSuccess(stream);
+                            getUserMediaStream = stream;
+                        }, function(error) {
+                            getUserMediaFailure(error);
+                            getUserMediaError = error;
+                        });
+
+                        return {
+                            then: function(successCB) {
+                                if (getUserMediaStream) {
+                                    successCB(getUserMediaStream);
+                                    return;
+                                }
+
+                                getUserMediaSuccess = successCB;
+
+                                return {
+                                    then: function(failureCB) {
+                                        if (getUserMediaError) {
+                                            failureCB(getUserMediaError);
+                                            return;
+                                        }
+
+                                        getUserMediaFailure = failureCB;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+
+            if (options.localMediaConstraints.isScreen === true) {
+                if (navigator.mediaDevices.getDisplayMedia) {
+                    navigator.mediaDevices.getDisplayMedia(options.localMediaConstraints).then(function(stream) {
+                        stream.streamid = stream.streamid || stream.id || getRandomString();
+                        stream.idInstance = idInstance;
+
+                        streaming(stream);
+                    }).catch(function(error) {
+                        options.onLocalMediaError(error, options.localMediaConstraints);
+                    });
+                } else if (navigator.getDisplayMedia) {
+                    navigator.getDisplayMedia(options.localMediaConstraints).then(function(stream) {
+                        stream.streamid = stream.streamid || stream.id || getRandomString();
+                        stream.idInstance = idInstance;
+
+                        streaming(stream);
+                    }).catch(function(error) {
+                        options.onLocalMediaError(error, options.localMediaConstraints);
+                    });
+                } else {
+                    throw new Error('getDisplayMedia API is not availabe in this browser.');
+                }
+                return;
+            }
+
+            navigator.mediaDevices.getUserMedia(options.localMediaConstraints).then(function(stream) {
+                stream.streamid = stream.streamid || stream.id || getRandomString();
+                stream.idInstance = idInstance;
+
+                streaming(stream);
+            }).catch(function(error) {
+                options.onLocalMediaError(error, options.localMediaConstraints);
+            });
+        }
+    }
+
+    // StreamsHandler.js
+
+    var StreamsHandler = (function() {
+        function handleType(type) {
+            if (!type) {
+                return;
+            }
+
+            if (typeof type === 'string' || typeof type === 'undefined') {
+                return type;
+            }
+
+            if (type.audio && type.video) {
+                return null;
+            }
+
+            if (type.audio) {
+                return 'audio';
+            }
+
+            if (type.video) {
+                return 'video';
+            }
+
+            return;
+        }
+
+        function setHandlers(stream, syncAction, connection) {
+            if (!stream || !stream.addEventListener) return;
+
+            if (typeof syncAction == 'undefined' || syncAction == true) {
+                var streamEndedEvent = 'ended';
+
+                if ('oninactive' in stream) {
+                    streamEndedEvent = 'inactive';
+                }
+
+                stream.addEventListener(streamEndedEvent, function() {
+                    StreamsHandler.onSyncNeeded(this.streamid, streamEndedEvent);
+                }, false);
+            }
+
+            stream.mute = function(type, isSyncAction) {
+                type = handleType(type);
+
+                if (typeof isSyncAction !== 'undefined') {
+                    syncAction = isSyncAction;
+                }
+
+                if (typeof type == 'undefined' || type == 'audio') {
+                    getTracks(stream, 'audio').forEach(function(track) {
+                        track.enabled = false;
+                        connection.streamEvents[stream.streamid].isAudioMuted = true;
+                    });
+                }
+
+                if (typeof type == 'undefined' || type == 'video') {
+                    getTracks(stream, 'video').forEach(function(track) {
+                        track.enabled = false;
+                    });
+                }
+
+                if (typeof syncAction == 'undefined' || syncAction == true) {
+                    StreamsHandler.onSyncNeeded(stream.streamid, 'mute', type);
+                }
+
+                connection.streamEvents[stream.streamid].muteType = type || 'both';
+
+                fireEvent(stream, 'mute', type);
+            };
+
+            stream.unmute = function(type, isSyncAction) {
+                type = handleType(type);
+
+                if (typeof isSyncAction !== 'undefined') {
+                    syncAction = isSyncAction;
+                }
+
+                graduallyIncreaseVolume();
+
+                if (typeof type == 'undefined' || type == 'audio') {
+                    getTracks(stream, 'audio').forEach(function(track) {
+                        track.enabled = true;
+                        connection.streamEvents[stream.streamid].isAudioMuted = false;
+                    });
+                }
+
+                if (typeof type == 'undefined' || type == 'video') {
+                    getTracks(stream, 'video').forEach(function(track) {
+                        track.enabled = true;
+                    });
+
+                    // make sure that video unmute doesn't affects audio
+                    if (typeof type !== 'undefined' && type == 'video' && connection.streamEvents[stream.streamid].isAudioMuted) {
+                        (function looper(times) {
+                            if (!times) {
+                                times = 0;
+                            }
+
+                            times++;
+
+                            // check until five-seconds
+                            if (times < 100 && connection.streamEvents[stream.streamid].isAudioMuted) {
+                                stream.mute('audio');
+
+                                setTimeout(function() {
+                                    looper(times);
+                                }, 50);
+                            }
+                        })();
+                    }
+                }
+
+                if (typeof syncAction == 'undefined' || syncAction == true) {
+                    StreamsHandler.onSyncNeeded(stream.streamid, 'unmute', type);
+                }
+
+                connection.streamEvents[stream.streamid].unmuteType = type || 'both';
+
+                fireEvent(stream, 'unmute', type);
+            };
+
+            function graduallyIncreaseVolume() {
+                if (!connection.streamEvents[stream.streamid].mediaElement) {
+                    return;
+                }
+
+                var mediaElement = connection.streamEvents[stream.streamid].mediaElement;
+                mediaElement.volume = 0;
+                afterEach(200, 5, function() {
+                    try {
+                        mediaElement.volume += .20;
+                    } catch (e) {
+                        mediaElement.volume = 1;
+                    }
+                });
+            }
+        }
+
+        function afterEach(setTimeoutInteval, numberOfTimes, callback, startedTimes) {
+            startedTimes = (startedTimes || 0) + 1;
+            if (startedTimes >= numberOfTimes) return;
+
+            setTimeout(function() {
+                callback();
+                afterEach(setTimeoutInteval, numberOfTimes, callback, startedTimes);
+            }, setTimeoutInteval);
+        }
+
+        return {
+            setHandlers: setHandlers,
+            onSyncNeeded: function(streamid, action, type) {}
+        };
+    })();
+
+    // TextReceiver.js & TextSender.js
+
+    function TextReceiver(connection) {
+        var content = {};
+
+        function receive(data, userid, extra) {
+            // uuid is used to uniquely identify sending instance
+            var uuid = data.uuid;
+            if (!content[uuid]) {
+                content[uuid] = [];
+            }
+
+            content[uuid].push(data.message);
+
+            if (data.last) {
+                var message = content[uuid].join('');
+                if (data.isobject) {
+                    message = JSON.parse(message);
+                }
+
+                // latency detection
+                var receivingTime = new Date().getTime();
+                var latency = receivingTime - data.sendingTime;
+
+                var e = {
+                    data: message,
+                    userid: userid,
+                    extra: extra,
+                    latency: latency
+                };
+
+                if (connection.autoTranslateText) {
+                    e.original = e.data;
+                    connection.Translator.TranslateText(e.data, function(translatedText) {
+                        e.data = translatedText;
+                        connection.onmessage(e);
+                    });
+                } else {
+                    connection.onmessage(e);
+                }
+
+                delete content[uuid];
+            }
+        }
+
+        return {
+            receive: receive
+        };
+    }
+
+    // TextSender.js
+    var TextSender = {
+        send: function(config) {
+            var connection = config.connection;
+
+            var channel = config.channel,
+                remoteUserId = config.remoteUserId,
+                initialText = config.text,
+                packetSize = connection.chunkSize || 1000,
+                textToTransfer = '',
+                isobject = false;
+
+            if (!isString(initialText)) {
+                isobject = true;
+                initialText = JSON.stringify(initialText);
+            }
+
+            // uuid is used to uniquely identify sending instance
+            var uuid = getRandomString();
+            var sendingTime = new Date().getTime();
+
+            sendText(initialText);
+
+            function sendText(textMessage, text) {
+                var data = {
+                    type: 'text',
+                    uuid: uuid,
+                    sendingTime: sendingTime
+                };
+
+                if (textMessage) {
+                    text = textMessage;
+                    data.packets = parseInt(text.length / packetSize);
+                }
+
+                if (text.length > packetSize) {
+                    data.message = text.slice(0, packetSize);
+                } else {
+                    data.message = text;
+                    data.last = true;
+                    data.isobject = isobject;
+                }
+
+                channel.send(data, remoteUserId);
+
+                textToTransfer = text.slice(data.message.length);
+
+                if (textToTransfer.length) {
+                    setTimeout(function() {
+                        sendText(null, textToTransfer);
+                    }, connection.chunkInterval || 100);
+                }
+            }
+        }
+    };
+
+    // FileProgressBarHandler.js
+
+    var FileProgressBarHandler = (function() {
+        function handle(connection) {
+            var progressHelper = {};
+
+            // www.RTCMultiConnection.org/docs/onFileStart/
+            connection.onFileStart = function(file) {
+                var div = document.createElement('div');
+                div.title = file.name;
+                div.innerHTML = '<label>0%</label> <progress></progress>';
+
+                if (file.remoteUserId) {
+                    div.innerHTML += ' (Sharing with:' + file.remoteUserId + ')';
+                }
+
+                if (!connection.filesContainer) {
+                    connection.filesContainer = document.body || document.documentElement;
+                }
+
+                connection.filesContainer.insertBefore(div, connection.filesContainer.firstChild);
+
+                if (!file.remoteUserId) {
+                    progressHelper[file.uuid] = {
+                        div: div,
+                        progress: div.querySelector('progress'),
+                        label: div.querySelector('label')
+                    };
+                    progressHelper[file.uuid].progress.max = file.maxChunks;
+                    return;
+                }
+
+                if (!progressHelper[file.uuid]) {
+                    progressHelper[file.uuid] = {};
+                }
+
+                progressHelper[file.uuid][file.remoteUserId] = {
+                    div: div,
+                    progress: div.querySelector('progress'),
+                    label: div.querySelector('label')
+                };
+                progressHelper[file.uuid][file.remoteUserId].progress.max = file.maxChunks;
+            };
+
+            // www.RTCMultiConnection.org/docs/onFileProgress/
+            connection.onFileProgress = function(chunk) {
+                var helper = progressHelper[chunk.uuid];
+                if (!helper) {
+                    return;
+                }
+                if (chunk.remoteUserId) {
+                    helper = progressHelper[chunk.uuid][chunk.remoteUserId];
+                    if (!helper) {
+                        return;
+                    }
+                }
+
+                helper.progress.value = chunk.currentPosition || chunk.maxChunks || helper.progress.max;
+                updateLabel(helper.progress, helper.label);
+            };
+
+            // www.RTCMultiConnection.org/docs/onFileEnd/
+            connection.onFileEnd = function(file) {
+                var helper = progressHelper[file.uuid];
+                if (!helper) {
+                    console.error('No such progress-helper element exist.', file);
+                    return;
+                }
+
+                if (file.remoteUserId) {
+                    helper = progressHelper[file.uuid][file.remoteUserId];
+                    if (!helper) {
+                        return;
+                    }
+                }
+
+                var div = helper.div;
+                if (file.type.indexOf('image') != -1) {
+                    div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '">Download <strong style="color:red;">' + file.name + '</strong> </a><br /><img src="' + file.url + '" title="' + file.name + '" style="max-width: 80%;">';
+                } else {
+                    div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '">Download <strong style="color:red;">' + file.name + '</strong> </a><br /><iframe src="' + file.url + '" title="' + file.name + '" style="width: 80%;border: 0;height: inherit;margin-top:1em;"></iframe>';
+                }
+            };
+
+            function updateLabel(progress, label) {
+                if (progress.position === -1) {
+                    return;
+                }
+
+                var position = +progress.position.toFixed(2).split('.')[1] || 100;
+                label.innerHTML = position + '%';
+            }
+        }
+
+        return {
+            handle: handle
+        };
+    })();
+
+    // TranslationHandler.js
+
+    var TranslationHandler = (function() {
+        function handle(connection) {
+            connection.autoTranslateText = false;
+            connection.language = 'en';
+            connection.googKey = 'AIzaSyCgB5hmFY74WYB-EoWkhr9cAGr6TiTHrEE';
+
+            // www.RTCMultiConnection.org/docs/Translator/
+            connection.Translator = {
+                TranslateText: function(text, callback) {
+                    // if(location.protocol === 'https:') return callback(text);
+
+                    var newScript = document.createElement('script');
+                    newScript.type = 'text/javascript';
+
+                    var sourceText = encodeURIComponent(text); // escape
+
+                    var randomNumber = 'method' + connection.token();
+                    window[randomNumber] = function(response) {
+                        if (response.data && response.data.translations[0] && callback) {
+                            callback(response.data.translations[0].translatedText);
+                            return;
+                        }
+
+                        if (response.error && response.error.message === 'Daily Limit Exceeded') {
+                            console.error('Text translation failed. Error message: "Daily Limit Exceeded."');
+                            return;
+                        }
+
+                        if (response.error) {
+                            console.error(response.error.message);
+                            return;
+                        }
+
+                        console.error(response);
+                    };
+
+                    var source = 'https://www.googleapis.com/language/translate/v2?key=' + connection.googKey + '&target=' + (connection.language || 'en-US') + '&callback=window.' + randomNumber + '&q=' + sourceText;
+                    newScript.src = source;
+                    document.getElementsByTagName('head')[0].appendChild(newScript);
+                },
+                getListOfLanguages: function(callback) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == XMLHttpRequest.DONE) {
+                            var response = JSON.parse(xhr.responseText);
+
+                            if (response && response.data && response.data.languages) {
+                                callback(response.data.languages);
+                                return;
+                            }
+
+                            if (response.error && response.error.message === 'Daily Limit Exceeded') {
+                                console.error('Text translation failed. Error message: "Daily Limit Exceeded."');
+                                return;
+                            }
+
+                            if (response.error) {
+                                console.error(response.error.message);
+                                return;
+                            }
+
+                            console.error(response);
+                        }
+                    }
+                    var url = 'https://www.googleapis.com/language/translate/v2/languages?key=' + connection.googKey + '&target=en';
+                    xhr.open('GET', url, true);
+                    xhr.send(null);
+                }
+            };
+        }
+
+        return {
+            handle: handle
+        };
+    })();
+
+    // _____________________
+    // RTCMultiConnection.js
+
+    (function(connection) {
+        forceOptions = forceOptions || {
+            useDefaultDevices: true
+        };
+
+        connection.channel = connection.sessionid = (roomid || location.href.replace(/\/|:|#|\?|\$|\^|%|\.|`|~|!|\+|@|\[|\||]|\|*. /g, '').split('\n').join('').split('\r').join('')) + '';
+
+        var mPeer = new MultiPeers(connection);
+
+        var preventDuplicateOnStreamEvents = {};
+        mPeer.onGettingLocalMedia = function(stream, callback) {
+            callback = callback || function() {};
+
+            if (preventDuplicateOnStreamEvents[stream.streamid]) {
+                callback();
+                return;
+            }
+            preventDuplicateOnStreamEvents[stream.streamid] = true;
+
+            try {
+                stream.type = 'local';
+            } catch (e) {}
+
+            connection.setStreamEndHandler(stream);
+
+            getRMCMediaElement(stream, function(mediaElement) {
+                mediaElement.id = stream.streamid;
+                mediaElement.muted = true;
+                mediaElement.volume = 0;
+
+                if (connection.attachStreams.indexOf(stream) === -1) {
+                    connection.attachStreams.push(stream);
+                }
+
+                if (typeof StreamsHandler !== 'undefined') {
+                    StreamsHandler.setHandlers(stream, true, connection);
+                }
+                var isAudioMuted = stream.getAudioTracks().filter(function(track) {
+                    return track.enabled;
+                }).length === 0;
+
+                connection.streamEvents[stream.streamid] = {
+                    stream: stream,
+                    type: 'local',
+                    mediaElement: mediaElement,
+                    userid: connection.userid,
+                    extra: connection.extra,
+                    streamid: stream.streamid,
+                    isAudioMuted: isAudioMuted
+                };
+
+                try {
+                    setHarkEvents(connection, connection.streamEvents[stream.streamid]);
+                    setMuteHandlers(connection, connection.streamEvents[stream.streamid]);
+
+                    connection.onstream(connection.streamEvents[stream.streamid]);
+                } catch (e) {
+                    //
+                }
+
+                callback();
+            }, connection);
+        };
+
+        mPeer.onGettingRemoteMedia = function(stream, remoteUserId) {
+            try {
+                stream.type = 'remote';
+            } catch (e) {}
+
+            connection.setStreamEndHandler(stream, 'remote-stream');
+
+            getRMCMediaElement(stream, function(mediaElement) {
+                mediaElement.id = stream.streamid;
+
+                if (typeof StreamsHandler !== 'undefined') {
+                    StreamsHandler.setHandlers(stream, false, connection);
+                }
+
+                connection.streamEvents[stream.streamid] = {
+                    stream: stream,
+                    type: 'remote',
+                    userid: remoteUserId,
+                    extra: connection.peers[remoteUserId] ? connection.peers[remoteUserId].extra : {},
+                    mediaElement: mediaElement,
+                    streamid: stream.streamid
+                };
+
+                setMuteHandlers(connection, connection.streamEvents[stream.streamid]);
+
+                connection.onstream(connection.streamEvents[stream.streamid]);
+            }, connection);
+        };
+
+        mPeer.onRemovingRemoteMedia = function(stream, remoteUserId) {
+            var streamEvent = connection.streamEvents[stream.streamid];
+            if (!streamEvent) {
+                streamEvent = {
+                    stream: stream,
+                    type: 'remote',
+                    userid: remoteUserId,
+                    extra: connection.peers[remoteUserId] ? connection.peers[remoteUserId].extra : {},
+                    streamid: stream.streamid,
+                    mediaElement: connection.streamEvents[stream.streamid] ? connection.streamEvents[stream.streamid].mediaElement : null
+                };
+            }
+
+            if (connection.peersBackup[streamEvent.userid]) {
+                streamEvent.extra = connection.peersBackup[streamEvent.userid].extra;
+            }
+
+            connection.onstreamended(streamEvent);
+
+            delete connection.streamEvents[stream.streamid];
+        };
+
+        mPeer.onNegotiationNeeded = function(message, remoteUserId, callback) {
+            callback = callback || function() {};
+
+            remoteUserId = remoteUserId || message.remoteUserId;
+            message = message || '';
+
+            // usually a message looks like this
+            var messageToDeliver = {
+                remoteUserId: remoteUserId,
+                message: message,
+                sender: connection.userid
+            };
+
+            if (message.remoteUserId && message.message && message.sender) {
+                // if a code is manually passing required data
+                messageToDeliver = message;
+            }
+
+            connectSocket(function() {
+                connection.socket.emit(connection.socketMessageEvent, messageToDeliver, callback);
+            });
+        };
+
+        function onUserLeft(remoteUserId) {
+            connection.deletePeer(remoteUserId);
+        }
+
+        mPeer.onUserLeft = onUserLeft;
+        mPeer.disconnectWith = function(remoteUserId, callback) {
+            if (connection.socket) {
+                connection.socket.emit('disconnect-with', remoteUserId, callback || function() {});
+            }
+
+            connection.deletePeer(remoteUserId);
+        };
+
+        connection.socketOptions = {
+            // 'force new connection': true, // For SocketIO version < 1.0
+            // 'forceNew': true, // For SocketIO version >= 1.0
+            'transport': 'polling' // fixing transport:unknown issues
+        };
+
+        function connectSocket(connectCallback) {
+            connection.socketAutoReConnect = true;
+
+            if (connection.socket) { // todo: check here readySate/etc. to make sure socket is still opened
+                if (connectCallback) {
+                    connectCallback(connection.socket);
+                }
+                return;
+            }
+
+            if (typeof SocketConnection === 'undefined') {
+                if (typeof FirebaseConnection !== 'undefined') {
+                    window.SocketConnection = FirebaseConnection;
+                } else if (typeof PubNubConnection !== 'undefined') {
+                    window.SocketConnection = PubNubConnection;
+                } else {
+                    throw 'SocketConnection.js seems missed.';
+                }
+            }
+
+            new SocketConnection(connection, function(s) {
+                if (connectCallback) {
+                    connectCallback(connection.socket);
+                }
+            });
+        }
+
+        // 1st paramter is roomid
+        // 2rd paramter is a callback function
+        connection.openOrJoin = function(roomid, callback) {
+            callback = callback || function() {};
+
+            connection.checkPresence(roomid, function(isRoomExist, roomid) {
+                if (isRoomExist) {
+                    connection.sessionid = roomid;
+
+                    var localPeerSdpConstraints = false;
+                    var remotePeerSdpConstraints = false;
+                    var isOneWay = !!connection.session.oneway;
+                    var isDataOnly = isData(connection.session);
+
+                    remotePeerSdpConstraints = {
+                        OfferToReceiveAudio: connection.sdpConstraints.mandatory.OfferToReceiveAudio,
+                        OfferToReceiveVideo: connection.sdpConstraints.mandatory.OfferToReceiveVideo
+                    }
+
+                    localPeerSdpConstraints = {
+                        OfferToReceiveAudio: isOneWay ? !!connection.session.audio : connection.sdpConstraints.mandatory.OfferToReceiveAudio,
+                        OfferToReceiveVideo: isOneWay ? !!connection.session.video || !!connection.session.screen : connection.sdpConstraints.mandatory.OfferToReceiveVideo
+                    }
+
+                    var connectionDescription = {
+                        remoteUserId: connection.sessionid,
+                        message: {
+                            newParticipationRequest: true,
+                            isOneWay: isOneWay,
+                            isDataOnly: isDataOnly,
+                            localPeerSdpConstraints: localPeerSdpConstraints,
+                            remotePeerSdpConstraints: remotePeerSdpConstraints
+                        },
+                        sender: connection.userid
+                    };
+
+                    beforeJoin(connectionDescription.message, function() {
+                        joinRoom(connectionDescription, callback);
+                    });
+                    return;
+                }
+
+                connection.waitingForLocalMedia = true;
+                connection.isInitiator = true;
+
+                connection.sessionid = roomid || connection.sessionid;
+
+                if (isData(connection.session)) {
+                    openRoom(callback);
+                    return;
+                }
+
+                connection.captureUserMedia(function() {
+                    openRoom(callback);
+                });
+            });
+        };
+
+        // don't allow someone to join this person until he has the media
+        connection.waitingForLocalMedia = false;
+
+        connection.open = function(roomid, callback) {
+            callback = callback || function() {};
+
+            connection.waitingForLocalMedia = true;
+            connection.isInitiator = true;
+
+            connection.sessionid = roomid || connection.sessionid;
+
+            connectSocket(function() {
+                if (isData(connection.session)) {
+                    openRoom(callback);
+                    return;
+                }
+
+                connection.captureUserMedia(function() {
+                    openRoom(callback);
+                });
+            });
+        };
+
+        // this object keeps extra-data records for all connected users
+        // this object is never cleared so you can always access extra-data even if a user left
+        connection.peersBackup = {};
+
+        connection.deletePeer = function(remoteUserId) {
+            if (!remoteUserId || !connection.peers[remoteUserId]) {
+                return;
+            }
+
+            var eventObject = {
+                userid: remoteUserId,
+                extra: connection.peers[remoteUserId] ? connection.peers[remoteUserId].extra : {}
+            };
+
+            if (connection.peersBackup[eventObject.userid]) {
+                eventObject.extra = connection.peersBackup[eventObject.userid].extra;
+            }
+
+            connection.onleave(eventObject);
+
+            if (!!connection.peers[remoteUserId]) {
+                connection.peers[remoteUserId].streams.forEach(function(stream) {
+                    stream.stop();
+                });
+
+                var peer = connection.peers[remoteUserId].peer;
+                if (peer && peer.iceConnectionState !== 'closed') {
+                    try {
+                        peer.close();
+                    } catch (e) {}
+                }
+
+                if (connection.peers[remoteUserId]) {
+                    connection.peers[remoteUserId].peer = null;
+                    delete connection.peers[remoteUserId];
+                }
+            }
+        }
+
+        connection.rejoin = function(connectionDescription) {
+            if (connection.isInitiator || !connectionDescription || !Object.keys(connectionDescription).length) {
+                return;
+            }
+
+            var extra = {};
+
+            if (connection.peers[connectionDescription.remoteUserId]) {
+                extra = connection.peers[connectionDescription.remoteUserId].extra;
+                connection.deletePeer(connectionDescription.remoteUserId);
+            }
+
+            if (connectionDescription && connectionDescription.remoteUserId) {
+                connection.join(connectionDescription.remoteUserId);
+
+                connection.onReConnecting({
+                    userid: connectionDescription.remoteUserId,
+                    extra: extra
+                });
+            }
+        };
+
+        connection.join = function(remoteUserId, options) {
+            connection.sessionid = (remoteUserId ? remoteUserId.sessionid || remoteUserId.remoteUserId || remoteUserId : false) || connection.sessionid;
+            connection.sessionid += '';
+
+            var localPeerSdpConstraints = false;
+            var remotePeerSdpConstraints = false;
+            var isOneWay = false;
+            var isDataOnly = false;
+
+            if ((remoteUserId && remoteUserId.session) || !remoteUserId || typeof remoteUserId === 'string') {
+                var session = remoteUserId ? remoteUserId.session || connection.session : connection.session;
+
+                isOneWay = !!session.oneway;
+                isDataOnly = isData(session);
+
+                remotePeerSdpConstraints = {
+                    OfferToReceiveAudio: connection.sdpConstraints.mandatory.OfferToReceiveAudio,
+                    OfferToReceiveVideo: connection.sdpConstraints.mandatory.OfferToReceiveVideo
+                };
+
+                localPeerSdpConstraints = {
+                    OfferToReceiveAudio: isOneWay ? !!connection.session.audio : connection.sdpConstraints.mandatory.OfferToReceiveAudio,
+                    OfferToReceiveVideo: isOneWay ? !!connection.session.video || !!connection.session.screen : connection.sdpConstraints.mandatory.OfferToReceiveVideo
+                };
+            }
+
+            options = options || {};
+
+            var cb = function() {};
+            if (typeof options === 'function') {
+                cb = options;
+                options = {};
+            }
+
+            if (typeof options.localPeerSdpConstraints !== 'undefined') {
+                localPeerSdpConstraints = options.localPeerSdpConstraints;
+            }
+
+            if (typeof options.remotePeerSdpConstraints !== 'undefined') {
+                remotePeerSdpConstraints = options.remotePeerSdpConstraints;
+            }
+
+            if (typeof options.isOneWay !== 'undefined') {
+                isOneWay = options.isOneWay;
+            }
+
+            if (typeof options.isDataOnly !== 'undefined') {
+                isDataOnly = options.isDataOnly;
+            }
+
+            var connectionDescription = {
+                remoteUserId: connection.sessionid,
+                message: {
+                    newParticipationRequest: true,
+                    isOneWay: isOneWay,
+                    isDataOnly: isDataOnly,
+                    localPeerSdpConstraints: localPeerSdpConstraints,
+                    remotePeerSdpConstraints: remotePeerSdpConstraints
+                },
+                sender: connection.userid
+            };
+
+            beforeJoin(connectionDescription.message, function() {
+                connectSocket(function() {
+                    joinRoom(connectionDescription, cb);
+                });
+            });
+            return connectionDescription;
+        };
+
+        function joinRoom(connectionDescription, cb) {
+            connection.socket.emit('join-room', {
+                sessionid: connection.sessionid,
+                session: connection.session,
+                mediaConstraints: connection.mediaConstraints,
+                sdpConstraints: connection.sdpConstraints,
+                streams: getStreamInfoForAdmin(),
+                extra: connection.extra,
+                password: typeof connection.password !== 'undefined' && typeof connection.password !== 'object' ? connection.password : ''
+            }, function(isRoomJoined, error) {
+                if (isRoomJoined === true) {
+                    if (connection.enableLogs) {
+                        console.log('isRoomJoined: ', isRoomJoined, ' roomid: ', connection.sessionid);
+                    }
+
+                    if (!!connection.peers[connection.sessionid]) {
+                        // on socket disconnect & reconnect
+                        return;
+                    }
+
+                    mPeer.onNegotiationNeeded(connectionDescription);
+                }
+
+                if (isRoomJoined === false) {
+                    if (connection.enableLogs) {
+                        console.warn('isRoomJoined: ', error, ' roomid: ', connection.sessionid);
+                    }
+
+                    // [disabled] retry after 3 seconds
+                     false && 0;
+                }
+
+                cb(isRoomJoined, connection.sessionid, error);
+            });
+        }
+
+        connection.publicRoomIdentifier = '';
+
+        function openRoom(callback) {
+            if (connection.enableLogs) {
+                console.log('Sending open-room signal to socket.io');
+            }
+
+            connection.waitingForLocalMedia = false;
+            connection.socket.emit('open-room', {
+                sessionid: connection.sessionid,
+                session: connection.session,
+                mediaConstraints: connection.mediaConstraints,
+                sdpConstraints: connection.sdpConstraints,
+                streams: getStreamInfoForAdmin(),
+                extra: connection.extra,
+                identifier: connection.publicRoomIdentifier,
+                password: typeof connection.password !== 'undefined' && typeof connection.password !== 'object' ? connection.password : ''
+            }, function(isRoomOpened, error) {
+                if (isRoomOpened === true) {
+                    if (connection.enableLogs) {
+                        console.log('isRoomOpened: ', isRoomOpened, ' roomid: ', connection.sessionid);
+                    }
+                    callback(isRoomOpened, connection.sessionid);
+                }
+
+                if (isRoomOpened === false) {
+                    if (connection.enableLogs) {
+                        console.warn('isRoomOpened: ', error, ' roomid: ', connection.sessionid);
+                    }
+
+                    callback(isRoomOpened, connection.sessionid, error);
+                }
+            });
+        }
+
+        function getStreamInfoForAdmin() {
+            try {
+                return connection.streamEvents.selectAll('local').map(function(event) {
+                    return {
+                        streamid: event.streamid,
+                        tracks: event.stream.getTracks().length
+                    };
+                });
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function beforeJoin(userPreferences, callback) {
+            if (connection.dontCaptureUserMedia || userPreferences.isDataOnly) {
+                callback();
+                return;
+            }
+
+            var localMediaConstraints = {};
+
+            if (userPreferences.localPeerSdpConstraints.OfferToReceiveAudio) {
+                localMediaConstraints.audio = connection.mediaConstraints.audio;
+            }
+
+            if (userPreferences.localPeerSdpConstraints.OfferToReceiveVideo) {
+                localMediaConstraints.video = connection.mediaConstraints.video;
+            }
+
+            var session = userPreferences.session || connection.session;
+
+            if (session.oneway && session.audio !== 'two-way' && session.video !== 'two-way' && session.screen !== 'two-way') {
+                callback();
+                return;
+            }
+
+            if (session.oneway && session.audio && session.audio === 'two-way') {
+                session = {
+                    audio: true
+                };
+            }
+
+            if (session.audio || session.video || session.screen) {
+                if (session.screen) {
+                    if (DetectRTC.browser.name === 'Edge') {
+                        navigator.getDisplayMedia({
+                            video: true,
+                            audio: isAudioPlusTab(connection)
+                        }).then(function(screen) {
+                            screen.isScreen = true;
+                            mPeer.onGettingLocalMedia(screen);
+
+                            if ((session.audio || session.video) && !isAudioPlusTab(connection)) {
+                                connection.invokeGetUserMedia(null, callback);
+                            } else {
+                                callback(screen);
+                            }
+                        }, function(error) {
+                            console.error('Unable to capture screen on Edge. HTTPs and version 17+ is required.');
+                        });
+                    } else {
+                        connection.invokeGetUserMedia({
+                            audio: isAudioPlusTab(connection),
+                            video: true,
+                            isScreen: true
+                        }, (session.audio || session.video) && !isAudioPlusTab(connection) ? connection.invokeGetUserMedia(null, callback) : callback);
+                    }
+                } else if (session.audio || session.video) {
+                    connection.invokeGetUserMedia(null, callback, session);
+                }
+            }
+        }
+
+        connection.getUserMedia = connection.captureUserMedia = function(callback, sessionForced) {
+            callback = callback || function() {};
+            var session = sessionForced || connection.session;
+
+            if (connection.dontCaptureUserMedia || isData(session)) {
+                callback();
+                return;
+            }
+
+            if (session.audio || session.video || session.screen) {
+                if (session.screen) {
+                    if (DetectRTC.browser.name === 'Edge') {
+                        navigator.getDisplayMedia({
+                            video: true,
+                            audio: isAudioPlusTab(connection)
+                        }).then(function(screen) {
+                            screen.isScreen = true;
+                            mPeer.onGettingLocalMedia(screen);
+
+                            if ((session.audio || session.video) && !isAudioPlusTab(connection)) {
+                                var nonScreenSession = {};
+                                for (var s in session) {
+                                    if (s !== 'screen') {
+                                        nonScreenSession[s] = session[s];
+                                    }
+                                }
+                                connection.invokeGetUserMedia(sessionForced, callback, nonScreenSession);
+                                return;
+                            }
+                            callback(screen);
+                        }, function(error) {
+                            console.error('Unable to capture screen on Edge. HTTPs and version 17+ is required.');
+                        });
+                    } else {
+                        connection.invokeGetUserMedia({
+                            audio: isAudioPlusTab(connection),
+                            video: true,
+                            isScreen: true
+                        }, function(stream) {
+                            if ((session.audio || session.video) && !isAudioPlusTab(connection)) {
+                                var nonScreenSession = {};
+                                for (var s in session) {
+                                    if (s !== 'screen') {
+                                        nonScreenSession[s] = session[s];
+                                    }
+                                }
+                                connection.invokeGetUserMedia(sessionForced, callback, nonScreenSession);
+                                return;
+                            }
+                            callback(stream);
+                        });
+                    }
+                } else if (session.audio || session.video) {
+                    connection.invokeGetUserMedia(sessionForced, callback, session);
+                }
+            }
+        };
+
+        connection.onbeforeunload = function(arg1, dontCloseSocket) {
+            if (!connection.closeBeforeUnload) {
+                return;
+            }
+
+            connection.peers.getAllParticipants().forEach(function(participant) {
+                mPeer.onNegotiationNeeded({
+                    userLeft: true
+                }, participant);
+
+                if (connection.peers[participant] && connection.peers[participant].peer) {
+                    connection.peers[participant].peer.close();
+                }
+
+                delete connection.peers[participant];
+            });
+
+            if (!dontCloseSocket) {
+                connection.closeSocket();
+            }
+
+            connection.isInitiator = false;
+        };
+
+        if (!window.ignoreBeforeUnload) {
+            // user can implement its own version of window.onbeforeunload
+            connection.closeBeforeUnload = true;
+            window.addEventListener('beforeunload', connection.onbeforeunload, false);
+        } else {
+            connection.closeBeforeUnload = false;
+        }
+
+        connection.userid = getRandomString();
+        connection.changeUserId = function(newUserId, callback) {
+            callback = callback || function() {};
+            connection.userid = newUserId || getRandomString();
+            connection.socket.emit('changed-uuid', connection.userid, callback);
+        };
+
+        connection.extra = {};
+        connection.attachStreams = [];
+
+        connection.session = {
+            audio: true,
+            video: true
+        };
+
+        connection.enableFileSharing = false;
+
+        // all values in kbps
+        connection.bandwidth = {
+            screen: false,
+            audio: false,
+            video: false
+        };
+
+        connection.codecs = {
+            audio: 'opus',
+            video: 'VP9'
+        };
+
+        connection.processSdp = function(sdp) {
+            // ignore SDP modification if unified-pan is supported
+            if (isUnifiedPlanSupportedDefault()) {
+                return sdp;
+            }
+
+            if (DetectRTC.browser.name === 'Safari') {
+                return sdp;
+            }
+
+            if (connection.codecs.video.toUpperCase() === 'VP8') {
+                sdp = CodecsHandler.preferCodec(sdp, 'vp8');
+            }
+
+            if (connection.codecs.video.toUpperCase() === 'VP9') {
+                sdp = CodecsHandler.preferCodec(sdp, 'vp9');
+            }
+
+            if (connection.codecs.video.toUpperCase() === 'H264') {
+                sdp = CodecsHandler.preferCodec(sdp, 'h264');
+            }
+
+            if (connection.codecs.audio === 'G722') {
+                sdp = CodecsHandler.removeNonG722(sdp);
+            }
+
+            if (DetectRTC.browser.name === 'Firefox') {
+                return sdp;
+            }
+
+            if (connection.bandwidth.video || connection.bandwidth.screen) {
+                sdp = CodecsHandler.setApplicationSpecificBandwidth(sdp, connection.bandwidth, !!connection.session.screen);
+            }
+
+            if (connection.bandwidth.video) {
+                sdp = CodecsHandler.setVideoBitrates(sdp, {
+                    min: connection.bandwidth.video * 8 * 1024,
+                    max: connection.bandwidth.video * 8 * 1024
+                });
+            }
+
+            if (connection.bandwidth.audio) {
+                sdp = CodecsHandler.setOpusAttributes(sdp, {
+                    maxaveragebitrate: connection.bandwidth.audio * 8 * 1024,
+                    maxplaybackrate: connection.bandwidth.audio * 8 * 1024,
+                    stereo: 1,
+                    maxptime: 3
+                });
+            }
+
+            return sdp;
+        };
+
+        if (typeof CodecsHandler !== 'undefined') {
+            connection.BandwidthHandler = connection.CodecsHandler = CodecsHandler;
+        }
+
+        connection.mediaConstraints = {
+            audio: {
+                mandatory: {},
+                optional: connection.bandwidth.audio ? [{
+                    bandwidth: connection.bandwidth.audio * 8 * 1024 || 128 * 8 * 1024
+                }] : []
+            },
+            video: {
+                mandatory: {},
+                optional: connection.bandwidth.video ? [{
+                    bandwidth: connection.bandwidth.video * 8 * 1024 || 128 * 8 * 1024
+                }, {
+                    facingMode: 'user'
+                }] : [{
+                    facingMode: 'user'
+                }]
+            }
+        };
+
+        if (DetectRTC.browser.name === 'Firefox') {
+            connection.mediaConstraints = {
+                audio: true,
+                video: true
+            };
+        }
+
+        if (!forceOptions.useDefaultDevices && !DetectRTC.isMobileDevice) {
+            DetectRTC.load(function() {
+                var lastAudioDevice, lastVideoDevice;
+                // it will force RTCMultiConnection to capture last-devices
+                // i.e. if external microphone is attached to system, we should prefer it over built-in devices.
+                DetectRTC.MediaDevices.forEach(function(device) {
+                    if (device.kind === 'audioinput' && connection.mediaConstraints.audio !== false) {
+                        lastAudioDevice = device;
+                    }
+
+                    if (device.kind === 'videoinput' && connection.mediaConstraints.video !== false) {
+                        lastVideoDevice = device;
+                    }
+                });
+
+                if (lastAudioDevice) {
+                    if (DetectRTC.browser.name === 'Firefox') {
+                        if (connection.mediaConstraints.audio !== true) {
+                            connection.mediaConstraints.audio.deviceId = lastAudioDevice.id;
+                        } else {
+                            connection.mediaConstraints.audio = {
+                                deviceId: lastAudioDevice.id
+                            }
+                        }
+                        return;
+                    }
+
+                    if (connection.mediaConstraints.audio == true) {
+                        connection.mediaConstraints.audio = {
+                            mandatory: {},
+                            optional: []
+                        }
+                    }
+
+                    if (!connection.mediaConstraints.audio.optional) {
+                        connection.mediaConstraints.audio.optional = [];
+                    }
+
+                    var optional = [{
+                        sourceId: lastAudioDevice.id
+                    }];
+
+                    connection.mediaConstraints.audio.optional = optional.concat(connection.mediaConstraints.audio.optional);
+                }
+
+                if (lastVideoDevice) {
+                    if (DetectRTC.browser.name === 'Firefox') {
+                        if (connection.mediaConstraints.video !== true) {
+                            connection.mediaConstraints.video.deviceId = lastVideoDevice.id;
+                        } else {
+                            connection.mediaConstraints.video = {
+                                deviceId: lastVideoDevice.id
+                            }
+                        }
+                        return;
+                    }
+
+                    if (connection.mediaConstraints.video == true) {
+                        connection.mediaConstraints.video = {
+                            mandatory: {},
+                            optional: []
+                        }
+                    }
+
+                    if (!connection.mediaConstraints.video.optional) {
+                        connection.mediaConstraints.video.optional = [];
+                    }
+
+                    var optional = [{
+                        sourceId: lastVideoDevice.id
+                    }];
+
+                    connection.mediaConstraints.video.optional = optional.concat(connection.mediaConstraints.video.optional);
+                }
+            });
+        }
+
+        connection.sdpConstraints = {
+            mandatory: {
+                OfferToReceiveAudio: true,
+                OfferToReceiveVideo: true
+            },
+            optional: [{
+                VoiceActivityDetection: false
+            }]
+        };
+
+        connection.sdpSemantics = null; // "unified-plan" or "plan-b", ref: webrtc.org/web-apis/chrome/unified-plan/
+        connection.iceCandidatePoolSize = null; // 0
+        connection.bundlePolicy = null; // max-bundle
+        connection.rtcpMuxPolicy = null; // "require" or "negotiate"
+        connection.iceTransportPolicy = null; // "relay" or "all"
+        connection.optionalArgument = {
+            optional: [{
+                DtlsSrtpKeyAgreement: true
+            }, {
+                googImprovedWifiBwe: true
+            }, {
+                googScreencastMinBitrate: 300
+            }, {
+                googIPv6: true
+            }, {
+                googDscp: true
+            }, {
+                googCpuUnderuseThreshold: 55
+            }, {
+                googCpuOveruseThreshold: 85
+            }, {
+                googSuspendBelowMinBitrate: true
+            }, {
+                googCpuOveruseDetection: true
+            }],
+            mandatory: {}
+        };
+
+        connection.iceServers = IceServersHandler.getIceServers(connection);
+
+        connection.candidates = {
+            host: true,
+            stun: true,
+            turn: true
+        };
+
+        connection.iceProtocols = {
+            tcp: true,
+            udp: true
+        };
+
+        // EVENTs
+        connection.onopen = function(event) {
+            if (!!connection.enableLogs) {
+                console.info('Data connection has been opened between you & ', event.userid);
+            }
+        };
+
+        connection.onclose = function(event) {
+            if (!!connection.enableLogs) {
+                console.warn('Data connection has been closed between you & ', event.userid);
+            }
+        };
+
+        connection.onerror = function(error) {
+            if (!!connection.enableLogs) {
+                console.error(error.userid, 'data-error', error);
+            }
+        };
+
+        connection.onmessage = function(event) {
+            if (!!connection.enableLogs) {
+                console.debug('data-message', event.userid, event.data);
+            }
+        };
+
+        connection.send = function(data, remoteUserId) {
+            connection.peers.send(data, remoteUserId);
+        };
+
+        connection.close = connection.disconnect = connection.leave = function() {
+            connection.onbeforeunload(false, true);
+        };
+
+        connection.closeEntireSession = function(callback) {
+            callback = callback || function() {};
+            connection.socket.emit('close-entire-session', function looper() {
+                if (connection.getAllParticipants().length) {
+                    setTimeout(looper, 100);
+                    return;
+                }
+
+                connection.onEntireSessionClosed({
+                    sessionid: connection.sessionid,
+                    userid: connection.userid,
+                    extra: connection.extra
+                });
+
+                connection.changeUserId(null, function() {
+                    connection.close();
+                    callback();
+                });
+            });
+        };
+
+        connection.onEntireSessionClosed = function(event) {
+            if (!connection.enableLogs) return;
+            console.info('Entire session is closed: ', event.sessionid, event.extra);
+        };
+
+        connection.onstream = function(e) {
+            var parentNode = connection.videosContainer;
+            parentNode.insertBefore(e.mediaElement, parentNode.firstChild);
+            var played = e.mediaElement.play();
+
+            if (typeof played !== 'undefined') {
+                played.catch(function() {
+                    /*** iOS 11 doesn't allow automatic play and rejects ***/
+                }).then(function() {
+                    setTimeout(function() {
+                        e.mediaElement.play();
+                    }, 2000);
+                });
+                return;
+            }
+
+            setTimeout(function() {
+                e.mediaElement.play();
+            }, 2000);
+        };
+
+        connection.onstreamended = function(e) {
+            if (!e.mediaElement) {
+                e.mediaElement = document.getElementById(e.streamid);
+            }
+
+            if (!e.mediaElement || !e.mediaElement.parentNode) {
+                return;
+            }
+
+            e.mediaElement.parentNode.removeChild(e.mediaElement);
+        };
+
+        connection.direction = 'many-to-many';
+
+        connection.removeStream = function(streamid, remoteUserId) {
+            var stream;
+            connection.attachStreams.forEach(function(localStream) {
+                if (localStream.id === streamid) {
+                    stream = localStream;
+                }
+            });
+
+            if (!stream) {
+                console.warn('No such stream exist.', streamid);
+                return;
+            }
+
+            connection.peers.getAllParticipants().forEach(function(participant) {
+                if (remoteUserId && participant !== remoteUserId) {
+                    return;
+                }
+
+                var user = connection.peers[participant];
+                try {
+                    user.peer.removeStream(stream);
+                } catch (e) {}
+            });
+
+            connection.renegotiate();
+        };
+
+        connection.addStream = function(session, remoteUserId) {
+            if (!!session.getTracks) {
+                if (connection.attachStreams.indexOf(session) === -1) {
+                    if (!session.streamid) {
+                        session.streamid = session.id;
+                    }
+
+                    connection.attachStreams.push(session);
+                }
+                connection.renegotiate(remoteUserId);
+                return;
+            }
+
+            if (isData(session)) {
+                connection.renegotiate(remoteUserId);
+                return;
+            }
+
+            if (session.audio || session.video || session.screen) {
+                if (session.screen) {
+                    if (DetectRTC.browser.name === 'Edge') {
+                        navigator.getDisplayMedia({
+                            video: true,
+                            audio: isAudioPlusTab(connection)
+                        }).then(function(screen) {
+                            screen.isScreen = true;
+                            mPeer.onGettingLocalMedia(screen);
+
+                            if ((session.audio || session.video) && !isAudioPlusTab(connection)) {
+                                connection.invokeGetUserMedia(null, function(stream) {
+                                    gumCallback(stream);
+                                });
+                            } else {
+                                gumCallback(screen);
+                            }
+                        }, function(error) {
+                            console.error('Unable to capture screen on Edge. HTTPs and version 17+ is required.');
+                        });
+                    } else {
+                        connection.invokeGetUserMedia({
+                            audio: isAudioPlusTab(connection),
+                            video: true,
+                            isScreen: true
+                        }, function(stream) {
+                            if ((session.audio || session.video) && !isAudioPlusTab(connection)) {
+                                connection.invokeGetUserMedia(null, function(stream) {
+                                    gumCallback(stream);
+                                });
+                            } else {
+                                gumCallback(stream);
+                            }
+                        });
+                    }
+                } else if (session.audio || session.video) {
+                    connection.invokeGetUserMedia(null, gumCallback);
+                }
+            }
+
+            function gumCallback(stream) {
+                if (session.streamCallback) {
+                    session.streamCallback(stream);
+                }
+
+                connection.renegotiate(remoteUserId);
+            }
+        };
+
+        connection.invokeGetUserMedia = function(localMediaConstraints, callback, session) {
+            if (!session) {
+                session = connection.session;
+            }
+
+            if (!localMediaConstraints) {
+                localMediaConstraints = connection.mediaConstraints;
+            }
+
+            getUserMediaHandler({
+                onGettingLocalMedia: function(stream) {
+                    var videoConstraints = localMediaConstraints.video;
+                    if (videoConstraints) {
+                        if (videoConstraints.mediaSource || videoConstraints.mozMediaSource) {
+                            stream.isScreen = true;
+                        } else if (videoConstraints.mandatory && videoConstraints.mandatory.chromeMediaSource) {
+                            stream.isScreen = true;
+                        }
+                    }
+
+                    if (!stream.isScreen) {
+                        stream.isVideo = !!getTracks(stream, 'video').length;
+                        stream.isAudio = !stream.isVideo && getTracks(stream, 'audio').length;
+                    }
+
+                    mPeer.onGettingLocalMedia(stream, function() {
+                        if (typeof callback === 'function') {
+                            callback(stream);
+                        }
+                    });
+                },
+                onLocalMediaError: function(error, constraints) {
+                    mPeer.onLocalMediaError(error, constraints);
+                },
+                localMediaConstraints: localMediaConstraints || {
+                    audio: session.audio ? localMediaConstraints.audio : false,
+                    video: session.video ? localMediaConstraints.video : false
+                }
+            });
+        };
+
+        function applyConstraints(stream, mediaConstraints) {
+            if (!stream) {
+                if (!!connection.enableLogs) {
+                    console.error('No stream to applyConstraints.');
+                }
+                return;
+            }
+
+            if (mediaConstraints.audio) {
+                getTracks(stream, 'audio').forEach(function(track) {
+                    track.applyConstraints(mediaConstraints.audio);
+                });
+            }
+
+            if (mediaConstraints.video) {
+                getTracks(stream, 'video').forEach(function(track) {
+                    track.applyConstraints(mediaConstraints.video);
+                });
+            }
+        }
+
+        connection.applyConstraints = function(mediaConstraints, streamid) {
+            if (!MediaStreamTrack || !MediaStreamTrack.prototype.applyConstraints) {
+                alert('track.applyConstraints is NOT supported in your browser.');
+                return;
+            }
+
+            if (streamid) {
+                var stream;
+                if (connection.streamEvents[streamid]) {
+                    stream = connection.streamEvents[streamid].stream;
+                }
+                applyConstraints(stream, mediaConstraints);
+                return;
+            }
+
+            connection.attachStreams.forEach(function(stream) {
+                applyConstraints(stream, mediaConstraints);
+            });
+        };
+
+        function replaceTrack(track, remoteUserId, isVideoTrack) {
+            if (remoteUserId) {
+                mPeer.replaceTrack(track, remoteUserId, isVideoTrack);
+                return;
+            }
+
+            connection.peers.getAllParticipants().forEach(function(participant) {
+                mPeer.replaceTrack(track, participant, isVideoTrack);
+            });
+        }
+
+        connection.replaceTrack = function(session, remoteUserId, isVideoTrack) {
+            session = session || {};
+
+            if (!RTCPeerConnection.prototype.getSenders) {
+                connection.addStream(session);
+                return;
+            }
+
+            if (session instanceof MediaStreamTrack) {
+                replaceTrack(session, remoteUserId, isVideoTrack);
+                return;
+            }
+
+            if (session instanceof MediaStream) {
+                if (getTracks(session, 'video').length) {
+                    replaceTrack(getTracks(session, 'video')[0], remoteUserId, true);
+                }
+
+                if (getTracks(session, 'audio').length) {
+                    replaceTrack(getTracks(session, 'audio')[0], remoteUserId, false);
+                }
+                return;
+            }
+
+            if (isData(session)) {
+                throw 'connection.replaceTrack requires audio and/or video and/or screen.';
+                return;
+            }
+
+            if (session.audio || session.video || session.screen) {
+                if (session.screen) {
+                    if (DetectRTC.browser.name === 'Edge') {
+                        navigator.getDisplayMedia({
+                            video: true,
+                            audio: isAudioPlusTab(connection)
+                        }).then(function(screen) {
+                            screen.isScreen = true;
+                            mPeer.onGettingLocalMedia(screen);
+
+                            if ((session.audio || session.video) && !isAudioPlusTab(connection)) {
+                                connection.invokeGetUserMedia(null, gumCallback);
+                            } else {
+                                gumCallback(screen);
+                            }
+                        }, function(error) {
+                            console.error('Unable to capture screen on Edge. HTTPs and version 17+ is required.');
+                        });
+                    } else {
+                        connection.invokeGetUserMedia({
+                            audio: isAudioPlusTab(connection),
+                            video: true,
+                            isScreen: true
+                        }, (session.audio || session.video) && !isAudioPlusTab(connection) ? connection.invokeGetUserMedia(null, gumCallback) : gumCallback);
+                    }
+                } else if (session.audio || session.video) {
+                    connection.invokeGetUserMedia(null, gumCallback);
+                }
+            }
+
+            function gumCallback(stream) {
+                connection.replaceTrack(stream, remoteUserId, isVideoTrack || session.video || session.screen);
+            }
+        };
+
+        connection.resetTrack = function(remoteUsersIds, isVideoTrack) {
+            if (!remoteUsersIds) {
+                remoteUsersIds = connection.getAllParticipants();
+            }
+
+            if (typeof remoteUsersIds == 'string') {
+                remoteUsersIds = [remoteUsersIds];
+            }
+
+            remoteUsersIds.forEach(function(participant) {
+                var peer = connection.peers[participant].peer;
+
+                if ((typeof isVideoTrack === 'undefined' || isVideoTrack === true) && peer.lastVideoTrack) {
+                    connection.replaceTrack(peer.lastVideoTrack, participant, true);
+                }
+
+                if ((typeof isVideoTrack === 'undefined' || isVideoTrack === false) && peer.lastAudioTrack) {
+                    connection.replaceTrack(peer.lastAudioTrack, participant, false);
+                }
+            });
+        };
+
+        connection.renegotiate = function(remoteUserId) {
+            if (remoteUserId) {
+                mPeer.renegotiatePeer(remoteUserId);
+                return;
+            }
+
+            connection.peers.getAllParticipants().forEach(function(participant) {
+                mPeer.renegotiatePeer(participant);
+            });
+        };
+
+        connection.setStreamEndHandler = function(stream, isRemote) {
+            if (!stream || !stream.addEventListener) return;
+
+            isRemote = !!isRemote;
+
+            if (stream.alreadySetEndHandler) {
+                return;
+            }
+            stream.alreadySetEndHandler = true;
+
+            var streamEndedEvent = 'ended';
+
+            if ('oninactive' in stream) {
+                streamEndedEvent = 'inactive';
+            }
+
+            stream.addEventListener(streamEndedEvent, function() {
+                if (stream.idInstance) {
+                    currentUserMediaRequest.remove(stream.idInstance);
+                }
+
+                if (!isRemote) {
+                    // reset attachStreams
+                    var streams = [];
+                    connection.attachStreams.forEach(function(s) {
+                        if (s.id != stream.id) {
+                            streams.push(s);
+                        }
+                    });
+                    connection.attachStreams = streams;
+                }
+
+                // connection.renegotiate();
+
+                var streamEvent = connection.streamEvents[stream.streamid];
+                if (!streamEvent) {
+                    streamEvent = {
+                        stream: stream,
+                        streamid: stream.streamid,
+                        type: isRemote ? 'remote' : 'local',
+                        userid: connection.userid,
+                        extra: connection.extra,
+                        mediaElement: connection.streamEvents[stream.streamid] ? connection.streamEvents[stream.streamid].mediaElement : null
+                    };
+                }
+
+                if (isRemote && connection.peers[streamEvent.userid]) {
+                    // reset remote "streams"
+                    var peer = connection.peers[streamEvent.userid].peer;
+                    var streams = [];
+                    peer.getRemoteStreams().forEach(function(s) {
+                        if (s.id != stream.id) {
+                            streams.push(s);
+                        }
+                    });
+                    connection.peers[streamEvent.userid].streams = streams;
+                }
+
+                if (streamEvent.userid === connection.userid && streamEvent.type === 'remote') {
+                    return;
+                }
+
+                if (connection.peersBackup[streamEvent.userid]) {
+                    streamEvent.extra = connection.peersBackup[streamEvent.userid].extra;
+                }
+
+                connection.onstreamended(streamEvent);
+
+                delete connection.streamEvents[stream.streamid];
+            }, false);
+        };
+
+        connection.onMediaError = function(error, constraints) {
+            if (!!connection.enableLogs) {
+                console.error(error, constraints);
+            }
+        };
+
+        connection.autoCloseEntireSession = false;
+
+        connection.filesContainer = connection.videosContainer = document.body || document.documentElement;
+        connection.isInitiator = false;
+
+        connection.shareFile = mPeer.shareFile;
+        if (typeof FileProgressBarHandler !== 'undefined') {
+            FileProgressBarHandler.handle(connection);
+        }
+
+        if (typeof TranslationHandler !== 'undefined') {
+            TranslationHandler.handle(connection);
+        }
+
+        connection.token = getRandomString;
+
+        connection.onNewParticipant = function(participantId, userPreferences) {
+            connection.acceptParticipationRequest(participantId, userPreferences);
+        };
+
+        connection.acceptParticipationRequest = function(participantId, userPreferences) {
+            if (userPreferences.successCallback) {
+                userPreferences.successCallback();
+                delete userPreferences.successCallback;
+            }
+
+            mPeer.createNewPeer(participantId, userPreferences);
+        };
+
+        if (typeof StreamsHandler !== 'undefined') {
+            connection.StreamsHandler = StreamsHandler;
+        }
+
+        connection.onleave = function(userid) {};
+
+        connection.invokeSelectFileDialog = function(callback) {
+            var selector = new FileSelector();
+            selector.accept = '*.*';
+            selector.selectSingleFile(callback);
+        };
+
+        connection.onmute = function(e) {
+            if (!e || !e.mediaElement) {
+                return;
+            }
+
+            if (e.muteType === 'both' || e.muteType === 'video') {
+                e.mediaElement.src = null;
+                var paused = e.mediaElement.pause();
+                if (typeof paused !== 'undefined') {
+                    paused.then(function() {
+                        e.mediaElement.poster = e.snapshot || 'https://cdn.webrtc-experiment.com/images/muted.png';
+                    });
+                } else {
+                    e.mediaElement.poster = e.snapshot || 'https://cdn.webrtc-experiment.com/images/muted.png';
+                }
+            } else if (e.muteType === 'audio') {
+                e.mediaElement.muted = true;
+            }
+        };
+
+        connection.onunmute = function(e) {
+            if (!e || !e.mediaElement || !e.stream) {
+                return;
+            }
+
+            if (e.unmuteType === 'both' || e.unmuteType === 'video') {
+                e.mediaElement.poster = null;
+                e.mediaElement.srcObject = e.stream;
+                e.mediaElement.play();
+            } else if (e.unmuteType === 'audio') {
+                e.mediaElement.muted = false;
+            }
+        };
+
+        connection.onExtraDataUpdated = function(event) {
+            event.status = 'online';
+            connection.onUserStatusChanged(event, true);
+        };
+
+        connection.getAllParticipants = function(sender) {
+            return connection.peers.getAllParticipants(sender);
+        };
+
+        if (typeof StreamsHandler !== 'undefined') {
+            StreamsHandler.onSyncNeeded = function(streamid, action, type) {
+                connection.peers.getAllParticipants().forEach(function(participant) {
+                    mPeer.onNegotiationNeeded({
+                        streamid: streamid,
+                        action: action,
+                        streamSyncNeeded: true,
+                        type: type || 'both'
+                    }, participant);
+                });
+            };
+        }
+
+        connection.connectSocket = function(callback) {
+            connectSocket(callback);
+        };
+
+        connection.closeSocket = function() {
+            try {
+                io.sockets = {};
+            } catch (e) {};
+
+            if (!connection.socket) return;
+
+            if (typeof connection.socket.disconnect === 'function') {
+                connection.socket.disconnect();
+            }
+
+            if (typeof connection.socket.resetProps === 'function') {
+                connection.socket.resetProps();
+            }
+
+            connection.socket = null;
+        };
+
+        connection.getSocket = function(callback) {
+            if (!callback && connection.enableLogs) {
+                console.warn('getSocket.callback paramter is required.');
+            }
+
+            callback = callback || function() {};
+
+            if (!connection.socket) {
+                connectSocket(function() {
+                    callback(connection.socket);
+                });
+            } else {
+                callback(connection.socket);
+            }
+
+            return connection.socket; // callback is preferred over return-statement
+        };
+
+        connection.getRemoteStreams = mPeer.getRemoteStreams;
+
+        var skipStreams = ['selectFirst', 'selectAll', 'forEach'];
+
+        connection.streamEvents = {
+            selectFirst: function(options) {
+                return connection.streamEvents.selectAll(options)[0];
+            },
+            selectAll: function(options) {
+                if (!options) {
+                    // default will always be all streams
+                    options = {
+                        local: true,
+                        remote: true,
+                        isScreen: true,
+                        isAudio: true,
+                        isVideo: true
+                    };
+                }
+
+                if (options == 'local') {
+                    options = {
+                        local: true
+                    };
+                }
+
+                if (options == 'remote') {
+                    options = {
+                        remote: true
+                    };
+                }
+
+                if (options == 'screen') {
+                    options = {
+                        isScreen: true
+                    };
+                }
+
+                if (options == 'audio') {
+                    options = {
+                        isAudio: true
+                    };
+                }
+
+                if (options == 'video') {
+                    options = {
+                        isVideo: true
+                    };
+                }
+
+                var streams = [];
+                Object.keys(connection.streamEvents).forEach(function(key) {
+                    var event = connection.streamEvents[key];
+
+                    if (skipStreams.indexOf(key) !== -1) return;
+                    var ignore = true;
+
+                    if (options.local && event.type === 'local') {
+                        ignore = false;
+                    }
+
+                    if (options.remote && event.type === 'remote') {
+                        ignore = false;
+                    }
+
+                    if (options.isScreen && event.stream.isScreen) {
+                        ignore = false;
+                    }
+
+                    if (options.isVideo && event.stream.isVideo) {
+                        ignore = false;
+                    }
+
+                    if (options.isAudio && event.stream.isAudio) {
+                        ignore = false;
+                    }
+
+                    if (options.userid && event.userid === options.userid) {
+                        ignore = false;
+                    }
+
+                    if (ignore === false) {
+                        streams.push(event);
+                    }
+                });
+
+                return streams;
+            }
+        };
+
+        connection.socketURL = '/'; // generated via config.json
+        connection.socketMessageEvent = 'RTCMultiConnection-Message'; // generated via config.json
+        connection.socketCustomEvent = 'RTCMultiConnection-Custom-Message'; // generated via config.json
+        connection.DetectRTC = DetectRTC;
+
+        connection.setCustomSocketEvent = function(customEvent) {
+            if (customEvent) {
+                connection.socketCustomEvent = customEvent;
+            }
+
+            if (!connection.socket) {
+                return;
+            }
+
+            connection.socket.emit('set-custom-socket-event-listener', connection.socketCustomEvent);
+        };
+
+        connection.getNumberOfBroadcastViewers = function(broadcastId, callback) {
+            if (!connection.socket || !broadcastId || !callback) return;
+
+            connection.socket.emit('get-number-of-users-in-specific-broadcast', broadcastId, callback);
+        };
+
+        connection.onNumberOfBroadcastViewersUpdated = function(event) {
+            if (!connection.enableLogs || !connection.isInitiator) return;
+            console.info('Number of broadcast (', event.broadcastId, ') viewers', event.numberOfBroadcastViewers);
+        };
+
+        connection.onUserStatusChanged = function(event, dontWriteLogs) {
+            if (!!connection.enableLogs && !dontWriteLogs) {
+                console.info(event.userid, event.status);
+            }
+        };
+
+        connection.getUserMediaHandler = getUserMediaHandler;
+        connection.multiPeersHandler = mPeer;
+        connection.enableLogs = true;
+        connection.setCustomSocketHandler = function(customSocketHandler) {
+            if (typeof SocketConnection !== 'undefined') {
+                SocketConnection = customSocketHandler;
+            }
+        };
+
+        // default value should be 15k because [old]Firefox's receiving limit is 16k!
+        // however 64k works chrome-to-chrome
+        connection.chunkSize = 40 * 1000;
+
+        connection.maxParticipantsAllowed = 1000;
+
+        // eject or leave single user
+        connection.disconnectWith = mPeer.disconnectWith;
+
+        // check if room exist on server
+        // we will pass roomid to the server and wait for callback (i.e. server's response)
+        connection.checkPresence = function(roomid, callback) {
+            roomid = roomid || connection.sessionid;
+
+            if (SocketConnection.name === 'SSEConnection') {
+                SSEConnection.checkPresence(roomid, function(isRoomExist, _roomid, extra) {
+                    if (!connection.socket) {
+                        if (!isRoomExist) {
+                            connection.userid = _roomid;
+                        }
+
+                        connection.connectSocket(function() {
+                            callback(isRoomExist, _roomid, extra);
+                        });
+                        return;
+                    }
+                    callback(isRoomExist, _roomid);
+                });
+                return;
+            }
+
+            if (!connection.socket) {
+                connection.connectSocket(function() {
+                    connection.checkPresence(roomid, callback);
+                });
+                return;
+            }
+
+            connection.socket.emit('check-presence', roomid + '', function(isRoomExist, _roomid, extra) {
+                if (connection.enableLogs) {
+                    console.log('checkPresence.isRoomExist: ', isRoomExist, ' roomid: ', _roomid);
+                }
+                callback(isRoomExist, _roomid, extra);
+            });
+        };
+
+        connection.onReadyForOffer = function(remoteUserId, userPreferences) {
+            connection.multiPeersHandler.createNewPeer(remoteUserId, userPreferences);
+        };
+
+        connection.setUserPreferences = function(userPreferences) {
+            if (connection.dontAttachStream) {
+                userPreferences.dontAttachLocalStream = true;
+            }
+
+            if (connection.dontGetRemoteStream) {
+                userPreferences.dontGetRemoteStream = true;
+            }
+
+            return userPreferences;
+        };
+
+        connection.updateExtraData = function() {
+            connection.socket.emit('extra-data-updated', connection.extra);
+        };
+
+        connection.enableScalableBroadcast = false;
+        connection.maxRelayLimitPerUser = 3; // each broadcast should serve only 3 users
+
+        connection.dontCaptureUserMedia = false;
+        connection.dontAttachStream = false;
+        connection.dontGetRemoteStream = false;
+
+        connection.onReConnecting = function(event) {
+            if (connection.enableLogs) {
+                console.info('ReConnecting with', event.userid, '...');
+            }
+        };
+
+        connection.beforeAddingStream = function(stream) {
+            return stream;
+        };
+
+        connection.beforeRemovingStream = function(stream) {
+            return stream;
+        };
+
+        if (typeof isChromeExtensionAvailable !== 'undefined') {
+            connection.checkIfChromeExtensionAvailable = isChromeExtensionAvailable;
+        }
+
+        if (typeof isFirefoxExtensionAvailable !== 'undefined') {
+            connection.checkIfChromeExtensionAvailable = isFirefoxExtensionAvailable;
+        }
+
+        if (typeof getChromeExtensionStatus !== 'undefined') {
+            connection.getChromeExtensionStatus = getChromeExtensionStatus;
+        }
+
+        connection.modifyScreenConstraints = function(screen_constraints) {
+            return screen_constraints;
+        };
+
+        connection.onPeerStateChanged = function(state) {
+            if (connection.enableLogs) {
+                if (state.iceConnectionState.search(/closed|failed/gi) !== -1) {
+                    console.error('Peer connection is closed between you & ', state.userid, state.extra, 'state:', state.iceConnectionState);
+                }
+            }
+        };
+
+        connection.isOnline = true;
+
+        listenEventHandler('online', function() {
+            connection.isOnline = true;
+        });
+
+        listenEventHandler('offline', function() {
+            connection.isOnline = false;
+        });
+
+        connection.isLowBandwidth = false;
+        if (navigator && navigator.connection && navigator.connection.type) {
+            connection.isLowBandwidth = navigator.connection.type.toString().toLowerCase().search(/wifi|cell/g) !== -1;
+            if (connection.isLowBandwidth) {
+                connection.bandwidth = {
+                    audio: false,
+                    video: false,
+                    screen: false
+                };
+
+                if (connection.mediaConstraints.audio && connection.mediaConstraints.audio.optional && connection.mediaConstraints.audio.optional.length) {
+                    var newArray = [];
+                    connection.mediaConstraints.audio.optional.forEach(function(opt) {
+                        if (typeof opt.bandwidth === 'undefined') {
+                            newArray.push(opt);
+                        }
+                    });
+                    connection.mediaConstraints.audio.optional = newArray;
+                }
+
+                if (connection.mediaConstraints.video && connection.mediaConstraints.video.optional && connection.mediaConstraints.video.optional.length) {
+                    var newArray = [];
+                    connection.mediaConstraints.video.optional.forEach(function(opt) {
+                        if (typeof opt.bandwidth === 'undefined') {
+                            newArray.push(opt);
+                        }
+                    });
+                    connection.mediaConstraints.video.optional = newArray;
+                }
+            }
+        }
+
+        connection.getExtraData = function(remoteUserId, callback) {
+            if (!remoteUserId) throw 'remoteUserId is required.';
+
+            if (typeof callback === 'function') {
+                connection.socket.emit('get-remote-user-extra-data', remoteUserId, function(extra, remoteUserId, error) {
+                    callback(extra, remoteUserId, error);
+                });
+                return;
+            }
+
+            if (!connection.peers[remoteUserId]) {
+                if (connection.peersBackup[remoteUserId]) {
+                    return connection.peersBackup[remoteUserId].extra;
+                }
+                return {};
+            }
+
+            return connection.peers[remoteUserId].extra;
+        };
+
+        if (!!forceOptions.autoOpenOrJoin) {
+            connection.openOrJoin(connection.sessionid);
+        }
+
+        connection.onUserIdAlreadyTaken = function(useridAlreadyTaken, yourNewUserId) {
+            // via #683
+            connection.close();
+            connection.closeSocket();
+
+            connection.isInitiator = false;
+            connection.userid = connection.token();
+
+            connection.join(connection.sessionid);
+
+            if (connection.enableLogs) {
+                console.warn('Userid already taken.', useridAlreadyTaken, 'Your new userid:', connection.userid);
+            }
+        };
+
+        connection.trickleIce = true;
+        connection.version = '3.7.0';
+
+        connection.onSettingLocalDescription = function(event) {
+            if (connection.enableLogs) {
+                console.info('Set local description for remote user', event.userid);
+            }
+        };
+
+        connection.resetScreen = function() {
+            sourceId = null;
+            if (DetectRTC && DetectRTC.screen) {
+                delete DetectRTC.screen.sourceId;
+            }
+
+            currentUserMediaRequest = {
+                streams: [],
+                mutex: false,
+                queueRequests: []
+            };
+        };
+
+        // if disabled, "event.mediaElement" for "onstream" will be NULL
+        connection.autoCreateMediaElement = true;
+
+        // set password
+        connection.password = null;
+
+        // set password
+        connection.setPassword = function(password, callback) {
+            callback = callback || function() {};
+            if (connection.socket) {
+                connection.socket.emit('set-password', password, callback);
+            } else {
+                connection.password = password;
+                callback(true, connection.sessionid, null);
+            }
+        };
+
+        connection.onSocketDisconnect = function(event) {
+            if (connection.enableLogs) {
+                console.warn('socket.io connection is closed');
+            }
+        };
+
+        connection.onSocketError = function(event) {
+            if (connection.enableLogs) {
+                console.warn('socket.io connection is failed');
+            }
+        };
+
+        // error messages
+        connection.errors = {
+            ROOM_NOT_AVAILABLE: 'Room not available',
+            INVALID_PASSWORD: 'Invalid password',
+            USERID_NOT_AVAILABLE: 'User ID does not exist',
+            ROOM_PERMISSION_DENIED: 'Room permission denied',
+            ROOM_FULL: 'Room full',
+            DID_NOT_JOIN_ANY_ROOM: 'Did not join any room yet',
+            INVALID_SOCKET: 'Invalid socket',
+            PUBLIC_IDENTIFIER_MISSING: 'publicRoomIdentifier is required',
+            INVALID_ADMIN_CREDENTIAL: 'Invalid username or password attempted'
+        };
+    })(this);
+
+};
+
+if (true /* && !!module.exports*/ ) {
+    module.exports = exports = RTCMultiConnection;
+}
+
+if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
+        return RTCMultiConnection;
+    }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_live_vue_vue_type_style_index_0_id_3f6f6198_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_live_vue_vue_type_style_index_0_id_3f6f6198_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_live_vue_vue_type_style_index_0_id_3f6f6198_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/live.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/views/communication/meeting/live.vue ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _live_vue_vue_type_template_id_3f6f6198_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./live.vue?vue&type=template&id=3f6f6198&scoped=true& */ "./resources/js/views/communication/meeting/live.vue?vue&type=template&id=3f6f6198&scoped=true&");
+/* harmony import */ var _live_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./live.vue?vue&type=script&lang=js& */ "./resources/js/views/communication/meeting/live.vue?vue&type=script&lang=js&");
+/* harmony import */ var _live_vue_vue_type_style_index_0_id_3f6f6198_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css& */ "./resources/js/views/communication/meeting/live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _live_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _live_vue_vue_type_template_id_3f6f6198_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _live_vue_vue_type_template_id_3f6f6198_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "3f6f6198",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/communication/meeting/live.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/live.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/live.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_live_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./live.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_live_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/live.vue?vue&type=template&id=3f6f6198&scoped=true&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/live.vue?vue&type=template&id=3f6f6198&scoped=true& ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_live_vue_vue_type_template_id_3f6f6198_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_live_vue_vue_type_template_id_3f6f6198_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_live_vue_vue_type_template_id_3f6f6198_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./live.vue?vue&type=template&id=3f6f6198&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=template&id=3f6f6198&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css&":
+/*!********************************************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css& ***!
+  \********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_live_vue_vue_type_style_index_0_id_3f6f6198_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/live.vue?vue&type=style&index=0&id=3f6f6198&scoped=true&lang=css&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=live.js.map?id=5be5d4d7d8c8864a

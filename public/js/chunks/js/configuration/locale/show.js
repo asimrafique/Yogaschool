@@ -1,2 +1,417 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[277],{5088:(t,n,o)=>{"use strict";o.d(n,{Z:()=>r});var e=o(94015),s=o.n(e),a=o(23645),l=o.n(a)()(s());l.push([t.id,".list-group-item .active{color:#fff}","",{version:3,sources:["webpack://./resources/js/views/configuration/locale/show.vue"],names:[],mappings:"AAsJA,yBAAA,UAAA",sourcesContent:['<template>\n    <div>\n        <div class="page-titles">\n            <div class="row">\n                <div class="col-12 col-sm-6">\n                    <h3 class="text-themecolor">{{trans(\'configuration.translation\')}} ({{locale.name}}) </h3>\n                </div>\n                <div class="col-12 col-sm-6">\n                    <div class="action-buttons pull-right">\n                        <button class="btn btn-info btn-sm" @click="$router.push(\'/configuration/locale\')"><i class="fas fa-globe"></i> <span class="d-none d-sm-inline">{{trans(\'configuration.locale\')}}</span></button>\n                        <div class="btn-group">\n                            <button type="button" style="margin-top:-5px;" class="btn btn-info btn-sm" href="#" role="button" id="moduleLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n                                <i class="fas fa-boxes"></i> <span class="d-none d-sm-inline">{{trans(\'configuration.locale_module\')}} <span>({{toWord(module)}})</span> <i class="fas fa-chevron-down"></i> </span>\n                            </button>\n                            <div :class="[\'dropdown-menu\',getConfig(\'direction\') == \'ltr\' ? \'dropdown-menu-right\' : \'\']" aria-labelledby="moduleLink">\n                                <button style="cursor:pointer;" class="dropdown-item" v-for="mod in modules" @click="$router.push(\'/configuration/locale/\'+locale.locale+\'/\'+mod)">\n                                    {{toWord(mod)}} <span v-if="mod == module" class="pull-right"><i class="fas fa-check"></i></span> \n                                </button>\n                            </div>\n                        </div>\n                        <help-button @clicked="help_topic = \'configuration.locale.translation\'"></help-button>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class="container-fluid">\n            <div class="card">\n                <div class="card-body p-4">\n                    <div v-if="getWordCount">\n                        <div class="row">\n                            <template v-for="(word,index) in words">\n                                <template v-if="typeof word === \'object\'">\n                                    <div class="col-12 col-sm-4" v-for="(wrd,i) in word">\n                                        <div class="form-group">\n                                            <label for="" style="color:red;">{{trans(module+\'.\'+index+\'.\'+i)}}</label>\n                                            \x3c!-- <label for="">{{index}}_{{i}}</label> --\x3e\n                                            <input class="form-control" type="text" v-model="words[index][i]" :name="`${index}_${i}`">\n                                        </div>\n                                    </div>\n                                </template>\n                                <template v-else>\n                                    <div class="col-12 col-sm-4">\n                                        <div class="form-group">\n                                            <label for="" class="font-weight-bold">{{trans(module+\'.\'+index)}}</label>\n                                            \x3c!-- <label for="">{{index}}</label> --\x3e\n                                            <input class="form-control" type="text" v-model="words[index]" :name="index">\n                                        </div>\n                                    </div>\n                                </template>\n                            </template>\n                        </div>\n                        <div class="form-group">\n                            <button class="btn btn-info btn-sm pull-right" @click="saveTranslation">{{trans(\'general.save\')}}</button>\n                        </div>\n                    </div>\n                    <div v-if="!getWordCount">\n                        <p class="alert alert-danger">{{trans(\'general.no_result_found\')}}</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <right-panel :topic="help_topic"></right-panel>\n    </div>\n</template>\n\n\n<script>\n    export default {\n        data() {\n            return {\n                modules: {},\n                words: {},\n                locale: {},\n                module: (this.$route.params.module) ? this.$route.params.module : \'auth\',\n                help_topic: \'\'\n            };\n        },\n        mounted(){\n            if(!helper.hasPermission(\'access-configuration\')){\n                helper.notAccessibleMsg();\n                this.$router.push(\'/dashboard\');\n            }\n\n            if(!helper.featureAvailable(\'multilingual\')){\n                helper.featureNotAvailableMsg();\n                this.$router.push(\'/dashboard\');\n            }\n\n            this.fetchWords();\n        },\n        methods: {\n            fetchWords(){\n                let loader = this.$loading.show();\n                axios.post(\'/api/locale/fetch\',{\n                    locale: this.$route.params.locale,\n                    module: this.module\n                    })\n                    .then(response => {\n                        this.modules = response.modules;\n                        this.words = response.words;\n                        this.locale = response.locale;\n                        loader.hide();\n                    }).catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                        this.$router.push(\'/configuration/locale\');\n                    });\n            },\n            getName(name){\n                name = helper.ucword(name);\n                return name.replace(/_/g, \' \');\n            },\n            getModuleLink(module){\n                return \'/configuration/locale/\'+this.$route.params.locale+\'/\'+module\n            },\n            saveTranslation(){\n                let loader = this.$loading.show();\n                axios.post(\'/api/locale/translate\',{\n                    locale: this.$route.params.locale,\n                    module: this.module,\n                    words: this.words\n                }).then(response => {\n                    toastr.success(response.message);\n                    loader.hide();\n                }).catch(error => {\n                    loader.hide();\n                    helper.showErrorMsg(error);\n                });\n            },\n            getConfig(config){\n                return helper.getConfig(config);\n            },\n            toWord(word){\n                return helper.toWord(word);\n            }\n        },\n        watch: {\n            \'$route.params.module\'(newModule, oldModule) {\n                this.module = newModule;\n                this.fetchWords();\n            }\n        },\n        computed: {\n            getWordCount(){\n                return _size(this.words);\n            }\n        }\n    }\n<\/script>\n<style>\n    .list-group-item .active {color:#ffffff;}\n</style>\n'],sourceRoot:""}]);const r=l},8318:(t,n,o)=>{"use strict";o.r(n),o.d(n,{default:()=>i});const e={data:function(){return{modules:{},words:{},locale:{},module:this.$route.params.module?this.$route.params.module:"auth",help_topic:""}},mounted:function(){helper.hasPermission("access-configuration")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),helper.featureAvailable("multilingual")||(helper.featureNotAvailableMsg(),this.$router.push("/dashboard")),this.fetchWords()},methods:{fetchWords:function(){var t=this,n=this.$loading.show();axios.post("/api/locale/fetch",{locale:this.$route.params.locale,module:this.module}).then((function(o){t.modules=o.modules,t.words=o.words,t.locale=o.locale,n.hide()})).catch((function(o){n.hide(),helper.showErrorMsg(o),t.$router.push("/configuration/locale")}))},getName:function(t){return(t=helper.ucword(t)).replace(/_/g," ")},getModuleLink:function(t){return"/configuration/locale/"+this.$route.params.locale+"/"+t},saveTranslation:function(){var t=this.$loading.show();axios.post("/api/locale/translate",{locale:this.$route.params.locale,module:this.module,words:this.words}).then((function(n){toastr.success(n.message),t.hide()})).catch((function(n){t.hide(),helper.showErrorMsg(n)}))},getConfig:function(t){return helper.getConfig(t)},toWord:function(t){return helper.toWord(t)}},watch:{"$route.params.module":function(t,n){this.module=t,this.fetchWords()}},computed:{getWordCount:function(){return _size(this.words)}}};var s=o(93379),a=o.n(s),l=o(5088),r={insert:"head",singleton:!1};a()(l.Z,r);l.Z.locals;const i=(0,o(51900).Z)(e,(function(){var t=this,n=t.$createElement,o=t._self._c||n;return o("div",[o("div",{staticClass:"page-titles"},[o("div",{staticClass:"row"},[o("div",{staticClass:"col-12 col-sm-6"},[o("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("configuration.translation"))+" ("+t._s(t.locale.name)+") ")])]),t._v(" "),o("div",{staticClass:"col-12 col-sm-6"},[o("div",{staticClass:"action-buttons pull-right"},[o("button",{staticClass:"btn btn-info btn-sm",on:{click:function(n){return t.$router.push("/configuration/locale")}}},[o("i",{staticClass:"fas fa-globe"}),t._v(" "),o("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("configuration.locale")))])]),t._v(" "),o("div",{staticClass:"btn-group"},[o("button",{staticClass:"btn btn-info btn-sm",staticStyle:{"margin-top":"-5px"},attrs:{type:"button",href:"#",role:"button",id:"moduleLink","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[o("i",{staticClass:"fas fa-boxes"}),t._v(" "),o("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("configuration.locale_module"))+" "),o("span",[t._v("("+t._s(t.toWord(t.module))+")")]),t._v(" "),o("i",{staticClass:"fas fa-chevron-down"})])]),t._v(" "),o("div",{class:["dropdown-menu","ltr"==t.getConfig("direction")?"dropdown-menu-right":""],attrs:{"aria-labelledby":"moduleLink"}},t._l(t.modules,(function(n){return o("button",{staticClass:"dropdown-item",staticStyle:{cursor:"pointer"},on:{click:function(o){return t.$router.push("/configuration/locale/"+t.locale.locale+"/"+n)}}},[t._v("\n                                "+t._s(t.toWord(n))+" "),n==t.module?o("span",{staticClass:"pull-right"},[o("i",{staticClass:"fas fa-check"})]):t._e()])})),0)]),t._v(" "),o("help-button",{on:{clicked:function(n){t.help_topic="configuration.locale.translation"}}})],1)])])]),t._v(" "),o("div",{staticClass:"container-fluid"},[o("div",{staticClass:"card"},[o("div",{staticClass:"card-body p-4"},[t.getWordCount?o("div",[o("div",{staticClass:"row"},[t._l(t.words,(function(n,e){return["object"==typeof n?t._l(n,(function(n,s){return o("div",{staticClass:"col-12 col-sm-4"},[o("div",{staticClass:"form-group"},[o("label",{staticStyle:{color:"red"},attrs:{for:""}},[t._v(t._s(t.trans(t.module+"."+e+"."+s)))]),t._v(" "),o("input",{directives:[{name:"model",rawName:"v-model",value:t.words[e][s],expression:"words[index][i]"}],staticClass:"form-control",attrs:{type:"text",name:e+"_"+s},domProps:{value:t.words[e][s]},on:{input:function(n){n.target.composing||t.$set(t.words[e],s,n.target.value)}}})])])})):[o("div",{staticClass:"col-12 col-sm-4"},[o("div",{staticClass:"form-group"},[o("label",{staticClass:"font-weight-bold",attrs:{for:""}},[t._v(t._s(t.trans(t.module+"."+e)))]),t._v(" "),o("input",{directives:[{name:"model",rawName:"v-model",value:t.words[e],expression:"words[index]"}],staticClass:"form-control",attrs:{type:"text",name:e},domProps:{value:t.words[e]},on:{input:function(n){n.target.composing||t.$set(t.words,e,n.target.value)}}})])])]]}))],2),t._v(" "),o("div",{staticClass:"form-group"},[o("button",{staticClass:"btn btn-info btn-sm pull-right",on:{click:t.saveTranslation}},[t._v(t._s(t.trans("general.save")))])])]):t._e(),t._v(" "),t.getWordCount?t._e():o("div",[o("p",{staticClass:"alert alert-danger"},[t._v(t._s(t.trans("general.no_result_found")))])])])])]),t._v(" "),o("right-panel",{attrs:{topic:t.help_topic}})],1)}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=show.js.map?id=0788313f3a5ecd091451
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/configuration/locale/show"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      modules: {},
+      words: {},
+      locale: {},
+      module: this.$route.params.module ? this.$route.params.module : 'auth',
+      help_topic: ''
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('access-configuration')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    if (!helper.featureAvailable('multilingual')) {
+      helper.featureNotAvailableMsg();
+      this.$router.push('/dashboard');
+    }
+    this.fetchWords();
+  },
+  methods: {
+    fetchWords: function fetchWords() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.post('/api/locale/fetch', {
+        locale: this.$route.params.locale,
+        module: this.module
+      }).then(function (response) {
+        _this.modules = response.modules;
+        _this.words = response.words;
+        _this.locale = response.locale;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this.$router.push('/configuration/locale');
+      });
+    },
+    getName: function getName(name) {
+      name = helper.ucword(name);
+      return name.replace(/_/g, ' ');
+    },
+    getModuleLink: function getModuleLink(module) {
+      return '/configuration/locale/' + this.$route.params.locale + '/' + module;
+    },
+    saveTranslation: function saveTranslation() {
+      var loader = this.$loading.show();
+      axios.post('/api/locale/translate', {
+        locale: this.$route.params.locale,
+        module: this.module,
+        words: this.words
+      }).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    toWord: function toWord(word) {
+      return helper.toWord(word);
+    }
+  },
+  watch: {
+    '$route.params.module': function $routeParamsModule(newModule, oldModule) {
+      this.module = newModule;
+      this.fetchWords();
+    }
+  },
+  computed: {
+    getWordCount: function getWordCount() {
+      return _size(this.words);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=template&id=2eb4c18a&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=template&id=2eb4c18a& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("configuration.translation")) + " (" + _vm._s(_vm.locale.name) + ") ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/configuration/locale");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-globe"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("configuration.locale")))])]), _vm._v(" "), _c("div", {
+    staticClass: "btn-group"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    staticStyle: {
+      "margin-top": "-5px"
+    },
+    attrs: {
+      type: "button",
+      href: "#",
+      role: "button",
+      id: "moduleLink",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-boxes"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("configuration.locale_module")) + " "), _c("span", [_vm._v("(" + _vm._s(_vm.toWord(_vm.module)) + ")")]), _vm._v(" "), _c("i", {
+    staticClass: "fas fa-chevron-down"
+  })])]), _vm._v(" "), _c("div", {
+    "class": ["dropdown-menu", _vm.getConfig("direction") == "ltr" ? "dropdown-menu-right" : ""],
+    attrs: {
+      "aria-labelledby": "moduleLink"
+    }
+  }, _vm._l(_vm.modules, function (mod) {
+    return _c("button", {
+      staticClass: "dropdown-item",
+      staticStyle: {
+        cursor: "pointer"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.$router.push("/configuration/locale/" + _vm.locale.locale + "/" + mod);
+        }
+      }
+    }, [_vm._v("\n                                " + _vm._s(_vm.toWord(mod)) + " "), mod == _vm.module ? _c("span", {
+      staticClass: "pull-right"
+    }, [_c("i", {
+      staticClass: "fas fa-check"
+    })]) : _vm._e()]);
+  }), 0)]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "configuration.locale.translation";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body p-4"
+  }, [_vm.getWordCount ? _c("div", [_c("div", {
+    staticClass: "row"
+  }, [_vm._l(_vm.words, function (word, index) {
+    return [_typeof(word) === "object" ? _vm._l(word, function (wrd, i) {
+      return _c("div", {
+        staticClass: "col-12 col-sm-4"
+      }, [_c("div", {
+        staticClass: "form-group"
+      }, [_c("label", {
+        staticStyle: {
+          color: "red"
+        },
+        attrs: {
+          "for": ""
+        }
+      }, [_vm._v(_vm._s(_vm.trans(_vm.module + "." + index + "." + i)))]), _vm._v(" "), _c("input", {
+        directives: [{
+          name: "model",
+          rawName: "v-model",
+          value: _vm.words[index][i],
+          expression: "words[index][i]"
+        }],
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          name: "".concat(index, "_").concat(i)
+        },
+        domProps: {
+          value: _vm.words[index][i]
+        },
+        on: {
+          input: function input($event) {
+            if ($event.target.composing) return;
+            _vm.$set(_vm.words[index], i, $event.target.value);
+          }
+        }
+      })])]);
+    }) : [_c("div", {
+      staticClass: "col-12 col-sm-4"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("label", {
+      staticClass: "font-weight-bold",
+      attrs: {
+        "for": ""
+      }
+    }, [_vm._v(_vm._s(_vm.trans(_vm.module + "." + index)))]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: _vm.words[index],
+        expression: "words[index]"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "text",
+        name: index
+      },
+      domProps: {
+        value: _vm.words[index]
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(_vm.words, index, $event.target.value);
+        }
+      }
+    })])])]];
+  })], 2), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm pull-right",
+    on: {
+      click: _vm.saveTranslation
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.save")))])])]) : _vm._e(), _vm._v(" "), !_vm.getWordCount ? _c("div", [_c("p", {
+    staticClass: "alert alert-danger"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])]) : _vm._e()])])]), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.list-group-item .active {color:#ffffff;}\n", "",{"version":3,"sources":["webpack://./resources/js/views/configuration/locale/show.vue"],"names":[],"mappings":";AAyJA,0BAAA,aAAA,CAAA","sourcesContent":["<template>\n    <div>\n        <div class=\"page-titles\">\n            <div class=\"row\">\n                <div class=\"col-12 col-sm-6\">\n                    <h3 class=\"text-themecolor\">{{trans('configuration.translation')}} ({{locale.name}}) </h3>\n                </div>\n                <div class=\"col-12 col-sm-6\">\n                    <div class=\"action-buttons pull-right\">\n                        <button class=\"btn btn-info btn-sm\" @click=\"$router.push('/configuration/locale')\"><i class=\"fas fa-globe\"></i> <span class=\"d-none d-sm-inline\">{{trans('configuration.locale')}}</span></button>\n                        <div class=\"btn-group\">\n                            <button type=\"button\" style=\"margin-top:-5px;\" class=\"btn btn-info btn-sm\" href=\"#\" role=\"button\" id=\"moduleLink\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n                                <i class=\"fas fa-boxes\"></i> <span class=\"d-none d-sm-inline\">{{trans('configuration.locale_module')}} <span>({{toWord(module)}})</span> <i class=\"fas fa-chevron-down\"></i> </span>\n                            </button>\n                            <div :class=\"['dropdown-menu',getConfig('direction') == 'ltr' ? 'dropdown-menu-right' : '']\" aria-labelledby=\"moduleLink\">\n                                <button style=\"cursor:pointer;\" class=\"dropdown-item\" v-for=\"mod in modules\" @click=\"$router.push('/configuration/locale/'+locale.locale+'/'+mod)\">\n                                    {{toWord(mod)}} <span v-if=\"mod == module\" class=\"pull-right\"><i class=\"fas fa-check\"></i></span> \n                                </button>\n                            </div>\n                        </div>\n                        <help-button @clicked=\"help_topic = 'configuration.locale.translation'\"></help-button>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"container-fluid\">\n            <div class=\"card\">\n                <div class=\"card-body p-4\">\n                    <div v-if=\"getWordCount\">\n                        <div class=\"row\">\n                            <template v-for=\"(word,index) in words\">\n                                <template v-if=\"typeof word === 'object'\">\n                                    <div class=\"col-12 col-sm-4\" v-for=\"(wrd,i) in word\">\n                                        <div class=\"form-group\">\n                                            <label for=\"\" style=\"color:red;\">{{trans(module+'.'+index+'.'+i)}}</label>\n                                            <!-- <label for=\"\">{{index}}_{{i}}</label> -->\n                                            <input class=\"form-control\" type=\"text\" v-model=\"words[index][i]\" :name=\"`${index}_${i}`\">\n                                        </div>\n                                    </div>\n                                </template>\n                                <template v-else>\n                                    <div class=\"col-12 col-sm-4\">\n                                        <div class=\"form-group\">\n                                            <label for=\"\" class=\"font-weight-bold\">{{trans(module+'.'+index)}}</label>\n                                            <!-- <label for=\"\">{{index}}</label> -->\n                                            <input class=\"form-control\" type=\"text\" v-model=\"words[index]\" :name=\"index\">\n                                        </div>\n                                    </div>\n                                </template>\n                            </template>\n                        </div>\n                        <div class=\"form-group\">\n                            <button class=\"btn btn-info btn-sm pull-right\" @click=\"saveTranslation\">{{trans('general.save')}}</button>\n                        </div>\n                    </div>\n                    <div v-if=\"!getWordCount\">\n                        <p class=\"alert alert-danger\">{{trans('general.no_result_found')}}</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <right-panel :topic=\"help_topic\"></right-panel>\n    </div>\n</template>\n\n\n<script>\n    export default {\n        data() {\n            return {\n                modules: {},\n                words: {},\n                locale: {},\n                module: (this.$route.params.module) ? this.$route.params.module : 'auth',\n                help_topic: ''\n            };\n        },\n        mounted(){\n            if(!helper.hasPermission('access-configuration')){\n                helper.notAccessibleMsg();\n                this.$router.push('/dashboard');\n            }\n\n            if(!helper.featureAvailable('multilingual')){\n                helper.featureNotAvailableMsg();\n                this.$router.push('/dashboard');\n            }\n\n            this.fetchWords();\n        },\n        methods: {\n            fetchWords(){\n                let loader = this.$loading.show();\n                axios.post('/api/locale/fetch',{\n                    locale: this.$route.params.locale,\n                    module: this.module\n                    })\n                    .then(response => {\n                        this.modules = response.modules;\n                        this.words = response.words;\n                        this.locale = response.locale;\n                        loader.hide();\n                    }).catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                        this.$router.push('/configuration/locale');\n                    });\n            },\n            getName(name){\n                name = helper.ucword(name);\n                return name.replace(/_/g, ' ');\n            },\n            getModuleLink(module){\n                return '/configuration/locale/'+this.$route.params.locale+'/'+module\n            },\n            saveTranslation(){\n                let loader = this.$loading.show();\n                axios.post('/api/locale/translate',{\n                    locale: this.$route.params.locale,\n                    module: this.module,\n                    words: this.words\n                }).then(response => {\n                    toastr.success(response.message);\n                    loader.hide();\n                }).catch(error => {\n                    loader.hide();\n                    helper.showErrorMsg(error);\n                });\n            },\n            getConfig(config){\n                return helper.getConfig(config);\n            },\n            toWord(word){\n                return helper.toWord(word);\n            }\n        },\n        watch: {\n            '$route.params.module'(newModule, oldModule) {\n                this.module = newModule;\n                this.fetchWords();\n            }\n        },\n        computed: {\n            getWordCount(){\n                return _size(this.words);\n            }\n        }\n    }\n</script>\n<style>\n    .list-group-item .active {color:#ffffff;}\n</style>\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_style_index_0_id_2eb4c18a_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_style_index_0_id_2eb4c18a_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_style_index_0_id_2eb4c18a_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/locale/show.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/views/configuration/locale/show.vue ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _show_vue_vue_type_template_id_2eb4c18a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./show.vue?vue&type=template&id=2eb4c18a& */ "./resources/js/views/configuration/locale/show.vue?vue&type=template&id=2eb4c18a&");
+/* harmony import */ var _show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./show.vue?vue&type=script&lang=js& */ "./resources/js/views/configuration/locale/show.vue?vue&type=script&lang=js&");
+/* harmony import */ var _show_vue_vue_type_style_index_0_id_2eb4c18a_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css& */ "./resources/js/views/configuration/locale/show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _show_vue_vue_type_template_id_2eb4c18a___WEBPACK_IMPORTED_MODULE_0__.render,
+  _show_vue_vue_type_template_id_2eb4c18a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/configuration/locale/show.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/locale/show.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/views/configuration/locale/show.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./show.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/locale/show.vue?vue&type=template&id=2eb4c18a&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/views/configuration/locale/show.vue?vue&type=template&id=2eb4c18a& ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_template_id_2eb4c18a___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_template_id_2eb4c18a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_template_id_2eb4c18a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./show.vue?vue&type=template&id=2eb4c18a& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=template&id=2eb4c18a&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/locale/show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/views/configuration/locale/show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css& ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_style_index_0_id_2eb4c18a_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/locale/show.vue?vue&type=style&index=0&id=2eb4c18a&lang=css&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=show.js.map?id=852b7562132cac49

@@ -1,2 +1,1227 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[5942],{90113:(t,n,e)=>{"use strict";e.d(n,{Z:()=>r});var s=e(94015),a=e.n(s),i=e(23645),o=e.n(i)()(a());o.push([t.id,".card.student-card[data-v-795bc960]{cursor:pointer;opacity:.9;transition:all .3s ease-in-out}.card.student-card .student-info .student-thumb[data-v-795bc960]{background:#e1e2e3;border-radius:50%;float:left;height:100px;margin-right:20px;overflow:hidden;text-align:center;width:100px}.card.student-card .student-info .student-thumb i[data-v-795bc960]{font-size:50px;padding-top:25px}.card.student-card .student-info .student-thumb img[data-v-795bc960]{width:100%}.card.student-card .student-info p[data-v-795bc960]{margin-bottom:0;min-height:100px;padding-top:10px}.card.student-card .student-info p span[data-v-795bc960]{display:block}.card.student-card .student-info p span.student-name[data-v-795bc960]{font-size:120%;font-weight:500}.card.student-card .student-info p span.batch[data-v-795bc960]{font-size:100%}.card.student-card .student-info p span.other[data-v-795bc960]{font-size:90%}","",{version:3,sources:["webpack://./resources/js/views/student/admission/card-view.vue"],names:[],mappings:"AA4kBA,oCAGI,cAAA,CAFA,UAAA,CACA,8BA1kBJ,CA8kBQ,iEAKI,kBAAA,CADA,iBAAA,CAHA,UAAA,CAEA,YAAA,CAGA,iBAAA,CAEA,eAAA,CADA,iBAAA,CALA,WAtkBZ,CA6kBY,mEAEI,cAAA,CADA,gBA1kBhB,CA6kBY,qEACI,UA3kBhB,CA8kBQ,oDAEI,eAAA,CACA,gBAAA,CAFA,gBA1kBZ,CA8kBY,yDACI,aA5kBhB,CA8kBgB,sEACI,cAAA,CACA,eA5kBpB,CA8kBgB,+DACI,cA5kBpB,CA8kBgB,+DACI,aA5kBpB",sourcesContent:["\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.card.student-card {\n    opacity: 0.9;\n    transition: all 0.3s ease-in-out;\n    cursor: pointer;\n\n    .student-info {\n        .student-thumb {\n            float: left;\n            width: 100px;\n            height: 100px;\n            border-radius: 50%;\n            background: #e1e2e3;\n            margin-right: 20px;\n            text-align: center;\n            overflow: hidden;\n            i {\n                padding-top: 25px;\n                font-size: 50px;\n            }\n            img {\n                width: 100%;\n            }\n        }\n        p{\n            padding-top: 10px;\n            margin-bottom: 0;\n            min-height: 100px;\n\n            span {\n                display: block;\n\n                &.student-name{\n                    font-size: 120%;\n                    font-weight: 500;\n                }\n                &.batch{\n                    font-size: 100%;\n                }\n                &.other{\n                    font-size: 90%;\n                }\n            }\n        }\n    }\n}\n"],sourceRoot:""}]);const r=o},44937:(t,n,e)=>{"use strict";e.r(n),e.d(n,{default:()=>l});const s={components:{},data:function(){return{student_records:{total:0,data:[]},selectAll:!1,studentGroupForm:new Form({ids:[],student_group_id:"",action:"attach"}),student_groups:[],selected_group:null,filter:{sort_by:"first_name",order:"asc",batch_id:[],blood_group_id:[],religion_id:[],caste_id:[],gender:[],category_id:[],student_group_id:[],first_name:"",last_name:"",first_guardian_name:"",second_guardian_name:"",date_of_admission_start_date:"",date_of_birth_end_date:"",date_of_admission_end_date:"",date_of_birth_start_date:"",columns:["first_guardian_name","date_of_admission","admission_number","contact_number"],page_length:12},orderByOptions:[{value:"first_name",translation:i18n.student.first_name},{value:"last_name",translation:i18n.student.last_name},{value:"first_guardian_name",translation:i18n.student.first_guardian_name},{value:"second_guardian_name",translation:i18n.student.second_guardian_name},{value:"date_of_birth",translation:i18n.student.date_of_birth}],columns:[{text:i18n.student.admission_number,value:"admission_number"},{text:i18n.student.roll_number,value:"roll_number"},{text:i18n.student.middle_name,value:"middle_name"},{text:i18n.student.first_guardian_name,value:"first_guardian_name"},{text:i18n.student.second_guardian_name,value:"second_guardian_name"},{text:i18n.student.date_of_birth,value:"date_of_birth"},{text:i18n.student.date_of_admission,value:"date_of_admission"},{text:i18n.student.date_of_promotion,value:"date_of_promotion"},{text:i18n.student.contact_number,value:"contact_number"},{text:i18n.student.gender,value:"gender"},{text:i18n.student.nationality,value:"nationality"},{text:i18n.misc.blood_group,value:"blood_group"},{text:i18n.misc.religion,value:"religion"},{text:i18n.misc.caste,value:"caste"},{text:i18n.misc.category,value:"category"},{text:i18n.student.unique_identification_number,value:"unique_identification_number"},{text:i18n.student.first_guardian_contact_number_1,value:"first_guardian_contact_number_1"},{text:i18n.student.second_guardian_contact_number_1,value:"second_guardian_contact_number_1"},{text:i18n.student.emergency_contact_name,value:"emergency_contact_name"},{text:i18n.student.emergency_contact_number,value:"emergency_contact_number"},{text:i18n.student.present_address,value:"present_address"},{text:i18n.student.permanent_address,value:"permanent_address"}],batches:[],selected_batches:null,blood_groups:[],selected_blood_groups:null,castes:[],genders:[],selected_genders:null,selected_castes:null,religions:[],selected_religions:null,categories:[],selected_categories:null,showFilterPanel:!1,showColumnPanel:!1,selected_student_groups:null,help_topic:""}},mounted:function(){helper.hasPermission("list-student")||helper.hasPermission("list-class-teacher-wise-student")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getStudents(),helper.showDemoNotification(["student_admission"])},methods:{hasPermission:function(t){return helper.hasPermission(t)},hasNotAnyRole:function(t){return helper.hasNotAnyRole(t)},getConfig:function(t){return helper.getConfig(t)},getStudents:function(t){var n=this,e=this.$loading.show();"number"!=typeof t&&(t=1),this.selectAll=!1,this.filter.date_of_admission_start_date=helper.toDate(this.filter.date_of_admission_start_date),this.filter.date_of_admission_end_date=helper.toDate(this.filter.date_of_admission_end_date),this.filter.date_of_birth_start_date=helper.toDate(this.filter.date_of_birth_start_date),this.filter.date_of_birth_end_date=helper.toDate(this.filter.date_of_birth_end_date);var s=helper.getFilterURL(this.filter);axios.get("/api/student?page="+t+s).then((function(t){n.student_records=t.student_records,n.batches=t.filters.batches,n.blood_groups=t.filters.blood_groups,n.religions=t.filters.religions,n.castes=t.filters.castes,n.genders=t.filters.genders,n.categories=t.filters.categories,n.student_groups=t.filters.student_groups;var s=[];n.student_records.data.forEach((function(t){s.push(t.student.id)})),n.selectAll=s.every((function(t){return n.studentGroupForm.ids.indexOf(t)>-1}))?1:0,e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},toggleSelectAll:function(){var t=this;this.selectAll?this.student_records.data.forEach((function(n){t.studentGroupForm.ids.indexOf(n.student.id)<0&&t.studentGroupForm.ids.push(n.student.id)})):this.student_records.data.forEach((function(n){var e=t.studentGroupForm.ids.indexOf(n.student.id);e>=0&&t.studentGroupForm.ids.splice(e,1)}))},getStudentName:function(t){return helper.getStudentName(t)},print:function(){var t=this.$loading.show();if(this.filter.columns.length>6)return toastr.error(i18n.student.print_max_column),void t.hide();axios.post("/api/student/print",{filter:this.filter}).then((function(n){window.open("/print").document.write(n),t.hide()})).catch((function(n){t.hide(),helper.showErrorMsg(n)}))},pdf:function(){var t=this,n=this.$loading.show();if(this.filter.columns.length>6)return toastr.error(i18n.student.print_max_column),void n.hide();axios.post("/api/student/pdf",{filter:this.filter}).then((function(e){n.hide(),window.open("/download/report/"+e+"?token="+t.authToken)})).catch((function(t){n.hide(),helper.showErrorMsg(t)}))},exportExcel:function(){return"/api/student?action=excel"+helper.getFilterURL(this.filter)+"&token="+this.authToken},onBatchSelect:function(t){this.filter.batch_id.push(t.id)},onBatchRemove:function(t){this.filter.batch_id.splice(this.filter.batch_id.indexOf(t.id),1)},onBloodGroupSelect:function(t){this.filter.blood_group_id.push(t.id)},onBloodGroupRemove:function(t){this.filter.blood_group_id.splice(this.filter.blood_group_id.indexOf(t.id),1)},onReligionSelect:function(t){this.filter.religion_id.push(t.id)},onReligionRemove:function(t){this.filter.religion_id.splice(this.filter.religion_id.indexOf(t.id),1)},onCasteSelect:function(t){this.filter.caste_id.push(t.id)},onCasteRemove:function(t){this.filter.caste_id.splice(this.filter.caste_id.indexOf(t.id),1)},onGenderSelect:function(t){this.filter.gender.push(t.id)},onGenderRemove:function(t){this.filter.gender.splice(this.filter.gender.indexOf(t.id),1)},onCategorySelect:function(t){this.filter.category_id.push(t.id)},onCategoryRemove:function(t){this.filter.category_id.splice(this.filter.category_id.indexOf(t.id),1)},isColumnVisible:function(t){return this.filter.columns.indexOf(t)>-1},getRollNumber:function(t){return helper.getRollNumber(t)},getCourse:function(t){return t.batch.course.name},getBatch:function(t){return t.batch.name},onStudentGroupSelect:function(t){this.filter.student_group_id.push(t.id)},onStudentGroupRemove:function(t){this.filter.student_group_id.splice(this.filter.student_group_id.indexOf(t.id),1)},onGroupSelect:function(t){this.studentGroupForm.student_group_id=t.id},confirmGroupAction:function(){var t=this;return function(n){return t.groupAction()}},groupAction:function(){var t=this,n=this.$loading.show();this.studentGroupForm.post("/api/student/action/group").then((function(e){toastr.success(e.message),t.getStudents(),t.studentGroupForm.action="attach",t.selected_group=null,t.studentGroupForm.ids=[],n.hide()})).catch((function(t){n.hide(),helper.showErrorMsg(t)}))},navigateToStudent:function(t){this.$router.push("/student/"+t.student.uuid)},isToday:function(t){return helper.isToday(t)}},computed:{authToken:function(){return helper.getAuthToken()}},filters:{moment:function(t){return helper.formatDate(t)},momentDateTime:function(t){return helper.formatDateTime(t)}},watch:{"filter.sort_by":function(t){this.getStudents()},"filter.order":function(t){this.getStudents()},"filter.page_length":function(t){this.getStudents()}}};var a=e(93379),i=e.n(a),o=e(90113),r={insert:"head",singleton:!1};i()(o.Z,r);o.Z.locals;const l=(0,e(51900).Z)(s,(function(){var t=this,n=t.$createElement,e=t._self._c||n;return e("div",[e("div",{staticClass:"page-titles"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[e("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("student.student_list"))+" \n                    "),t.student_records.total?e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.total_result_found",{count:t.student_records.total,from:t.student_records.from,to:t.student_records.to})))]):e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.no_result_found")))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("div",{staticClass:"action-buttons pull-right"},[t.hasNotAnyRole(["student","parent"])?[e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.list_view"),expression:"trans('general.list_view')"}],staticClass:"btn btn-info btn-sm",on:{click:function(n){return t.$router.push("/student/list")}}},[e("i",{staticClass:"fas fa-list"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("general.list_view")))])]),t._v(" "),t.student_records.total&&t.hasPermission("list-registration")?e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.add_new"),expression:"trans('general.add_new')"}],staticClass:"btn btn-info btn-sm",on:{click:function(n){return t.$router.push("/student/registration")}}},[e("i",{staticClass:"fas fa-plus"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("student.add_new_student")))])]):t._e(),t._v(" "),t.showFilterPanel?t._e():e("button",{staticClass:"btn btn-info btn-sm",on:{click:function(n){t.showFilterPanel=!t.showFilterPanel}}},[e("i",{staticClass:"fas fa-filter"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("general.filter")))])]),t._v(" "),e("sort-by",{attrs:{"order-by-options":t.orderByOptions,"sort-by":t.filter.sort_by,order:t.filter.order},on:{updateSortBy:function(n){t.filter.sort_by=n},updateOrder:function(n){t.filter.order=n}}}),t._v(" "),e("div",{staticClass:"btn-group"},[e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.more_option"),expression:"trans('general.more_option')"}],staticClass:"btn btn-info btn-sm dropdown-toggle no-caret ",attrs:{type:"button",role:"menu",id:"moreOption","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[e("i",{staticClass:"fas fa-ellipsis-h"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"})]),t._v(" "),e("div",{class:["dropdown-menu","ltr"==t.getConfig("direction")?"dropdown-menu-right":""],attrs:{"aria-labelledby":"moreOption"}},[e("button",{staticClass:"dropdown-item custom-dropdown",on:{click:t.print}},[e("i",{staticClass:"fas fa-print"}),t._v(" "+t._s(t.trans("general.print")))]),t._v(" "),e("button",{staticClass:"dropdown-item custom-dropdown",on:{click:t.pdf}},[e("i",{staticClass:"fas fa-file-pdf"}),t._v(" "+t._s(t.trans("general.generate_pdf")))]),t._v(" "),e("a",{staticClass:"dropdown-item custom-dropdown",attrs:{href:t.exportExcel()}},[e("i",{staticClass:"fas fa-file-excel"}),t._v(" "+t._s(t.trans("general.generate_excel")))]),t._v(" "),e("button",{staticClass:"dropdown-item custom-dropdown",on:{click:function(n){return t.$router.go(-1)}}},[e("i",{staticClass:"fas fa-undo"}),t._v(" "+t._s(t.trans("general.back")))])])]),t._v(" "),e("help-button",{on:{clicked:function(n){t.help_topic="admission"}}})]:t._e()],2)])])]),t._v(" "),e("div",{staticClass:"container-fluid"},[e("transition",{attrs:{name:"fade"}},[t.showFilterPanel?e("div",{staticClass:"card card-form"},[e("div",{staticClass:"card-body"},[e("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("general.filter"))+"\n                    ")]),t._v(" "),e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.first_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.filter.first_name,expression:"filter.first_name"}],staticClass:"form-control",attrs:{name:"first_name"},domProps:{value:t.filter.first_name},on:{input:function(n){n.target.composing||t.$set(t.filter,"first_name",n.target.value)}}})])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.last_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.filter.last_name,expression:"filter.last_name"}],staticClass:"form-control",attrs:{name:"last_name"},domProps:{value:t.filter.last_name},on:{input:function(n){n.target.composing||t.$set(t.filter,"last_name",n.target.value)}}})])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.first_guardian_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.filter.first_guardian_name,expression:"filter.first_guardian_name"}],staticClass:"form-control",attrs:{name:"first_guardian_name"},domProps:{value:t.filter.first_guardian_name},on:{input:function(n){n.target.composing||t.$set(t.filter,"first_guardian_name",n.target.value)}}})])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.second_guardian_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.filter.second_guardian_name,expression:"filter.second_guardian_name"}],staticClass:"form-control",attrs:{name:"second_guardian_name"},domProps:{value:t.filter.second_guardian_name},on:{input:function(n){n.target.composing||t.$set(t.filter,"second_guardian_name",n.target.value)}}})])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-4"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.batch")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id","group-values":"batches","group-label":"course_group","group-select":!1,name:"batch_id",id:"batch_id",options:t.batches,placeholder:t.trans("academic.select_batch"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_batches},on:{select:t.onBatchSelect,remove:t.onBatchRemove},model:{value:t.selected_batches,callback:function(n){t.selected_batches=n},expression:"selected_batches"}},[t.batches.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("date-range-picker",{attrs:{"start-date":t.filter.date_of_birth_start_date,"end-date":t.filter.date_of_birth_end_date,label:t.trans("student.date_of_birth_between")},on:{"update:startDate":function(n){return t.$set(t.filter,"date_of_birth_start_date",n)},"update:start-date":function(n){return t.$set(t.filter,"date_of_birth_start_date",n)},"update:endDate":function(n){return t.$set(t.filter,"date_of_birth_end_date",n)},"update:end-date":function(n){return t.$set(t.filter,"date_of_birth_end_date",n)}}})],1),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("date-range-picker",{attrs:{"start-date":t.filter.date_of_admission_start_date,"end-date":t.filter.date_of_admission_end_date,label:t.trans("student.date_of_admission_between")},on:{"update:startDate":function(n){return t.$set(t.filter,"date_of_admission_start_date",n)},"update:start-date":function(n){return t.$set(t.filter,"date_of_admission_start_date",n)},"update:endDate":function(n){return t.$set(t.filter,"date_of_admission_end_date",n)},"update:end-date":function(n){return t.$set(t.filter,"date_of_admission_end_date",n)}}})],1),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.student_group")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id",name:"student_group_id",id:"student_group_id",options:t.student_groups,placeholder:t.trans("student.select_student_group"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_student_groups},on:{select:t.onStudentGroupSelect,remove:t.onStudentGroupRemove},model:{value:t.selected_student_groups,callback:function(n){t.selected_student_groups=n},expression:"selected_student_groups"}},[t.student_groups.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.gender")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id",name:"gender",id:"gender",options:t.genders,multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_genders},on:{select:t.onGenderSelect,remove:t.onGenderRemove},model:{value:t.selected_genders,callback:function(n){t.selected_genders=n},expression:"selected_genders"}},[t.genders.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("misc.blood_group")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id",name:"blood_group_id",id:"blood_group_id",options:t.blood_groups,placeholder:t.trans("misc.select_blood_group"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_blood_groups},on:{select:t.onBloodGroupSelect,remove:t.onBloodGroupRemove},model:{value:t.selected_blood_groups,callback:function(n){t.selected_blood_groups=n},expression:"selected_blood_groups"}},[t.blood_groups.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("misc.religion")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id",name:"religion_id",id:"religion_id",options:t.religions,placeholder:t.trans("misc.select_religion"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_religions},on:{select:t.onReligionSelect,remove:t.onReligionRemove},model:{value:t.selected_religions,callback:function(n){t.selected_religions=n},expression:"selected_religions"}},[t.religions.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("misc.caste")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id",name:"caste_id",id:"caste_id",options:t.castes,placeholder:t.trans("misc.select_caste"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_castes},on:{select:t.onCasteSelect,remove:t.onCasteRemove},model:{value:t.selected_castes,callback:function(n){t.selected_castes=n},expression:"selected_castes"}},[t.castes.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("misc.category")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id",name:"category_id",id:"category_id",options:t.categories,placeholder:t.trans("misc.select_category"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_categories},on:{select:t.onCategorySelect,remove:t.onCategoryRemove},model:{value:t.selected_categories,callback:function(n){t.selected_categories=n},expression:"selected_categories"}},[t.categories.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)])]),t._v(" "),e("div",{staticClass:"card-footer text-right"},[e("button",{staticClass:"btn btn-danger",attrs:{type:"button"},on:{click:function(n){t.showFilterPanel=!1}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),e("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"button"},on:{click:t.getStudents}},[t._v(t._s(t.trans("general.filter")))])])])]):t._e()]),t._v(" "),e("div",{staticClass:"card"},[e("div",{staticClass:"card-body p-4"},[e("div",{staticClass:"row"},t._l(t.student_records.data,(function(n){return e("div",{key:n.id,staticClass:"col-md-3 col-12"},[e("div",{staticClass:"card card-box with-shadow student-card"},[e("div",{staticClass:"card-body"},[t.isToday(n.student.date_of_birth)?e("div",{staticClass:"ribbon ribbon-top-left"},[e("span",{staticClass:"ribbon-red"},[e("i",{staticClass:"fas fa-birthday-cake"}),t._v(" "+t._s(t.trans("calendar.birthday")))])]):t._e(),t._v(" "),e("div",{staticClass:"student-info",on:{click:function(e){return t.navigateToStudent(n)}}},[e("span",{staticClass:"student-thumb pull-left"},[n.student.student_photo?[e("img",{staticStyle:{height:"inherit",width:"auto"},attrs:{src:"/"+n.student.student_photo}})]:["female"==n.student.gender?e("img",{staticClass:"img-circle",attrs:{src:"/images/avatar_female_kid.png"}}):e("img",{staticClass:"img-circle",attrs:{src:"/images/avatar_male_kid.png"}})]],2),t._v(" "),e("p",[e("span",{staticClass:"other small text-muted"},[t._v(t._s(n.admission.admission_number)+" \n                                            "),n.student.age?[t._v("("+t._s(n.student.age.years+" "+t.trans("list.year")+" "+n.student.age.months+" "+t.trans("list.month"))+")")]:t._e()],2),t._v(" "),e("span",{staticClass:"student-name"},[t._v(t._s(n.student.name))]),t._v(" "),e("span",{staticClass:"other small text-muted"},[t._v(t._s(n.batch.course.name+" "+n.batch.name)+" ("+t._s(n.full_roll_number)+")")]),t._v(" "),e("span",{staticClass:"other small text-muted"},[t._v(t._s(n.student.parent.first_guardian_name)+" "),e("i",{staticClass:"fas fa-mobile"}),t._v(" "+t._s(n.student.contact_number)+"\n                                        ")])])])])])])})),0),t._v(" "),t.student_records.total?t._e():e("module-info",{attrs:{module:"student",title:"admission_module_title",description:"admission_module_description",icon:"list"}}),t._v(" "),e("pagination-record",{attrs:{"show-page-length":!1,"page-length":t.filter.page_length,records:t.student_records},on:{"update:pageLength":function(n){return t.$set(t.filter,"page_length",n)},"update:page-length":function(n){return t.$set(t.filter,"page_length",n)},updateRecords:t.getStudents}})],1)])],1),t._v(" "),e("right-panel",{attrs:{topic:t.help_topic}})],1)}),[],!1,null,"795bc960",null).exports}}]);
-//# sourceMappingURL=card-view.js.map?id=d7f4c02311fff76e7bcf
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/student/admission/card-view"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      student_records: {
+        total: 0,
+        data: []
+      },
+      selectAll: false,
+      studentGroupForm: new Form({
+        ids: [],
+        student_group_id: '',
+        action: 'attach'
+      }),
+      student_groups: [],
+      selected_group: null,
+      filter: {
+        sort_by: 'first_name',
+        order: 'asc',
+        batch_id: [],
+        blood_group_id: [],
+        religion_id: [],
+        caste_id: [],
+        gender: [],
+        category_id: [],
+        student_group_id: [],
+        first_name: '',
+        last_name: '',
+        first_guardian_name: '',
+        second_guardian_name: '',
+        date_of_admission_start_date: '',
+        date_of_birth_end_date: '',
+        date_of_admission_end_date: '',
+        date_of_birth_start_date: '',
+        columns: ['first_guardian_name', 'date_of_admission', 'admission_number', 'contact_number'],
+        page_length: 12
+      },
+      orderByOptions: [{
+        value: 'first_name',
+        translation: i18n.student.first_name
+      }, {
+        value: 'last_name',
+        translation: i18n.student.last_name
+      }, {
+        value: 'first_guardian_name',
+        translation: i18n.student.first_guardian_name
+      }, {
+        value: 'second_guardian_name',
+        translation: i18n.student.second_guardian_name
+      }, {
+        value: 'date_of_birth',
+        translation: i18n.student.date_of_birth
+      }],
+      columns: [{
+        text: i18n.student.admission_number,
+        value: 'admission_number'
+      }, {
+        text: i18n.student.roll_number,
+        value: 'roll_number'
+      }, {
+        text: i18n.student.middle_name,
+        value: 'middle_name'
+      }, {
+        text: i18n.student.first_guardian_name,
+        value: 'first_guardian_name'
+      }, {
+        text: i18n.student.second_guardian_name,
+        value: 'second_guardian_name'
+      }, {
+        text: i18n.student.date_of_birth,
+        value: 'date_of_birth'
+      }, {
+        text: i18n.student.date_of_admission,
+        value: 'date_of_admission'
+      }, {
+        text: i18n.student.date_of_promotion,
+        value: 'date_of_promotion'
+      }, {
+        text: i18n.student.contact_number,
+        value: 'contact_number'
+      }, {
+        text: i18n.student.gender,
+        value: 'gender'
+      }, {
+        text: i18n.student.nationality,
+        value: 'nationality'
+      }, {
+        text: i18n.misc.blood_group,
+        value: 'blood_group'
+      }, {
+        text: i18n.misc.religion,
+        value: 'religion'
+      }, {
+        text: i18n.misc.caste,
+        value: 'caste'
+      }, {
+        text: i18n.misc.category,
+        value: 'category'
+      }, {
+        text: i18n.student.unique_identification_number,
+        value: 'unique_identification_number'
+      }, {
+        text: i18n.student.first_guardian_contact_number_1,
+        value: 'first_guardian_contact_number_1'
+      }, {
+        text: i18n.student.second_guardian_contact_number_1,
+        value: 'second_guardian_contact_number_1'
+      }, {
+        text: i18n.student.emergency_contact_name,
+        value: 'emergency_contact_name'
+      }, {
+        text: i18n.student.emergency_contact_number,
+        value: 'emergency_contact_number'
+      }, {
+        text: i18n.student.present_address,
+        value: 'present_address'
+      }, {
+        text: i18n.student.permanent_address,
+        value: 'permanent_address'
+      }],
+      batches: [],
+      selected_batches: null,
+      blood_groups: [],
+      selected_blood_groups: null,
+      castes: [],
+      genders: [],
+      selected_genders: null,
+      selected_castes: null,
+      religions: [],
+      selected_religions: null,
+      categories: [],
+      selected_categories: null,
+      showFilterPanel: false,
+      showColumnPanel: false,
+      selected_student_groups: null,
+      help_topic: ''
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('list-student') && !helper.hasPermission('list-class-teacher-wise-student')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getStudents();
+    helper.showDemoNotification(['student_admission']);
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    hasNotAnyRole: function hasNotAnyRole(roles) {
+      return helper.hasNotAnyRole(roles);
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    getStudents: function getStudents(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      this.selectAll = false;
+      this.filter.date_of_admission_start_date = helper.toDate(this.filter.date_of_admission_start_date);
+      this.filter.date_of_admission_end_date = helper.toDate(this.filter.date_of_admission_end_date);
+      this.filter.date_of_birth_start_date = helper.toDate(this.filter.date_of_birth_start_date);
+      this.filter.date_of_birth_end_date = helper.toDate(this.filter.date_of_birth_end_date);
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/student?page=' + page + url).then(function (response) {
+        _this.student_records = response.student_records;
+        _this.batches = response.filters.batches;
+        _this.blood_groups = response.filters.blood_groups;
+        _this.religions = response.filters.religions;
+        _this.castes = response.filters.castes;
+        _this.genders = response.filters.genders;
+        _this.categories = response.filters.categories;
+        _this.student_groups = response.filters.student_groups;
+        var ids = [];
+        _this.student_records.data.forEach(function (student_record) {
+          ids.push(student_record.student.id);
+        });
+        _this.selectAll = ids.every(function (elem) {
+          return _this.studentGroupForm.ids.indexOf(elem) > -1;
+        }) ? 1 : 0;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    toggleSelectAll: function toggleSelectAll() {
+      var _this2 = this;
+      if (this.selectAll) {
+        this.student_records.data.forEach(function (student_record) {
+          if (_this2.studentGroupForm.ids.indexOf(student_record.student.id) < 0) _this2.studentGroupForm.ids.push(student_record.student.id);
+        });
+      } else {
+        this.student_records.data.forEach(function (student_record) {
+          var index = _this2.studentGroupForm.ids.indexOf(student_record.student.id);
+          if (index >= 0) {
+            _this2.studentGroupForm.ids.splice(index, 1);
+          }
+        });
+      }
+    },
+    getStudentName: function getStudentName(student) {
+      return helper.getStudentName(student);
+    },
+    print: function print() {
+      var loader = this.$loading.show();
+      if (this.filter.columns.length > 6) {
+        toastr.error(i18n.student.print_max_column);
+        loader.hide();
+        return;
+      }
+      axios.post('/api/student/print', {
+        filter: this.filter
+      }).then(function (response) {
+        var print = window.open("/print");
+        print.document.write(response);
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    pdf: function pdf() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      if (this.filter.columns.length > 6) {
+        toastr.error(i18n.student.print_max_column);
+        loader.hide();
+        return;
+      }
+      axios.post('/api/student/pdf', {
+        filter: this.filter
+      }).then(function (response) {
+        loader.hide();
+        window.open('/download/report/' + response + '?token=' + _this3.authToken);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    exportExcel: function exportExcel() {
+      var url = helper.getFilterURL(this.filter);
+      return '/api/student?action=excel' + url + '&token=' + this.authToken;
+    },
+    onBatchSelect: function onBatchSelect(selectedOption) {
+      this.filter.batch_id.push(selectedOption.id);
+    },
+    onBatchRemove: function onBatchRemove(removedOption) {
+      this.filter.batch_id.splice(this.filter.batch_id.indexOf(removedOption.id), 1);
+    },
+    onBloodGroupSelect: function onBloodGroupSelect(selectedOption) {
+      this.filter.blood_group_id.push(selectedOption.id);
+    },
+    onBloodGroupRemove: function onBloodGroupRemove(removedOption) {
+      this.filter.blood_group_id.splice(this.filter.blood_group_id.indexOf(removedOption.id), 1);
+    },
+    onReligionSelect: function onReligionSelect(selectedOption) {
+      this.filter.religion_id.push(selectedOption.id);
+    },
+    onReligionRemove: function onReligionRemove(removedOption) {
+      this.filter.religion_id.splice(this.filter.religion_id.indexOf(removedOption.id), 1);
+    },
+    onCasteSelect: function onCasteSelect(selectedOption) {
+      this.filter.caste_id.push(selectedOption.id);
+    },
+    onCasteRemove: function onCasteRemove(removedOption) {
+      this.filter.caste_id.splice(this.filter.caste_id.indexOf(removedOption.id), 1);
+    },
+    onGenderSelect: function onGenderSelect(selectedOption) {
+      this.filter.gender.push(selectedOption.id);
+    },
+    onGenderRemove: function onGenderRemove(removedOption) {
+      this.filter.gender.splice(this.filter.gender.indexOf(removedOption.id), 1);
+    },
+    onCategorySelect: function onCategorySelect(selectedOption) {
+      this.filter.category_id.push(selectedOption.id);
+    },
+    onCategoryRemove: function onCategoryRemove(removedOption) {
+      this.filter.category_id.splice(this.filter.category_id.indexOf(removedOption.id), 1);
+    },
+    isColumnVisible: function isColumnVisible(column) {
+      return this.filter.columns.indexOf(column) > -1 ? true : false;
+    },
+    getRollNumber: function getRollNumber(student_record) {
+      return helper.getRollNumber(student_record);
+    },
+    getCourse: function getCourse(student_record) {
+      return student_record.batch.course.name;
+    },
+    getBatch: function getBatch(student_record) {
+      return student_record.batch.name;
+    },
+    onStudentGroupSelect: function onStudentGroupSelect(selectedOption) {
+      this.filter.student_group_id.push(selectedOption.id);
+    },
+    onStudentGroupRemove: function onStudentGroupRemove(removedOption) {
+      this.filter.student_group_id.splice(this.filter.student_group_id.indexOf(removedOption.id), 1);
+    },
+    onGroupSelect: function onGroupSelect(selectedOption) {
+      this.studentGroupForm.student_group_id = selectedOption.id;
+    },
+    confirmGroupAction: function confirmGroupAction() {
+      var _this4 = this;
+      return function (dialog) {
+        return _this4.groupAction();
+      };
+    },
+    groupAction: function groupAction() {
+      var _this5 = this;
+      var loader = this.$loading.show();
+      this.studentGroupForm.post('/api/student/action/group').then(function (response) {
+        toastr.success(response.message);
+        _this5.getStudents();
+        _this5.studentGroupForm.action = 'attach';
+        _this5.selected_group = null;
+        _this5.studentGroupForm.ids = [];
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    navigateToStudent: function navigateToStudent(student_record) {
+      this.$router.push('/student/' + student_record.student.uuid);
+    },
+    isToday: function isToday(date) {
+      return helper.isToday(date);
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  },
+  watch: {
+    'filter.sort_by': function filterSort_by(val) {
+      this.getStudents();
+    },
+    'filter.order': function filterOrder(val) {
+      this.getStudents();
+    },
+    'filter.page_length': function filterPage_length(val) {
+      this.getStudents();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=template&id=444704b9&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=template&id=444704b9&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("student.student_list")) + " \n                    "), _vm.student_records.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.student_records.total,
+    from: _vm.student_records.from,
+    to: _vm.student_records.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_vm.hasNotAnyRole(["student", "parent"]) ? [_c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.list_view"),
+      expression: "trans('general.list_view')"
+    }],
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/student/list");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.list_view")))])]), _vm._v(" "), _vm.student_records.total && _vm.hasPermission("list-registration") ? _c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.add_new"),
+      expression: "trans('general.add_new')"
+    }],
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/student/registration");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("student.add_new_student")))])]) : _vm._e(), _vm._v(" "), !_vm.showFilterPanel ? _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = !_vm.showFilterPanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-filter"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])]) : _vm._e(), _vm._v(" "), _c("sort-by", {
+    attrs: {
+      "order-by-options": _vm.orderByOptions,
+      "sort-by": _vm.filter.sort_by,
+      order: _vm.filter.order
+    },
+    on: {
+      updateSortBy: function updateSortBy(value) {
+        _vm.filter.sort_by = value;
+      },
+      updateOrder: function updateOrder(value) {
+        _vm.filter.order = value;
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "btn-group"
+  }, [_c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.more_option"),
+      expression: "trans('general.more_option')"
+    }],
+    staticClass: "btn btn-info btn-sm dropdown-toggle no-caret",
+    attrs: {
+      type: "button",
+      role: "menu",
+      id: "moreOption",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-ellipsis-h"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  })]), _vm._v(" "), _c("div", {
+    "class": ["dropdown-menu", _vm.getConfig("direction") == "ltr" ? "dropdown-menu-right" : ""],
+    attrs: {
+      "aria-labelledby": "moreOption"
+    }
+  }, [_c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.print
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-print"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.print")))]), _vm._v(" "), _c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.pdf
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-file-pdf"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.generate_pdf")))]), _vm._v(" "), _c("a", {
+    staticClass: "dropdown-item custom-dropdown",
+    attrs: {
+      href: _vm.exportExcel()
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-file-excel"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.generate_excel")))]), _vm._v(" "), _c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: function click($event) {
+        return _vm.$router.go(-1);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-undo"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.back")))])])]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "admission";
+      }
+    }
+  })] : _vm._e()], 2)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showFilterPanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")) + "\n                    ")]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.first_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.first_name,
+      expression: "filter.first_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "first_name"
+    },
+    domProps: {
+      value: _vm.filter.first_name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.filter, "first_name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.last_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.last_name,
+      expression: "filter.last_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "last_name"
+    },
+    domProps: {
+      value: _vm.filter.last_name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.filter, "last_name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.first_guardian_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.first_guardian_name,
+      expression: "filter.first_guardian_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "first_guardian_name"
+    },
+    domProps: {
+      value: _vm.filter.first_guardian_name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.filter, "first_guardian_name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.second_guardian_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.second_guardian_name,
+      expression: "filter.second_guardian_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "second_guardian_name"
+    },
+    domProps: {
+      value: _vm.filter.second_guardian_name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.filter, "second_guardian_name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      "group-values": "batches",
+      "group-label": "course_group",
+      "group-select": false,
+      name: "batch_id",
+      id: "batch_id",
+      options: _vm.batches,
+      placeholder: _vm.trans("academic.select_batch"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_batches
+    },
+    on: {
+      select: _vm.onBatchSelect,
+      remove: _vm.onBatchRemove
+    },
+    model: {
+      value: _vm.selected_batches,
+      callback: function callback($$v) {
+        _vm.selected_batches = $$v;
+      },
+      expression: "selected_batches"
+    }
+  }, [!_vm.batches.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("date-range-picker", {
+    attrs: {
+      "start-date": _vm.filter.date_of_birth_start_date,
+      "end-date": _vm.filter.date_of_birth_end_date,
+      label: _vm.trans("student.date_of_birth_between")
+    },
+    on: {
+      "update:startDate": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "date_of_birth_start_date", $event);
+      },
+      "update:start-date": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "date_of_birth_start_date", $event);
+      },
+      "update:endDate": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "date_of_birth_end_date", $event);
+      },
+      "update:end-date": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "date_of_birth_end_date", $event);
+      }
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("date-range-picker", {
+    attrs: {
+      "start-date": _vm.filter.date_of_admission_start_date,
+      "end-date": _vm.filter.date_of_admission_end_date,
+      label: _vm.trans("student.date_of_admission_between")
+    },
+    on: {
+      "update:startDate": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "date_of_admission_start_date", $event);
+      },
+      "update:start-date": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "date_of_admission_start_date", $event);
+      },
+      "update:endDate": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "date_of_admission_end_date", $event);
+      },
+      "update:end-date": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "date_of_admission_end_date", $event);
+      }
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.student_group")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "student_group_id",
+      id: "student_group_id",
+      options: _vm.student_groups,
+      placeholder: _vm.trans("student.select_student_group"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_student_groups
+    },
+    on: {
+      select: _vm.onStudentGroupSelect,
+      remove: _vm.onStudentGroupRemove
+    },
+    model: {
+      value: _vm.selected_student_groups,
+      callback: function callback($$v) {
+        _vm.selected_student_groups = $$v;
+      },
+      expression: "selected_student_groups"
+    }
+  }, [!_vm.student_groups.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.gender")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "gender",
+      id: "gender",
+      options: _vm.genders,
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_genders
+    },
+    on: {
+      select: _vm.onGenderSelect,
+      remove: _vm.onGenderRemove
+    },
+    model: {
+      value: _vm.selected_genders,
+      callback: function callback($$v) {
+        _vm.selected_genders = $$v;
+      },
+      expression: "selected_genders"
+    }
+  }, [!_vm.genders.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("misc.blood_group")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "blood_group_id",
+      id: "blood_group_id",
+      options: _vm.blood_groups,
+      placeholder: _vm.trans("misc.select_blood_group"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_blood_groups
+    },
+    on: {
+      select: _vm.onBloodGroupSelect,
+      remove: _vm.onBloodGroupRemove
+    },
+    model: {
+      value: _vm.selected_blood_groups,
+      callback: function callback($$v) {
+        _vm.selected_blood_groups = $$v;
+      },
+      expression: "selected_blood_groups"
+    }
+  }, [!_vm.blood_groups.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("misc.religion")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "religion_id",
+      id: "religion_id",
+      options: _vm.religions,
+      placeholder: _vm.trans("misc.select_religion"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_religions
+    },
+    on: {
+      select: _vm.onReligionSelect,
+      remove: _vm.onReligionRemove
+    },
+    model: {
+      value: _vm.selected_religions,
+      callback: function callback($$v) {
+        _vm.selected_religions = $$v;
+      },
+      expression: "selected_religions"
+    }
+  }, [!_vm.religions.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("misc.caste")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "caste_id",
+      id: "caste_id",
+      options: _vm.castes,
+      placeholder: _vm.trans("misc.select_caste"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_castes
+    },
+    on: {
+      select: _vm.onCasteSelect,
+      remove: _vm.onCasteRemove
+    },
+    model: {
+      value: _vm.selected_castes,
+      callback: function callback($$v) {
+        _vm.selected_castes = $$v;
+      },
+      expression: "selected_castes"
+    }
+  }, [!_vm.castes.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("misc.category")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "category_id",
+      id: "category_id",
+      options: _vm.categories,
+      placeholder: _vm.trans("misc.select_category"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_categories
+    },
+    on: {
+      select: _vm.onCategorySelect,
+      remove: _vm.onCategoryRemove
+    },
+    model: {
+      value: _vm.selected_categories,
+      callback: function callback($$v) {
+        _vm.selected_categories = $$v;
+      },
+      expression: "selected_categories"
+    }
+  }, [!_vm.categories.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("button", {
+    staticClass: "btn btn-danger",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = false;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.getStudents
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])])])]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body p-4"
+  }, [_c("div", {
+    staticClass: "row"
+  }, _vm._l(_vm.student_records.data, function (student_record) {
+    return _c("div", {
+      key: student_record.id,
+      staticClass: "col-md-3 col-12"
+    }, [_c("div", {
+      staticClass: "card card-box with-shadow student-card"
+    }, [_c("div", {
+      staticClass: "card-body"
+    }, [_vm.isToday(student_record.student.date_of_birth) ? _c("div", {
+      staticClass: "ribbon ribbon-top-left"
+    }, [_c("span", {
+      staticClass: "ribbon-red"
+    }, [_c("i", {
+      staticClass: "fas fa-birthday-cake"
+    }), _vm._v(" " + _vm._s(_vm.trans("calendar.birthday")))])]) : _vm._e(), _vm._v(" "), _c("div", {
+      staticClass: "student-info",
+      on: {
+        click: function click($event) {
+          return _vm.navigateToStudent(student_record);
+        }
+      }
+    }, [_c("span", {
+      staticClass: "student-thumb pull-left"
+    }, [!student_record.student.student_photo ? [student_record.student.gender == "female" ? _c("img", {
+      staticClass: "img-circle",
+      attrs: {
+        src: "/images/avatar_female_kid.png"
+      }
+    }) : _c("img", {
+      staticClass: "img-circle",
+      attrs: {
+        src: "/images/avatar_male_kid.png"
+      }
+    })] : [_c("img", {
+      staticStyle: {
+        height: "inherit",
+        width: "auto"
+      },
+      attrs: {
+        src: "/".concat(student_record.student.student_photo)
+      }
+    })]], 2), _vm._v(" "), _c("p", [_c("span", {
+      staticClass: "other small text-muted"
+    }, [_vm._v(_vm._s(student_record.admission.admission_number) + " \n                                            "), student_record.student.age ? [_vm._v("(" + _vm._s(student_record.student.age.years + " " + _vm.trans("list.year") + " " + student_record.student.age.months + " " + _vm.trans("list.month")) + ")")] : _vm._e()], 2), _vm._v(" "), _c("span", {
+      staticClass: "student-name"
+    }, [_vm._v(_vm._s(student_record.student.name))]), _vm._v(" "), _c("span", {
+      staticClass: "other small text-muted"
+    }, [_vm._v(_vm._s(student_record.batch.course.name + " " + student_record.batch.name) + " (" + _vm._s(student_record.full_roll_number) + ")")]), _vm._v(" "), _c("span", {
+      staticClass: "other small text-muted"
+    }, [_vm._v(_vm._s(student_record.student.parent.first_guardian_name) + " "), _c("i", {
+      staticClass: "fas fa-mobile"
+    }), _vm._v(" " + _vm._s(student_record.student.contact_number) + "\n                                        ")])])])])])]);
+  }), 0), _vm._v(" "), !_vm.student_records.total ? _c("module-info", {
+    attrs: {
+      module: "student",
+      title: "admission_module_title",
+      description: "admission_module_description",
+      icon: "list"
+    }
+  }) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "show-page-length": false,
+      "page-length": _vm.filter.page_length,
+      records: _vm.student_records
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getStudents
+    }
+  })], 1)])], 1), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".card.student-card[data-v-444704b9] {\n  opacity: 0.9;\n  transition: all 0.3s ease-in-out;\n  cursor: pointer;\n}\n.card.student-card .student-info .student-thumb[data-v-444704b9] {\n  float: left;\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  background: #e1e2e3;\n  margin-right: 20px;\n  text-align: center;\n  overflow: hidden;\n}\n.card.student-card .student-info .student-thumb i[data-v-444704b9] {\n  padding-top: 25px;\n  font-size: 50px;\n}\n.card.student-card .student-info .student-thumb img[data-v-444704b9] {\n  width: 100%;\n}\n.card.student-card .student-info p[data-v-444704b9] {\n  padding-top: 10px;\n  margin-bottom: 0;\n  min-height: 100px;\n}\n.card.student-card .student-info p span[data-v-444704b9] {\n  display: block;\n}\n.card.student-card .student-info p span.student-name[data-v-444704b9] {\n  font-size: 120%;\n  font-weight: 500;\n}\n.card.student-card .student-info p span.batch[data-v-444704b9] {\n  font-size: 100%;\n}\n.card.student-card .student-info p span.other[data-v-444704b9] {\n  font-size: 90%;\n}", "",{"version":3,"sources":["webpack://./resources/js/views/student/admission/card-view.vue"],"names":[],"mappings":"AACA;EACI,YAAA;EACA,gCAAA;EACA,eAAA;AAAJ;AAGQ;EACI,WAAA;EACA,YAAA;EACA,aAAA;EACA,kBAAA;EACA,mBAAA;EACA,kBAAA;EACA,kBAAA;EACA,gBAAA;AADZ;AAEY;EACI,iBAAA;EACA,eAAA;AAAhB;AAEY;EACI,WAAA;AAAhB;AAGQ;EACI,iBAAA;EACA,gBAAA;EACA,iBAAA;AADZ;AAGY;EACI,cAAA;AADhB;AAGgB;EACI,eAAA;EACA,gBAAA;AADpB;AAGgB;EACI,eAAA;AADpB;AAGgB;EACI,cAAA;AADpB","sourcesContent":["\n.card.student-card {\n    opacity: 0.9;\n    transition: all 0.3s ease-in-out;\n    cursor: pointer;\n\n    .student-info {\n        .student-thumb {\n            float: left;\n            width: 100px;\n            height: 100px;\n            border-radius: 50%;\n            background: #e1e2e3;\n            margin-right: 20px;\n            text-align: center;\n            overflow: hidden;\n            i {\n                padding-top: 25px;\n                font-size: 50px;\n            }\n            img {\n                width: 100%;\n            }\n        }\n        p{\n            padding-top: 10px;\n            margin-bottom: 0;\n            min-height: 100px;\n\n            span {\n                display: block;\n\n                &.student-name{\n                    font-size: 120%;\n                    font-weight: 500;\n                }\n                &.batch{\n                    font-size: 100%;\n                }\n                &.other{\n                    font-size: 90%;\n                }\n            }\n        }\n    }\n}\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_19_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_19_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_19_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_card_view_vue_vue_type_style_index_0_id_444704b9_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_19_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_19_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_19_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_card_view_vue_vue_type_style_index_0_id_444704b9_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_19_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_19_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_19_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_card_view_vue_vue_type_style_index_0_id_444704b9_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./resources/js/views/student/admission/card-view.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/views/student/admission/card-view.vue ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _card_view_vue_vue_type_template_id_444704b9_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./card-view.vue?vue&type=template&id=444704b9&scoped=true& */ "./resources/js/views/student/admission/card-view.vue?vue&type=template&id=444704b9&scoped=true&");
+/* harmony import */ var _card_view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./card-view.vue?vue&type=script&lang=js& */ "./resources/js/views/student/admission/card-view.vue?vue&type=script&lang=js&");
+/* harmony import */ var _card_view_vue_vue_type_style_index_0_id_444704b9_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss& */ "./resources/js/views/student/admission/card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _card_view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _card_view_vue_vue_type_template_id_444704b9_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _card_view_vue_vue_type_template_id_444704b9_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "444704b9",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/student/admission/card-view.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/student/admission/card-view.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/views/student/admission/card-view.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_card_view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./card-view.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_card_view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/student/admission/card-view.vue?vue&type=template&id=444704b9&scoped=true&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/views/student/admission/card-view.vue?vue&type=template&id=444704b9&scoped=true& ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_card_view_vue_vue_type_template_id_444704b9_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_card_view_vue_vue_type_template_id_444704b9_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_card_view_vue_vue_type_template_id_444704b9_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./card-view.vue?vue&type=template&id=444704b9&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=template&id=444704b9&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/student/admission/card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss&":
+/*!**********************************************************************************************************************!*\
+  !*** ./resources/js/views/student/admission/card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss& ***!
+  \**********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_19_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_19_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_19_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_card_view_vue_vue_type_style_index_0_id_444704b9_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/admission/card-view.vue?vue&type=style&index=0&id=444704b9&scoped=true&lang=scss&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=card-view.js.map?id=069fe879de79d259

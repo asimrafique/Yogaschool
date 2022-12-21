@@ -1,2 +1,888 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[9451],{39869:(e,t,n)=>{"use strict";n.r(t),n.d(t,{default:()=>c});const o={components:{vehicleDocumentForm:n(60954).Z},data:function(){return{id:this.$route.params.id}},mounted:function(){helper.hasPermission("edit-vehicle-document")||(helper.notAccessibleMsg(),this.$router.push("/dashboard"))}};const c=(0,n(51900).Z)(o,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[n("div",{staticClass:"page-titles"},[n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-6"},[n("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("transport.edit_vehicle_document")))])]),e._v(" "),n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"action-buttons pull-right"},[n("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){return e.$router.push("/transport/vehicle/document")}}},[n("i",{staticClass:"fas fa-list"}),e._v(" "),n("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("transport.vehicle_document")))])])])])])]),e._v(" "),n("div",{staticClass:"container-fluid"},[n("div",{staticClass:"card card-form"},[n("div",{staticClass:"card-body p-t-20"},[n("vehicle-document-form",{attrs:{id:e.id}})],1)])])])}),[],!1,null,null,null).exports},60954:(e,t,n)=>{"use strict";n.d(t,{Z:()=>c});const o={components:{},props:["id"],data:function(){return{vehicleDocumentForm:new Form({title:"",vehicle_id:"",vehicle_document_type_id:"",date_of_expiry:"",description:"",policy_number:"",insurance_date:"",insurance_amount:"",insured_amount:"",insurance_company_name:"",insurance_agent_name:"",insurance_agent_contact_number:"",upload_token:""}),vehicles:[],selected_vehicle:null,selected_vehicle_document_type:null,vehicle_document_types:[],vehicle_document_type_details:[],clearAttachment:!1,expiry_date:!1,insurance_document:!1,module_id:""}},mounted:function(){this.vehicleDocumentForm.upload_token=this.$uuid.v4(),this.getPreRequisite(),this.id&&this.getDocument()},methods:{proceed:function(){this.id?this.updateDocument():this.storeDocument()},getPreRequisite:function(){var e=this,t=this.$loading.show();axios.get("/api/vehicle/document/pre-requisite").then((function(n){e.vehicles=n.vehicles,e.vehicle_document_types=n.vehicle_document_types,e.vehicle_document_type_details=n.vehicle_document_type_details,t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},storeDocument:function(){var e=this,t=this.$loading.show();this.vehicleDocumentForm.post("/api/vehicle/document").then((function(n){toastr.success(n.message),e.clearAttachment=!e.clearAttachment,e.$emit("completed"),e.vehicleDocumentForm.upload_token=e.$uuid.v4(),e.selected_vehicle_document_type=null,e.selected_vehicle=null,t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},getDocument:function(){var e=this,t=this.$loading.show();axios.get("/api/vehicle/document/"+this.id).then((function(n){e.vehicleDocumentForm.title=n.vehicle_document.title,e.vehicleDocumentForm.vehicle_id=n.vehicle_document.vehicle_id,e.vehicleDocumentForm.date_of_expiry=n.vehicle_document.date_of_expiry,e.vehicleDocumentForm.vehicle_document_type_id=n.vehicle_document.vehicle_document_type_id,e.selected_vehicle_document_type={id:n.vehicle_document.vehicle_document_type_id,name:n.vehicle_document.vehicle_document_type.name},e.selected_vehicle={id:n.vehicle_document.vehicle_id,name:n.vehicle_document.vehicle.name},e.vehicleDocumentForm.description=n.vehicle_document.description,e.vehicleDocumentForm.upload_token=n.vehicle_document.upload_token,e.expiry_date=!!n.vehicle_document.vehicle_document_type.has_expiry_date,e.insurance_document=!!n.vehicle_document.vehicle_document_type.is_insurance_document,e.module_id=n.vehicle_document.id;var o=n.vehicle_document.options&&n.vehicle_document.options.hasOwnProperty("insurance")?n.vehicle_document.options.insurance:{policy_number:"",insurance_date:"",insurance_amount:"",insured_amount:"",insurance_company_name:"",insurance_agent_name:"",insurance_agent_contact_number:""};e.vehicleDocumentForm.policy_number=o.policy_number,e.vehicleDocumentForm.insurance_date=o.insurance_date,e.vehicleDocumentForm.insurance_amount=o.insurance_amount,e.vehicleDocumentForm.insured_amount=o.insured_amount,e.vehicleDocumentForm.insurance_company_name=o.insurance_company_name,e.vehicleDocumentForm.insurance_agent_name=o.insurance_agent_name,e.vehicleDocumentForm.insurance_agent_contact_number=o.insurance_agent_contact_number,t.hide()})).catch((function(n){t.hide(),e.$router.push("/transport/vehicle/document")}))},updateDocument:function(){var e=this,t=this.$loading.show();this.vehicleDocumentForm.patch("/api/vehicle/document/"+this.id).then((function(n){toastr.success(n.message),e.$emit("completed"),t.hide(),e.$router.push("/transport/vehicle/document")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onDocumentTypeSelect:function(e){this.vehicleDocumentForm.vehicle_document_type_id=e.id;var t=this.vehicle_document_type_details.find((function(t){return t.id==e.id}));t.has_expiry_date?this.expiry_date=!0:this.expiry_date=!1,t.is_insurance_document?this.insurance_document=!0:this.insurance_document=!1},onVehicleSelect:function(e){this.vehicleDocumentForm.vehicle_id=e.id}},watch:{"vehicleDocumentForm.vehicle_document_type_id":function(e){e||(this.expiry_date=!1)}}};const c=(0,n(51900).Z)(o,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[n("form",{on:{submit:function(t){return t.preventDefault(),e.proceed.apply(null,arguments)},keydown:function(t){return e.vehicleDocumentForm.errors.clear(t.target.name)}}},[n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle")))]),e._v(" "),n("v-select",{attrs:{label:"name",name:"vehicle_id",id:"vehicle_id",options:e.vehicles,placeholder:e.trans("general.select_one")},on:{select:e.onVehicleSelect,close:function(t){return e.vehicleDocumentForm.errors.clear("vehicle_id")},remove:function(t){e.vehicleDocumentForm.vehicle_id=""}},model:{value:e.selected_vehicle,callback:function(t){e.selected_vehicle=t},expression:"selected_vehicle"}},[e.vehicles.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                "+e._s(e.trans("general.no_option_found"))+"\n                            ")])]),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"vehicle_id"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-9"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle_document_title")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.vehicleDocumentForm.title,expression:"vehicleDocumentForm.title"}],staticClass:"form-control",attrs:{type:"text",name:"title",placeholder:e.trans("transport.vehicle_document_title")},domProps:{value:e.vehicleDocumentForm.title},on:{input:function(t){t.target.composing||e.$set(e.vehicleDocumentForm,"title",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"title"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle_document_type")))]),e._v(" "),n("v-select",{attrs:{label:"name",name:"vehicle_document_type_id",id:"vehicle_document_type_id",options:e.vehicle_document_types,placeholder:e.trans("general.select_one")},on:{select:e.onDocumentTypeSelect,close:function(t){return e.vehicleDocumentForm.errors.clear("vehicle_document_type_id")},remove:function(t){e.vehicleDocumentForm.vehicle_document_type_id=""}},model:{value:e.selected_vehicle_document_type,callback:function(t){e.selected_vehicle_document_type=t},expression:"selected_vehicle_document_type"}},[e.vehicle_document_types.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                "+e._s(e.trans("general.no_option_found"))+"\n                            ")])]),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"vehicle_document_type_id"}})],1)]),e._v(" "),e.expiry_date?n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.date_of_expiry")))]),e._v(" "),n("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("transport.date_of_expiry")},on:{selected:function(t){return e.vehicleDocumentForm.errors.clear("date_of_expiry")}},model:{value:e.vehicleDocumentForm.date_of_expiry,callback:function(t){e.$set(e.vehicleDocumentForm,"date_of_expiry",t)},expression:"vehicleDocumentForm.date_of_expiry"}}),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"date_of_expiry"}})],1)]):e._e(),e._v(" "),n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle_document_description")))]),e._v(" "),n("autosize-textarea",{attrs:{rows:"2",name:"description",placeholder:e.trans("vehicle.vehicle_document_description")},model:{value:e.vehicleDocumentForm.description,callback:function(t){e.$set(e.vehicleDocumentForm,"description",t)},expression:"vehicleDocumentForm.description"}}),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"description"}})],1)]),e._v(" "),e.insurance_document?[n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle_policy_number")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.vehicleDocumentForm.policy_number,expression:"vehicleDocumentForm.policy_number"}],staticClass:"form-control",attrs:{type:"text",name:"policy_number",placeholder:e.trans("transport.vehicle_policy_number")},domProps:{value:e.vehicleDocumentForm.policy_number},on:{input:function(t){t.target.composing||e.$set(e.vehicleDocumentForm,"policy_number",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"policy_number"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle_insurance_date")))]),e._v(" "),n("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("transport.vehicle_insurance_date")},on:{selected:function(t){return e.vehicleDocumentForm.errors.clear("insurance_date")}},model:{value:e.vehicleDocumentForm.insurance_date,callback:function(t){e.$set(e.vehicleDocumentForm,"insurance_date",t)},expression:"vehicleDocumentForm.insurance_date"}}),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"insurance_date"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle_insurance_amount")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.vehicleDocumentForm.insurance_amount,expression:"vehicleDocumentForm.insurance_amount"}],staticClass:"form-control",attrs:{type:"text",name:"insurance_amount",placeholder:e.trans("transport.vehicle_insurance_amount")},domProps:{value:e.vehicleDocumentForm.insurance_amount},on:{input:function(t){t.target.composing||e.$set(e.vehicleDocumentForm,"insurance_amount",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"insurance_amount"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle_insured_amount")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.vehicleDocumentForm.insured_amount,expression:"vehicleDocumentForm.insured_amount"}],staticClass:"form-control",attrs:{type:"text",name:"insured_amount",placeholder:e.trans("transport.vehicle_insured_amount")},domProps:{value:e.vehicleDocumentForm.insured_amount},on:{input:function(t){t.target.composing||e.$set(e.vehicleDocumentForm,"insured_amount",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"insured_amount"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle_insurance_company_name")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.vehicleDocumentForm.insurance_company_name,expression:"vehicleDocumentForm.insurance_company_name"}],staticClass:"form-control",attrs:{type:"text",name:"insurance_company_name",placeholder:e.trans("transport.vehicle_insurance_company_name")},domProps:{value:e.vehicleDocumentForm.insurance_company_name},on:{input:function(t){t.target.composing||e.$set(e.vehicleDocumentForm,"insurance_company_name",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"insurance_company_name"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle_insurance_agent_name")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.vehicleDocumentForm.insurance_agent_name,expression:"vehicleDocumentForm.insurance_agent_name"}],staticClass:"form-control",attrs:{type:"text",name:"insurance_agent_name",placeholder:e.trans("transport.vehicle_insurance_agent_name")},domProps:{value:e.vehicleDocumentForm.insurance_agent_name},on:{input:function(t){t.target.composing||e.$set(e.vehicleDocumentForm,"insurance_agent_name",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"insurance_agent_name"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.vehicle_insurance_agent_contact_number")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.vehicleDocumentForm.insurance_agent_contact_number,expression:"vehicleDocumentForm.insurance_agent_contact_number"}],staticClass:"form-control",attrs:{type:"text",name:"insurance_agent_contact_number",placeholder:e.trans("transport.vehicle_insurance_agent_contact_number")},domProps:{value:e.vehicleDocumentForm.insurance_agent_contact_number},on:{input:function(t){t.target.composing||e.$set(e.vehicleDocumentForm,"insurance_agent_contact_number",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.vehicleDocumentForm,"prop-name":"insurance_agent_contact_number"}})],1)])]:e._e()],2),e._v(" "),n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-3"},[n("label",[e._v(" ")]),e._v(" "),n("div",{staticClass:"form-group"},[n("file-upload-input",{attrs:{"button-text":e.trans("general.upload_document"),token:e.vehicleDocumentForm.upload_token,module:"vehicle_document","clear-file":e.clearAttachment,"module-id":e.module_id}})],1)])]),e._v(" "),n("div",{staticClass:"card-footer text-right"},[n("router-link",{directives:[{name:"show",rawName:"v-show",value:e.id,expression:"id"}],staticClass:"btn btn-danger waves-effect waves-light ",attrs:{to:"/transport/vehicle/document"}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),e.id?e._e():n("button",{staticClass:"btn btn-danger waves-effect waves-light ",attrs:{type:"button"},on:{click:function(t){return e.$emit("cancel")}}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),n("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[e.id?n("span",[e._v(e._s(e.trans("general.update")))]):n("span",[e._v(e._s(e.trans("general.save")))])])],1)])])}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=edit.js.map?id=00615ef442e7f4c2db21
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/transport/vehicle/document/edit"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/edit.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/edit.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/transport/vehicle/document/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    vehicleDocumentForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      id: this.$route.params.id
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('edit-vehicle-document')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/form.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/form.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  props: ['id'],
+  data: function data() {
+    return {
+      vehicleDocumentForm: new Form({
+        title: '',
+        vehicle_id: '',
+        vehicle_document_type_id: '',
+        date_of_expiry: '',
+        description: '',
+        policy_number: '',
+        insurance_date: '',
+        insurance_amount: '',
+        insured_amount: '',
+        insurance_company_name: '',
+        insurance_agent_name: '',
+        insurance_agent_contact_number: '',
+        upload_token: ''
+      }),
+      vehicles: [],
+      selected_vehicle: null,
+      selected_vehicle_document_type: null,
+      vehicle_document_types: [],
+      vehicle_document_type_details: [],
+      clearAttachment: false,
+      expiry_date: false,
+      insurance_document: false,
+      module_id: ''
+    };
+  },
+  mounted: function mounted() {
+    this.vehicleDocumentForm.upload_token = this.$uuid.v4();
+    this.getPreRequisite();
+    if (this.id) this.getDocument();
+  },
+  methods: {
+    proceed: function proceed() {
+      if (this.id) this.updateDocument();else this.storeDocument();
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/vehicle/document/pre-requisite').then(function (response) {
+        _this.vehicles = response.vehicles;
+        _this.vehicle_document_types = response.vehicle_document_types;
+        _this.vehicle_document_type_details = response.vehicle_document_type_details;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    storeDocument: function storeDocument() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      this.vehicleDocumentForm.post('/api/vehicle/document').then(function (response) {
+        toastr.success(response.message);
+        _this2.clearAttachment = !_this2.clearAttachment;
+        _this2.$emit('completed');
+        _this2.vehicleDocumentForm.upload_token = _this2.$uuid.v4();
+        _this2.selected_vehicle_document_type = null;
+        _this2.selected_vehicle = null;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getDocument: function getDocument() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/vehicle/document/' + this.id).then(function (response) {
+        _this3.vehicleDocumentForm.title = response.vehicle_document.title;
+        _this3.vehicleDocumentForm.vehicle_id = response.vehicle_document.vehicle_id;
+        _this3.vehicleDocumentForm.date_of_expiry = response.vehicle_document.date_of_expiry;
+        _this3.vehicleDocumentForm.vehicle_document_type_id = response.vehicle_document.vehicle_document_type_id;
+        _this3.selected_vehicle_document_type = {
+          id: response.vehicle_document.vehicle_document_type_id,
+          name: response.vehicle_document.vehicle_document_type.name
+        };
+        _this3.selected_vehicle = {
+          id: response.vehicle_document.vehicle_id,
+          name: response.vehicle_document.vehicle.name
+        };
+        _this3.vehicleDocumentForm.description = response.vehicle_document.description;
+        _this3.vehicleDocumentForm.upload_token = response.vehicle_document.upload_token;
+        _this3.expiry_date = response.vehicle_document.vehicle_document_type.has_expiry_date ? true : false;
+        _this3.insurance_document = response.vehicle_document.vehicle_document_type.is_insurance_document ? true : false;
+        _this3.module_id = response.vehicle_document.id;
+        var insurance_info = response.vehicle_document.options && response.vehicle_document.options.hasOwnProperty("insurance") ? response.vehicle_document.options.insurance : {
+          policy_number: '',
+          insurance_date: '',
+          insurance_amount: '',
+          insured_amount: '',
+          insurance_company_name: '',
+          insurance_agent_name: '',
+          insurance_agent_contact_number: ''
+        };
+        _this3.vehicleDocumentForm.policy_number = insurance_info.policy_number;
+        _this3.vehicleDocumentForm.insurance_date = insurance_info.insurance_date;
+        _this3.vehicleDocumentForm.insurance_amount = insurance_info.insurance_amount;
+        _this3.vehicleDocumentForm.insured_amount = insurance_info.insured_amount;
+        _this3.vehicleDocumentForm.insurance_company_name = insurance_info.insurance_company_name;
+        _this3.vehicleDocumentForm.insurance_agent_name = insurance_info.insurance_agent_name;
+        _this3.vehicleDocumentForm.insurance_agent_contact_number = insurance_info.insurance_agent_contact_number;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        _this3.$router.push('/transport/vehicle/document');
+      });
+    },
+    updateDocument: function updateDocument() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      this.vehicleDocumentForm.patch('/api/vehicle/document/' + this.id).then(function (response) {
+        toastr.success(response.message);
+        _this4.$emit('completed');
+        loader.hide();
+        _this4.$router.push('/transport/vehicle/document');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onDocumentTypeSelect: function onDocumentTypeSelect(selectedOption) {
+      this.vehicleDocumentForm.vehicle_document_type_id = selectedOption.id;
+      var vehicle_document_type = this.vehicle_document_type_details.find(function (o) {
+        return o.id == selectedOption.id;
+      });
+      if (vehicle_document_type.has_expiry_date) {
+        this.expiry_date = true;
+      } else {
+        this.expiry_date = false;
+      }
+      if (vehicle_document_type.is_insurance_document) {
+        this.insurance_document = true;
+      } else {
+        this.insurance_document = false;
+      }
+    },
+    onVehicleSelect: function onVehicleSelect(selectedOption) {
+      this.vehicleDocumentForm.vehicle_id = selectedOption.id;
+    }
+  },
+  watch: {
+    'vehicleDocumentForm.vehicle_document_type_id': function vehicleDocumentFormVehicle_document_type_id(val) {
+      if (!val) {
+        this.expiry_date = false;
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/edit.vue?vue&type=template&id=44acd146&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/edit.vue?vue&type=template&id=44acd146& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("transport.edit_vehicle_document")))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/transport/vehicle/document");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_document")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body p-t-20"
+  }, [_c("vehicle-document-form", {
+    attrs: {
+      id: _vm.id
+    }
+  })], 1)])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/form.vue?vue&type=template&id=016b8300&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/form.vue?vue&type=template&id=016b8300& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.vehicleDocumentForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "vehicle_id",
+      id: "vehicle_id",
+      options: _vm.vehicles,
+      placeholder: _vm.trans("general.select_one")
+    },
+    on: {
+      select: _vm.onVehicleSelect,
+      close: function close($event) {
+        return _vm.vehicleDocumentForm.errors.clear("vehicle_id");
+      },
+      remove: function remove($event) {
+        _vm.vehicleDocumentForm.vehicle_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_vehicle,
+      callback: function callback($$v) {
+        _vm.selected_vehicle = $$v;
+      },
+      expression: "selected_vehicle"
+    }
+  }, [!_vm.vehicles.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                " + _vm._s(_vm.trans("general.no_option_found")) + "\n                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "vehicle_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-9"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_document_title")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.vehicleDocumentForm.title,
+      expression: "vehicleDocumentForm.title"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "title",
+      placeholder: _vm.trans("transport.vehicle_document_title")
+    },
+    domProps: {
+      value: _vm.vehicleDocumentForm.title
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.vehicleDocumentForm, "title", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "title"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_document_type")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "vehicle_document_type_id",
+      id: "vehicle_document_type_id",
+      options: _vm.vehicle_document_types,
+      placeholder: _vm.trans("general.select_one")
+    },
+    on: {
+      select: _vm.onDocumentTypeSelect,
+      close: function close($event) {
+        return _vm.vehicleDocumentForm.errors.clear("vehicle_document_type_id");
+      },
+      remove: function remove($event) {
+        _vm.vehicleDocumentForm.vehicle_document_type_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_vehicle_document_type,
+      callback: function callback($$v) {
+        _vm.selected_vehicle_document_type = $$v;
+      },
+      expression: "selected_vehicle_document_type"
+    }
+  }, [!_vm.vehicle_document_types.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                " + _vm._s(_vm.trans("general.no_option_found")) + "\n                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "vehicle_document_type_id"
+    }
+  })], 1)]), _vm._v(" "), _vm.expiry_date ? _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.date_of_expiry")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("transport.date_of_expiry")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.vehicleDocumentForm.errors.clear("date_of_expiry");
+      }
+    },
+    model: {
+      value: _vm.vehicleDocumentForm.date_of_expiry,
+      callback: function callback($$v) {
+        _vm.$set(_vm.vehicleDocumentForm, "date_of_expiry", $$v);
+      },
+      expression: "vehicleDocumentForm.date_of_expiry"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "date_of_expiry"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_document_description")))]), _vm._v(" "), _c("autosize-textarea", {
+    attrs: {
+      rows: "2",
+      name: "description",
+      placeholder: _vm.trans("vehicle.vehicle_document_description")
+    },
+    model: {
+      value: _vm.vehicleDocumentForm.description,
+      callback: function callback($$v) {
+        _vm.$set(_vm.vehicleDocumentForm, "description", $$v);
+      },
+      expression: "vehicleDocumentForm.description"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "description"
+    }
+  })], 1)]), _vm._v(" "), _vm.insurance_document ? [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_policy_number")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.vehicleDocumentForm.policy_number,
+      expression: "vehicleDocumentForm.policy_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "policy_number",
+      placeholder: _vm.trans("transport.vehicle_policy_number")
+    },
+    domProps: {
+      value: _vm.vehicleDocumentForm.policy_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.vehicleDocumentForm, "policy_number", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "policy_number"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_insurance_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("transport.vehicle_insurance_date")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.vehicleDocumentForm.errors.clear("insurance_date");
+      }
+    },
+    model: {
+      value: _vm.vehicleDocumentForm.insurance_date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.vehicleDocumentForm, "insurance_date", $$v);
+      },
+      expression: "vehicleDocumentForm.insurance_date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "insurance_date"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_insurance_amount")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.vehicleDocumentForm.insurance_amount,
+      expression: "vehicleDocumentForm.insurance_amount"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "insurance_amount",
+      placeholder: _vm.trans("transport.vehicle_insurance_amount")
+    },
+    domProps: {
+      value: _vm.vehicleDocumentForm.insurance_amount
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.vehicleDocumentForm, "insurance_amount", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "insurance_amount"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_insured_amount")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.vehicleDocumentForm.insured_amount,
+      expression: "vehicleDocumentForm.insured_amount"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "insured_amount",
+      placeholder: _vm.trans("transport.vehicle_insured_amount")
+    },
+    domProps: {
+      value: _vm.vehicleDocumentForm.insured_amount
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.vehicleDocumentForm, "insured_amount", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "insured_amount"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_insurance_company_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.vehicleDocumentForm.insurance_company_name,
+      expression: "vehicleDocumentForm.insurance_company_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "insurance_company_name",
+      placeholder: _vm.trans("transport.vehicle_insurance_company_name")
+    },
+    domProps: {
+      value: _vm.vehicleDocumentForm.insurance_company_name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.vehicleDocumentForm, "insurance_company_name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "insurance_company_name"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_insurance_agent_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.vehicleDocumentForm.insurance_agent_name,
+      expression: "vehicleDocumentForm.insurance_agent_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "insurance_agent_name",
+      placeholder: _vm.trans("transport.vehicle_insurance_agent_name")
+    },
+    domProps: {
+      value: _vm.vehicleDocumentForm.insurance_agent_name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.vehicleDocumentForm, "insurance_agent_name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "insurance_agent_name"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_insurance_agent_contact_number")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.vehicleDocumentForm.insurance_agent_contact_number,
+      expression: "vehicleDocumentForm.insurance_agent_contact_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "insurance_agent_contact_number",
+      placeholder: _vm.trans("transport.vehicle_insurance_agent_contact_number")
+    },
+    domProps: {
+      value: _vm.vehicleDocumentForm.insurance_agent_contact_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.vehicleDocumentForm, "insurance_agent_contact_number", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.vehicleDocumentForm,
+      "prop-name": "insurance_agent_contact_number"
+    }
+  })], 1)])] : _vm._e()], 2), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("label", [_vm._v(" ")]), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("file-upload-input", {
+    attrs: {
+      "button-text": _vm.trans("general.upload_document"),
+      token: _vm.vehicleDocumentForm.upload_token,
+      module: "vehicle_document",
+      "clear-file": _vm.clearAttachment,
+      "module-id": _vm.module_id
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.id,
+      expression: "id"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/transport/vehicle/document"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.id ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.id ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/vehicle/document/edit.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/views/transport/vehicle/document/edit.vue ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _edit_vue_vue_type_template_id_44acd146___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit.vue?vue&type=template&id=44acd146& */ "./resources/js/views/transport/vehicle/document/edit.vue?vue&type=template&id=44acd146&");
+/* harmony import */ var _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue?vue&type=script&lang=js& */ "./resources/js/views/transport/vehicle/document/edit.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _edit_vue_vue_type_template_id_44acd146___WEBPACK_IMPORTED_MODULE_0__.render,
+  _edit_vue_vue_type_template_id_44acd146___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/transport/vehicle/document/edit.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/vehicle/document/form.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/views/transport/vehicle/document/form.vue ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_016b8300___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=016b8300& */ "./resources/js/views/transport/vehicle/document/form.vue?vue&type=template&id=016b8300&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/transport/vehicle/document/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_016b8300___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_016b8300___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/transport/vehicle/document/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/vehicle/document/edit.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/views/transport/vehicle/document/edit.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/edit.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/vehicle/document/form.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/views/transport/vehicle/document/form.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/vehicle/document/edit.vue?vue&type=template&id=44acd146&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/views/transport/vehicle/document/edit.vue?vue&type=template&id=44acd146& ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_44acd146___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_44acd146___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_44acd146___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=template&id=44acd146& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/edit.vue?vue&type=template&id=44acd146&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/vehicle/document/form.vue?vue&type=template&id=016b8300&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/views/transport/vehicle/document/form.vue?vue&type=template&id=016b8300& ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_016b8300___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_016b8300___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_016b8300___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=016b8300& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/vehicle/document/form.vue?vue&type=template&id=016b8300&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=edit.js.map?id=4cc5a38ceeaf3de3

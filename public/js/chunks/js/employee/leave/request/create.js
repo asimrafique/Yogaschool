@@ -1,2 +1,698 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[5567],{37731:(e,t,a)=>{"use strict";a.r(t),a.d(t,{default:()=>l});const s={components:{requestLeaveForm:a(81069).Z},data:function(){return{ruuid:this.$route.params.uuid}},mounted:function(){helper.hasPermission("request-leave")||(helper.notAccessibleMsg(),this.$router.push("/dashboard"))}};const l=(0,a(51900).Z)(s,(function(){var e=this,t=e.$createElement,a=e._self._c||t;return a("div",[a("div",{staticClass:"page-titles"},[a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-6"},[a("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("employee.request_leave")))])]),e._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"action-buttons pull-right"},[a("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){return e.$router.push("/employee/leave/request")}}},[a("i",{staticClass:"fas fa-list"}),e._v(" "),a("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("employee.leave_request")))])])])])])]),e._v(" "),a("div",{staticClass:"container-fluid"},[a("request-leave-form")],1)])}),[],!1,null,null,null).exports},81069:(e,t,a)=>{"use strict";a.d(t,{Z:()=>l});const s={components:{},props:["uuid"],data:function(){return{leaveRequestForm:new Form({employee_id:"",employee_leave_type_id:"",start_date:"",end_date:"",reason:"",upload_token:""}),employee:{},apply_leave_for_other:0,leave_allocations:[],clearAttachment:!0,employees:[],leave_types:[],selected_employee:null,selected_leave_type:null,module_id:""}},mounted:function(){this.getPreRequisite(),this.uuid?this.get():this.leaveRequestForm.upload_token=this.$uuid.v4(),this.uuid||this.getLeaveAllocation()},methods:{hasPermission:function(e){return helper.hasPermission(e)},getEmployeeNameWithCode:function(e){return helper.getEmployeeNameWithCode(e)},getEmployeeDesignationOnDate:function(e,t){return helper.getEmployeeDesignationOnDate(e,t)},getPreRequisite:function(){var e=this,t=this.$loading.show();axios.get("/api/employee/leave/request/pre-requisite").then((function(a){t.hide(),e.employees=a.employees,e.leave_types=a.leave_types})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},getLeaveAllocation:function(){var e=this,t=this.$loading.show();axios.post("/api/employee/leave/allocation/fetch",{id:this.leaveRequestForm.employee_id}).then((function(a){t.hide(),e.leave_allocations=a.leave_allocations})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},proceed:function(){this.uuid?this.update():this.store()},store:function(){var e=this,t=this.$loading.show();this.leaveRequestForm.post("/api/employee/leave/request").then((function(a){toastr.success(a.message),t.hide(),e.clearAttachment=!e.clearAttachment,e.selected_employee=null,e.selected_leave_type=null,e.leaveRequestForm.upload_token=e.$uuid.v4(),e.apply_leave_for_other=0,e.$emit("completed")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},get:function(){var e=this,t=this.$loading.show();axios.get("/api/employee/leave/request/"+this.uuid).then((function(a){var s=a.leave_request;"pending"!=s.status&&(t.hide(),toastr.error(i18n.user.permission_denied),e.$router.push("/employee/leave/request")),e.leaveRequestForm.employee_id=s.employee_id,e.getLeaveAllocation(),e.employee=s.employee,e.leaveRequestForm.employee_leave_type_id=s.employee_leave_type_id,e.selected_leave_type=s.employee_leave_type_id?{id:s.employee_leave_type_id,name:s.leave_type.name}:null,e.leaveRequestForm.reason=s.reason,e.leaveRequestForm.start_date=s.start_date,e.leaveRequestForm.end_date=s.end_date,e.leaveRequestForm.upload_token=s.upload_token,e.module_id=s.id,t.hide()})).catch((function(a){t.hide(),helper.showErrorMsg(a),e.$router.push("/employee/leave/request")}))},update:function(){var e=this,t=this.$loading.show();this.leaveRequestForm.patch("/api/employee/leave/request/"+this.uuid).then((function(a){toastr.success(a.message),t.hide(),e.$router.push("/employee/leave/request")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onEmployeeSelect:function(e){this.leaveRequestForm.employee_id=e.id,this.getLeaveAllocation()},onLeaveTypeSelect:function(e){this.leaveRequestForm.employee_leave_type_id=e.id}},filters:{moment:function(e){return helper.formatDate(e)},momentDateTime:function(e){return helper.formatDateTime(e)}}};const l=(0,a(51900).Z)(s,(function(){var e=this,t=e.$createElement,a=e._self._c||t;return a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"card"},[a("div",{staticClass:"card-body border-right p-4"},[a("form",{on:{submit:function(t){return t.preventDefault(),e.proceed.apply(null,arguments)},keydown:function(t){return e.leaveRequestForm.errors.clear(t.target.name)}}},[a("div",{staticClass:"row"},[e.hasPermission("request-leave-for-other-employee")?[e.uuid?e._e():a("div",{staticClass:"col-12"},[a("div",{staticClass:"form-group"},[a("label",{staticClass:"custom-control custom-checkbox m-t-20"},[a("input",{directives:[{name:"model",rawName:"v-model",value:e.apply_leave_for_other,expression:"apply_leave_for_other"}],staticClass:"custom-control-input",attrs:{type:"checkbox",value:"1"},domProps:{checked:Array.isArray(e.apply_leave_for_other)?e._i(e.apply_leave_for_other,"1")>-1:e.apply_leave_for_other},on:{change:function(t){var a=e.apply_leave_for_other,s=t.target,l=!!s.checked;if(Array.isArray(a)){var o=e._i(a,"1");s.checked?o<0&&(e.apply_leave_for_other=a.concat(["1"])):o>-1&&(e.apply_leave_for_other=a.slice(0,o).concat(a.slice(o+1)))}else e.apply_leave_for_other=l}}}),e._v(" "),a("span",{staticClass:"custom-control-label"},[e._v(e._s(e.trans("employee.apply_leave_for_other")))])])])]),e._v(" "),e.apply_leave_for_other?a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.employee")))]),e._v(" "),a("v-select",{attrs:{label:"name",name:"employee_id",id:"employee_id",options:e.employees,placeholder:e.trans("employee.select_employee")},on:{select:e.onEmployeeSelect,close:function(t){return e.leaveRequestForm.errors.clear("employee_id")},remove:function(t){e.leaveRequestForm.employee_id=""}},model:{value:e.selected_employee,callback:function(t){e.selected_employee=t},expression:"selected_employee"}},[e.employees.length?e._e():a("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                                "+e._s(e.trans("general.no_option_found"))+"\n                                            ")])]),e._v(" "),a("show-error",{attrs:{"form-name":e.leaveRequestForm,"prop-name":"employee_id"}})],1)]):e._e(),e._v(" "),e.uuid?a("div",{staticClass:"col-12 col-sm-6"},[a("p",{staticClass:"m-t-20"},[e._v("\n                                        "+e._s(e.getEmployeeNameWithCode(e.employee))+" "),a("br"),e._v("\n                                        "+e._s(e.getEmployeeDesignationOnDate(e.employee,e.leaveRequestForm.end_date))+" "),a("br")])]):e._e()]:e._e(),e._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.leave_type")))]),e._v(" "),a("v-select",{attrs:{label:"name",name:"employee_leave_type_id",id:"employee_leave_type_id",options:e.leave_types,placeholder:e.trans("employee.select_leave_type")},on:{select:e.onLeaveTypeSelect,close:function(t){return e.leaveRequestForm.errors.clear("employee_leave_type_id")},remove:function(t){e.leaveRequestForm.employee_leave_type_id=""}},model:{value:e.selected_leave_type,callback:function(t){e.selected_leave_type=t},expression:"selected_leave_type"}},[e.leave_types.length?e._e():a("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                            "+e._s(e.trans("general.no_option_found"))+"\n                                        ")])]),e._v(" "),a("show-error",{attrs:{"form-name":e.leaveRequestForm,"prop-name":"employee_leave_type_id"}})],1)])],2),e._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.leave_request_start_date")))]),e._v(" "),a("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("employee.leave_request_start_date")},on:{selected:function(t){return e.leaveRequestForm.errors.clear("start_date")}},model:{value:e.leaveRequestForm.start_date,callback:function(t){e.$set(e.leaveRequestForm,"start_date",t)},expression:"leaveRequestForm.start_date"}}),e._v(" "),a("show-error",{attrs:{"form-name":e.leaveRequestForm,"prop-name":"start_date"}})],1)]),e._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.leave_request_end_date")))]),e._v(" "),a("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("employee.leave_request_end_date")},on:{selected:function(t){return e.leaveRequestForm.errors.clear("end_date")}},model:{value:e.leaveRequestForm.end_date,callback:function(t){e.$set(e.leaveRequestForm,"end_date",t)},expression:"leaveRequestForm.end_date"}}),e._v(" "),a("show-error",{attrs:{"form-name":e.leaveRequestForm,"prop-name":"end_date"}})],1)])]),e._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.leave_request_reason")))]),e._v(" "),a("autosize-textarea",{attrs:{rows:"1",name:"reason",placeholder:e.trans("employee.leave_request_reason")},model:{value:e.leaveRequestForm.reason,callback:function(t){e.$set(e.leaveRequestForm,"reason",t)},expression:"leaveRequestForm.reason"}}),e._v(" "),a("show-error",{attrs:{"form-name":e.leaveRequestForm,"prop-name":"reason"}})],1)]),e._v(" "),a("div",{staticClass:"col-12"},[a("div",{staticClass:"form-group"},[a("file-upload-input",{attrs:{"button-text":e.trans("general.upload_document"),token:e.leaveRequestForm.upload_token,module:"leave_request","clear-file":e.clearAttachment,"module-id":e.module_id}})],1)])]),e._v(" "),a("div",{staticClass:"text-right"},[a("router-link",{directives:[{name:"show",rawName:"v-show",value:e.uuid,expression:"uuid"}],staticClass:"btn btn-danger waves-effect waves-light ",attrs:{to:"/employee/leave/request"}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),a("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[e._v(e._s(e.trans("general.save")))])],1)])])])]),e._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"card"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title m-3"},[e._v(e._s(e.trans("employee.leave_allocation")))]),e._v(" "),e.leave_allocations.length?a("div",{staticClass:"table-responsive"},[a("table",{staticClass:"table table-sm"},[a("thead",[a("tr",[a("th",[e._v(e._s(e.trans("employee.name")))]),e._v(" "),a("th",[e._v(e._s(e.trans("employee.leave_allocation_period")))]),e._v(" "),a("th",[e._v(e._s(e.trans("employee.leave_allotted")))])])]),e._v(" "),a("tbody",e._l(e.leave_allocations,(function(t){return a("tr",[a("td",{domProps:{textContent:e._s(e.getEmployeeNameWithCode(t.employee))}}),e._v(" "),a("td",[e._v(e._s(e._f("moment")(t.start_date))+" "+e._s(e.trans("general.to"))+" "+e._s(e._f("moment")(t.end_date)))]),e._v(" "),a("td",[a("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},e._l(t.leave_allocation_details,(function(t){return a("li",[e._v(e._s(t.leave_type.name+": "+t.used+"/"+t.allotted))])})),0)])])})),0)])]):a("div",[a("p",{staticClass:"alert alert-danger m-2"},[e._v(e._s(e.trans("employee.leave_not_allocated")))])])])])])])}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=create.js.map?id=0800252c0b9bafd8557f
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/employee/leave/request/create"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/create.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/create.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/employee/leave/request/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    requestLeaveForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      ruuid: this.$route.params.uuid
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('request-leave')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/form.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/form.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  props: ['uuid'],
+  data: function data() {
+    return {
+      leaveRequestForm: new Form({
+        employee_id: '',
+        employee_leave_type_id: '',
+        start_date: '',
+        end_date: '',
+        reason: '',
+        upload_token: ''
+      }),
+      employee: {},
+      apply_leave_for_other: 0,
+      leave_allocations: [],
+      clearAttachment: true,
+      employees: [],
+      leave_types: [],
+      selected_employee: null,
+      selected_leave_type: null,
+      module_id: ''
+    };
+  },
+  mounted: function mounted() {
+    this.getPreRequisite();
+    if (this.uuid) this.get();else this.leaveRequestForm.upload_token = this.$uuid.v4();
+    if (!this.uuid) this.getLeaveAllocation();
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    getEmployeeNameWithCode: function getEmployeeNameWithCode(employee) {
+      return helper.getEmployeeNameWithCode(employee);
+    },
+    getEmployeeDesignationOnDate: function getEmployeeDesignationOnDate(employee, date) {
+      return helper.getEmployeeDesignationOnDate(employee, date);
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/employee/leave/request/pre-requisite').then(function (response) {
+        loader.hide();
+        _this.employees = response.employees;
+        _this.leave_types = response.leave_types;
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getLeaveAllocation: function getLeaveAllocation() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      axios.post('/api/employee/leave/allocation/fetch', {
+        id: this.leaveRequestForm.employee_id
+      }).then(function (response) {
+        loader.hide();
+        _this2.leave_allocations = response.leave_allocations;
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    proceed: function proceed() {
+      if (this.uuid) this.update();else this.store();
+    },
+    store: function store() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      this.leaveRequestForm.post('/api/employee/leave/request').then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this3.clearAttachment = !_this3.clearAttachment;
+        _this3.selected_employee = null;
+        _this3.selected_leave_type = null;
+        _this3.leaveRequestForm.upload_token = _this3.$uuid.v4();
+        _this3.apply_leave_for_other = 0;
+        _this3.$emit('completed');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/employee/leave/request/' + this.uuid).then(function (response) {
+        var leave_request = response.leave_request;
+        if (leave_request.status != 'pending') {
+          loader.hide();
+          toastr.error(i18n.user.permission_denied);
+          _this4.$router.push('/employee/leave/request');
+        }
+        _this4.leaveRequestForm.employee_id = leave_request.employee_id;
+        _this4.getLeaveAllocation();
+        _this4.employee = leave_request.employee;
+        _this4.leaveRequestForm.employee_leave_type_id = leave_request.employee_leave_type_id;
+        _this4.selected_leave_type = leave_request.employee_leave_type_id ? {
+          id: leave_request.employee_leave_type_id,
+          name: leave_request.leave_type.name
+        } : null;
+        _this4.leaveRequestForm.reason = leave_request.reason;
+        _this4.leaveRequestForm.start_date = leave_request.start_date;
+        _this4.leaveRequestForm.end_date = leave_request.end_date;
+        _this4.leaveRequestForm.upload_token = leave_request.upload_token;
+        _this4.module_id = leave_request.id;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this4.$router.push('/employee/leave/request');
+      });
+    },
+    update: function update() {
+      var _this5 = this;
+      var loader = this.$loading.show();
+      this.leaveRequestForm.patch('/api/employee/leave/request/' + this.uuid).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this5.$router.push('/employee/leave/request');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onEmployeeSelect: function onEmployeeSelect(selectedOption) {
+      this.leaveRequestForm.employee_id = selectedOption.id;
+      this.getLeaveAllocation();
+    },
+    onLeaveTypeSelect: function onLeaveTypeSelect(selectedOption) {
+      this.leaveRequestForm.employee_leave_type_id = selectedOption.id;
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/create.vue?vue&type=template&id=761b66b4&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/create.vue?vue&type=template&id=761b66b4& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("employee.request_leave")))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/employee/leave/request");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_request")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("request-leave-form")], 1)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/form.vue?vue&type=template&id=772030ee&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/form.vue?vue&type=template&id=772030ee& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body border-right p-4"
+  }, [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.leaveRequestForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_vm.hasPermission("request-leave-for-other-employee") ? [!_vm.uuid ? _c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "custom-control custom-checkbox m-t-20"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.apply_leave_for_other,
+      expression: "apply_leave_for_other"
+    }],
+    staticClass: "custom-control-input",
+    attrs: {
+      type: "checkbox",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.apply_leave_for_other) ? _vm._i(_vm.apply_leave_for_other, "1") > -1 : _vm.apply_leave_for_other
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.apply_leave_for_other,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.apply_leave_for_other = $$a.concat([$$v]));
+          } else {
+            $$i > -1 && (_vm.apply_leave_for_other = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.apply_leave_for_other = $$c;
+        }
+      }
+    }
+  }), _vm._v(" "), _c("span", {
+    staticClass: "custom-control-label"
+  }, [_vm._v(_vm._s(_vm.trans("employee.apply_leave_for_other")))])])])]) : _vm._e(), _vm._v(" "), _vm.apply_leave_for_other ? _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "employee_id",
+      id: "employee_id",
+      options: _vm.employees,
+      placeholder: _vm.trans("employee.select_employee")
+    },
+    on: {
+      select: _vm.onEmployeeSelect,
+      close: function close($event) {
+        return _vm.leaveRequestForm.errors.clear("employee_id");
+      },
+      remove: function remove($event) {
+        _vm.leaveRequestForm.employee_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_employee,
+      callback: function callback($$v) {
+        _vm.selected_employee = $$v;
+      },
+      expression: "selected_employee"
+    }
+  }, [!_vm.employees.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.leaveRequestForm,
+      "prop-name": "employee_id"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.uuid ? _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("p", {
+    staticClass: "m-t-20"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.getEmployeeNameWithCode(_vm.employee)) + " "), _c("br"), _vm._v("\n                                        " + _vm._s(_vm.getEmployeeDesignationOnDate(_vm.employee, _vm.leaveRequestForm.end_date)) + " "), _c("br")])]) : _vm._e()] : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_type")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "employee_leave_type_id",
+      id: "employee_leave_type_id",
+      options: _vm.leave_types,
+      placeholder: _vm.trans("employee.select_leave_type")
+    },
+    on: {
+      select: _vm.onLeaveTypeSelect,
+      close: function close($event) {
+        return _vm.leaveRequestForm.errors.clear("employee_leave_type_id");
+      },
+      remove: function remove($event) {
+        _vm.leaveRequestForm.employee_leave_type_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_leave_type,
+      callback: function callback($$v) {
+        _vm.selected_leave_type = $$v;
+      },
+      expression: "selected_leave_type"
+    }
+  }, [!_vm.leave_types.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                            " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                        ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.leaveRequestForm,
+      "prop-name": "employee_leave_type_id"
+    }
+  })], 1)])], 2), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_request_start_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("employee.leave_request_start_date")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.leaveRequestForm.errors.clear("start_date");
+      }
+    },
+    model: {
+      value: _vm.leaveRequestForm.start_date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.leaveRequestForm, "start_date", $$v);
+      },
+      expression: "leaveRequestForm.start_date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.leaveRequestForm,
+      "prop-name": "start_date"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_request_end_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("employee.leave_request_end_date")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.leaveRequestForm.errors.clear("end_date");
+      }
+    },
+    model: {
+      value: _vm.leaveRequestForm.end_date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.leaveRequestForm, "end_date", $$v);
+      },
+      expression: "leaveRequestForm.end_date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.leaveRequestForm,
+      "prop-name": "end_date"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_request_reason")))]), _vm._v(" "), _c("autosize-textarea", {
+    attrs: {
+      rows: "1",
+      name: "reason",
+      placeholder: _vm.trans("employee.leave_request_reason")
+    },
+    model: {
+      value: _vm.leaveRequestForm.reason,
+      callback: function callback($$v) {
+        _vm.$set(_vm.leaveRequestForm, "reason", $$v);
+      },
+      expression: "leaveRequestForm.reason"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.leaveRequestForm,
+      "prop-name": "reason"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("file-upload-input", {
+    attrs: {
+      "button-text": _vm.trans("general.upload_document"),
+      token: _vm.leaveRequestForm.upload_token,
+      module: "leave_request",
+      "clear-file": _vm.clearAttachment,
+      "module-id": _vm.module_id
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.uuid,
+      expression: "uuid"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/employee/leave/request"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.save")))])], 1)])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title m-3"
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_allocation")))]), _vm._v(" "), _vm.leave_allocations.length ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("employee.name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.leave_allocation_period")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.leave_allotted")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.leave_allocations, function (leave_allocation) {
+    return _c("tr", [_c("td", {
+      domProps: {
+        textContent: _vm._s(_vm.getEmployeeNameWithCode(leave_allocation.employee))
+      }
+    }), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("moment")(leave_allocation.start_date)) + " " + _vm._s(_vm.trans("general.to")) + " " + _vm._s(_vm._f("moment")(leave_allocation.end_date)))]), _vm._v(" "), _c("td", [_c("ul", {
+      staticStyle: {
+        "list-style": "none",
+        padding: "0",
+        margin: "0"
+      }
+    }, _vm._l(leave_allocation.leave_allocation_details, function (leave_allocation_detail) {
+      return _c("li", [_vm._v(_vm._s(leave_allocation_detail.leave_type.name + ": " + leave_allocation_detail.used + "/" + leave_allocation_detail.allotted))]);
+    }), 0)])]);
+  }), 0)])]) : _c("div", [_c("p", {
+    staticClass: "alert alert-danger m-2"
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_not_allocated")))])])])])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/leave/request/create.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/views/employee/leave/request/create.vue ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _create_vue_vue_type_template_id_761b66b4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./create.vue?vue&type=template&id=761b66b4& */ "./resources/js/views/employee/leave/request/create.vue?vue&type=template&id=761b66b4&");
+/* harmony import */ var _create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./create.vue?vue&type=script&lang=js& */ "./resources/js/views/employee/leave/request/create.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _create_vue_vue_type_template_id_761b66b4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _create_vue_vue_type_template_id_761b66b4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/employee/leave/request/create.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/leave/request/form.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/views/employee/leave/request/form.vue ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_772030ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=772030ee& */ "./resources/js/views/employee/leave/request/form.vue?vue&type=template&id=772030ee&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/employee/leave/request/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_772030ee___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_772030ee___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/employee/leave/request/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/leave/request/create.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/views/employee/leave/request/create.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./create.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/create.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/leave/request/form.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/views/employee/leave/request/form.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/leave/request/create.vue?vue&type=template&id=761b66b4&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/views/employee/leave/request/create.vue?vue&type=template&id=761b66b4& ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_761b66b4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_761b66b4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_761b66b4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./create.vue?vue&type=template&id=761b66b4& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/create.vue?vue&type=template&id=761b66b4&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/leave/request/form.vue?vue&type=template&id=772030ee&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/views/employee/leave/request/form.vue?vue&type=template&id=772030ee& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_772030ee___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_772030ee___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_772030ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=772030ee& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/leave/request/form.vue?vue&type=template&id=772030ee&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=create.js.map?id=1ba5be18e6b5275c

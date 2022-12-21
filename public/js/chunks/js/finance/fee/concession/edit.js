@@ -1,2 +1,568 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[5978],{39098:(e,s,t)=>{"use strict";t.r(s),t.d(s,{default:()=>o});const n={components:{feeConcessionForm:t(347).Z},data:function(){return{id:this.$route.params.id}},mounted:function(){helper.hasPermission("edit-fee-concession")||(helper.notAccessibleMsg(),this.$router.push("/dashboard"))}};const o=(0,t(51900).Z)(n,(function(){var e=this,s=e.$createElement,t=e._self._c||s;return t("div",[t("div",{staticClass:"page-titles"},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-6"},[t("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("finance.edit_fee_concession")))])]),e._v(" "),t("div",{staticClass:"col-12 col-sm-6"},[t("div",{staticClass:"action-buttons pull-right"},[t("button",{staticClass:"btn btn-info btn-sm",on:{click:function(s){return e.$router.push("/finance/fee/concession")}}},[t("i",{staticClass:"fas fa-list"}),e._v(" "),t("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("finance.edit_fee_concession")))])])])])])]),e._v(" "),t("div",{staticClass:"container-fluid"},[t("div",{staticClass:"card card-form"},[t("div",{staticClass:"card-body p-t-20"},[t("fee-concession-form",{attrs:{id:e.id}})],1)])])])}),[],!1,null,null,null).exports},347:(e,s,t)=>{"use strict";t.d(s,{Z:()=>o});const n={components:{},data:function(){return{feeConcessionForm:new Form({name:"",description:"",fee_heads:[]}),default_currency:helper.getConfig("default_currency"),fee_heads:[]}},props:["id"],mounted:function(){helper.hasPermission("create-fee-concession")||helper.hasPermission("edit-fee-concession")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getPreRequisite()},methods:{proceed:function(){this.id?this.update():this.store()},getPreRequisite:function(){var e=this,s=this.$loading.show();axios.get("/api/fee/concession/pre-requisite").then((function(t){e.fee_heads=t,e.populateFeeHeads(),e.id&&e.get(),s.hide()})).catch((function(e){s.hide(),helper.showErrorMsg(e)}))},store:function(){var e=this,s=this.$loading.show();this.feeConcessionForm.post("/api/fee/concession").then((function(t){toastr.success(t.message),e.feeConcessionForm.fee_heads=[],e.populateFeeHeads(),e.$emit("completed"),s.hide()})).catch((function(e){s.hide(),helper.showErrorMsg(e)}))},get:function(){var e=this,s=this.$loading.show();axios.get("/api/fee/concession/"+this.id).then((function(t){e.feeConcessionForm.name=t.name,e.feeConcessionForm.description=t.description,e.feeConcessionForm.fee_heads.forEach((function(e){var s=t.fee_concession_details.find((function(s){return s.fee_head_id==e.fee_head_id}));e.amount=s?s.amount:0,e.type=s&&"amount"==s.type?1:0})),s.hide()})).catch((function(t){s.hide(),helper.showErrorMsg(t),e.$router.push("/finance/fee/concession")}))},update:function(){var e=this,s=this.$loading.show();this.feeConcessionForm.patch("/api/fee/concession/"+this.id).then((function(t){toastr.success(t.message),s.hide(),e.$router.push("/finance/fee/concession")})).catch((function(e){s.hide(),helper.showErrorMsg(e)}))},getConfig:function(e){return helper.getConfig(e)},populateFeeHeads:function(){var e=this;this.fee_heads.forEach((function(s){e.feeConcessionForm.fee_heads.push({fee_head_id:s.id,fee_head_name:s.name+" ("+s.fee_group.name+")",amount:0,type:0})}))}}};const o=(0,t(51900).Z)(n,(function(){var e=this,s=e.$createElement,t=e._self._c||s;return t("form",{on:{submit:function(s){return s.preventDefault(),e.proceed.apply(null,arguments)},keydown:function(s){return e.feeConcessionForm.errors.clear(s.target.name)}}},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-4"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.fee_concession_name")))]),e._v(" "),t("input",{directives:[{name:"model",rawName:"v-model",value:e.feeConcessionForm.name,expression:"feeConcessionForm.name"}],staticClass:"form-control",attrs:{type:"text",name:"name",placeholder:e.trans("finance.fee_concession_name")},domProps:{value:e.feeConcessionForm.name},on:{input:function(s){s.target.composing||e.$set(e.feeConcessionForm,"name",s.target.value)}}}),e._v(" "),t("show-error",{attrs:{"form-name":e.feeConcessionForm,"prop-name":"name"}})],1)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-4"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.fee_concession_description")))]),e._v(" "),t("input",{directives:[{name:"model",rawName:"v-model",value:e.feeConcessionForm.description,expression:"feeConcessionForm.description"}],staticClass:"form-control",attrs:{type:"text",name:"description",placeholder:e.trans("finance.fee_concession_description")},domProps:{value:e.feeConcessionForm.description},on:{input:function(s){s.target.composing||e.$set(e.feeConcessionForm,"description",s.target.value)}}}),e._v(" "),t("show-error",{attrs:{"form-name":e.feeConcessionForm,"prop-name":"description"}})],1)])]),e._v(" "),e._l(e.feeConcessionForm.fee_heads,(function(s){return t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-4"},[t("div",{staticClass:"form-group"},[t("label",{staticClass:"m-t-10",attrs:{for:""}},[e._v(e._s(s.fee_head_name))])])]),e._v(" "),t("div",{staticClass:"col-12 col-sm-2"},[t("div",{staticClass:"form-group"},[s.type?[t("currency-input",{attrs:{position:e.default_currency.position,symbol:e.default_currency.symbol,name:"discount_"+s.fee_head_id,placeholder:e.trans("finance.fee_concession_discount")},model:{value:s.amount,callback:function(t){e.$set(s,"amount",t)},expression:"fee_head.amount"}})]:[t("div",{staticClass:"input-group mb-3"},[t("input",{directives:[{name:"model",rawName:"v-model",value:s.amount,expression:"fee_head.amount"}],staticClass:"form-control",attrs:{type:"text",name:"discount_"+s.fee_head_id,placeholder:e.trans("finance.fee_concession_discount")},domProps:{value:s.amount},on:{input:function(t){t.target.composing||e.$set(s,"amount",t.target.value)}}}),e._v(" "),e._m(0,!0)])],e._v(" "),t("show-error",{attrs:{"form-name":e.feeConcessionForm,"prop-name":"discount_"+s.fee_head_id}})],2)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-2"},[t("div",{staticClass:"form-group"},[t("switches",{directives:[{name:"tooltip",rawName:"v-tooltip",value:s.type?e.trans("finance.turn_off_for_discount_in_percent"):e.trans("finance.turn_on_for_discount_in_amount"),expression:"fee_head.type ? trans('finance.turn_off_for_discount_in_percent') : trans('finance.turn_on_for_discount_in_amount')"}],staticClass:"m-l-20 m-t-10",attrs:{theme:"bootstrap",color:"success"},model:{value:s.type,callback:function(t){e.$set(s,"type",t)},expression:"fee_head.type"}})],1)])])})),e._v(" "),t("div",{staticClass:"card-footer text-right"},[t("router-link",{directives:[{name:"show",rawName:"v-show",value:e.id,expression:"id"}],staticClass:"btn btn-danger waves-effect waves-light ",attrs:{to:"/finance/fee/concession"}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),e.id?e._e():t("button",{staticClass:"btn btn-danger waves-effect waves-light ",attrs:{type:"button"},on:{click:function(s){return e.$emit("cancel")}}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),t("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[e.id?t("span",[e._v(e._s(e.trans("general.update")))]):t("span",[e._v(e._s(e.trans("general.save")))])])],1)],2)}),[function(){var e=this,s=e.$createElement,t=e._self._c||s;return t("div",{staticClass:"input-group-append"},[t("span",{staticClass:"input-group-text",attrs:{id:"basic-addon1"}},[e._v("%")])])}],!1,null,null,null).exports}}]);
-//# sourceMappingURL=edit.js.map?id=46cb552865a8c38176c7
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/finance/fee/concession/edit"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/edit.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/edit.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/finance/fee/concession/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    feeConcessionForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      id: this.$route.params.id
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('edit-fee-concession')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/form.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/form.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      feeConcessionForm: new Form({
+        name: '',
+        description: '',
+        fee_heads: []
+      }),
+      default_currency: helper.getConfig('default_currency'),
+      fee_heads: []
+    };
+  },
+  props: ['id'],
+  mounted: function mounted() {
+    if (!helper.hasPermission('create-fee-concession') && !helper.hasPermission('edit-fee-concession')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getPreRequisite();
+  },
+  methods: {
+    proceed: function proceed() {
+      if (this.id) this.update();else this.store();
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/fee/concession/pre-requisite').then(function (response) {
+        _this.fee_heads = response;
+        _this.populateFeeHeads();
+        if (_this.id) _this.get();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    store: function store() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      this.feeConcessionForm.post('/api/fee/concession').then(function (response) {
+        toastr.success(response.message);
+        _this2.feeConcessionForm.fee_heads = [];
+        _this2.populateFeeHeads();
+        _this2.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/fee/concession/' + this.id).then(function (response) {
+        _this3.feeConcessionForm.name = response.name;
+        _this3.feeConcessionForm.description = response.description;
+        _this3.feeConcessionForm.fee_heads.forEach(function (fee_head) {
+          var head = response.fee_concession_details.find(function (o) {
+            return o.fee_head_id == fee_head.fee_head_id;
+          });
+          fee_head.amount = head ? head.amount : 0;
+          fee_head.type = head && head.type == 'amount' ? 1 : 0;
+        });
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this3.$router.push('/finance/fee/concession');
+      });
+    },
+    update: function update() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      this.feeConcessionForm.patch('/api/fee/concession/' + this.id).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this4.$router.push('/finance/fee/concession');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    populateFeeHeads: function populateFeeHeads() {
+      var _this5 = this;
+      this.fee_heads.forEach(function (fee_head) {
+        _this5.feeConcessionForm.fee_heads.push({
+          fee_head_id: fee_head.id,
+          fee_head_name: fee_head.name + ' (' + fee_head.fee_group.name + ')',
+          amount: 0,
+          type: 0
+        });
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/edit.vue?vue&type=template&id=bee40af0&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/edit.vue?vue&type=template&id=bee40af0& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("finance.edit_fee_concession")))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/finance/fee/concession");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("finance.edit_fee_concession")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body p-t-20"
+  }, [_c("fee-concession-form", {
+    attrs: {
+      id: _vm.id
+    }
+  })], 1)])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/form.vue?vue&type=template&id=5d4cac42&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/form.vue?vue&type=template&id=5d4cac42& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.feeConcessionForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.fee_concession_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.feeConcessionForm.name,
+      expression: "feeConcessionForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name",
+      placeholder: _vm.trans("finance.fee_concession_name")
+    },
+    domProps: {
+      value: _vm.feeConcessionForm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.feeConcessionForm, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.feeConcessionForm,
+      "prop-name": "name"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.fee_concession_description")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.feeConcessionForm.description,
+      expression: "feeConcessionForm.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "description",
+      placeholder: _vm.trans("finance.fee_concession_description")
+    },
+    domProps: {
+      value: _vm.feeConcessionForm.description
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.feeConcessionForm, "description", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.feeConcessionForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _vm._l(_vm.feeConcessionForm.fee_heads, function (fee_head) {
+    return _c("div", {
+      staticClass: "row"
+    }, [_c("div", {
+      staticClass: "col-12 col-sm-4"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("label", {
+      staticClass: "m-t-10",
+      attrs: {
+        "for": ""
+      }
+    }, [_vm._v(_vm._s(fee_head.fee_head_name))])])]), _vm._v(" "), _c("div", {
+      staticClass: "col-12 col-sm-2"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [fee_head.type ? [_c("currency-input", {
+      attrs: {
+        position: _vm.default_currency.position,
+        symbol: _vm.default_currency.symbol,
+        name: "discount_".concat(fee_head.fee_head_id),
+        placeholder: _vm.trans("finance.fee_concession_discount")
+      },
+      model: {
+        value: fee_head.amount,
+        callback: function callback($$v) {
+          _vm.$set(fee_head, "amount", $$v);
+        },
+        expression: "fee_head.amount"
+      }
+    })] : [_c("div", {
+      staticClass: "input-group mb-3"
+    }, [_c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: fee_head.amount,
+        expression: "fee_head.amount"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "text",
+        name: "discount_".concat(fee_head.fee_head_id),
+        placeholder: _vm.trans("finance.fee_concession_discount")
+      },
+      domProps: {
+        value: fee_head.amount
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(fee_head, "amount", $event.target.value);
+        }
+      }
+    }), _vm._v(" "), _vm._m(0, true)])], _vm._v(" "), _c("show-error", {
+      attrs: {
+        "form-name": _vm.feeConcessionForm,
+        "prop-name": "discount_".concat(fee_head.fee_head_id)
+      }
+    })], 2)]), _vm._v(" "), _c("div", {
+      staticClass: "col-12 col-sm-2"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("switches", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: fee_head.type ? _vm.trans("finance.turn_off_for_discount_in_percent") : _vm.trans("finance.turn_on_for_discount_in_amount"),
+        expression: "fee_head.type ? trans('finance.turn_off_for_discount_in_percent') : trans('finance.turn_on_for_discount_in_amount')"
+      }],
+      staticClass: "m-l-20 m-t-10",
+      attrs: {
+        theme: "bootstrap",
+        color: "success"
+      },
+      model: {
+        value: fee_head.type,
+        callback: function callback($$v) {
+          _vm.$set(fee_head, "type", $$v);
+        },
+        expression: "fee_head.type"
+      }
+    })], 1)])]);
+  }), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.id,
+      expression: "id"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/finance/fee/concession"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.id ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.id ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)], 2);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "input-group-append"
+  }, [_c("span", {
+    staticClass: "input-group-text",
+    attrs: {
+      id: "basic-addon1"
+    }
+  }, [_vm._v("%")])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/concession/edit.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/views/finance/fee/concession/edit.vue ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _edit_vue_vue_type_template_id_bee40af0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit.vue?vue&type=template&id=bee40af0& */ "./resources/js/views/finance/fee/concession/edit.vue?vue&type=template&id=bee40af0&");
+/* harmony import */ var _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue?vue&type=script&lang=js& */ "./resources/js/views/finance/fee/concession/edit.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _edit_vue_vue_type_template_id_bee40af0___WEBPACK_IMPORTED_MODULE_0__.render,
+  _edit_vue_vue_type_template_id_bee40af0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/finance/fee/concession/edit.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/concession/form.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/views/finance/fee/concession/form.vue ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_5d4cac42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=5d4cac42& */ "./resources/js/views/finance/fee/concession/form.vue?vue&type=template&id=5d4cac42&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/finance/fee/concession/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_5d4cac42___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_5d4cac42___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/finance/fee/concession/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/concession/edit.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/views/finance/fee/concession/edit.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/edit.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/concession/form.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/views/finance/fee/concession/form.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/concession/edit.vue?vue&type=template&id=bee40af0&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/views/finance/fee/concession/edit.vue?vue&type=template&id=bee40af0& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_bee40af0___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_bee40af0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_bee40af0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=template&id=bee40af0& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/edit.vue?vue&type=template&id=bee40af0&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/concession/form.vue?vue&type=template&id=5d4cac42&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/views/finance/fee/concession/form.vue?vue&type=template&id=5d4cac42& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_5d4cac42___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_5d4cac42___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_5d4cac42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=5d4cac42& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/concession/form.vue?vue&type=template&id=5d4cac42&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=edit.js.map?id=82d6bd2bacc38dce

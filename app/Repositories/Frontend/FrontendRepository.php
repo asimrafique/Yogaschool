@@ -273,16 +273,21 @@ class FrontendRepository {
 		$list = getVar('list');
 		$genders = generateTranslatedSelectOption(isset($list['gender']) ? $list['gender'] : []);
 		$guardian_relations = generateTranslatedSelectOption(isset($list['relations']) ? $list['relations'] : []);
+		$course_locations = generateTranslatedSelectOption(isset($list['course_locations']) ? $list['course_locations'] : []);
+        $accommodations = generateTranslatedSelectOption(isset($list['accommodations']) ? $list['accommodations'] : []);
+        $how_long_yoga_options = generateTranslatedSelectOption(isset($list['how_long_yoga_options']) ? $list['how_long_yoga_options'] : []);
+        $teaching_experience_options = generateTranslatedSelectOption(isset($list['teaching_experience_options']) ? $list['teaching_experience_options'] : []);
+        $use_drugs_options = generateTranslatedSelectOption(isset($list['use_drugs_options']) ? $list['use_drugs_options'] : []);
 
 		if (!$academic_session) {
 			$courses = array();
-			return compact('courses', 'genders','guardian_relations');
+			return compact('courses', 'genders','guardian_relations','course_locations','accommodations','how_long_yoga_options','teaching_experience_options','use_drugs_options');
 		}
 
 		$courses = $this->course_group->getCourseOptionWithDetail($academic_session->id);
 
         $custom_fields = $this->custom_field->listAllByForm('student_online_registration');
 
-		return compact('courses', 'genders', 'custom_fields', 'guardian_relations');
+		return compact('courses', 'genders', 'custom_fields', 'guardian_relations','course_locations','accommodations','how_long_yoga_options','teaching_experience_options','use_drugs_options');
 	}
 }

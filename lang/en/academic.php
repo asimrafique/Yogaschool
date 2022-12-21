@@ -310,4 +310,7 @@
   'timetable_updated' => 'Timetable updated.',
   'transfer_certificate_format' => 'Transfer Certificate Format',
   'week_days_missing' => 'Some week days are missing.',
+    'course_locations' => 'Select Course Location',
+    'accommodation' => 'Accommodation choice Netherland',
+
 );

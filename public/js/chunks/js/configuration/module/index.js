@@ -1,2 +1,816 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[3779],{90687:(t,s,a)=>{"use strict";a.r(s),a.d(s,{default:()=>i});const n={mounted:function(){helper.hasPermission("access-configuration")||(helper.notAccessibleMsg(),this.$router.push("/dashboard"))}};const i=(0,a(51900).Z)(n,(function(){var t=this,s=t.$createElement,a=t._self._c||s;return a("div",[a("div",{staticClass:"page-titles"},[a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-6"},[a("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("configuration.module_configuration")))])]),t._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"action-buttons pull-right"},[a("button",{staticClass:"btn btn-info btn-sm",on:{click:function(s){return t.$router.push("/configuration")}}},[a("i",{staticClass:"fas fa-cogs"}),t._v(" "),a("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("configuration.configuration")))])])])])])]),t._v(" "),a("div",{staticClass:"container-fluid"},[a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("reception.reception_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("reception.enquiry_type"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("reception.enquiry_type_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/reception/enquiry/type"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("reception.enquiry_type")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("reception.enquiry_source"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("reception.enquiry_source_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/reception/enquiry/source"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("reception.enquiry_source")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("reception.visiting_purpose"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("reception.visiting_purpose_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/reception/visiting/purpose"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("reception.visiting_purpose")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("reception.calling_purpose"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("reception.calling_purpose_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/reception/calling/purpose"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("reception.calling_purpose")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("reception.complaint_type"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("reception.complaint_type_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/reception/complaint/type"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("reception.complaint_type")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("academic.academic_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("academic.course_group"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("academic.course_group_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/academic/course/group"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("academic.course_group")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("academic.institute"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("academic.institute_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/academic/institute"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("academic.institute")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("academic.certificate_template"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("academic.certificate_template_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/academic/certificate/template"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("academic.certificate_template")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("academic.id_card_template"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("academic.id_card_template_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/academic/id-card/template"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("academic.id_card_template")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("finance.finance_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("finance.transaction_category"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("finance.transaction_category_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/finance/transaction/category"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("finance.transaction_category")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("finance.payment_method"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("finance.payment_method_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/finance/payment/method"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("finance.payment_method")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("student.student_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("student.attendance_configuration"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("student.attendance_configuration_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/student"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("student.attendance_configuration")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("student.document_type"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("student.document_type_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/student/document/type"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("student.document_type")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("student.student_group"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("student.student_group_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/student/group"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("student.student_group")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("exam.configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("exam.term"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("exam.term_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/exam/term"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("exam.term")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("exam.assessment"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("exam.assessment_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/exam/assessment"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("exam.term")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("exam.observation"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("exam.observation_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/exam/observation"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("exam.term")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("exam.grade"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("exam.grade_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/exam/grade"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("exam.term")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("employee.employee_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("employee.employee_configuration"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("employee.employee_configuration_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/employee"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("employee.employee_configuration")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("employee.category"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("employee.category_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/employee/category"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("employee.category")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("employee.designation"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("employee.designation_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/employee/designation"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("employee.designation")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("employee.department"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("employee.department_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/employee/department"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("employee.department")})))])],1)]),t._v(" "),a("div",{staticClass:"row m-t-20"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("employee.employee_group"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("employee.employee_group_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/employee/group"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("employee.employee_group")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("employee.document_type"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("employee.document_type_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/employee/document/type"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("employee.document_type")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("employee.leave_type"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("employee.leave_type_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/employee/leave/type"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("employee.leave_type")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("employee.attendance_type"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("employee.attendance_type_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/employee/attendance/type"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("employee.attendance_type")})))])],1)]),t._v(" "),a("div",{staticClass:"row m-t-20"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("employee.pay_head"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("employee.pay_head_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/employee/pay/head"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("employee.pay_head")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("transport.transport_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("transport.vehicle_document_type"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("transport.vehicle_document_type_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/transport/vehicle/document/type"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("transport.vehicle_document_type")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("transport.vehicle_fuel_type"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("transport.vehicle_fuel_type_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/transport/vehicle/fuel/type"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("transport.vehicle_fuel_type")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("transport.vehicle_service_center"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("transport.vehicle_service_center_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/transport/vehicle/service/center"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("transport.vehicle_service_center")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("library.library_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("library.library_configuration"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("library.library_configuration_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/library"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("library.library_configuration")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("library.book_author"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("library.book_author_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/library/book/author"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("library.book_author")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("library.book_language"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("library.book_language_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/library/book/language"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("library.book_language")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("library.book_topic"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("library.book_topic_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/library/book/topic"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("library.book_topic")})))])],1)]),t._v(" "),a("div",{staticClass:"row m-t-20"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("library.book_publisher"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("library.book_publisher_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/library/book/publisher"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("library.book_publisher")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("library.book_condition"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("library.book_condition_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/library/book/condition"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("library.book_condition")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("calendar.calendar_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("calendar.event_type"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("calendar.event_type_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/calendar/event/type"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("calendar.event_type")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("post.post_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("post.article_type"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("post.article_type_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/post/article/type"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("post.article_type")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card border-bottom p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("asset.asset_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("asset.building"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("asset.building_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/asset/building"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("asset.building")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("asset.room"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("asset.room_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/asset/room"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("asset.room")})))])],1)])])]),t._v(" "),a("div",{staticClass:"card p-4"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("misc.misc_configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("misc.religion"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("misc.religion_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/misc/religion"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("misc.religion")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("misc.caste"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("misc.caste_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/misc/caste"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("misc.caste")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("misc.category"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("misc.category_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/misc/category"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("misc.category")})))])],1),t._v(" "),a("div",{staticClass:"col-12 col-sm-3"},[a("h6",{staticClass:"card-title"},[t._v(t._s(t.trans("misc.blood_group"))+"\n                        ")]),t._v(" "),a("p",{staticClass:"font-80pc"},[t._v(t._s(t.trans("misc.blood_group_module_description")))]),t._v(" "),a("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/configuration/misc/blood/group"}},[t._v(t._s(t.trans("general.go_to_link",{link:t.trans("misc.blood_group")})))])],1)])])])])])}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=index.js.map?id=3db1ac313692fd6c2e9c
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/configuration/module/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/module/index.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/module/index.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mounted: function mounted() {
+    if (!helper.hasPermission('access-configuration')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/module/index.vue?vue&type=template&id=5180a027&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/module/index.vue?vue&type=template&id=5180a027& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("configuration.module_configuration")))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/configuration");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-cogs"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("configuration.configuration")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("reception.reception_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("reception.enquiry_type")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("reception.enquiry_type_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/reception/enquiry/type"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("reception.enquiry_type")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("reception.enquiry_source")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("reception.enquiry_source_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/reception/enquiry/source"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("reception.enquiry_source")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("reception.visiting_purpose")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("reception.visiting_purpose_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/reception/visiting/purpose"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("reception.visiting_purpose")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("reception.calling_purpose")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("reception.calling_purpose_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/reception/calling/purpose"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("reception.calling_purpose")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("reception.complaint_type")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("reception.complaint_type_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/reception/complaint/type"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("reception.complaint_type")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("academic.academic_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("academic.course_group")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("academic.course_group_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/academic/course/group"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("academic.course_group")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("academic.institute")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("academic.institute_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/academic/institute"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("academic.institute")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("academic.certificate_template")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("academic.certificate_template_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/academic/certificate/template"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("academic.certificate_template")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("academic.id_card_template")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("academic.id_card_template_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/academic/id-card/template"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("academic.id_card_template")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("finance.finance_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("finance.transaction_category")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("finance.transaction_category_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/finance/transaction/category"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("finance.transaction_category")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("finance.payment_method")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("finance.payment_method_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/finance/payment/method"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("finance.payment_method")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("student.student_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("student.attendance_configuration")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("student.attendance_configuration_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/student"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("student.attendance_configuration")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("student.document_type")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("student.document_type_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/student/document/type"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("student.document_type")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("student.student_group")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("student.student_group_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/student/group"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("student.student_group")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("exam.configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("exam.term")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("exam.term_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/exam/term"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("exam.term")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("exam.assessment")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("exam.assessment_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/exam/assessment"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("exam.term")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("exam.observation")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("exam.observation_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/exam/observation"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("exam.term")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("exam.grade")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("exam.grade_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/exam/grade"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("exam.term")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee_configuration")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee_configuration_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/employee"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("employee.employee_configuration")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.category")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("employee.category_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/employee/category"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("employee.category")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.designation")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("employee.designation_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/employee/designation"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("employee.designation")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.department")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("employee.department_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/employee/department"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("employee.department")
+  })))])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "row m-t-20"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee_group")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee_group_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/employee/group"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("employee.employee_group")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.document_type")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("employee.document_type_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/employee/document/type"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("employee.document_type")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_type")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("employee.leave_type_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/employee/leave/type"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("employee.leave_type")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.attendance_type")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("employee.attendance_type_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/employee/attendance/type"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("employee.attendance_type")
+  })))])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "row m-t-20"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.pay_head")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("employee.pay_head_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/employee/pay/head"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("employee.pay_head")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("transport.transport_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_document_type")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_document_type_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/transport/vehicle/document/type"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("transport.vehicle_document_type")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_fuel_type")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_fuel_type_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/transport/vehicle/fuel/type"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("transport.vehicle_fuel_type")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_service_center")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("transport.vehicle_service_center_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/transport/vehicle/service/center"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("transport.vehicle_service_center")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("library.library_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("library.library_configuration")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("library.library_configuration_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/library"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("library.library_configuration")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("library.book_author")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("library.book_author_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/library/book/author"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("library.book_author")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("library.book_language")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("library.book_language_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/library/book/language"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("library.book_language")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("library.book_topic")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("library.book_topic_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/library/book/topic"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("library.book_topic")
+  })))])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "row m-t-20"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("library.book_publisher")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("library.book_publisher_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/library/book/publisher"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("library.book_publisher")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("library.book_condition")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("library.book_condition_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/library/book/condition"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("library.book_condition")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("calendar.calendar_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("calendar.event_type")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("calendar.event_type_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/calendar/event/type"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("calendar.event_type")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("post.post_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("post.article_type")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("post.article_type_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/post/article/type"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("post.article_type")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card border-bottom p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("asset.asset_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("asset.building")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("asset.building_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/asset/building"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("asset.building")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("asset.room")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("asset.room_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/asset/room"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("asset.room")
+  })))])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card p-4"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("misc.misc_configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("misc.religion")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("misc.religion_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/misc/religion"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("misc.religion")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("misc.caste")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("misc.caste_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/misc/caste"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("misc.caste")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("misc.category")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("misc.category_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/misc/category"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("misc.category")
+  })))])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("h6", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("misc.blood_group")) + "\n                        ")]), _vm._v(" "), _c("p", {
+    staticClass: "font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("misc.blood_group_module_description")))]), _vm._v(" "), _c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/configuration/misc/blood/group"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.go_to_link", {
+    link: _vm.trans("misc.blood_group")
+  })))])], 1)])])])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/module/index.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/views/configuration/module/index.vue ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_5180a027___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=5180a027& */ "./resources/js/views/configuration/module/index.vue?vue&type=template&id=5180a027&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/configuration/module/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_5180a027___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_5180a027___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/configuration/module/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/module/index.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/views/configuration/module/index.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/module/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/module/index.vue?vue&type=template&id=5180a027&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/views/configuration/module/index.vue?vue&type=template&id=5180a027& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_5180a027___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_5180a027___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_5180a027___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=5180a027& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/module/index.vue?vue&type=template&id=5180a027&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=dfc5da0e7d613730

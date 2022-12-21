@@ -1,2 +1,904 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[1013],{13378:(e,t,a)=>{"use strict";a.r(t),a.d(t,{default:()=>n});const s={components:{feeAllocationForm:a(39025).Z},data:function(){return{ruuid:this.$route.params.uuid}},mounted:function(){helper.hasPermission("create-fee-allocation")||(helper.notAccessibleMsg(),this.$router.push("/dashboard"))}};const n=(0,a(51900).Z)(s,(function(){var e=this,t=e.$createElement,a=e._self._c||t;return a("div",[a("div",{staticClass:"page-titles"},[a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-6"},[a("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("finance.add_new_fee_allocation")))])]),e._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"action-buttons pull-right"},[a("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){return e.$router.push("/finance/fee/allocation")}}},[a("i",{staticClass:"fas fa-list"}),e._v(" "),a("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("finance.fee_allocation")))])])])])])]),e._v(" "),a("div",{staticClass:"container-fluid"},[a("div",{staticClass:"card card-form"},[a("div",{staticClass:"card-body p-t-20"},[a("fee-allocation-form",{attrs:{ruuid:e.ruuid}})],1)])])])}),[],!1,null,null,null).exports},39025:(e,t,a)=>{"use strict";a.d(t,{Z:()=>n});const s={components:{},props:["uuid","ruuid"],data:function(){return{batches:[],fee_groups:[],fee_heads:[],transport_fees:[],late_fee_frequencies:[],selected_batch:null,feeAllocationForm:new Form({is_course_fee:!1,batch_id:"",fee_groups:[]}),fee_allocation:null}},mounted:function(){this.getPreRequisite()},methods:{getPreRequisite:function(){var e=this,t=this.$loading.show();axios.get("/api/fee/allocation/pre-requisite").then((function(a){e.batches=a.batches,e.fee_groups=a.fee_groups,e.fee_heads=a.fee_heads,e.transport_fees=a.transport_fees,e.late_fee_frequencies=a.late_fee_frequencies,e.fee_groups.forEach((function(t){e.feeAllocationForm.fee_groups.push({fee_group_id:t.id,fee_group_name:t.name,has_transport:t.options?t.options.has_transport:0,installments:[]}),e.uuid||e.ruuid||e.addInstallment(t.id)})),(e.uuid||e.ruuid)&&e.getFeeAllocation(),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},addInstallment:function(e){var t=this.feeAllocationForm.fee_groups.find((function(t){return t.fee_group_id==e})),a=this.addFeeHead(e);t.installments.push({uuid:this.$uuid.v4(),due_date:"",title:"",fee_heads:a,late_fee_applicable:!1,late_fee_frequency:"1",late_fee:"",selected_transport_fee:null,transport_fee_id:""})},addFeeHead:function(e){var t=[];return this.fee_heads.forEach((function(a){a.fee_group_id==e&&t.push({id:a.id,amount:"",name:a.name,is_optional:!1})})),t},confirmDeleteInstallment:function(e,t){var a=this;return function(s){return a.deleteInstallment(e,t)}},deleteInstallment:function(e,t){this.feeAllocationForm.fee_groups.find((function(t){return t.fee_group_id==e})).installments.splice(t,1)},getTitleName:function(e,t){return e+"_"+t+"_title"},getDueDateName:function(e,t){return e+"_"+t+"_due_date"},getFeeName:function(e,t,a){return e+"_"+t+"_"+a+"_fee"},getLateFeeFrequencyName:function(e,t){return e+"_"+t+"_late_fee_frequency"},getLateFeeName:function(e,t){return e+"_"+t+"_late_fee"},getTransportFeeName:function(e,t){return e+"_"+t+"_transport_fee"},getFeeAllocation:function(){var e=this,t=this.$loading.show();axios.get("/api/fee/allocation/"+(this.ruuid||this.uuid)).then((function(a){e.fee_allocation=a,a.paid_count&&!e.ruuid&&(toastr.error(i18n.finance.cannot_modify_fee_allocation),t.hide(),e.$router.push("/finance/fee/allocation")),e.ruuid||(e.selected_batch={name:a.batch.course.name+" "+a.batch.name,id:a.batch_id},e.feeAllocationForm.batch_id=a.batch_id),e.feeAllocationForm.fee_groups.forEach((function(t){a.fee_allocation_groups.find((function(e){return e.fee_group_id===t.fee_group_id})).fee_installments.forEach((function(a){var s=e.addFeeHead(t.fee_group_id);a.fee_installment_details.forEach((function(e){var t=s.find((function(t){return t.id===e.fee_head_id}));t.amount=e.amount?e.amount:"",t.is_optional=e.is_optional?1:0})),t.installments.push({uuid:a.uuid,due_date:a.due_date,title:a.title,fee_heads:s,late_fee_applicable:a.late_fee_applicable,late_fee_frequency:a.late_fee_frequency,late_fee:a.late_fee,transport_fee_id:a.transport_fee_id,selected_transport_fee:a.transport_fee_id?{id:a.transport_fee_id,name:a.transport_fee.name}:null})}))})),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},proceed:function(){this.uuid?this.update():this.store()},store:function(){var e=this,t=this.$loading.show();this.feeAllocationForm.post("/api/fee/allocation").then((function(a){toastr.success(a.message),t.hide(),e.$router.push("/finance/fee/allocation")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},update:function(){var e=this,t=this.$loading.show();this.feeAllocationForm.patch("/api/fee/allocation/"+this.uuid).then((function(a){toastr.success(a.message),t.hide(),e.$router.push("/finance/fee/allocation")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onBatchSelect:function(e){this.feeAllocationForm.batch_id=e.id},onTransportFeeSelect:function(e,t){var a=t.split("_"),s=a[0],n=a[1];this.feeAllocationForm.fee_groups.find((function(e){return e.fee_group_id==s})).installments[n].transport_fee_id=e.id}}};const n=(0,a(51900).Z)(s,(function(){var e=this,t=e.$createElement,a=e._self._c||t;return a("div",[a("form",{on:{submit:function(t){return t.preventDefault(),e.proceed.apply(null,arguments)},keydown:function(t){return e.feeAllocationForm.errors.clear(t.target.name)}}},[e.uuid?e._e():a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("academic.batch")))]),e._v(" "),a("v-select",{attrs:{label:"name","group-values":"batches","group-label":"course_group","group-select":!1,name:"batch_id",id:"batch_id",options:e.batches,placeholder:e.trans("academic.select_batch")},on:{select:e.onBatchSelect,close:function(t){return e.feeAllocationForm.errors.clear("batch_id")},remove:function(t){e.feeAllocationForm.batch_id=""}},model:{value:e.selected_batch,callback:function(t){e.selected_batch=t},expression:"selected_batch"}},[e.batches.length?e._e():a("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                "+e._s(e.trans("general.no_option_found"))+"\n                            ")])]),e._v(" "),a("show-error",{attrs:{"form-name":e.feeAllocationForm,"prop-name":"batch_id"}})],1)]),e._v(" "),e.uuid?e._e():a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("div",[e._v(e._s(e.trans("finance.is_course_fee")))]),e._v(" "),a("switches",{staticClass:"m-t-20",attrs:{theme:"bootstrap",color:"success"},model:{value:e.feeAllocationForm.is_course_fee,callback:function(t){e.$set(e.feeAllocationForm,"is_course_fee",t)},expression:"feeAllocationForm.is_course_fee"}}),e._v(" "),a("show-error",{attrs:{"form-name":e.feeAllocationForm,"prop-name":"is_course_fee"}})],1)])]),e._v(" "),e.fee_allocation&&!e.ruuid?[e.fee_allocation.course_id?a("h4",[e._v(e._s(e.fee_allocation.course.name))]):a("h4",{staticClass:"card-title"},[e._v(e._s(e.fee_allocation.batch.course.name+" "+e.fee_allocation.batch.name))]),e._v(" "),a("br")]:e._e(),e._v(" "),e.feeAllocationForm.batch_id||e.ruuid?[e._l(e.feeAllocationForm.fee_groups,(function(t){return a("div",{staticClass:"m-b-20 p-4"},[a("h4",[e._v(e._s(t.fee_group_name))]),e._v(" "),t.installments.length?a("div",{staticStyle:{padding:"0px"}},e._l(t.installments,(function(s,n){return a("fieldset",[a("legend",[e._v("\n    \t                        "+e._s(e.trans("finance.fee_installment"))+" - "+e._s(n+1)+" \n    \t                        "),a("span",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:e.confirmDeleteInstallment(t.fee_group_id,n)},expression:"{ok: confirmDeleteInstallment(fee_group.fee_group_id,index)}"},{name:"tooltip",rawName:"v-tooltip",value:e.trans("finance.delete_fee_installment"),expression:"trans('finance.delete_fee_installment')"}],key:t.fee_group_id+"_"+n,staticClass:"has-error m-l-10 ",staticStyle:{cursor:"pointer"}},[a("i",{staticClass:"fa fa-times-circle"})])]),e._v(" "),a("div",{staticClass:"row",staticStyle:{padding:"0 20px"}},[a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.fee_installment_title")))]),e._v(" "),a("input",{directives:[{name:"model",rawName:"v-model",value:s.title,expression:"installment.title"}],staticClass:"form-control",attrs:{type:"text",name:e.getTitleName(t.fee_group_id,n),placeholder:e.trans("finance.fee_installment_title")},domProps:{value:s.title},on:{input:function(t){t.target.composing||e.$set(s,"title",t.target.value)}}}),e._v(" "),a("show-error",{attrs:{"form-name":e.feeAllocationForm,"prop-name":e.getTitleName(t.fee_group_id,n)}})],1)]),e._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.fee_installment_due_date")))]),e._v(" "),a("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("finance.fee_installment_due_date"),name:e.getDueDateName(t.fee_group_id,n)},on:{selected:function(a){e.feeAllocationForm.errors.clear(e.getDueDateName(t.fee_group_id,n))}},model:{value:s.due_date,callback:function(t){e.$set(s,"due_date",t)},expression:"installment.due_date"}}),e._v(" "),a("show-error",{attrs:{"form-name":e.feeAllocationForm,"prop-name":e.getDueDateName(t.fee_group_id,n)}})],1)]),e._v(" "),a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.late_fee_applicable")))]),e._v(" "),a("br"),e._v(" "),a("switches",{staticClass:"m-l-20",attrs:{theme:"bootstrap",color:"success"},model:{value:s.late_fee_applicable,callback:function(t){e.$set(s,"late_fee_applicable",t)},expression:"installment.late_fee_applicable"}})],1)]),e._v(" "),s.late_fee_applicable?a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.late_fee_frequency")))]),e._v(" "),a("select",{directives:[{name:"model",rawName:"v-model",value:s.late_fee_frequency,expression:"installment.late_fee_frequency"}],staticClass:"custom-select col-12",attrs:{name:e.getLateFeeFrequencyName(t.fee_group_id,n)},on:{change:function(t){var a=Array.prototype.filter.call(t.target.options,(function(e){return e.selected})).map((function(e){return"_value"in e?e._value:e.value}));e.$set(s,"late_fee_frequency",t.target.multiple?a:a[0])}}},e._l(e.late_fee_frequencies,(function(t){return a("option",{domProps:{value:t.value}},[e._v("\n                                                    "+e._s(t.text)+"\n                                                  ")])})),0),e._v(" "),a("show-error",{attrs:{"form-name":e.feeAllocationForm,"prop-name":e.getLateFeeFrequencyName(t.fee_group_id,n)}})],1)]):e._e(),e._v(" "),s.late_fee_applicable?a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.late_fee")))]),e._v(" "),a("input",{directives:[{name:"model",rawName:"v-model",value:s.late_fee,expression:"installment.late_fee"}],staticClass:"form-control",attrs:{type:"text",name:e.getLateFeeName(t.fee_group_id,n),placeholder:e.trans("finance.late_fee")},domProps:{value:s.late_fee},on:{input:function(t){t.target.composing||e.$set(s,"late_fee",t.target.value)}}}),e._v(" "),a("show-error",{attrs:{"form-name":e.feeAllocationForm,"prop-name":e.getLateFeeName(t.fee_group_id,n)}})],1)]):e._e()])]),e._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"row"},[e._l(s.fee_heads,(function(s){return a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(s.name))]),e._v(" "),a("div",{staticClass:"input-group mb-3"},[a("input",{directives:[{name:"model",rawName:"v-model",value:s.amount,expression:"fee_head.amount"}],staticClass:"form-control",attrs:{type:"text",name:e.getFeeName(t.fee_group_id,n,s.id),placeholder:e.trans("finance.fee_installment_amount")},domProps:{value:s.amount},on:{input:function(t){t.target.composing||e.$set(s,"amount",t.target.value)}}}),e._v(" "),a("div",{staticClass:"input-group-append"},[a("div",{staticClass:"input-group-text"},[a("input",{directives:[{name:"model",rawName:"v-model",value:s.is_optional,expression:"fee_head.is_optional"},{name:"tooltip",rawName:"v-tooltip",value:e.trans("finance.fee_is_optional"),expression:"trans('finance.fee_is_optional')"}],attrs:{type:"checkbox"},domProps:{checked:Array.isArray(s.is_optional)?e._i(s.is_optional,null)>-1:s.is_optional},on:{change:function(t){var a=s.is_optional,n=t.target,o=!!n.checked;if(Array.isArray(a)){var i=e._i(a,null);n.checked?i<0&&e.$set(s,"is_optional",a.concat([null])):i>-1&&e.$set(s,"is_optional",a.slice(0,i).concat(a.slice(i+1)))}else e.$set(s,"is_optional",o)}}})])])]),e._v(" "),a("show-error",{attrs:{"form-name":e.feeAllocationForm,"prop-name":e.getFeeName(t.fee_group_id,n,s.id)}})],1)])})),e._v(" "),t.has_transport?a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[e._v(e._s(e.trans("transport.transport")))]),e._v(" "),a("v-select",{attrs:{label:"name",name:e.getTransportFeeName(t.fee_group_id,n),id:e.getTransportFeeName(t.fee_group_id,n),options:e.transport_fees,placeholder:e.trans("general.select_one")},on:{select:e.onTransportFeeSelect,close:function(e){},remove:function(e){s.transport_fee_id=""}},model:{value:s.selected_transport_fee,callback:function(t){e.$set(s,"selected_transport_fee",t)},expression:"installment.selected_transport_fee"}},[e.transport_fees.length?e._e():a("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                                        "+e._s(e.trans("general.no_option_found"))+"\n                                                    ")])]),e._v(" "),a("show-error",{attrs:{"form-name":e.feeAllocationForm,"prop-name":e.getTransportFeeName(t.fee_group_id,n)}})],1)]):e._e()],2)])])])})),0):e._e(),e._v(" "),a("button",{staticClass:"btn btn-info btn-sm pull-right",attrs:{type:"button"},on:{click:function(a){return e.addInstallment(t.fee_group_id)}}},[e._v(e._s(e.trans("finance.add_fee_installment")))]),e._v(" "),a("div",{staticClass:"clearfix"})])})),e._v(" "),a("div",{staticClass:"card-footer text-right"},[a("router-link",{directives:[{name:"show",rawName:"v-show",value:e.uuid,expression:"uuid"}],staticClass:"btn btn-danger waves-effect waves-light ",attrs:{to:"/finance/fee/allocation"}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),a("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[e._v(e._s(e.trans("general.save")))])],1)]:e._e()],2)])}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=create.js.map?id=955a2ee067ce8feb5ce3
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/finance/fee/allocation/create"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/create.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/create.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/finance/fee/allocation/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    feeAllocationForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      ruuid: this.$route.params.uuid
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('create-fee-allocation')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/form.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/form.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  props: ['uuid', 'ruuid'],
+  data: function data() {
+    return {
+      batches: [],
+      fee_groups: [],
+      fee_heads: [],
+      transport_fees: [],
+      late_fee_frequencies: [],
+      selected_batch: null,
+      feeAllocationForm: new Form({
+        is_course_fee: false,
+        batch_id: '',
+        fee_groups: []
+      }),
+      fee_allocation: null
+    };
+  },
+  mounted: function mounted() {
+    this.getPreRequisite();
+  },
+  methods: {
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/fee/allocation/pre-requisite').then(function (response) {
+        _this.batches = response.batches;
+        _this.fee_groups = response.fee_groups;
+        _this.fee_heads = response.fee_heads;
+        _this.transport_fees = response.transport_fees;
+        _this.late_fee_frequencies = response.late_fee_frequencies;
+        _this.fee_groups.forEach(function (fee_group) {
+          _this.feeAllocationForm.fee_groups.push({
+            fee_group_id: fee_group.id,
+            fee_group_name: fee_group.name,
+            has_transport: fee_group.options ? fee_group.options.has_transport : 0,
+            installments: []
+          });
+          if (!_this.uuid && !_this.ruuid) _this.addInstallment(fee_group.id);
+        });
+        if (_this.uuid || _this.ruuid) _this.getFeeAllocation();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    addInstallment: function addInstallment(fee_group_id) {
+      var fee_group = this.feeAllocationForm.fee_groups.find(function (o) {
+        return o.fee_group_id == fee_group_id;
+      });
+      var heads = this.addFeeHead(fee_group_id);
+      fee_group.installments.push({
+        uuid: this.$uuid.v4(),
+        due_date: '',
+        title: '',
+        fee_heads: heads,
+        late_fee_applicable: false,
+        late_fee_frequency: '1',
+        late_fee: '',
+        selected_transport_fee: null,
+        transport_fee_id: ''
+      });
+    },
+    addFeeHead: function addFeeHead(fee_group_id) {
+      var heads = [];
+      this.fee_heads.forEach(function (fee_head) {
+        if (fee_head.fee_group_id == fee_group_id) heads.push({
+          id: fee_head.id,
+          amount: '',
+          name: fee_head.name,
+          is_optional: false
+        });
+      });
+      return heads;
+    },
+    confirmDeleteInstallment: function confirmDeleteInstallment(fee_group_id, index) {
+      var _this2 = this;
+      return function (dialog) {
+        return _this2.deleteInstallment(fee_group_id, index);
+      };
+    },
+    deleteInstallment: function deleteInstallment(fee_group_id, index) {
+      var fee_group = this.feeAllocationForm.fee_groups.find(function (o) {
+        return o.fee_group_id == fee_group_id;
+      });
+      fee_group.installments.splice(index, 1);
+    },
+    getTitleName: function getTitleName(fee_group_id, index) {
+      return fee_group_id + '_' + index + '_title';
+    },
+    getDueDateName: function getDueDateName(fee_group_id, index) {
+      return fee_group_id + '_' + index + '_due_date';
+    },
+    getFeeName: function getFeeName(fee_group_id, index, fee_id) {
+      return fee_group_id + '_' + index + '_' + fee_id + '_fee';
+    },
+    getLateFeeFrequencyName: function getLateFeeFrequencyName(fee_group_id, index) {
+      return fee_group_id + '_' + index + '_late_fee_frequency';
+    },
+    getLateFeeName: function getLateFeeName(fee_group_id, index) {
+      return fee_group_id + '_' + index + '_late_fee';
+    },
+    getTransportFeeName: function getTransportFeeName(fee_group_id, index) {
+      return fee_group_id + '_' + index + '_transport_fee';
+    },
+    getFeeAllocation: function getFeeAllocation() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/fee/allocation/' + (this.ruuid || this.uuid)).then(function (response) {
+        _this3.fee_allocation = response;
+        if (response.paid_count && !_this3.ruuid) {
+          toastr.error(i18n.finance.cannot_modify_fee_allocation);
+          loader.hide();
+          _this3.$router.push('/finance/fee/allocation');
+        }
+        if (!_this3.ruuid) {
+          _this3.selected_batch = {
+            'name': response.batch.course.name + ' ' + response.batch.name,
+            'id': response.batch_id
+          };
+          _this3.feeAllocationForm.batch_id = response.batch_id;
+        }
+        _this3.feeAllocationForm.fee_groups.forEach(function (fee_group) {
+          var fee_allocation_group = response.fee_allocation_groups.find(function (o) {
+            return o.fee_group_id === fee_group.fee_group_id;
+          });
+          fee_allocation_group.fee_installments.forEach(function (installment) {
+            var heads = _this3.addFeeHead(fee_group.fee_group_id);
+            installment.fee_installment_details.forEach(function (fee_installment_detail) {
+              var installment_detail = heads.find(function (o) {
+                return o.id === fee_installment_detail.fee_head_id;
+              });
+              installment_detail.amount = fee_installment_detail.amount ? fee_installment_detail.amount : '';
+              installment_detail.is_optional = fee_installment_detail.is_optional ? 1 : 0;
+            });
+            fee_group.installments.push({
+              uuid: installment.uuid,
+              due_date: installment.due_date,
+              title: installment.title,
+              fee_heads: heads,
+              late_fee_applicable: installment.late_fee_applicable,
+              late_fee_frequency: installment.late_fee_frequency,
+              late_fee: installment.late_fee,
+              transport_fee_id: installment.transport_fee_id,
+              selected_transport_fee: installment.transport_fee_id ? {
+                id: installment.transport_fee_id,
+                name: installment.transport_fee.name
+              } : null
+            });
+          });
+        });
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    proceed: function proceed() {
+      if (this.uuid) this.update();else this.store();
+    },
+    store: function store() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      this.feeAllocationForm.post('/api/fee/allocation').then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this4.$router.push('/finance/fee/allocation');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    update: function update() {
+      var _this5 = this;
+      var loader = this.$loading.show();
+      this.feeAllocationForm.patch('/api/fee/allocation/' + this.uuid).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this5.$router.push('/finance/fee/allocation');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onBatchSelect: function onBatchSelect(selectedOption) {
+      this.feeAllocationForm.batch_id = selectedOption.id;
+    },
+    onTransportFeeSelect: function onTransportFeeSelect(selectedOption, id) {
+      var field_id = id.split("_");
+      var fee_group_id = field_id[0];
+      var index = field_id[1];
+      var fee_group = this.feeAllocationForm.fee_groups.find(function (o) {
+        return o.fee_group_id == fee_group_id;
+      });
+      var installment = fee_group.installments[index];
+      installment.transport_fee_id = selectedOption.id;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/create.vue?vue&type=template&id=799dbf5e&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/create.vue?vue&type=template&id=799dbf5e& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("finance.add_new_fee_allocation")))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/finance/fee/allocation");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("finance.fee_allocation")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body p-t-20"
+  }, [_c("fee-allocation-form", {
+    attrs: {
+      ruuid: _vm.ruuid
+    }
+  })], 1)])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/form.vue?vue&type=template&id=820e1cb4&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/form.vue?vue&type=template&id=820e1cb4& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.feeAllocationForm.errors.clear($event.target.name);
+      }
+    }
+  }, [!_vm.uuid ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "group-values": "batches",
+      "group-label": "course_group",
+      "group-select": false,
+      name: "batch_id",
+      id: "batch_id",
+      options: _vm.batches,
+      placeholder: _vm.trans("academic.select_batch")
+    },
+    on: {
+      select: _vm.onBatchSelect,
+      close: function close($event) {
+        return _vm.feeAllocationForm.errors.clear("batch_id");
+      },
+      remove: function remove($event) {
+        _vm.feeAllocationForm.batch_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_batch,
+      callback: function callback($$v) {
+        _vm.selected_batch = $$v;
+      },
+      expression: "selected_batch"
+    }
+  }, [!_vm.batches.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                " + _vm._s(_vm.trans("general.no_option_found")) + "\n                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.feeAllocationForm,
+      "prop-name": "batch_id"
+    }
+  })], 1)]), _vm._v(" "), !_vm.uuid ? _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("div", [_vm._v(_vm._s(_vm.trans("finance.is_course_fee")))]), _vm._v(" "), _c("switches", {
+    staticClass: "m-t-20",
+    attrs: {
+      theme: "bootstrap",
+      color: "success"
+    },
+    model: {
+      value: _vm.feeAllocationForm.is_course_fee,
+      callback: function callback($$v) {
+        _vm.$set(_vm.feeAllocationForm, "is_course_fee", $$v);
+      },
+      expression: "feeAllocationForm.is_course_fee"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.feeAllocationForm,
+      "prop-name": "is_course_fee"
+    }
+  })], 1)]) : _vm._e()]) : _vm._e(), _vm._v(" "), _vm.fee_allocation && !_vm.ruuid ? [_vm.fee_allocation.course_id ? _c("h4", [_vm._v(_vm._s(_vm.fee_allocation.course.name))]) : _c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.fee_allocation.batch.course.name + " " + _vm.fee_allocation.batch.name))]), _vm._v(" "), _c("br")] : _vm._e(), _vm._v(" "), _vm.feeAllocationForm.batch_id || _vm.ruuid ? [_vm._l(_vm.feeAllocationForm.fee_groups, function (fee_group) {
+    return _c("div", {
+      staticClass: "m-b-20 p-4"
+    }, [_c("h4", [_vm._v(_vm._s(fee_group.fee_group_name))]), _vm._v(" "), fee_group.installments.length ? _c("div", {
+      staticStyle: {
+        padding: "0px"
+      }
+    }, _vm._l(fee_group.installments, function (installment, index) {
+      return _c("fieldset", [_c("legend", [_vm._v("\n    \t                        " + _vm._s(_vm.trans("finance.fee_installment")) + " - " + _vm._s(index + 1) + " \n    \t                        "), _c("span", {
+        directives: [{
+          name: "confirm",
+          rawName: "v-confirm",
+          value: {
+            ok: _vm.confirmDeleteInstallment(fee_group.fee_group_id, index)
+          },
+          expression: "{ok: confirmDeleteInstallment(fee_group.fee_group_id,index)}"
+        }, {
+          name: "tooltip",
+          rawName: "v-tooltip",
+          value: _vm.trans("finance.delete_fee_installment"),
+          expression: "trans('finance.delete_fee_installment')"
+        }],
+        key: fee_group.fee_group_id + "_" + index,
+        staticClass: "has-error m-l-10",
+        staticStyle: {
+          cursor: "pointer"
+        }
+      }, [_c("i", {
+        staticClass: "fa fa-times-circle"
+      })])]), _vm._v(" "), _c("div", {
+        staticClass: "row",
+        staticStyle: {
+          padding: "0 20px"
+        }
+      }, [_c("div", {
+        staticClass: "col-12 col-sm-6"
+      }, [_c("div", {
+        staticClass: "row"
+      }, [_c("div", {
+        staticClass: "col-12 col-sm-6"
+      }, [_c("div", {
+        staticClass: "form-group"
+      }, [_c("label", {
+        attrs: {
+          "for": ""
+        }
+      }, [_vm._v(_vm._s(_vm.trans("finance.fee_installment_title")))]), _vm._v(" "), _c("input", {
+        directives: [{
+          name: "model",
+          rawName: "v-model",
+          value: installment.title,
+          expression: "installment.title"
+        }],
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          name: _vm.getTitleName(fee_group.fee_group_id, index),
+          placeholder: _vm.trans("finance.fee_installment_title")
+        },
+        domProps: {
+          value: installment.title
+        },
+        on: {
+          input: function input($event) {
+            if ($event.target.composing) return;
+            _vm.$set(installment, "title", $event.target.value);
+          }
+        }
+      }), _vm._v(" "), _c("show-error", {
+        attrs: {
+          "form-name": _vm.feeAllocationForm,
+          "prop-name": _vm.getTitleName(fee_group.fee_group_id, index)
+        }
+      })], 1)]), _vm._v(" "), _c("div", {
+        staticClass: "col-12 col-sm-6"
+      }, [_c("div", {
+        staticClass: "form-group"
+      }, [_c("label", {
+        attrs: {
+          "for": ""
+        }
+      }, [_vm._v(_vm._s(_vm.trans("finance.fee_installment_due_date")))]), _vm._v(" "), _c("datepicker", {
+        attrs: {
+          bootstrapStyling: true,
+          placeholder: _vm.trans("finance.fee_installment_due_date"),
+          name: _vm.getDueDateName(fee_group.fee_group_id, index)
+        },
+        on: {
+          selected: function selected($event) {
+            _vm.feeAllocationForm.errors.clear(_vm.getDueDateName(fee_group.fee_group_id, index));
+          }
+        },
+        model: {
+          value: installment.due_date,
+          callback: function callback($$v) {
+            _vm.$set(installment, "due_date", $$v);
+          },
+          expression: "installment.due_date"
+        }
+      }), _vm._v(" "), _c("show-error", {
+        attrs: {
+          "form-name": _vm.feeAllocationForm,
+          "prop-name": _vm.getDueDateName(fee_group.fee_group_id, index)
+        }
+      })], 1)]), _vm._v(" "), _c("div", {
+        staticClass: "col-12 col-sm-4"
+      }, [_c("div", {
+        staticClass: "form-group"
+      }, [_c("label", {
+        attrs: {
+          "for": ""
+        }
+      }, [_vm._v(_vm._s(_vm.trans("finance.late_fee_applicable")))]), _vm._v(" "), _c("br"), _vm._v(" "), _c("switches", {
+        staticClass: "m-l-20",
+        attrs: {
+          theme: "bootstrap",
+          color: "success"
+        },
+        model: {
+          value: installment.late_fee_applicable,
+          callback: function callback($$v) {
+            _vm.$set(installment, "late_fee_applicable", $$v);
+          },
+          expression: "installment.late_fee_applicable"
+        }
+      })], 1)]), _vm._v(" "), installment.late_fee_applicable ? _c("div", {
+        staticClass: "col-12 col-sm-4"
+      }, [_c("div", {
+        staticClass: "form-group"
+      }, [_c("label", {
+        attrs: {
+          "for": ""
+        }
+      }, [_vm._v(_vm._s(_vm.trans("finance.late_fee_frequency")))]), _vm._v(" "), _c("select", {
+        directives: [{
+          name: "model",
+          rawName: "v-model",
+          value: installment.late_fee_frequency,
+          expression: "installment.late_fee_frequency"
+        }],
+        staticClass: "custom-select col-12",
+        attrs: {
+          name: _vm.getLateFeeFrequencyName(fee_group.fee_group_id, index)
+        },
+        on: {
+          change: function change($event) {
+            var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+              return o.selected;
+            }).map(function (o) {
+              var val = "_value" in o ? o._value : o.value;
+              return val;
+            });
+            _vm.$set(installment, "late_fee_frequency", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+          }
+        }
+      }, _vm._l(_vm.late_fee_frequencies, function (option) {
+        return _c("option", {
+          domProps: {
+            value: option.value
+          }
+        }, [_vm._v("\n                                                    " + _vm._s(option.text) + "\n                                                  ")]);
+      }), 0), _vm._v(" "), _c("show-error", {
+        attrs: {
+          "form-name": _vm.feeAllocationForm,
+          "prop-name": _vm.getLateFeeFrequencyName(fee_group.fee_group_id, index)
+        }
+      })], 1)]) : _vm._e(), _vm._v(" "), installment.late_fee_applicable ? _c("div", {
+        staticClass: "col-12 col-sm-4"
+      }, [_c("div", {
+        staticClass: "form-group"
+      }, [_c("label", {
+        attrs: {
+          "for": ""
+        }
+      }, [_vm._v(_vm._s(_vm.trans("finance.late_fee")))]), _vm._v(" "), _c("input", {
+        directives: [{
+          name: "model",
+          rawName: "v-model",
+          value: installment.late_fee,
+          expression: "installment.late_fee"
+        }],
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          name: _vm.getLateFeeName(fee_group.fee_group_id, index),
+          placeholder: _vm.trans("finance.late_fee")
+        },
+        domProps: {
+          value: installment.late_fee
+        },
+        on: {
+          input: function input($event) {
+            if ($event.target.composing) return;
+            _vm.$set(installment, "late_fee", $event.target.value);
+          }
+        }
+      }), _vm._v(" "), _c("show-error", {
+        attrs: {
+          "form-name": _vm.feeAllocationForm,
+          "prop-name": _vm.getLateFeeName(fee_group.fee_group_id, index)
+        }
+      })], 1)]) : _vm._e()])]), _vm._v(" "), _c("div", {
+        staticClass: "col-12 col-sm-6"
+      }, [_c("div", {
+        staticClass: "row"
+      }, [_vm._l(installment.fee_heads, function (fee_head) {
+        return _c("div", {
+          staticClass: "col-12 col-sm-6"
+        }, [_c("div", {
+          staticClass: "form-group"
+        }, [_c("label", {
+          attrs: {
+            "for": ""
+          }
+        }, [_vm._v(_vm._s(fee_head.name))]), _vm._v(" "), _c("div", {
+          staticClass: "input-group mb-3"
+        }, [_c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: fee_head.amount,
+            expression: "fee_head.amount"
+          }],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: _vm.getFeeName(fee_group.fee_group_id, index, fee_head.id),
+            placeholder: _vm.trans("finance.fee_installment_amount")
+          },
+          domProps: {
+            value: fee_head.amount
+          },
+          on: {
+            input: function input($event) {
+              if ($event.target.composing) return;
+              _vm.$set(fee_head, "amount", $event.target.value);
+            }
+          }
+        }), _vm._v(" "), _c("div", {
+          staticClass: "input-group-append"
+        }, [_c("div", {
+          staticClass: "input-group-text"
+        }, [_c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: fee_head.is_optional,
+            expression: "fee_head.is_optional"
+          }, {
+            name: "tooltip",
+            rawName: "v-tooltip",
+            value: _vm.trans("finance.fee_is_optional"),
+            expression: "trans('finance.fee_is_optional')"
+          }],
+          attrs: {
+            type: "checkbox"
+          },
+          domProps: {
+            checked: Array.isArray(fee_head.is_optional) ? _vm._i(fee_head.is_optional, null) > -1 : fee_head.is_optional
+          },
+          on: {
+            change: function change($event) {
+              var $$a = fee_head.is_optional,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false;
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v);
+                if ($$el.checked) {
+                  $$i < 0 && _vm.$set(fee_head, "is_optional", $$a.concat([$$v]));
+                } else {
+                  $$i > -1 && _vm.$set(fee_head, "is_optional", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+                }
+              } else {
+                _vm.$set(fee_head, "is_optional", $$c);
+              }
+            }
+          }
+        })])])]), _vm._v(" "), _c("show-error", {
+          attrs: {
+            "form-name": _vm.feeAllocationForm,
+            "prop-name": _vm.getFeeName(fee_group.fee_group_id, index, fee_head.id)
+          }
+        })], 1)]);
+      }), _vm._v(" "), fee_group.has_transport ? _c("div", {
+        staticClass: "col-12 col-sm-6"
+      }, [_c("div", {
+        staticClass: "form-group"
+      }, [_c("label", {
+        attrs: {
+          "for": ""
+        }
+      }, [_vm._v(_vm._s(_vm.trans("transport.transport")))]), _vm._v(" "), _c("v-select", {
+        attrs: {
+          label: "name",
+          name: _vm.getTransportFeeName(fee_group.fee_group_id, index),
+          id: _vm.getTransportFeeName(fee_group.fee_group_id, index),
+          options: _vm.transport_fees,
+          placeholder: _vm.trans("general.select_one")
+        },
+        on: {
+          select: _vm.onTransportFeeSelect,
+          close: function close($event) {},
+          remove: function remove($event) {
+            installment.transport_fee_id = "";
+          }
+        },
+        model: {
+          value: installment.selected_transport_fee,
+          callback: function callback($$v) {
+            _vm.$set(installment, "selected_transport_fee", $$v);
+          },
+          expression: "installment.selected_transport_fee"
+        }
+      }, [!_vm.transport_fees.length ? _c("div", {
+        staticClass: "multiselect__option",
+        attrs: {
+          slot: "afterList"
+        },
+        slot: "afterList"
+      }, [_vm._v("\n                                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                                    ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+        attrs: {
+          "form-name": _vm.feeAllocationForm,
+          "prop-name": _vm.getTransportFeeName(fee_group.fee_group_id, index)
+        }
+      })], 1)]) : _vm._e()], 2)])])]);
+    }), 0) : _vm._e(), _vm._v(" "), _c("button", {
+      staticClass: "btn btn-info btn-sm pull-right",
+      attrs: {
+        type: "button"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.addInstallment(fee_group.fee_group_id);
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.trans("finance.add_fee_installment")))]), _vm._v(" "), _c("div", {
+      staticClass: "clearfix"
+    })]);
+  }), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.uuid,
+      expression: "uuid"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/finance/fee/allocation"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.save")))])], 1)] : _vm._e()], 2)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/allocation/create.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/views/finance/fee/allocation/create.vue ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _create_vue_vue_type_template_id_799dbf5e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./create.vue?vue&type=template&id=799dbf5e& */ "./resources/js/views/finance/fee/allocation/create.vue?vue&type=template&id=799dbf5e&");
+/* harmony import */ var _create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./create.vue?vue&type=script&lang=js& */ "./resources/js/views/finance/fee/allocation/create.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _create_vue_vue_type_template_id_799dbf5e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _create_vue_vue_type_template_id_799dbf5e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/finance/fee/allocation/create.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/allocation/form.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/views/finance/fee/allocation/form.vue ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_820e1cb4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=820e1cb4& */ "./resources/js/views/finance/fee/allocation/form.vue?vue&type=template&id=820e1cb4&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/finance/fee/allocation/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_820e1cb4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_820e1cb4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/finance/fee/allocation/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/allocation/create.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/views/finance/fee/allocation/create.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./create.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/create.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/allocation/form.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/views/finance/fee/allocation/form.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/allocation/create.vue?vue&type=template&id=799dbf5e&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/views/finance/fee/allocation/create.vue?vue&type=template&id=799dbf5e& ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_799dbf5e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_799dbf5e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_799dbf5e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./create.vue?vue&type=template&id=799dbf5e& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/create.vue?vue&type=template&id=799dbf5e&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/fee/allocation/form.vue?vue&type=template&id=820e1cb4&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/views/finance/fee/allocation/form.vue?vue&type=template&id=820e1cb4& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_820e1cb4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_820e1cb4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_820e1cb4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=820e1cb4& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/fee/allocation/form.vue?vue&type=template&id=820e1cb4&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=create.js.map?id=b43223490a1a0fa2

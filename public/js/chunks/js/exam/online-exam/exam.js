@@ -1,2 +1,488 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[8627],{10269:(t,e,s)=>{"use strict";s.r(e),s.d(e,{default:()=>l});function n(t,e){var s=Object.keys(t);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(t);e&&(n=n.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),s.push.apply(s,n)}return s}function i(t){for(var e=1;e<arguments.length;e++){var s=null!=arguments[e]?arguments[e]:{};e%2?n(Object(s),!0).forEach((function(e){a(t,e,s[e])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(s)):n(Object(s)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(s,e))}))}return t}function a(t,e,s){return e in t?Object.defineProperty(t,e,{value:s,enumerable:!0,configurable:!0,writable:!0}):t[e]=s,t}function o(t){return(o="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t})(t)}const r={data:function(){return{uuid:this.$route.params.uuid,online_exam:{batch:{course:{}},subject:{}},is_final_submitted:!1,online_exam_record:{},onlineExamForm:new Form({answers:[]},!1),exam_started:!1,questions:[],countdown:0}},mounted:function(){this.getOnlineExam(),this.hasRole("student")&&"upcoming"==this.online_exam.status&&this.$router.push("/online-exam"),this.hasRole("parent")&&"expired"!=this.online_exam.status&&this.$router.push("/online-exam")},methods:{hasRole:function(t){return helper.hasRole(t)},getOnlineExam:function(){var t=this,e=this.$loading.show();this.onlineExamForm.answers=[],axios.get("/api/online-exam/"+this.uuid+"/exam").then((function(s){t.online_exam=s.online_exam,t.questions=s.questions,t.countdown=s.countdown,t.online_exam_record=s.online_exam_record,t.is_final_submitted=s.is_final_submitted,t.questions.forEach((function(e){var s="";if(t.online_exam_record){var n=t.online_exam_record.answers.find((function(t){return t.question_id==e.id}));void 0!==o(n)&&(s=n.answer)}t.onlineExamForm.answers.push(i(i({},e),{},{answer:s}))})),t.exam_started=!!s.online_exam_record,e.hide()})).catch((function(s){helper.showErrorMsg(Error),e.hide(),t.$router.push("/online-exam")}))},getAnswerName:function(t){return"answer_"+t},submit:function(){var t=this.$loading.show();this.onlineExamForm.post("/api/online-exam/"+this.uuid+"/exam").then((function(e){toastr.success(e.message),t.hide()})).catch((function(e){helper.showErrorMsg(e),t.hide()}))},finalSubmit:function(){var t=this,e=this.$loading.show();this.onlineExamForm.post("/api/online-exam/"+this.uuid+"/exam?is_final=1").then((function(s){toastr.success(s.message),e.hide(),t.getOnlineExam()})).catch((function(t){helper.showErrorMsg(t),e.hide()}))},startExam:function(){var t=this,e=this.$loading.show();this.onlineExamForm.post("/api/online-exam/"+this.uuid+"/exam").then((function(s){t.getOnlineExam(),e.hide()})).catch((function(t){helper.showErrorMsg(t),e.hide()}))}},filters:{moment:function(t){return helper.formatDate(t)},momentTime:function(t){return helper.formatTime(t)},momentDateTime:function(t){return helper.formatDateTime(t)}}};const l=(0,s(51900).Z)(r,(function(){var t=this,e=t.$createElement,s=t._self._c||e;return s("div",[s("div",{staticClass:"page-titles"},[s("div",{staticClass:"row"},[s("div",{staticClass:"col-12 col-sm-6"},[s("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("exam.online_exam"))+"\n                        "),t.online_exam?s("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.online_exam.name)+" ("+t._s(t.trans("exam.online_exam_type_"+t.online_exam.exam_type))+")")]):t._e()])]),t._v(" "),s("div",{staticClass:"col-12 col-sm-6"},[s("div",{staticClass:"action-buttons pull-right"},[s("router-link",{staticClass:"btn btn-info btn-sm",attrs:{to:"/online-exam"}},[s("i",{staticClass:"fas fa-list"}),t._v(" "),s("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("exam.online_exam")))])])],1)])])]),t._v(" "),s("div",{staticClass:"container-fluid"},[s("div",{staticClass:"row"},[s("div",{staticClass:"col-12"},[s("div",{staticClass:"card"},[t.online_exam?s("div",{staticClass:"card-boy"},[s("h4",{staticClass:"card-title m-3 text-center"},[t._v("\n\t\t\t                    "+t._s(t.online_exam.batch.course.name+" "+t.online_exam.batch.name)+"\n\t\t\t                    "+t._s(t.online_exam.subject.name+" ("+t.online_exam.subject.code+")")+"\n\t\t\t                ")]),t._v(" "),s("h4",{staticClass:"card-title m-3 text-center"},[s("small",[t._v(t._s(t._f("moment")(t.online_exam.date))+" "+t._s(t._f("momentTime")(t.online_exam.start_time))+" "+t._s(t.trans("general.to"))+" "+t._s(t._f("momentTime")(t.online_exam.end_time))+" ")]),t._v(" "),s("br")]),t._v(" "),s("div",{staticClass:"border-top"},[s("h4",{staticClass:"card-title m-3 text-center"},[s("small",[t._v(t._s(t.trans("exam.online_exam_instructions")))])]),t._v(" "),s("div",{staticClass:"p-4",staticStyle:{"font-size":"90%"},domProps:{innerHTML:t._s(t.online_exam.instructions)}})]),t._v(" "),s("hr"),t._v(" "),t.exam_started?s("div",[s("h4",{staticClass:"card-title m-3"},[t._v(t._s(t.trans("exam.online_exam_questions"))+"\n\t\t\t\t                    "),t.is_final_submitted?t._e():s("span",{staticClass:"pull-right m-r-5"},[s("countdown",{attrs:{time:t.countdown,interval:100,tag:"p"},scopedSlots:t._u([{key:"default",fn:function(e){return[t._v(t._s(e.hours)+" "+t._s(t.trans("list.hour"))+", "+t._s(e.minutes)+" "+t._s(t.trans("list.minute"))+", "+t._s(e.seconds)+"."+t._s(Math.floor(e.milliseconds/100))+" "+t._s(t.trans("list.second")))]}}],null,!1,555607460)})],1)]),t._v(" "),s("form",{on:{submit:function(e){return e.preventDefault(),t.submit.apply(null,arguments)},keydown:function(e){return t.onlineExamForm.errors.clear(e.target.name)}}},[s("div",{staticClass:"p-4"},t._l(t.onlineExamForm.answers,(function(e,n){return s("div",{staticClass:"border-bottom my-2",staticStyle:{"font-size":"90%",padding:"10px","background-color":"rgb(241, 243, 244)","border-radius":"5px",color:"#000"}},[s("p",[t._v("\n\t\t\t\t\t                            ("+t._s(n+1)+") "+t._s(e.question)+" \n\t\t\t\t\t                            "),s("span",{staticClass:"pull-right"},[t._v("("+t._s(e.mark)+")")])]),t._v(" "),e.image?s("div",{staticStyle:{padding:"10px"}},[s("center",[s("img",{staticStyle:{"max-width":"250px"},attrs:{src:"/"+e.image}})])],1):t._e(),t._v(" "),"mcq"==e.question_type?s("div",{staticClass:"row",staticStyle:{"padding-left":"20px"}},t._l(e.answers,(function(i,a){return s("div",{staticClass:"col-6"},[s("div",{staticClass:"radio radio-info"},[s("div",{staticClass:"form-check form-check-inline"},[s("input",{directives:[{name:"model",rawName:"v-model",value:e.answer,expression:"question.answer"}],staticClass:"form-check-input",attrs:{disabled:!!t.is_final_submitted,type:"radio",id:e.id+"_option_"+i.title,name:t.getAnswerName(n)},domProps:{value:i.title,checked:e.answer==i.title,checked:t._q(e.answer,i.title)},on:{click:function(t){},change:function(s){return t.$set(e,"answer",i.title)}}}),t._v(" "),s("label",{staticClass:"form-check-label",attrs:{for:e.id+"_option_"+i.title}},[t._v(" ("+t._s(a+1)+") "+t._s(i.title))]),t._v(" "),"expired"==t.online_exam.status&&i.is_correct_answer?s("span",{staticStyle:{"margin-left":"10px"}},[s("i",{staticClass:"fas fa-check-circle text-success"})]):t._e()])]),t._v(" "),i.image?s("div",{staticStyle:{padding:"10px"}},[s("center",[s("img",{staticStyle:{"max-width":"150px"},attrs:{src:"/"+i.image}})])],1):t._e()])})),0):t._e(),t._v(" "),"single_line"==e.question_type?s("div",{staticClass:"row",staticStyle:{"padding-left":"20px"}},[s("div",{staticClass:"col-12"},[s("input",{directives:[{name:"model",rawName:"v-model",value:e.answer,expression:"question.answer"}],staticClass:"form-control",attrs:{type:"text",disabled:!!t.is_final_submitted,name:t.getAnswerName(n),placeholder:t.trans("exam.online_exam_answer")},domProps:{value:e.answer},on:{input:function(s){s.target.composing||t.$set(e,"answer",s.target.value)}}})])]):t._e(),t._v(" "),"multiple_line"==e.question_type?s("div",{staticClass:"row",staticStyle:{"padding-left":"20px"}},[s("div",{staticClass:"col-12"},[s("autosize-textarea",{attrs:{disabled:!!t.is_final_submitted,rows:"2",name:t.getAnswerName(n),placeholder:t.trans("exam.online_exam_answer")},model:{value:e.answer,callback:function(s){t.$set(e,"answer",s)},expression:"question.answer"}})],1)]):t._e(),t._v(" "),t.is_final_submitted?t._e():s("button",{staticClass:"btn btn-sm btn-info waves-effect waves-light pull-right",attrs:{type:"button"},on:{click:t.submit}},[t._v(t._s(t.trans("general.save")))]),t._v(" "),s("div",{staticClass:"clearfix"})])})),0),t._v(" "),t.is_final_submitted?t._e():s("div",{staticClass:"row"},[s("div",{staticClass:"col-12 p-5"},[s("button",{staticClass:"btn btn-danger waves-effect waves-light ",attrs:{type:"button"},on:{click:function(e){return t.$router.push("/online-exam")}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),s("button",{staticClass:"btn btn-success waves-effect waves-light",attrs:{type:"button"},on:{click:t.finalSubmit}},[t._v(t._s(t.trans("exam.online_exam_final_submission")))]),t._v(" "),s("div",{staticClass:"clearfix"})])])])]):s("div",{staticClass:"mx-4"},[s("button",{staticClass:"btn btn-success btn-block",attrs:{type:"button"},on:{click:t.startExam}},[t._v(t._s(t.trans("exam.online_exam_start_button")))])])]):t._e()])])])])])}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=exam.js.map?id=0c425e716dde1e1fb508
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/exam/online-exam/exam"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/exam/online-exam/exam.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/exam/online-exam/exam.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      uuid: this.$route.params.uuid,
+      online_exam: {
+        batch: {
+          course: {}
+        },
+        subject: {}
+      },
+      is_final_submitted: false,
+      online_exam_record: {},
+      onlineExamForm: new Form({
+        answers: []
+      }, false),
+      exam_started: false,
+      questions: [],
+      countdown: 0
+    };
+  },
+  mounted: function mounted() {
+    this.getOnlineExam();
+    if (this.hasRole('student') && this.online_exam.status == 'upcoming') {
+      this.$router.push('/online-exam');
+    }
+    if (this.hasRole('parent') && this.online_exam.status != 'expired') {
+      this.$router.push('/online-exam');
+    }
+  },
+  methods: {
+    hasRole: function hasRole(role) {
+      return helper.hasRole(role);
+    },
+    getOnlineExam: function getOnlineExam() {
+      var _this = this;
+      var loader = this.$loading.show();
+      this.onlineExamForm.answers = [];
+      axios.get('/api/online-exam/' + this.uuid + '/exam').then(function (response) {
+        _this.online_exam = response.online_exam;
+        _this.questions = response.questions;
+        _this.countdown = response.countdown;
+        _this.online_exam_record = response.online_exam_record;
+        _this.is_final_submitted = response.is_final_submitted;
+        _this.questions.forEach(function (question) {
+          var answer = '';
+          if (_this.online_exam_record) {
+            var question_answer = _this.online_exam_record.answers.find(function (o) {
+              return o.question_id == question.id;
+            });
+            if (_typeof(question_answer) !== undefined) {
+              answer = question_answer.answer;
+            }
+          }
+          _this.onlineExamForm.answers.push(_objectSpread(_objectSpread({}, question), {}, {
+            answer: answer
+          }));
+        });
+        _this.exam_started = response.online_exam_record ? true : false;
+        loader.hide();
+      })["catch"](function (error) {
+        helper.showErrorMsg(Error);
+        loader.hide();
+        _this.$router.push('/online-exam');
+      });
+    },
+    getAnswerName: function getAnswerName(index) {
+      return 'answer_' + index;
+    },
+    submit: function submit() {
+      var loader = this.$loading.show();
+      this.onlineExamForm.post('/api/online-exam/' + this.uuid + '/exam').then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+      })["catch"](function (error) {
+        helper.showErrorMsg(error);
+        loader.hide();
+      });
+    },
+    finalSubmit: function finalSubmit() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      this.onlineExamForm.post('/api/online-exam/' + this.uuid + '/exam?is_final=1').then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this2.getOnlineExam();
+      })["catch"](function (error) {
+        helper.showErrorMsg(error);
+        loader.hide();
+      });
+    },
+    startExam: function startExam() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      this.onlineExamForm.post('/api/online-exam/' + this.uuid + '/exam').then(function (response) {
+        _this3.getOnlineExam();
+        loader.hide();
+      })["catch"](function (error) {
+        helper.showErrorMsg(error);
+        loader.hide();
+      });
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentTime: function momentTime(time) {
+      return helper.formatTime(time);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/exam/online-exam/exam.vue?vue&type=template&id=5e82ef16&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/exam/online-exam/exam.vue?vue&type=template&id=5e82ef16& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("exam.online_exam")) + "\n                        "), _vm.online_exam ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.online_exam.name) + " (" + _vm._s(_vm.trans("exam.online_exam_type_" + _vm.online_exam.exam_type)) + ")")]) : _vm._e()])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("router-link", {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      to: "/online-exam"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("exam.online_exam")))])])], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_vm.online_exam ? _c("div", {
+    staticClass: "card-boy"
+  }, [_c("h4", {
+    staticClass: "card-title m-3 text-center"
+  }, [_vm._v("\n\t\t\t                    " + _vm._s(_vm.online_exam.batch.course.name + " " + _vm.online_exam.batch.name) + "\n\t\t\t                    " + _vm._s(_vm.online_exam.subject.name + " (" + _vm.online_exam.subject.code + ")") + "\n\t\t\t                ")]), _vm._v(" "), _c("h4", {
+    staticClass: "card-title m-3 text-center"
+  }, [_c("small", [_vm._v(_vm._s(_vm._f("moment")(_vm.online_exam.date)) + " " + _vm._s(_vm._f("momentTime")(_vm.online_exam.start_time)) + " " + _vm._s(_vm.trans("general.to")) + " " + _vm._s(_vm._f("momentTime")(_vm.online_exam.end_time)) + " ")]), _vm._v(" "), _c("br")]), _vm._v(" "), _c("div", {
+    staticClass: "border-top"
+  }, [_c("h4", {
+    staticClass: "card-title m-3 text-center"
+  }, [_c("small", [_vm._v(_vm._s(_vm.trans("exam.online_exam_instructions")))])]), _vm._v(" "), _c("div", {
+    staticClass: "p-4",
+    staticStyle: {
+      "font-size": "90%"
+    },
+    domProps: {
+      innerHTML: _vm._s(_vm.online_exam.instructions)
+    }
+  })]), _vm._v(" "), _c("hr"), _vm._v(" "), !_vm.exam_started ? _c("div", {
+    staticClass: "mx-4"
+  }, [_c("button", {
+    staticClass: "btn btn-success btn-block",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.startExam
+    }
+  }, [_vm._v(_vm._s(_vm.trans("exam.online_exam_start_button")))])]) : _c("div", [_c("h4", {
+    staticClass: "card-title m-3"
+  }, [_vm._v(_vm._s(_vm.trans("exam.online_exam_questions")) + "\n\t\t\t\t                    "), !_vm.is_final_submitted ? _c("span", {
+    staticClass: "pull-right m-r-5"
+  }, [_c("countdown", {
+    attrs: {
+      time: _vm.countdown,
+      interval: 100,
+      tag: "p"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function fn(props) {
+        return [_vm._v(_vm._s(props.hours) + " " + _vm._s(_vm.trans("list.hour")) + ", " + _vm._s(props.minutes) + " " + _vm._s(_vm.trans("list.minute")) + ", " + _vm._s(props.seconds) + "." + _vm._s(Math.floor(props.milliseconds / 100)) + " " + _vm._s(_vm.trans("list.second")))];
+      }
+    }], null, false, 555607460)
+  })], 1) : _vm._e()]), _vm._v(" "), _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submit.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.onlineExamForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "p-4"
+  }, _vm._l(_vm.onlineExamForm.answers, function (question, index) {
+    return _c("div", {
+      staticClass: "border-bottom my-2",
+      staticStyle: {
+        "font-size": "90%",
+        padding: "10px",
+        "background-color": "rgb(241, 243, 244)",
+        "border-radius": "5px",
+        color: "#000"
+      }
+    }, [_c("p", [_vm._v("\n\t\t\t\t\t                            (" + _vm._s(index + 1) + ") " + _vm._s(question.question) + " \n\t\t\t\t\t                            "), _c("span", {
+      staticClass: "pull-right"
+    }, [_vm._v("(" + _vm._s(question.mark) + ")")])]), _vm._v(" "), question.image ? _c("div", {
+      staticStyle: {
+        padding: "10px"
+      }
+    }, [_c("center", [_c("img", {
+      staticStyle: {
+        "max-width": "250px"
+      },
+      attrs: {
+        src: "/" + question.image
+      }
+    })])], 1) : _vm._e(), _vm._v(" "), question.question_type == "mcq" ? _c("div", {
+      staticClass: "row",
+      staticStyle: {
+        "padding-left": "20px"
+      }
+    }, _vm._l(question.answers, function (option, idx) {
+      return _c("div", {
+        staticClass: "col-6"
+      }, [_c("div", {
+        staticClass: "radio radio-info"
+      }, [_c("div", {
+        staticClass: "form-check form-check-inline"
+      }, [_c("input", {
+        directives: [{
+          name: "model",
+          rawName: "v-model",
+          value: question.answer,
+          expression: "question.answer"
+        }],
+        staticClass: "form-check-input",
+        attrs: {
+          disabled: _vm.is_final_submitted ? true : false,
+          type: "radio",
+          id: "".concat(question.id, "_option_").concat(option.title),
+          name: _vm.getAnswerName(index)
+        },
+        domProps: _defineProperty({
+          value: option.title,
+          checked: question.answer == option.title
+        }, "checked", _vm._q(question.answer, option.title)),
+        on: {
+          click: function click($event) {},
+          change: function change($event) {
+            return _vm.$set(question, "answer", option.title);
+          }
+        }
+      }), _vm._v(" "), _c("label", {
+        staticClass: "form-check-label",
+        attrs: {
+          "for": "".concat(question.id, "_option_").concat(option.title)
+        }
+      }, [_vm._v(" (" + _vm._s(idx + 1) + ") " + _vm._s(option.title))]), _vm._v(" "), _vm.online_exam.status == "expired" && option.is_correct_answer ? _c("span", {
+        staticStyle: {
+          "margin-left": "10px"
+        }
+      }, [_c("i", {
+        staticClass: "fas fa-check-circle text-success"
+      })]) : _vm._e()])]), _vm._v(" "), option.image ? _c("div", {
+        staticStyle: {
+          padding: "10px"
+        }
+      }, [_c("center", [_c("img", {
+        staticStyle: {
+          "max-width": "150px"
+        },
+        attrs: {
+          src: "/" + option.image
+        }
+      })])], 1) : _vm._e()]);
+    }), 0) : _vm._e(), _vm._v(" "), question.question_type == "single_line" ? _c("div", {
+      staticClass: "row",
+      staticStyle: {
+        "padding-left": "20px"
+      }
+    }, [_c("div", {
+      staticClass: "col-12"
+    }, [_c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: question.answer,
+        expression: "question.answer"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "text",
+        disabled: _vm.is_final_submitted ? true : false,
+        name: _vm.getAnswerName(index),
+        placeholder: _vm.trans("exam.online_exam_answer")
+      },
+      domProps: {
+        value: question.answer
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(question, "answer", $event.target.value);
+        }
+      }
+    })])]) : _vm._e(), _vm._v(" "), question.question_type == "multiple_line" ? _c("div", {
+      staticClass: "row",
+      staticStyle: {
+        "padding-left": "20px"
+      }
+    }, [_c("div", {
+      staticClass: "col-12"
+    }, [_c("autosize-textarea", {
+      attrs: {
+        disabled: _vm.is_final_submitted ? true : false,
+        rows: "2",
+        name: _vm.getAnswerName(index),
+        placeholder: _vm.trans("exam.online_exam_answer")
+      },
+      model: {
+        value: question.answer,
+        callback: function callback($$v) {
+          _vm.$set(question, "answer", $$v);
+        },
+        expression: "question.answer"
+      }
+    })], 1)]) : _vm._e(), _vm._v(" "), !_vm.is_final_submitted ? _c("button", {
+      staticClass: "btn btn-sm btn-info waves-effect waves-light pull-right",
+      attrs: {
+        type: "button"
+      },
+      on: {
+        click: _vm.submit
+      }
+    }, [_vm._v(_vm._s(_vm.trans("general.save")))]) : _vm._e(), _vm._v(" "), _c("div", {
+      staticClass: "clearfix"
+    })]);
+  }), 0), _vm._v(" "), !_vm.is_final_submitted ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 p-5"
+  }, [_c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/online-exam");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-success waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.finalSubmit
+    }
+  }, [_vm._v(_vm._s(_vm.trans("exam.online_exam_final_submission")))]), _vm._v(" "), _c("div", {
+    staticClass: "clearfix"
+  })])]) : _vm._e()])])]) : _vm._e()])])])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/exam/online-exam/exam.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/views/exam/online-exam/exam.vue ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _exam_vue_vue_type_template_id_5e82ef16___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./exam.vue?vue&type=template&id=5e82ef16& */ "./resources/js/views/exam/online-exam/exam.vue?vue&type=template&id=5e82ef16&");
+/* harmony import */ var _exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./exam.vue?vue&type=script&lang=js& */ "./resources/js/views/exam/online-exam/exam.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _exam_vue_vue_type_template_id_5e82ef16___WEBPACK_IMPORTED_MODULE_0__.render,
+  _exam_vue_vue_type_template_id_5e82ef16___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/exam/online-exam/exam.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/exam/online-exam/exam.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/views/exam/online-exam/exam.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./exam.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/exam/online-exam/exam.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/exam/online-exam/exam.vue?vue&type=template&id=5e82ef16&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/views/exam/online-exam/exam.vue?vue&type=template&id=5e82ef16& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_exam_vue_vue_type_template_id_5e82ef16___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_exam_vue_vue_type_template_id_5e82ef16___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_exam_vue_vue_type_template_id_5e82ef16___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./exam.vue?vue&type=template&id=5e82ef16& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/exam/online-exam/exam.vue?vue&type=template&id=5e82ef16&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=exam.js.map?id=04d1ab5c6ff4ca9f

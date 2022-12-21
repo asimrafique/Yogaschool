@@ -1,2 +1,466 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[712],{11533:(t,e,a)=>{"use strict";a.r(e),a.d(e,{default:()=>l});const s={components:{},data:function(){return{showCreatePanel:!1,email_templates:{total:0,data:[]},filter:{page_length:helper.getConfig("page_length")},templateForm:new Form({name:"",category:""}),categories:[{name:i18n.user.user,id:"user"}],selected_category:null,help_topic:""}},mounted:function(){helper.hasPermission("access-configuration")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),helper.featureAvailable("email_template")||(helper.featureNotAvailableMsg(),this.$router.push("/dashboard")),this.getEmailTemplates()},methods:{getEmailTemplates:function(t){var e=this,a=this.$loading.show();"number"!=typeof t&&(t=1);var s=helper.getFilterURL(this.filter);axios.get("/api/email-template?page="+t+s).then((function(t){e.email_templates=t,a.hide()})).catch((function(t){a.hide(),helper.showErrorMsg(t)}))},editEmailTemplate:function(t){this.$router.push("/utility/email-template/"+t.id+"/edit")},confirmDelete:function(t){var e=this;return function(a){return e.deleteEmailTemplate(t)}},deleteEmailTemplate:function(t){var e=this,a=this.$loading.show();axios.delete("/api/email-template/"+t.id).then((function(t){toastr.success(t.message),e.getEmailTemplates(),a.hide()})).catch((function(t){a.hide(),helper.showErrorMsg(t)}))},toWord:function(t){return helper.toWord(t)},submit:function(){var t=this,e=this.$loading.show();this.templateForm.post("/api/email-template").then((function(a){toastr.success(a.message),t.selected_category=null,t.getEmailTemplates(),e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))}}};const l=(0,a(51900).Z)(s,(function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("div",[a("div",{staticClass:"page-titles"},[a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-6"},[a("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("utility.email_template"))+" \n                    "),a("help-button",{on:{clicked:function(e){t.help_topic="email-template"}}}),t._v(" "),t.email_templates.total?a("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.total_result_found",{count:t.email_templates.total,from:t.email_templates.from,to:t.email_templates.to})))]):a("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.no_result_found")))])],1)]),t._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"action-buttons pull-right"},[t.email_templates.total&&!t.showCreatePanel?a("button",{staticClass:"btn btn-info btn-sm",on:{click:function(e){t.showCreatePanel=!t.showCreatePanel}}},[a("i",{staticClass:"fas fa-plus"}),t._v(" "),a("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("utility.add_new_email_template")))])]):t._e(),t._v(" "),a("help-button",{on:{clicked:function(e){t.help_topic="utility.email-template"}}})],1)])])]),t._v(" "),a("div",{staticClass:"container-fluid"},[a("transition",{attrs:{name:"fade"}},[t.showCreatePanel?a("div",{staticClass:"card card-form"},[a("div",{staticClass:"card-body"},[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("utility.add_new_email_template")))]),t._v(" "),a("form",{on:{submit:function(e){return e.preventDefault(),t.submit.apply(null,arguments)},keydown:function(e){return t.templateForm.errors.clear(e.target.name)}}},[a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("utility.email_template_name")))]),t._v(" "),a("input",{directives:[{name:"model",rawName:"v-model",value:t.templateForm.name,expression:"templateForm.name"}],staticClass:"form-control",attrs:{type:"text",name:"name",placeholder:t.trans("utility.email_template_name")},domProps:{value:t.templateForm.name},on:{input:function(e){e.target.composing||t.$set(t.templateForm,"name",e.target.value)}}}),t._v(" "),a("show-error",{attrs:{"form-name":t.templateForm,"prop-name":"name"}})],1)]),t._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("utility.email_template_category")))]),t._v(" "),a("v-select",{attrs:{label:"name",name:"category",id:"category",options:t.categories,placeholder:t.trans("utility.email_template_category")},on:{select:function(e){return t.templateForm.errors.clear("category")},close:function(e){t.templateForm.category=t.selected_category.id},remove:function(e){t.templateForm.category=""}},model:{value:t.selected_category,callback:function(e){t.selected_category=e},expression:"selected_category"}},[t.categories.length?t._e():a("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                            "+t._s(t.trans("general.no_option_found"))+"\n                                        ")])]),t._v(" "),a("show-error",{attrs:{"form-name":t.templateForm,"prop-name":"category"}})],1)])]),t._v(" "),a("div",{staticClass:"card-footer text-right"},[t.showCreatePanel?a("button",{staticClass:"btn btn-danger ",on:{click:function(e){t.showCreatePanel=!t.showCreatePanel}}},[t._v(t._s(t.trans("general.cancel")))]):t._e(),t._v(" "),a("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[t._v(t._s(t.trans("general.save")))])])])])]):t._e()]),t._v(" "),a("div",{staticClass:"card"},[a("div",{staticClass:"card-body"},[t.email_templates.total?a("div",{staticClass:"table-responsive"},[a("table",{staticClass:"table table-sm"},[a("thead",[a("tr",[a("th",[t._v(t._s(t.trans("utility.email_template_name")))]),t._v(" "),a("th",[t._v(t._s(t.trans("utility.email_template_category")))]),t._v(" "),a("th",[t._v(t._s(t.trans("utility.email_template_subject")))]),t._v(" "),a("th",{staticClass:"table-option"},[t._v(t._s(t.trans("general.action")))])])]),t._v(" "),a("tbody",t._l(t.email_templates.data,(function(e){return a("tr",[a("td",{domProps:{textContent:t._s(e.name)}}),t._v(" "),a("td",{domProps:{textContent:t._s(t.toWord(e.category))}}),t._v(" "),a("td",{domProps:{textContent:t._s(e.subject)}}),t._v(" "),a("td",{staticClass:"table-option"},[a("div",{staticClass:"btn-group"},[a("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("utility.edit_email_template"),expression:"trans('utility.edit_email_template')"}],staticClass:"btn btn-info btn-sm",on:{click:function(a){return a.preventDefault(),t.editEmailTemplate(e)}}},[a("i",{staticClass:"fas fa-edit"})]),t._v(" "),e.is_default?t._e():a("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:t.confirmDelete(e)},expression:"{ok: confirmDelete(email_template)}"},{name:"tooltip",rawName:"v-tooltip",value:t.trans("utility.delete_email_template"),expression:"trans('utility.delete_email_template')"}],key:e.id,staticClass:"btn btn-danger btn-sm"},[a("i",{staticClass:"fas fa-trash"})])])])])})),0)])]):t._e(),t._v(" "),t.email_templates.total?t._e():a("module-info",{attrs:{module:"utility",title:"email_template_module_title",description:"email_template_module_description",icon:"list"}},[a("div",{attrs:{slot:"btn"},slot:"btn"},[t.showCreatePanel?t._e():a("button",{staticClass:"btn btn-info btn-md",on:{click:function(e){t.showCreatePanel=!t.showCreatePanel}}},[a("i",{staticClass:"fas fa-plus"}),t._v(" "+t._s(t.trans("general.add_new")))])])]),t._v(" "),a("pagination-record",{attrs:{"page-length":t.filter.page_length,records:t.email_templates},on:{"update:pageLength":function(e){return t.$set(t.filter,"page_length",e)},"update:page-length":function(e){return t.$set(t.filter,"page_length",e)},updateRecords:t.getEmailTemplates},nativeOn:{change:function(e){return t.getEmailTemplates.apply(null,arguments)}}})],1)])],1),t._v(" "),a("right-panel",{attrs:{topic:t.help_topic}})],1)}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=index.js.map?id=163a22694a0c75420da4
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/utility/emailTemplate/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-template/index.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-template/index.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      showCreatePanel: false,
+      email_templates: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        page_length: helper.getConfig('page_length')
+      },
+      templateForm: new Form({
+        name: '',
+        category: ''
+      }),
+      categories: [{
+        name: i18n.user.user,
+        id: 'user'
+      }],
+      selected_category: null,
+      help_topic: ''
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('access-configuration')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    if (!helper.featureAvailable('email_template')) {
+      helper.featureNotAvailableMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getEmailTemplates();
+  },
+  methods: {
+    getEmailTemplates: function getEmailTemplates(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/email-template?page=' + page + url).then(function (response) {
+        _this.email_templates = response;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    editEmailTemplate: function editEmailTemplate(email_template) {
+      this.$router.push('/utility/email-template/' + email_template.id + '/edit');
+    },
+    confirmDelete: function confirmDelete(email_template) {
+      var _this2 = this;
+      return function (dialog) {
+        return _this2.deleteEmailTemplate(email_template);
+      };
+    },
+    deleteEmailTemplate: function deleteEmailTemplate(email_template) {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios["delete"]('/api/email-template/' + email_template.id).then(function (response) {
+        toastr.success(response.message);
+        _this3.getEmailTemplates();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    toWord: function toWord(value) {
+      return helper.toWord(value);
+    },
+    submit: function submit() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      this.templateForm.post('/api/email-template').then(function (response) {
+        toastr.success(response.message);
+        _this4.selected_category = null;
+        _this4.getEmailTemplates();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-template/index.vue?vue&type=template&id=4ff49010&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-template/index.vue?vue&type=template&id=4ff49010& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("utility.email_template")) + " \n                    "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "email-template";
+      }
+    }
+  }), _vm._v(" "), _vm.email_templates.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.email_templates.total,
+    from: _vm.email_templates.from,
+    to: _vm.email_templates.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_vm.email_templates.total && !_vm.showCreatePanel ? _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("utility.add_new_email_template")))])]) : _vm._e(), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "utility.email-template";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showCreatePanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("utility.add_new_email_template")))]), _vm._v(" "), _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submit.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.templateForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("utility.email_template_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.templateForm.name,
+      expression: "templateForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name",
+      placeholder: _vm.trans("utility.email_template_name")
+    },
+    domProps: {
+      value: _vm.templateForm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.templateForm, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.templateForm,
+      "prop-name": "name"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("utility.email_template_category")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "category",
+      id: "category",
+      options: _vm.categories,
+      placeholder: _vm.trans("utility.email_template_category")
+    },
+    on: {
+      select: function select($event) {
+        return _vm.templateForm.errors.clear("category");
+      },
+      close: function close($event) {
+        _vm.templateForm.category = _vm.selected_category.id;
+      },
+      remove: function remove($event) {
+        _vm.templateForm.category = "";
+      }
+    },
+    model: {
+      value: _vm.selected_category,
+      callback: function callback($$v) {
+        _vm.selected_category = $$v;
+      },
+      expression: "selected_category"
+    }
+  }, [!_vm.categories.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                            " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                        ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.templateForm,
+      "prop-name": "category"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_vm.showCreatePanel ? _c("button", {
+    staticClass: "btn btn-danger",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.save")))])])])])]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.email_templates.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("utility.email_template_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("utility.email_template_category")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("utility.email_template_subject")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.email_templates.data, function (email_template) {
+    return _c("tr", [_c("td", {
+      domProps: {
+        textContent: _vm._s(email_template.name)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(_vm.toWord(email_template.category))
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(email_template.subject)
+      }
+    }), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [_c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("utility.edit_email_template"),
+        expression: "trans('utility.edit_email_template')"
+      }],
+      staticClass: "btn btn-info btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.editEmailTemplate(email_template);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-edit"
+    })]), _vm._v(" "), !email_template.is_default ? _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(email_template)
+        },
+        expression: "{ok: confirmDelete(email_template)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("utility.delete_email_template"),
+        expression: "trans('utility.delete_email_template')"
+      }],
+      key: email_template.id,
+      staticClass: "btn btn-danger btn-sm"
+    }, [_c("i", {
+      staticClass: "fas fa-trash"
+    })]) : _vm._e()])])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.email_templates.total ? _c("module-info", {
+    attrs: {
+      module: "utility",
+      title: "email_template_module_title",
+      description: "email_template_module_description",
+      icon: "list"
+    }
+  }, [_c("div", {
+    attrs: {
+      slot: "btn"
+    },
+    slot: "btn"
+  }, [!_vm.showCreatePanel ? _c("button", {
+    staticClass: "btn btn-info btn-md",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.add_new")))]) : _vm._e()])]) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.email_templates
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getEmailTemplates
+    },
+    nativeOn: {
+      change: function change($event) {
+        return _vm.getEmailTemplates.apply(null, arguments);
+      }
+    }
+  })], 1)])], 1), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/email-template/index.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/views/utility/email-template/index.vue ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_4ff49010___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=4ff49010& */ "./resources/js/views/utility/email-template/index.vue?vue&type=template&id=4ff49010&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/utility/email-template/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_4ff49010___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_4ff49010___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/utility/email-template/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/email-template/index.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/views/utility/email-template/index.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-template/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/email-template/index.vue?vue&type=template&id=4ff49010&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/views/utility/email-template/index.vue?vue&type=template&id=4ff49010& ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_4ff49010___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_4ff49010___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_4ff49010___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=4ff49010& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-template/index.vue?vue&type=template&id=4ff49010&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=75215169aed93959

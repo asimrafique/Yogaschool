@@ -415,7 +415,8 @@
   'student_type' => 'Student',
   'student_username' => 'Student Username',
   'subject_wise' => 'Subject Wise',
-  'tc_props' => 
+  'select_course_location' => 'Select Course Location',
+  'tc_props' =>
   array (
     'admission_date_and_class' => 'Date of First Admission in the School with Class',
     'last_exam_with_result' => 'School / Board Annual Examination last taken with result',

@@ -15,3 +15,4 @@ workspace.xml
 .iws
 tasks.xml
 /.idea/
+/node_modules/

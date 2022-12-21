@@ -25,12 +25,14 @@ class RegistrationUpdateStatusRequest extends FormRequest
     {
         $rules = [
             'status'            => 'required|in:rejected,allotted',
-            'batch_id'          => 'required_if:status,allotted|integer',
-            'rejection_remarks' => 'required_if:status,rejected|min:20'
         ];
 
         if (request('status') == 'allotted') {
             $rules['date_of_admission'] = 'required_if:status,allotted|date';
+            $rules['batch_id']         = 'required_if:status,allotted|integer';
+        }
+        if (request('status') == 'rejected') {
+         $rules['rejection_remarks'] = 'required|min:20';
         }
 
         return $rules;
@@ -62,7 +64,7 @@ class RegistrationUpdateStatusRequest extends FormRequest
     {
         return [
             'batch_id.required_if'          => trans('validation.required', ['attribute' => trans('academic.batch')]),
-            'rejection_remarks.required_if' => trans('validation.required', ['attribute' => trans('student.rejection_remarks')]),
+//            'rejection_remarks.required_if' => trans('validation.required', ['attribute' => trans('student.rejection_remarks')]),
             'admission_remarks.required_if' => trans('validation.required', ['attribute' => trans('student.admission_remarks')]),
             'admission_number.required_if'  => trans('validation.required', ['attribute' => trans('student.admission_number')])
         ];

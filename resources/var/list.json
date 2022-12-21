@@ -49,5 +49,26 @@
 		"checkbox_input",
 		"radio_input",
 		"dropdown_input"
+	],
+	"course_locations": [
+		"Arhanta Yoga Ashram India",
+		"Arhanta Yoga Ashram Netherlands"
+	],
+	"accommodations": [
+		"Dormitory",
+		"Double shared room",
+		"Single room"
+	],
+	"how_long_yoga_options": [
+		"less_than_one_year",
+		"more_than_one_year"
+	],
+	"teaching_experience_options": [
+		"yes",
+		"no"
+	],
+	"use_drugs_options": [
+		"yes",
+		"no"
 	]
 }

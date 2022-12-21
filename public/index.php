@@ -3,10 +3,10 @@
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
- * @package  Laravel YtQnVOpnKG
+ * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-// YtQnVOpnKG
+
 define('LARAVEL_START', microtime(true));
 
 /*

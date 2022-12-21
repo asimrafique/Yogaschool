@@ -54,4 +54,12 @@
   'widowed' => 'Widowed',
   'year' => 'Year',
   'yes' => 'Yes',
+    'Arhanta Yoga Ashram India'=>'Arhanta Yoga Ashram India',
+    'Arhanta Yoga Ashram Netherlands'=>'Arhanta Yoga Ashram Netherlands',
+    'Dormitory'=>'Dormitory',
+    'Double shared room'=>'Double shared room',
+    'Single room'=>'Single room',
+    'less_than_one_year'=>'Less than one year',
+    'more_than_one_year'=>'More than one year',
+
 );

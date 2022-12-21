@@ -1,2 +1,2096 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[8051],{89035:(e,t,n)=>{"use strict";n.d(t,{Z:()=>i});var a=n(94015),s=n.n(a),o=n(23645),r=n.n(o)()(s());r.push([e.id,".loading-overlay.is-full-page{z-index:1060}","",{version:3,sources:["webpack://./resources/js/views/configuration/finance/transaction/category/form.vue"],names:[],mappings:"AA0HA,8BACA,YACA",sourcesContent:['<template>\n    <form @submit.prevent="proceed" @keydown="transactionCategoryForm.errors.clear($event.target.name)">\n        <div class="row">\n            <div class="col-12 col-sm-4">\n                <div class="form-group">\n                    <label for="">{{trans(\'finance.transaction_category_name\')}}</label>\n                    <input class="form-control" type="text" v-model="transactionCategoryForm.name" name="name" :placeholder="trans(\'finance.transaction_category_name\')">\n                    <show-error :form-name="transactionCategoryForm" prop-name="name"></show-error>\n                </div>\n            </div>\n            <div class="col-12 col-sm-4">\n                <div class="form-group">\n                    <label for="">{{trans(\'finance.transaction_category_type\')}}</label>\n                    <select v-model="transactionCategoryForm.type" class="col-12 custom-select" @change="transactionCategoryForm.errors.clear(\'type\')" name="type">\n                      <option value=null selected>{{trans(\'general.select_one\')}}</option>\n                      <option v-for="type in types" v-bind:value="type.value">\n                        {{ type.text }}\n                      </option>\n                    </select>\n                    <show-error :form-name="transactionCategoryForm" prop-name="type"></show-error>\n                </div>\n            </div>\n            <div class="col-12 col-sm-4">\n                <div class="form-group">\n                    <label for="">{{trans(\'finance.transaction_category_description\')}}</label>\n                    <input class="form-control" type="text" v-model="transactionCategoryForm.description" name="description" :placeholder="trans(\'finance.transaction_category_description\')">\n                    <show-error :form-name="transactionCategoryForm" prop-name="description"></show-error>\n                </div>\n            </div>\n        </div>\n\n        <div class="card-footer text-right">\n            <button v-if="!id" type="button" class="btn btn-danger waves-effect waves-light " @click="$emit(\'cancel\')">{{trans(\'general.cancel\')}}</button>\n            <router-link to="/configuration/finance/transaction/category" class="btn btn-danger waves-effect waves-light " v-show="id">{{trans(\'general.cancel\')}}</router-link>\n            <button type="submit" class="btn btn-info waves-effect waves-light">\n                <span v-if="id">{{trans(\'general.update\')}}</span>\n                <span v-else>{{trans(\'general.save\')}}</span>\n            </button>\n        </div>\n    </form>\n</template>\n\n\n<script>\n    export default {\n        data() {\n            return {\n                transactionCategoryForm: new Form({\n                    name : \'\',\n                    type: \'\',\n                    description : \'\'\n                }),\n                types: [\n                    {\n                        text: i18n.finance.income,\n                        value: \'income\'\n                    },\n                    {\n                        text: i18n.finance.expense,\n                        value: \'expense\'\n                    }\n                ]\n            };\n        },\n        props: [\'id\'],\n        mounted() {\n            if(this.id)\n                this.get();\n        },\n        methods: {\n            proceed(){\n                if(this.id)\n                    this.update();\n                else\n                    this.store();\n            },\n            store(){\n                let loader = this.$loading.show();\n                this.transactionCategoryForm.post(\'/api/finance/transaction/category\')\n                    .then(response => {\n                        toastr.success(response.message);\n                        this.$emit(\'completed\');\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            get(){\n                let loader = this.$loading.show();\n                axios.get(\'/api/finance/transaction/category/\'+this.id)\n                    .then(response => {\n                        this.transactionCategoryForm.name = response.name;\n                        this.transactionCategoryForm.type = response.type;\n                        this.transactionCategoryForm.description = response.description;\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                        this.$router.push(\'/configuration/finance/transaction/category\');\n                    });\n            },\n            update(){\n                let loader = this.$loading.show();\n                this.transactionCategoryForm.patch(\'/api/finance/transaction/category/\'+this.id)\n                    .then(response => {\n                        toastr.success(response.message);\n                        loader.hide();\n                        this.$router.push(\'/configuration/finance/transaction/category\');\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            }\n        }\n    }\n<\/script>\n\n<style>\n.loading-overlay.is-full-page{\n    z-index: 1060;\n}\n</style>\n'],sourceRoot:""}]);const i=r},14518:(e,t,n)=>{"use strict";n.d(t,{Z:()=>c});const a={data:function(){return{transactionCategoryForm:new Form({name:"",type:"",description:""}),types:[{text:i18n.finance.income,value:"income"},{text:i18n.finance.expense,value:"expense"}]}},props:["id"],mounted:function(){this.id&&this.get()},methods:{proceed:function(){this.id?this.update():this.store()},store:function(){var e=this,t=this.$loading.show();this.transactionCategoryForm.post("/api/finance/transaction/category").then((function(n){toastr.success(n.message),e.$emit("completed"),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},get:function(){var e=this,t=this.$loading.show();axios.get("/api/finance/transaction/category/"+this.id).then((function(n){e.transactionCategoryForm.name=n.name,e.transactionCategoryForm.type=n.type,e.transactionCategoryForm.description=n.description,t.hide()})).catch((function(n){t.hide(),helper.showErrorMsg(n),e.$router.push("/configuration/finance/transaction/category")}))},update:function(){var e=this,t=this.$loading.show();this.transactionCategoryForm.patch("/api/finance/transaction/category/"+this.id).then((function(n){toastr.success(n.message),t.hide(),e.$router.push("/configuration/finance/transaction/category")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))}}};var s=n(93379),o=n.n(s),r=n(89035),i={insert:"head",singleton:!1};o()(r.Z,i);r.Z.locals;const c=(0,n(51900).Z)(a,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("form",{on:{submit:function(t){return t.preventDefault(),e.proceed.apply(null,arguments)},keydown:function(t){return e.transactionCategoryForm.errors.clear(t.target.name)}}},[n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-4"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.transaction_category_name")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.transactionCategoryForm.name,expression:"transactionCategoryForm.name"}],staticClass:"form-control",attrs:{type:"text",name:"name",placeholder:e.trans("finance.transaction_category_name")},domProps:{value:e.transactionCategoryForm.name},on:{input:function(t){t.target.composing||e.$set(e.transactionCategoryForm,"name",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.transactionCategoryForm,"prop-name":"name"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-4"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.transaction_category_type")))]),e._v(" "),n("select",{directives:[{name:"model",rawName:"v-model",value:e.transactionCategoryForm.type,expression:"transactionCategoryForm.type"}],staticClass:"col-12 custom-select",attrs:{name:"type"},on:{change:[function(t){var n=Array.prototype.filter.call(t.target.options,(function(e){return e.selected})).map((function(e){return"_value"in e?e._value:e.value}));e.$set(e.transactionCategoryForm,"type",t.target.multiple?n:n[0])},function(t){return e.transactionCategoryForm.errors.clear("type")}]}},[n("option",{attrs:{value:"null",selected:""}},[e._v(e._s(e.trans("general.select_one")))]),e._v(" "),e._l(e.types,(function(t){return n("option",{domProps:{value:t.value}},[e._v("\n                    "+e._s(t.text)+"\n                  ")])}))],2),e._v(" "),n("show-error",{attrs:{"form-name":e.transactionCategoryForm,"prop-name":"type"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-4"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.transaction_category_description")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.transactionCategoryForm.description,expression:"transactionCategoryForm.description"}],staticClass:"form-control",attrs:{type:"text",name:"description",placeholder:e.trans("finance.transaction_category_description")},domProps:{value:e.transactionCategoryForm.description},on:{input:function(t){t.target.composing||e.$set(e.transactionCategoryForm,"description",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.transactionCategoryForm,"prop-name":"description"}})],1)])]),e._v(" "),n("div",{staticClass:"card-footer text-right"},[e.id?e._e():n("button",{staticClass:"btn btn-danger waves-effect waves-light ",attrs:{type:"button"},on:{click:function(t){return e.$emit("cancel")}}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),n("router-link",{directives:[{name:"show",rawName:"v-show",value:e.id,expression:"id"}],staticClass:"btn btn-danger waves-effect waves-light ",attrs:{to:"/configuration/finance/transaction/category"}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),n("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[e.id?n("span",[e._v(e._s(e.trans("general.update")))]):n("span",[e._v(e._s(e.trans("general.save")))])])],1)])}),[],!1,null,null,null).exports},12327:(e,t,n)=>{"use strict";n.d(t,{Z:()=>s});const a={components:{transactionCategoryForm:n(14518).Z},data:function(){return{expenseForm:new Form({transaction_category_id:"",account_id:"",payment_method_id:"",instrument_number:"",instrument_date:"",instrument_clearing_date:"",instrument_bank_detail:"",reference_number:"",amount:"",date_of_expense:"",description:"",upload_token:""}),transaction_categories:[],selected_transaction_category:null,accounts:[],selected_account:null,payment_methods:[],selected_payment_method:null,payment_method_details:[],payment_method_detail:{},module_id:"",clearAttachment:!0,showTransactionCategoryModal:!1,default_currency:helper.getConfig("default_currency")}},props:["uuid"],mounted:function(){helper.hasPermission("create-expense")||helper.hasPermission("edit-expense")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.uuid?this.get():this.expenseForm.upload_token=this.$uuid.v4(),this.getPreRequisite()},methods:{hasPermission:function(e){return helper.hasPermission(e)},getPreRequisite:function(){var e=this,t=this.$loading.show();this.showTransactionCategoryModal=!1,axios.get("/api/expense/pre-requisite").then((function(n){e.transaction_categories=n.transaction_categories,e.accounts=n.accounts,e.payment_methods=n.payment_methods,e.payment_method_details=n.payment_method_details,t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},proceed:function(){this.uuid?this.update():this.store()},store:function(){var e=this,t=this.$loading.show();this.expenseForm.post("/api/expense").then((function(n){toastr.success(n.message),e.clearAttachment=!e.clearAttachment,e.expenseForm.upload_token=e.$uuid.v4(),e.selected_transaction_category=null,e.selected_account=null,e.selected_payment_method=null,e.payment_method_detail=null,e.$emit("completed"),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},get:function(){var e=this,t=this.$loading.show();axios.get("/api/expense/"+this.uuid).then((function(n){e.expenseForm.amount=e.formatNumber(n.expense.amount),e.expenseForm.date_of_expense=n.expense.date_of_expense,e.expenseForm.description=n.expense.description,e.expenseForm.transaction_category_id=n.expense.transaction_category_id,e.selected_transaction_category=n.expense.transaction_category_id?{id:n.expense.transaction_category_id,name:n.expense.transaction_category.name}:null,e.expenseForm.account_id=n.expense.transaction.account_id,e.selected_account=n.expense.transaction.account_id?{id:n.expense.transaction.account_id,name:n.expense.transaction.account.name}:null,e.expenseForm.payment_method_id=n.expense.transaction.payment_method_id,e.selected_payment_method=n.expense.transaction.payment_method_id?{id:n.expense.transaction.payment_method_id,name:n.expense.transaction.payment_method.name}:null,e.expenseForm.instrument_number=n.expense.transaction.instrument_number,e.expenseForm.instrument_date=n.expense.transaction.instrument_date,e.expenseForm.instrument_clearing_date=n.expense.transaction.instrument_clearing_date,e.expenseForm.instrument_bank_detail=n.expense.transaction.instrument_bank_detail,e.expenseForm.reference_number=n.expense.transaction.reference_number,e.expenseForm.upload_token=n.expense.upload_token,e.module_id=n.expense.id,t.hide()})).catch((function(n){t.hide(),helper.showErrorMsg(n),e.$router.push("/finance/transaction/expense")}))},update:function(){var e=this,t=this.$loading.show();this.expenseForm.patch("/api/expense/"+this.uuid).then((function(n){toastr.success(n.message),t.hide(),e.$router.push("/finance/transaction/expense")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onTransactionCategorySelect:function(e){this.expenseForm.transaction_category_id=e.id},onAccountSelect:function(e){this.expenseForm.account_id=e.id},onPaymentMethodSelect:function(e){this.expenseForm.payment_method_id=e.id,this.payment_method_detail=this.payment_method_details.find((function(t){return t.id==e.id}))},formatCurrency:function(e){return helper.formatCurrency(e)},formatNumber:function(e){return helper.formatNumber(e,this.default_currency.decimal_place)},getPaymentMethodDetail:function(e){return helper.getPaymentMethodDetail(this.payment_method_detail,e)}}};const s=(0,n(51900).Z)(a,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[n("form",{on:{submit:function(t){return t.preventDefault(),e.proceed.apply(null,arguments)},keydown:function(t){return e.expenseForm.errors.clear(t.target.name)}}},[n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.transaction_category"))+" ")]),e._v(" "),e.hasPermission("access-configuration")?n("button",{staticClass:"btn btn-xs btn-info pull-right",attrs:{type:"button"},on:{click:function(t){e.showTransactionCategoryModal=!0}}},[e._v(e._s(e.trans("general.add_new")))]):e._e(),e._v(" "),n("v-select",{attrs:{label:"name",name:"transaction_category_id",id:"transaction_category_id",options:e.transaction_categories,placeholder:e.trans("finance.select_transaction_category")},on:{select:e.onTransactionCategorySelect,close:function(t){return e.expenseForm.errors.clear("transaction_category_id")},remove:function(t){e.expenseForm.transaction_category_id=""}},model:{value:e.selected_transaction_category,callback:function(t){e.selected_transaction_category=t},expression:"selected_transaction_category"}},[e.transaction_categories.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                "+e._s(e.trans("general.no_option_found"))+"\n                            ")])]),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"transaction_category_id"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.account"))+" ")]),e._v(" "),n("v-select",{attrs:{label:"name",name:"account_id",id:"account_id",options:e.accounts,placeholder:e.trans("finance.select_account"),disabled:!!e.uuid},on:{select:e.onAccountSelect,close:function(t){return e.expenseForm.errors.clear("account_id")},remove:function(t){e.expenseForm.account_id=""}},model:{value:e.selected_account,callback:function(t){e.selected_account=t},expression:"selected_account"}},[e.accounts.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                "+e._s(e.trans("general.no_option_found"))+"\n                            ")])]),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"account_id"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.amount")))]),e._v(" "),n("currency-input",{attrs:{position:e.default_currency.position,symbol:e.default_currency.symbol,name:"amount",placeholder:e.trans("finance.amount")},nativeOn:{input:function(t){return e.expenseForm.errors.clear("amount")}},model:{value:e.expenseForm.amount,callback:function(t){e.$set(e.expenseForm,"amount",t)},expression:"expenseForm.amount"}}),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"amount"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.date_of_expense")))]),e._v(" "),n("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("finance.date_of_expense")},on:{selected:function(t){return e.expenseForm.errors.clear("date_of_expense")}},model:{value:e.expenseForm.date_of_expense,callback:function(t){e.$set(e.expenseForm,"date_of_expense",t)},expression:"expenseForm.date_of_expense"}}),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"date_of_expense"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.payment_method"))+" ")]),e._v(" "),n("v-select",{attrs:{label:"name",name:"payment_method_id",id:"payment_method_id",options:e.payment_methods,placeholder:e.trans("finance.select_payment_method")},on:{select:e.onPaymentMethodSelect,close:function(t){return e.expenseForm.errors.clear("payment_method_id")},remove:function(t){e.expenseForm.payment_method_id=""}},model:{value:e.selected_payment_method,callback:function(t){e.selected_payment_method=t},expression:"selected_payment_method"}},[e.payment_methods.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                "+e._s(e.trans("general.no_option_found"))+"\n                            ")])]),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"payment_method_id"}})],1)]),e._v(" "),e.getPaymentMethodDetail("instrument_number")?n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.instrument_number")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.expenseForm.instrument_number,expression:"expenseForm.instrument_number"}],staticClass:"form-control",attrs:{type:"text",name:"instrument_number",placeholder:e.trans("finance.instrument_number")},domProps:{value:e.expenseForm.instrument_number},on:{input:function(t){t.target.composing||e.$set(e.expenseForm,"instrument_number",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"instrument_number"}})],1)]):e._e(),e._v(" "),e.getPaymentMethodDetail("instrument_date")?n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.instrument_date")))]),e._v(" "),n("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("finance.instrument_date")},on:{selected:function(t){return e.expenseForm.errors.clear("instrument_date")}},model:{value:e.expenseForm.instrument_date,callback:function(t){e.$set(e.expenseForm,"instrument_date",t)},expression:"expenseForm.instrument_date"}}),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"instrument_date"}})],1)]):e._e(),e._v(" "),e.getPaymentMethodDetail("instrument_bank_detail")?n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.instrument_bank_detail")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.expenseForm.instrument_bank_detail,expression:"expenseForm.instrument_bank_detail"}],staticClass:"form-control",attrs:{type:"text",name:"instrument_bank_detail",placeholder:e.trans("finance.instrument_bank_detail")},domProps:{value:e.expenseForm.instrument_bank_detail},on:{input:function(t){t.target.composing||e.$set(e.expenseForm,"instrument_bank_detail",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"instrument_bank_detail"}})],1)]):e._e(),e._v(" "),e.getPaymentMethodDetail("instrument_clearing_date")?n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.instrument_clearing_date")))]),e._v(" "),n("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("finance.instrument_clearing_date")},on:{selected:function(t){return e.expenseForm.errors.clear("instrument_clearing_date")}},model:{value:e.expenseForm.instrument_clearing_date,callback:function(t){e.$set(e.expenseForm,"instrument_clearing_date",t)},expression:"expenseForm.instrument_clearing_date"}}),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"instrument_clearing_date"}})],1)]):e._e(),e._v(" "),e.getPaymentMethodDetail("reference_number")?n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.reference_number")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.expenseForm.reference_number,expression:"expenseForm.reference_number"}],staticClass:"form-control",attrs:{type:"text",name:"reference_number",placeholder:e.trans("finance.reference_number")},domProps:{value:e.expenseForm.reference_number},on:{input:function(t){t.target.composing||e.$set(e.expenseForm,"reference_number",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"reference_number"}})],1)]):e._e(),e._v(" "),n("div",{staticClass:"col-12 col-sm-9"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.expense_description")))]),e._v(" "),n("autosize-textarea",{attrs:{rows:"1",name:"description",placeholder:e.trans("finance.expense_description")},model:{value:e.expenseForm.description,callback:function(t){e.$set(e.expenseForm,"description",t)},expression:"expenseForm.description"}}),e._v(" "),n("show-error",{attrs:{"form-name":e.expenseForm,"prop-name":"description"}})],1)]),e._v(" "),n("div",{staticClass:"col-12"},[n("div",{staticClass:"form-group"},[n("file-upload-input",{attrs:{"button-text":e.trans("general.upload_document"),token:e.expenseForm.upload_token,module:"expense","clear-file":e.clearAttachment,"module-id":e.module_id}})],1)])]),e._v(" "),n("div",{staticClass:"card-footer text-right"},[n("router-link",{directives:[{name:"show",rawName:"v-show",value:e.uuid,expression:"uuid"}],staticClass:"btn btn-danger waves-effect waves-light ",attrs:{to:"/finance/transaction/expense"}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),e.uuid?e._e():n("button",{staticClass:"btn btn-danger waves-effect waves-light ",attrs:{type:"button"},on:{click:function(t){return e.$emit("cancel")}}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),n("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[e.uuid?n("span",[e._v(e._s(e.trans("general.update")))]):n("span",[e._v(e._s(e.trans("general.save")))])])],1)]),e._v(" "),e.showTransactionCategoryModal?n("transition",{attrs:{name:"modal"}},[n("div",{staticClass:"modal-mask"},[n("div",{staticClass:"modal-wrapper"},[n("div",{staticClass:"modal-container modal-lg"},[n("div",{staticClass:"modal-header"},[e._t("header",(function(){return[e._v("\n                                "+e._s(e.trans("finance.add_new_transaction_category"))+"\n                                "),n("span",{staticClass:"float-right pointer",on:{click:function(t){e.showTransactionCategoryModal=!1}}},[e._v("x")])]}))],2),e._v(" "),n("div",{staticClass:"modal-body"},[e._t("body",(function(){return[n("transaction-category-form",{on:{completed:e.getPreRequisite,cancel:function(t){e.showTransactionCategoryModal=!1}}}),e._v(" "),n("div",{staticClass:"clearfix"})]}))],2)])])])]):e._e()],1)}),[],!1,null,null,null).exports},41431:(e,t,n)=>{"use strict";n.r(t),n.d(t,{default:()=>c});var a=n(12327);const s={props:["uuid"],data:function(){return{expense:{},attachments:[]}},mounted:function(){this.uuid&&this.get()},methods:{get:function(){var e=this,t=this.$loading.show();axios.get("/api/expense/"+this.uuid).then((function(n){e.expense=n.expense,e.attachments=n.attachments,t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},getEmployeeName:function(e){return helper.getEmployeeName(e)},getEmployeeDesignationOnDate:function(e,t){return helper.getEmployeeDesignationOnDate(e,t)},formatCurrency:function(e){return helper.formatCurrency(e)},getVoucherNumber:function(e){return helper.getVoucherNumber(e)}},filters:{moment:function(e){return helper.formatDate(e)},momentDateTime:function(e){return helper.formatDateTime(e)}},computed:{authToken:function(){return helper.getAuthToken()}}};var o=n(51900);const r=(0,o.Z)(s,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("transition",{attrs:{name:"modal"}},[n("div",{staticClass:"modal-mask"},[n("div",{staticClass:"modal-wrapper"},[n("div",{staticClass:"modal-container modal-lg"},[e.expense.id?n("div",{staticClass:"modal-header"},[e._t("header",(function(){return[n("span",[e._v(e._s(e.trans("finance.expense"))+" #"+e._s(e.getVoucherNumber(e.expense.transaction))+"\n                            \t"),e.expense.is_cancelled?n("span",{staticClass:"label label-danger"},[e._v("\n                            \t\t"+e._s(e.trans("finance.transaction_status_cancelled"))+"\n                            \t")]):e._e()]),e._v(" "),n("span",{staticClass:"float-right pointer",on:{click:function(t){return e.$emit("close")}}},[e._v("x")])]}))],2):e._e(),e._v(" "),e.expense.id?n("div",{staticClass:"modal-body"},[e._t("body",(function(){return[n("div",{staticClass:"table-responsive"},[n("table",{staticClass:"table table-sm custom-show-table"},[n("tbody",[n("tr",[n("td",{staticClass:"font-weight-bold"},[e._v("#")]),e._v(" "),n("td",[e._v(e._s(e.getVoucherNumber(e.expense.transaction)))])]),e._v(" "),n("tr",[n("td",{staticClass:"font-weight-bold"},[e._v(e._s(e.trans("finance.expense_category")))]),e._v(" "),n("td",[e._v(e._s(e.expense.transaction_category.name))])]),e._v(" "),n("tr",[n("td",{staticClass:"font-weight-bold"},[e._v(e._s(e.trans("finance.date_of_expense")))]),e._v(" "),n("td",[e._v(e._s(e._f("moment")(e.expense.date_of_expense)))])]),e._v(" "),n("tr",[n("td",{staticClass:"font-weight-bold"},[e._v(e._s(e.trans("finance.account")))]),e._v(" "),n("td",[e._v(e._s(e.expense.transaction.account.name))])]),e._v(" "),n("tr",[n("td",{staticClass:"font-weight-bold"},[e._v(e._s(e.trans("finance.payment_method")))]),e._v(" "),n("td",[e._v("\n\t                        \t\t\t\t\t"+e._s(e.expense.transaction.payment_method.name)+"\n\t                        \t\t\t\t\t"),e.expense.transaction.payment_method.options.requires_instrument_number?n("span",[n("br"),e._v("\t"+e._s(e.trans("finance.instrument_number"))+": "+e._s(e.expense.transaction.instrument_number)+"\n\t                        \t\t\t\t\t")]):e._e(),e._v(" "),e.expense.transaction.payment_method.options.requires_instrument_date?n("span",[n("br"),e._v("\t"+e._s(e.trans("finance.instrument_date"))+": "+e._s(e._f("moment")(e.expense.transaction.instrument_date))+"\n\t                        \t\t\t\t\t")]):e._e(),e._v(" "),e.expense.transaction.payment_method.options.requires_instrument_bank_detail?n("span",[n("br"),e._v("\t"+e._s(e.trans("finance.instrument_bank_detail"))+": "+e._s(e.expense.transaction.instrument_bank_detail)+"\n\t                        \t\t\t\t\t")]):e._e(),e._v(" "),e.expense.transaction.payment_method.options.requires_instrument_clearing_date?n("span",[n("br"),e._v("\t"+e._s(e.trans("finance.instrument_clearing_date"))+": "+e._s(e._f("moment")(e.expense.transaction.instrument_clearing_date))+"\n\t                        \t\t\t\t\t")]):e._e(),e._v(" "),e.expense.transaction.payment_method.options.requires_reference_number?n("span",[n("br"),e._v("\t"+e._s(e.trans("finance.reference_number"))+": "+e._s(e.expense.transaction.reference_number)+"\n\t                        \t\t\t\t\t")]):e._e()])]),e._v(" "),n("tr",[n("td",{staticClass:"font-weight-bold"},[e._v(e._s(e.trans("finance.amount")))]),e._v(" "),n("td",[e._v(e._s(e.formatCurrency(e.expense.amount)))])]),e._v(" "),n("tr",[n("td",{staticClass:"font-weight-bold"},[e._v(e._s(e.trans("finance.expense_description")))]),e._v(" "),n("td",[e._v(e._s(e.expense.description))])]),e._v(" "),n("tr",[n("td",{staticClass:"font-weight-bold"},[e._v(e._s(e.trans("general.created_by")))]),e._v(" "),n("td",[e._v(e._s(e.getEmployeeName(e.expense.user.employee))+" "),n("br"),e._v(" "+e._s(e.getEmployeeDesignationOnDate(e.expense.user.employee,e.expense.date_of_expense)))])])])])]),e._v(" "),e.attachments.length?n("div",[n("ul",{staticClass:"m-t-10 upload-file-list"},e._l(e.attachments,(function(t){return n("li",{staticClass:"upload-file-list-item"},[n("a",{staticClass:"no-link-color",attrs:{href:"/finance/transaction/expense/"+e.expense.uuid+"/attachment/"+t.uuid+"/download?token="+e.authToken}},[n("i",{class:["file-icon","fas","fa-lg",t.file_info.icon]}),e._v(" "),n("span",{staticClass:"upload-file-list-item-size"},[e._v(e._s(t.file_info.size))]),e._v(" "+e._s(t.user_filename))])])})),0)]):e._e(),e._v(" "),n("hr"),e._v(" "),n("p",[n("i",{staticClass:"far fa-clock"}),e._v(" "),n("small",[e._v(e._s(e.trans("general.created_at"))+" "+e._s(e._f("momentDateTime")(e.expense.created_at)))]),e._v(" "),n("span",{staticClass:"pull-right"},[n("i",{staticClass:"far fa-clock"}),e._v(" "),n("small",[e._v(e._s(e.trans("general.updated_at"))+" "+e._s(e._f("momentDateTime")(e.expense.updated_at)))])])])]}))],2):e._e()])])])])}),[],!1,null,null,null).exports,i={components:{expenseForm:a.Z,expenseDetail:r},data:function(){return{expenses:{total:0,data:[]},filter:{sort_by:"date_of_expense",order:"desc",transaction_category_id:[],account_id:[],payment_method_id:[],date_of_expense_start_date:"",date_of_expense_end_date:"",page_length:helper.getConfig("page_length")},orderByOptions:[{value:"date_of_expense",translation:i18n.finance.date_of_expense},{value:"amount",translation:i18n.finance.amount}],transaction_categories:[],selected_transaction_categories:null,accounts:[],selected_accounts:null,payment_methods:[],selected_payment_methods:null,showFilterPanel:!1,showCreatePanel:!1,help_topic:"",showUuid:"",showModal:!1}},mounted:function(){helper.hasPermission("list-expense")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getExpenses()},methods:{hasPermission:function(e){return helper.hasPermission(e)},showAction:function(e){this.showUuid=e.uuid,this.showModal=!0},getEmployeeName:function(e){return helper.getEmployeeName(e)},getEmployeeDesignationOnDate:function(e,t){return helper.getEmployeeDesignationOnDate(e,t)},getVoucherNumber:function(e){return helper.getVoucherNumber(e)},getExpenses:function(e){var t=this,n=this.$loading.show();"number"!=typeof e&&(e=1),this.filter.date_of_expense_start_date=helper.toDate(this.filter.date_of_expense_start_date),this.filter.date_of_expense_end_date=helper.toDate(this.filter.date_of_expense_end_date);var a=helper.getFilterURL(this.filter);axios.get("/api/expense?page="+e+a).then((function(e){t.expenses=e.expenses,t.transaction_categories=e.filters.transaction_categories,t.accounts=e.filters.accounts,t.payment_methods=e.filters.payment_methods,n.hide()})).catch((function(e){n.hide(),helper.showErrorMsg(e)}))},editExpense:function(e){this.$router.push("/finance/transaction/expense/"+e.uuid+"/edit")},confirmCancel:function(e){var t=this;return function(n){return t.cancelExpense(e)}},cancelExpense:function(e){var t=this,n=this.$loading.show();axios.delete("/api/expense/"+e.uuid).then((function(e){toastr.success(e.message),t.getExpenses(),n.hide()})).catch((function(e){n.hide(),helper.showErrorMsg(e)}))},getConfig:function(e){return helper.getConfig(e)},print:function(){var e=this.$loading.show();axios.post("/api/expense/print",{filter:this.filter}).then((function(t){var n=window.open("/print");e.hide(),n.document.write(t)})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},pdf:function(){var e=this,t=this.$loading.show();axios.post("/api/expense/pdf",{filter:this.filter}).then((function(n){t.hide(),window.open("/download/report/"+n+"?token="+e.authToken)})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onTransactionCategorySelect:function(e){this.filter.transaction_category_id.push(e.id)},onTransactionCategoryRemove:function(e){this.filter.transaction_category_id.splice(this.filter.transaction_category_id.indexOf(e.id),1)},onAccountSelect:function(e){this.filter.account_id.push(e.id)},onAccountRemove:function(e){this.filter.account_id.splice(this.filter.account_id.indexOf(e.id),1)},onPaymentMethodSelect:function(e){this.filter.payment_method.push(e.id)},onPaymentMethodRemove:function(e){this.filter.payment_method.splice(this.filter.payment_method.indexOf(e.id),1)},formatCurrency:function(e){return helper.formatCurrency(e)}},filters:{moment:function(e){return helper.formatDate(e)},momentDateTime:function(e){return helper.formatDateTime(e)}},watch:{"filter.sort_by":function(e){this.getExpenses()},"filter.order":function(e){this.getExpenses()},"filter.page_length":function(e){this.getExpenses()}},computed:{authToken:function(){return helper.getAuthToken()}}};const c=(0,o.Z)(i,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[n("div",{staticClass:"page-titles"},[n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-6"},[n("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("finance.expense"))+" \n                    "),e.expenses.total?n("span",{staticClass:"card-subtitle d-none d-sm-inline"},[e._v(e._s(e.trans("general.total_result_found",{count:e.expenses.total,from:e.expenses.from,to:e.expenses.to})))]):n("span",{staticClass:"card-subtitle d-none d-sm-inline"},[e._v(e._s(e.trans("general.no_result_found")))])])]),e._v(" "),n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"action-buttons pull-right"},[e.expenses.total&&!e.showCreatePanel&&e.hasPermission("create-expense")?n("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.add_new"),expression:"trans('general.add_new')"}],staticClass:"btn btn-info btn-sm",on:{click:function(t){e.showCreatePanel=!e.showCreatePanel}}},[n("i",{staticClass:"fas fa-plus"}),e._v(" "),n("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("finance.add_new_expense")))])]):e._e(),e._v(" "),e.showFilterPanel?e._e():n("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){e.showFilterPanel=!e.showFilterPanel}}},[n("i",{staticClass:"fas fa-filter"}),e._v(" "),n("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("general.filter")))])]),e._v(" "),n("sort-by",{attrs:{"order-by-options":e.orderByOptions,"sort-by":e.filter.sort_by,order:e.filter.order},on:{updateSortBy:function(t){e.filter.sort_by=t},updateOrder:function(t){e.filter.order=t}}}),e._v(" "),n("div",{staticClass:"btn-group"},[n("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.more_option"),expression:"trans('general.more_option')"}],staticClass:"btn btn-info btn-sm dropdown-toggle no-caret ",attrs:{type:"button",role:"menu",id:"moreOption","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[n("i",{staticClass:"fas fa-ellipsis-h"}),e._v(" "),n("span",{staticClass:"d-none d-sm-inline"})]),e._v(" "),n("div",{class:["dropdown-menu","ltr"==e.getConfig("direction")?"dropdown-menu-right":""],attrs:{"aria-labelledby":"moreOption"}},[n("button",{staticClass:"dropdown-item custom-dropdown",on:{click:e.print}},[n("i",{staticClass:"fas fa-print"}),e._v(" "+e._s(e.trans("general.print")))]),e._v(" "),n("button",{staticClass:"dropdown-item custom-dropdown",on:{click:e.pdf}},[n("i",{staticClass:"fas fa-file-pdf"}),e._v(" "+e._s(e.trans("general.generate_pdf")))])])]),e._v(" "),n("help-button",{on:{clicked:function(t){e.help_topic="finance.transaction.expense"}}})],1)])])]),e._v(" "),n("div",{staticClass:"container-fluid"},[n("transition",{attrs:{name:"fade"}},[e.showFilterPanel?n("div",{staticClass:"card card-form"},[n("div",{staticClass:"card-body"},[n("h4",{staticClass:"card-title"},[e._v(e._s(e.trans("general.filter")))]),e._v(" "),n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.transaction_category")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id",name:"transaction_category_id",id:"transaction_category_id",options:e.transaction_categories,placeholder:e.trans("finance.select_transaction_category"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_transaction_categories},on:{select:e.onTransactionCategorySelect,remove:e.onTransactionCategoryRemove},model:{value:e.selected_transaction_categories,callback:function(t){e.selected_transaction_categories=t},expression:"selected_transaction_categories"}},[e.transaction_categories.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                        "+e._s(e.trans("general.no_option_found"))+"\n                                    ")])])],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.account")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id",name:"account_id",id:"account_id",options:e.accounts,placeholder:e.trans("finance.select_account"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_accounts},on:{select:e.onAccountSelect,remove:e.onAccountRemove},model:{value:e.selected_accounts,callback:function(t){e.selected_accounts=t},expression:"selected_accounts"}},[e.accounts.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                        "+e._s(e.trans("general.no_option_found"))+"\n                                    ")])])],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("finance.payment_method")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id",name:"payment_method_id",id:"payment_method_id",options:e.payment_methods,placeholder:e.trans("finance.select_payment_method"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_payment_methods},on:{select:e.onPaymentMethodSelect,remove:e.onPaymentMethodRemove},model:{value:e.selected_payment_methods,callback:function(t){e.selected_payment_methods=t},expression:"selected_payment_methods"}},[e.payment_methods.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                        "+e._s(e.trans("general.no_option_found"))+"\n                                    ")])])],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-6"},[n("date-range-picker",{attrs:{"start-date":e.filter.date_of_expense_start_date,"end-date":e.filter.date_of_expense_end_date,label:e.trans("finance.date_of_expense_between")},on:{"update:startDate":function(t){return e.$set(e.filter,"date_of_expense_start_date",t)},"update:start-date":function(t){return e.$set(e.filter,"date_of_expense_start_date",t)},"update:endDate":function(t){return e.$set(e.filter,"date_of_expense_end_date",t)},"update:end-date":function(t){return e.$set(e.filter,"date_of_expense_end_date",t)}}})],1)]),e._v(" "),n("div",{staticClass:"card-footer text-right"},[n("button",{staticClass:"btn btn-danger",attrs:{type:"button"},on:{click:function(t){e.showFilterPanel=!1}}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),n("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"button"},on:{click:e.getExpenses}},[e._v(e._s(e.trans("general.filter")))])])])]):e._e()]),e._v(" "),e.hasPermission("create-expense")?n("transition",{attrs:{name:"fade"}},[e.showCreatePanel?n("div",{staticClass:"card card-form"},[n("div",{staticClass:"card-body"},[n("h4",{staticClass:"card-title"},[e._v(e._s(e.trans("finance.add_new_expense")))]),e._v(" "),n("expense-form",{on:{completed:e.getExpenses,cancel:function(t){e.showCreatePanel=!e.showCreatePanel}}})],1)]):e._e()]):e._e(),e._v(" "),n("div",{staticClass:"card"},[n("div",{staticClass:"card-body"},[e.expenses.total?n("div",{staticClass:"table-responsive"},[n("table",{staticClass:"table table-sm"},[n("thead",[n("tr",[n("th",[e._v(e._s(e.trans("finance.voucher_number")))]),e._v(" "),n("th",[e._v(e._s(e.trans("finance.expense_category")))]),e._v(" "),n("th",[e._v(e._s(e.trans("finance.account")))]),e._v(" "),n("th",[e._v(e._s(e.trans("finance.payment_method")))]),e._v(" "),n("th",[e._v(e._s(e.trans("finance.amount")))]),e._v(" "),n("th",[e._v(e._s(e.trans("finance.date_of_expense")))]),e._v(" "),n("th",[e._v(e._s(e.trans("general.created_by")))]),e._v(" "),n("th",[e._v(e._s(e.trans("general.created_at")))]),e._v(" "),n("th",{staticClass:"table-option"},[e._v(e._s(e.trans("general.action")))])])]),e._v(" "),n("tbody",e._l(e.expenses.data,(function(t){return n("tr",[n("td",{domProps:{textContent:e._s(e.getVoucherNumber(t.transaction))}}),e._v(" "),n("td",{domProps:{textContent:e._s(t.transaction_category.name)}}),e._v(" "),n("td",{domProps:{textContent:e._s(t.transaction.account.name)}}),e._v(" "),n("td",{domProps:{textContent:e._s(t.transaction.payment_method.name)}}),e._v(" "),n("td",[e._v(e._s(e.formatCurrency(t.amount)))]),e._v(" "),n("td",[e._v(e._s(e._f("moment")(t.date_of_expense)))]),e._v(" "),n("td",[e._v(e._s(e.getEmployeeName(t.user.employee))+" "),n("br"),e._v(" "+e._s(e.getEmployeeDesignationOnDate(t.user.employee,t.date_of_expense)))]),e._v(" "),n("td",[e._v(e._s(e._f("momentDateTime")(t.created_at)))]),e._v(" "),n("td",{staticClass:"table-option"},[n("div",{staticClass:"btn-group"},[n("a",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.print"),expression:"trans('general.print')"}],staticClass:"btn btn-success btn-sm",attrs:{href:"/finance/transaction/expense/"+t.uuid+"/print?token="+e.authToken,target:"_blank"}},[n("i",{staticClass:"fas fa-print"})]),e._v(" "),n("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.view_detail"),expression:"trans('general.view_detail')"}],staticClass:"btn btn-success btn-sm",on:{click:function(n){return n.preventDefault(),e.showAction(t)}}},[n("i",{staticClass:"fas fa-arrow-circle-right"})]),e._v(" "),t.is_cancelled?e._e():[e.hasPermission("edit-expense")?n("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("finance.edit_expense"),expression:"trans('finance.edit_expense')"}],staticClass:"btn btn-info btn-sm",on:{click:function(n){return n.preventDefault(),e.editExpense(t)}}},[n("i",{staticClass:"fas fa-edit"})]):e._e(),e._v(" "),e.hasPermission("cancel-expense")?n("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:e.confirmCancel(t)},expression:"{ok: confirmCancel(expense)}"},{name:"tooltip",rawName:"v-tooltip",value:e.trans("finance.cancel_expense"),expression:"trans('finance.cancel_expense')"}],key:t.id,staticClass:"btn btn-danger btn-sm"},[n("i",{staticClass:"fas fa-times"})]):e._e()]],2)])])})),0)])]):e._e(),e._v(" "),e.expenses.total?e._e():n("module-info",{attrs:{module:"finance",title:"expense_module_title",description:"expense_module_description",icon:"list"}},[n("div",{attrs:{slot:"btn"},slot:"btn"},[!e.showCreatePanel&&e.hasPermission("create-expense")?n("button",{staticClass:"btn btn-info btn-md",on:{click:function(t){e.showCreatePanel=!e.showCreatePanel}}},[n("i",{staticClass:"fas fa-plus"}),e._v(" "+e._s(e.trans("general.add_new")))]):e._e()])]),e._v(" "),n("pagination-record",{attrs:{"page-length":e.filter.page_length,records:e.expenses},on:{"update:pageLength":function(t){return e.$set(e.filter,"page_length",t)},"update:page-length":function(t){return e.$set(e.filter,"page_length",t)},updateRecords:e.getExpenses}})],1)])],1),e._v(" "),e.showModal?n("expense-detail",{attrs:{uuid:e.showUuid},on:{close:function(t){e.showModal=!1}}}):e._e(),e._v(" "),n("right-panel",{attrs:{topic:e.help_topic}})],1)}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=index.js.map?id=d15ef0340d065bb70ee6
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/finance/transaction/expense/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      transactionCategoryForm: new Form({
+        name: '',
+        type: '',
+        description: ''
+      }),
+      types: [{
+        text: i18n.finance.income,
+        value: 'income'
+      }, {
+        text: i18n.finance.expense,
+        value: 'expense'
+      }]
+    };
+  },
+  props: ['id'],
+  mounted: function mounted() {
+    if (this.id) this.get();
+  },
+  methods: {
+    proceed: function proceed() {
+      if (this.id) this.update();else this.store();
+    },
+    store: function store() {
+      var _this = this;
+      var loader = this.$loading.show();
+      this.transactionCategoryForm.post('/api/finance/transaction/category').then(function (response) {
+        toastr.success(response.message);
+        _this.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/finance/transaction/category/' + this.id).then(function (response) {
+        _this2.transactionCategoryForm.name = response.name;
+        _this2.transactionCategoryForm.type = response.type;
+        _this2.transactionCategoryForm.description = response.description;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this2.$router.push('/configuration/finance/transaction/category');
+      });
+    },
+    update: function update() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      this.transactionCategoryForm.patch('/api/finance/transaction/category/' + this.id).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this3.$router.push('/configuration/finance/transaction/category');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/form.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/form.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _configuration_finance_transaction_category_form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../configuration/finance/transaction/category/form */ "./resources/js/views/configuration/finance/transaction/category/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    transactionCategoryForm: _configuration_finance_transaction_category_form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      expenseForm: new Form({
+        transaction_category_id: '',
+        account_id: '',
+        payment_method_id: '',
+        instrument_number: '',
+        instrument_date: '',
+        instrument_clearing_date: '',
+        instrument_bank_detail: '',
+        reference_number: '',
+        amount: '',
+        date_of_expense: '',
+        description: '',
+        upload_token: ''
+      }),
+      transaction_categories: [],
+      selected_transaction_category: null,
+      accounts: [],
+      selected_account: null,
+      payment_methods: [],
+      selected_payment_method: null,
+      payment_method_details: [],
+      payment_method_detail: {},
+      module_id: '',
+      clearAttachment: true,
+      showTransactionCategoryModal: false,
+      default_currency: helper.getConfig('default_currency')
+    };
+  },
+  props: ['uuid'],
+  mounted: function mounted() {
+    if (!helper.hasPermission('create-expense') && !helper.hasPermission('edit-expense')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    if (this.uuid) this.get();else this.expenseForm.upload_token = this.$uuid.v4();
+    this.getPreRequisite();
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      this.showTransactionCategoryModal = false;
+      axios.get('/api/expense/pre-requisite').then(function (response) {
+        _this.transaction_categories = response.transaction_categories;
+        _this.accounts = response.accounts;
+        _this.payment_methods = response.payment_methods;
+        _this.payment_method_details = response.payment_method_details;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    proceed: function proceed() {
+      if (this.uuid) this.update();else this.store();
+    },
+    store: function store() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      this.expenseForm.post('/api/expense').then(function (response) {
+        toastr.success(response.message);
+        _this2.clearAttachment = !_this2.clearAttachment;
+        _this2.expenseForm.upload_token = _this2.$uuid.v4();
+        _this2.selected_transaction_category = null;
+        _this2.selected_account = null;
+        _this2.selected_payment_method = null;
+        _this2.payment_method_detail = null;
+        _this2.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/expense/' + this.uuid).then(function (response) {
+        _this3.expenseForm.amount = _this3.formatNumber(response.expense.amount);
+        _this3.expenseForm.date_of_expense = response.expense.date_of_expense;
+        _this3.expenseForm.description = response.expense.description;
+        _this3.expenseForm.transaction_category_id = response.expense.transaction_category_id;
+        _this3.selected_transaction_category = response.expense.transaction_category_id ? {
+          id: response.expense.transaction_category_id,
+          name: response.expense.transaction_category.name
+        } : null;
+        _this3.expenseForm.account_id = response.expense.transaction.account_id;
+        _this3.selected_account = response.expense.transaction.account_id ? {
+          id: response.expense.transaction.account_id,
+          name: response.expense.transaction.account.name
+        } : null;
+        _this3.expenseForm.payment_method_id = response.expense.transaction.payment_method_id;
+        _this3.selected_payment_method = response.expense.transaction.payment_method_id ? {
+          id: response.expense.transaction.payment_method_id,
+          name: response.expense.transaction.payment_method.name
+        } : null;
+        _this3.expenseForm.instrument_number = response.expense.transaction.instrument_number;
+        _this3.expenseForm.instrument_date = response.expense.transaction.instrument_date;
+        _this3.expenseForm.instrument_clearing_date = response.expense.transaction.instrument_clearing_date;
+        _this3.expenseForm.instrument_bank_detail = response.expense.transaction.instrument_bank_detail;
+        _this3.expenseForm.reference_number = response.expense.transaction.reference_number;
+        _this3.expenseForm.upload_token = response.expense.upload_token;
+        _this3.module_id = response.expense.id;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this3.$router.push('/finance/transaction/expense');
+      });
+    },
+    update: function update() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      this.expenseForm.patch('/api/expense/' + this.uuid).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this4.$router.push('/finance/transaction/expense');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onTransactionCategorySelect: function onTransactionCategorySelect(selectedOption) {
+      this.expenseForm.transaction_category_id = selectedOption.id;
+    },
+    onAccountSelect: function onAccountSelect(selectedOption) {
+      this.expenseForm.account_id = selectedOption.id;
+    },
+    onPaymentMethodSelect: function onPaymentMethodSelect(selectedOption) {
+      this.expenseForm.payment_method_id = selectedOption.id;
+      this.payment_method_detail = this.payment_method_details.find(function (o) {
+        return o.id == selectedOption.id;
+      });
+    },
+    formatCurrency: function formatCurrency(price) {
+      return helper.formatCurrency(price);
+    },
+    formatNumber: function formatNumber(number) {
+      return helper.formatNumber(number, this.default_currency.decimal_place);
+    },
+    getPaymentMethodDetail: function getPaymentMethodDetail(field) {
+      return helper.getPaymentMethodDetail(this.payment_method_detail, field);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/index.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/index.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/finance/transaction/expense/form.vue");
+/* harmony import */ var _show__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./show */ "./resources/js/views/finance/transaction/expense/show.vue");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    expenseForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"],
+    expenseDetail: _show__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      expenses: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        sort_by: 'date_of_expense',
+        order: 'desc',
+        transaction_category_id: [],
+        account_id: [],
+        payment_method_id: [],
+        date_of_expense_start_date: '',
+        date_of_expense_end_date: '',
+        page_length: helper.getConfig('page_length')
+      },
+      orderByOptions: [{
+        value: 'date_of_expense',
+        translation: i18n.finance.date_of_expense
+      }, {
+        value: 'amount',
+        translation: i18n.finance.amount
+      }],
+      transaction_categories: [],
+      selected_transaction_categories: null,
+      accounts: [],
+      selected_accounts: null,
+      payment_methods: [],
+      selected_payment_methods: null,
+      showFilterPanel: false,
+      showCreatePanel: false,
+      help_topic: '',
+      showUuid: '',
+      showModal: false
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('list-expense')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getExpenses();
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    showAction: function showAction(expense) {
+      this.showUuid = expense.uuid;
+      this.showModal = true;
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getEmployeeDesignationOnDate: function getEmployeeDesignationOnDate(employee, date) {
+      return helper.getEmployeeDesignationOnDate(employee, date);
+    },
+    getVoucherNumber: function getVoucherNumber(transaction) {
+      return helper.getVoucherNumber(transaction);
+    },
+    getExpenses: function getExpenses(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      this.filter.date_of_expense_start_date = helper.toDate(this.filter.date_of_expense_start_date);
+      this.filter.date_of_expense_end_date = helper.toDate(this.filter.date_of_expense_end_date);
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/expense?page=' + page + url).then(function (response) {
+        _this.expenses = response.expenses;
+        _this.transaction_categories = response.filters.transaction_categories;
+        _this.accounts = response.filters.accounts;
+        _this.payment_methods = response.filters.payment_methods;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    editExpense: function editExpense(expense) {
+      this.$router.push('/finance/transaction/expense/' + expense.uuid + '/edit');
+    },
+    confirmCancel: function confirmCancel(expense) {
+      var _this2 = this;
+      return function (dialog) {
+        return _this2.cancelExpense(expense);
+      };
+    },
+    cancelExpense: function cancelExpense(expense) {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios["delete"]('/api/expense/' + expense.uuid).then(function (response) {
+        toastr.success(response.message);
+        _this3.getExpenses();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    print: function print() {
+      var loader = this.$loading.show();
+      axios.post('/api/expense/print', {
+        filter: this.filter
+      }).then(function (response) {
+        var print = window.open("/print");
+        loader.hide();
+        print.document.write(response);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    pdf: function pdf() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      axios.post('/api/expense/pdf', {
+        filter: this.filter
+      }).then(function (response) {
+        loader.hide();
+        window.open('/download/report/' + response + '?token=' + _this4.authToken);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onTransactionCategorySelect: function onTransactionCategorySelect(selectedOption) {
+      this.filter.transaction_category_id.push(selectedOption.id);
+    },
+    onTransactionCategoryRemove: function onTransactionCategoryRemove(removedOption) {
+      this.filter.transaction_category_id.splice(this.filter.transaction_category_id.indexOf(removedOption.id), 1);
+    },
+    onAccountSelect: function onAccountSelect(selectedOption) {
+      this.filter.account_id.push(selectedOption.id);
+    },
+    onAccountRemove: function onAccountRemove(removedOption) {
+      this.filter.account_id.splice(this.filter.account_id.indexOf(removedOption.id), 1);
+    },
+    onPaymentMethodSelect: function onPaymentMethodSelect(selectedOption) {
+      this.filter.payment_method.push(selectedOption.id);
+    },
+    onPaymentMethodRemove: function onPaymentMethodRemove(removedOption) {
+      this.filter.payment_method.splice(this.filter.payment_method.indexOf(removedOption.id), 1);
+    },
+    formatCurrency: function formatCurrency(amount) {
+      return helper.formatCurrency(amount);
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  },
+  watch: {
+    'filter.sort_by': function filterSort_by(val) {
+      this.getExpenses();
+    },
+    'filter.order': function filterOrder(val) {
+      this.getExpenses();
+    },
+    'filter.page_length': function filterPage_length(val) {
+      this.getExpenses();
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/show.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/show.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['uuid'],
+  data: function data() {
+    return {
+      expense: {},
+      attachments: []
+    };
+  },
+  mounted: function mounted() {
+    if (this.uuid) this.get();
+  },
+  methods: {
+    get: function get() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/expense/' + this.uuid).then(function (response) {
+        _this.expense = response.expense;
+        _this.attachments = response.attachments;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getEmployeeDesignationOnDate: function getEmployeeDesignationOnDate(employee, date) {
+      return helper.getEmployeeDesignationOnDate(employee, date);
+    },
+    formatCurrency: function formatCurrency(amount) {
+      return helper.formatCurrency(amount);
+    },
+    getVoucherNumber: function getVoucherNumber(transaction) {
+      return helper.getVoucherNumber(transaction);
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=template&id=cf5c2572&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=template&id=cf5c2572& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.transactionCategoryForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.transaction_category_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.transactionCategoryForm.name,
+      expression: "transactionCategoryForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name",
+      placeholder: _vm.trans("finance.transaction_category_name")
+    },
+    domProps: {
+      value: _vm.transactionCategoryForm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.transactionCategoryForm, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.transactionCategoryForm,
+      "prop-name": "name"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.transaction_category_type")))]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.transactionCategoryForm.type,
+      expression: "transactionCategoryForm.type"
+    }],
+    staticClass: "col-12 custom-select",
+    attrs: {
+      name: "type"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.transactionCategoryForm, "type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.transactionCategoryForm.errors.clear("type");
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "null",
+      selected: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _vm._l(_vm.types, function (type) {
+    return _c("option", {
+      domProps: {
+        value: type.value
+      }
+    }, [_vm._v("\n                    " + _vm._s(type.text) + "\n                  ")]);
+  })], 2), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.transactionCategoryForm,
+      "prop-name": "type"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.transaction_category_description")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.transactionCategoryForm.description,
+      expression: "transactionCategoryForm.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "description",
+      placeholder: _vm.trans("finance.transaction_category_description")
+    },
+    domProps: {
+      value: _vm.transactionCategoryForm.description
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.transactionCategoryForm, "description", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.transactionCategoryForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [!_vm.id ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.id,
+      expression: "id"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/configuration/finance/transaction/category"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.id ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/form.vue?vue&type=template&id=bd3aba80&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/form.vue?vue&type=template&id=bd3aba80& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.expenseForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.transaction_category")) + " ")]), _vm._v(" "), _vm.hasPermission("access-configuration") ? _c("button", {
+    staticClass: "btn btn-xs btn-info pull-right",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        _vm.showTransactionCategoryModal = true;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.add_new")))]) : _vm._e(), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "transaction_category_id",
+      id: "transaction_category_id",
+      options: _vm.transaction_categories,
+      placeholder: _vm.trans("finance.select_transaction_category")
+    },
+    on: {
+      select: _vm.onTransactionCategorySelect,
+      close: function close($event) {
+        return _vm.expenseForm.errors.clear("transaction_category_id");
+      },
+      remove: function remove($event) {
+        _vm.expenseForm.transaction_category_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_transaction_category,
+      callback: function callback($$v) {
+        _vm.selected_transaction_category = $$v;
+      },
+      expression: "selected_transaction_category"
+    }
+  }, [!_vm.transaction_categories.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                " + _vm._s(_vm.trans("general.no_option_found")) + "\n                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "transaction_category_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.account")) + " ")]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "account_id",
+      id: "account_id",
+      options: _vm.accounts,
+      placeholder: _vm.trans("finance.select_account"),
+      disabled: _vm.uuid ? true : false
+    },
+    on: {
+      select: _vm.onAccountSelect,
+      close: function close($event) {
+        return _vm.expenseForm.errors.clear("account_id");
+      },
+      remove: function remove($event) {
+        _vm.expenseForm.account_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_account,
+      callback: function callback($$v) {
+        _vm.selected_account = $$v;
+      },
+      expression: "selected_account"
+    }
+  }, [!_vm.accounts.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                " + _vm._s(_vm.trans("general.no_option_found")) + "\n                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "account_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.amount")))]), _vm._v(" "), _c("currency-input", {
+    attrs: {
+      position: _vm.default_currency.position,
+      symbol: _vm.default_currency.symbol,
+      name: "amount",
+      placeholder: _vm.trans("finance.amount")
+    },
+    nativeOn: {
+      input: function input($event) {
+        return _vm.expenseForm.errors.clear("amount");
+      }
+    },
+    model: {
+      value: _vm.expenseForm.amount,
+      callback: function callback($$v) {
+        _vm.$set(_vm.expenseForm, "amount", $$v);
+      },
+      expression: "expenseForm.amount"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "amount"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.date_of_expense")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("finance.date_of_expense")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.expenseForm.errors.clear("date_of_expense");
+      }
+    },
+    model: {
+      value: _vm.expenseForm.date_of_expense,
+      callback: function callback($$v) {
+        _vm.$set(_vm.expenseForm, "date_of_expense", $$v);
+      },
+      expression: "expenseForm.date_of_expense"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "date_of_expense"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.payment_method")) + " ")]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "payment_method_id",
+      id: "payment_method_id",
+      options: _vm.payment_methods,
+      placeholder: _vm.trans("finance.select_payment_method")
+    },
+    on: {
+      select: _vm.onPaymentMethodSelect,
+      close: function close($event) {
+        return _vm.expenseForm.errors.clear("payment_method_id");
+      },
+      remove: function remove($event) {
+        _vm.expenseForm.payment_method_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_payment_method,
+      callback: function callback($$v) {
+        _vm.selected_payment_method = $$v;
+      },
+      expression: "selected_payment_method"
+    }
+  }, [!_vm.payment_methods.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                " + _vm._s(_vm.trans("general.no_option_found")) + "\n                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "payment_method_id"
+    }
+  })], 1)]), _vm._v(" "), _vm.getPaymentMethodDetail("instrument_number") ? _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.instrument_number")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.expenseForm.instrument_number,
+      expression: "expenseForm.instrument_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "instrument_number",
+      placeholder: _vm.trans("finance.instrument_number")
+    },
+    domProps: {
+      value: _vm.expenseForm.instrument_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.expenseForm, "instrument_number", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "instrument_number"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.getPaymentMethodDetail("instrument_date") ? _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.instrument_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("finance.instrument_date")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.expenseForm.errors.clear("instrument_date");
+      }
+    },
+    model: {
+      value: _vm.expenseForm.instrument_date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.expenseForm, "instrument_date", $$v);
+      },
+      expression: "expenseForm.instrument_date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "instrument_date"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.getPaymentMethodDetail("instrument_bank_detail") ? _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.instrument_bank_detail")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.expenseForm.instrument_bank_detail,
+      expression: "expenseForm.instrument_bank_detail"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "instrument_bank_detail",
+      placeholder: _vm.trans("finance.instrument_bank_detail")
+    },
+    domProps: {
+      value: _vm.expenseForm.instrument_bank_detail
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.expenseForm, "instrument_bank_detail", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "instrument_bank_detail"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.getPaymentMethodDetail("instrument_clearing_date") ? _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.instrument_clearing_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("finance.instrument_clearing_date")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.expenseForm.errors.clear("instrument_clearing_date");
+      }
+    },
+    model: {
+      value: _vm.expenseForm.instrument_clearing_date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.expenseForm, "instrument_clearing_date", $$v);
+      },
+      expression: "expenseForm.instrument_clearing_date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "instrument_clearing_date"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.getPaymentMethodDetail("reference_number") ? _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.reference_number")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.expenseForm.reference_number,
+      expression: "expenseForm.reference_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "reference_number",
+      placeholder: _vm.trans("finance.reference_number")
+    },
+    domProps: {
+      value: _vm.expenseForm.reference_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.expenseForm, "reference_number", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "reference_number"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-9"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.expense_description")))]), _vm._v(" "), _c("autosize-textarea", {
+    attrs: {
+      rows: "1",
+      name: "description",
+      placeholder: _vm.trans("finance.expense_description")
+    },
+    model: {
+      value: _vm.expenseForm.description,
+      callback: function callback($$v) {
+        _vm.$set(_vm.expenseForm, "description", $$v);
+      },
+      expression: "expenseForm.description"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.expenseForm,
+      "prop-name": "description"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("file-upload-input", {
+    attrs: {
+      "button-text": _vm.trans("general.upload_document"),
+      token: _vm.expenseForm.upload_token,
+      module: "expense",
+      "clear-file": _vm.clearAttachment,
+      "module-id": _vm.module_id
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.uuid,
+      expression: "uuid"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/finance/transaction/expense"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.uuid ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.uuid ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)]), _vm._v(" "), _vm.showTransactionCategoryModal ? _c("transition", {
+    attrs: {
+      name: "modal"
+    }
+  }, [_c("div", {
+    staticClass: "modal-mask"
+  }, [_c("div", {
+    staticClass: "modal-wrapper"
+  }, [_c("div", {
+    staticClass: "modal-container modal-lg"
+  }, [_c("div", {
+    staticClass: "modal-header"
+  }, [_vm._t("header", function () {
+    return [_vm._v("\n                                " + _vm._s(_vm.trans("finance.add_new_transaction_category")) + "\n                                "), _c("span", {
+      staticClass: "float-right pointer",
+      on: {
+        click: function click($event) {
+          _vm.showTransactionCategoryModal = false;
+        }
+      }
+    }, [_vm._v("x")])];
+  })], 2), _vm._v(" "), _c("div", {
+    staticClass: "modal-body"
+  }, [_vm._t("body", function () {
+    return [_c("transaction-category-form", {
+      on: {
+        completed: _vm.getPreRequisite,
+        cancel: function cancel($event) {
+          _vm.showTransactionCategoryModal = false;
+        }
+      }
+    }), _vm._v(" "), _c("div", {
+      staticClass: "clearfix"
+    })];
+  })], 2)])])])]) : _vm._e()], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/index.vue?vue&type=template&id=1cdc2cf4&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/index.vue?vue&type=template&id=1cdc2cf4& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("finance.expense")) + " \n                    "), _vm.expenses.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.expenses.total,
+    from: _vm.expenses.from,
+    to: _vm.expenses.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_vm.expenses.total && !_vm.showCreatePanel && _vm.hasPermission("create-expense") ? _c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.add_new"),
+      expression: "trans('general.add_new')"
+    }],
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("finance.add_new_expense")))])]) : _vm._e(), _vm._v(" "), !_vm.showFilterPanel ? _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = !_vm.showFilterPanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-filter"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])]) : _vm._e(), _vm._v(" "), _c("sort-by", {
+    attrs: {
+      "order-by-options": _vm.orderByOptions,
+      "sort-by": _vm.filter.sort_by,
+      order: _vm.filter.order
+    },
+    on: {
+      updateSortBy: function updateSortBy(value) {
+        _vm.filter.sort_by = value;
+      },
+      updateOrder: function updateOrder(value) {
+        _vm.filter.order = value;
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "btn-group"
+  }, [_c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.more_option"),
+      expression: "trans('general.more_option')"
+    }],
+    staticClass: "btn btn-info btn-sm dropdown-toggle no-caret",
+    attrs: {
+      type: "button",
+      role: "menu",
+      id: "moreOption",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-ellipsis-h"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  })]), _vm._v(" "), _c("div", {
+    "class": ["dropdown-menu", _vm.getConfig("direction") == "ltr" ? "dropdown-menu-right" : ""],
+    attrs: {
+      "aria-labelledby": "moreOption"
+    }
+  }, [_c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.print
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-print"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.print")))]), _vm._v(" "), _c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.pdf
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-file-pdf"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.generate_pdf")))])])]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "finance.transaction.expense";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showFilterPanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.transaction_category")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "transaction_category_id",
+      id: "transaction_category_id",
+      options: _vm.transaction_categories,
+      placeholder: _vm.trans("finance.select_transaction_category"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_transaction_categories
+    },
+    on: {
+      select: _vm.onTransactionCategorySelect,
+      remove: _vm.onTransactionCategoryRemove
+    },
+    model: {
+      value: _vm.selected_transaction_categories,
+      callback: function callback($$v) {
+        _vm.selected_transaction_categories = $$v;
+      },
+      expression: "selected_transaction_categories"
+    }
+  }, [!_vm.transaction_categories.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.account")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "account_id",
+      id: "account_id",
+      options: _vm.accounts,
+      placeholder: _vm.trans("finance.select_account"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_accounts
+    },
+    on: {
+      select: _vm.onAccountSelect,
+      remove: _vm.onAccountRemove
+    },
+    model: {
+      value: _vm.selected_accounts,
+      callback: function callback($$v) {
+        _vm.selected_accounts = $$v;
+      },
+      expression: "selected_accounts"
+    }
+  }, [!_vm.accounts.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.payment_method")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "payment_method_id",
+      id: "payment_method_id",
+      options: _vm.payment_methods,
+      placeholder: _vm.trans("finance.select_payment_method"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_payment_methods
+    },
+    on: {
+      select: _vm.onPaymentMethodSelect,
+      remove: _vm.onPaymentMethodRemove
+    },
+    model: {
+      value: _vm.selected_payment_methods,
+      callback: function callback($$v) {
+        _vm.selected_payment_methods = $$v;
+      },
+      expression: "selected_payment_methods"
+    }
+  }, [!_vm.payment_methods.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("date-range-picker", {
+    attrs: {
+      "start-date": _vm.filter.date_of_expense_start_date,
+      "end-date": _vm.filter.date_of_expense_end_date,
+      label: _vm.trans("finance.date_of_expense_between")
+    },
+    on: {
+      "update:startDate": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "date_of_expense_start_date", $event);
+      },
+      "update:start-date": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "date_of_expense_start_date", $event);
+      },
+      "update:endDate": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "date_of_expense_end_date", $event);
+      },
+      "update:end-date": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "date_of_expense_end_date", $event);
+      }
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("button", {
+    staticClass: "btn btn-danger",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = false;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.getExpenses
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])])])]) : _vm._e()]), _vm._v(" "), _vm.hasPermission("create-expense") ? _c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showCreatePanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("finance.add_new_expense")))]), _vm._v(" "), _c("expense-form", {
+    on: {
+      completed: _vm.getExpenses,
+      cancel: function cancel($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  })], 1)]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.expenses.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("finance.voucher_number")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("finance.expense_category")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("finance.account")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("finance.payment_method")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("finance.amount")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("finance.date_of_expense")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("general.created_by")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("general.created_at")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.expenses.data, function (expense) {
+    return _c("tr", [_c("td", {
+      domProps: {
+        textContent: _vm._s(_vm.getVoucherNumber(expense.transaction))
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(expense.transaction_category.name)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(expense.transaction.account.name)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(expense.transaction.payment_method.name)
+      }
+    }), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.formatCurrency(expense.amount)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("moment")(expense.date_of_expense)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getEmployeeName(expense.user.employee)) + " "), _c("br"), _vm._v(" " + _vm._s(_vm.getEmployeeDesignationOnDate(expense.user.employee, expense.date_of_expense)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("momentDateTime")(expense.created_at)))]), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [_c("a", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("general.print"),
+        expression: "trans('general.print')"
+      }],
+      staticClass: "btn btn-success btn-sm",
+      attrs: {
+        href: "/finance/transaction/expense/".concat(expense.uuid, "/print?token=").concat(_vm.authToken),
+        target: "_blank"
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-print"
+    })]), _vm._v(" "), _c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("general.view_detail"),
+        expression: "trans('general.view_detail')"
+      }],
+      staticClass: "btn btn-success btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.showAction(expense);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-arrow-circle-right"
+    })]), _vm._v(" "), !expense.is_cancelled ? [_vm.hasPermission("edit-expense") ? _c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("finance.edit_expense"),
+        expression: "trans('finance.edit_expense')"
+      }],
+      staticClass: "btn btn-info btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.editExpense(expense);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-edit"
+    })]) : _vm._e(), _vm._v(" "), _vm.hasPermission("cancel-expense") ? _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmCancel(expense)
+        },
+        expression: "{ok: confirmCancel(expense)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("finance.cancel_expense"),
+        expression: "trans('finance.cancel_expense')"
+      }],
+      key: expense.id,
+      staticClass: "btn btn-danger btn-sm"
+    }, [_c("i", {
+      staticClass: "fas fa-times"
+    })]) : _vm._e()] : _vm._e()], 2)])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.expenses.total ? _c("module-info", {
+    attrs: {
+      module: "finance",
+      title: "expense_module_title",
+      description: "expense_module_description",
+      icon: "list"
+    }
+  }, [_c("div", {
+    attrs: {
+      slot: "btn"
+    },
+    slot: "btn"
+  }, [!_vm.showCreatePanel && _vm.hasPermission("create-expense") ? _c("button", {
+    staticClass: "btn btn-info btn-md",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.add_new")))]) : _vm._e()])]) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.expenses
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getExpenses
+    }
+  })], 1)])], 1), _vm._v(" "), _vm.showModal ? _c("expense-detail", {
+    attrs: {
+      uuid: _vm.showUuid
+    },
+    on: {
+      close: function close($event) {
+        _vm.showModal = false;
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/show.vue?vue&type=template&id=70f4ac79&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/show.vue?vue&type=template&id=70f4ac79& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("transition", {
+    attrs: {
+      name: "modal"
+    }
+  }, [_c("div", {
+    staticClass: "modal-mask"
+  }, [_c("div", {
+    staticClass: "modal-wrapper"
+  }, [_c("div", {
+    staticClass: "modal-container modal-lg"
+  }, [_vm.expense.id ? _c("div", {
+    staticClass: "modal-header"
+  }, [_vm._t("header", function () {
+    return [_c("span", [_vm._v(_vm._s(_vm.trans("finance.expense")) + " #" + _vm._s(_vm.getVoucherNumber(_vm.expense.transaction)) + "\n                            \t"), _vm.expense.is_cancelled ? _c("span", {
+      staticClass: "label label-danger"
+    }, [_vm._v("\n                            \t\t" + _vm._s(_vm.trans("finance.transaction_status_cancelled")) + "\n                            \t")]) : _vm._e()]), _vm._v(" "), _c("span", {
+      staticClass: "float-right pointer",
+      on: {
+        click: function click($event) {
+          return _vm.$emit("close");
+        }
+      }
+    }, [_vm._v("x")])];
+  })], 2) : _vm._e(), _vm._v(" "), _vm.expense.id ? _c("div", {
+    staticClass: "modal-body"
+  }, [_vm._t("body", function () {
+    return [_c("div", {
+      staticClass: "table-responsive"
+    }, [_c("table", {
+      staticClass: "table table-sm custom-show-table"
+    }, [_c("tbody", [_c("tr", [_c("td", {
+      staticClass: "font-weight-bold"
+    }, [_vm._v("#")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getVoucherNumber(_vm.expense.transaction)))])]), _vm._v(" "), _c("tr", [_c("td", {
+      staticClass: "font-weight-bold"
+    }, [_vm._v(_vm._s(_vm.trans("finance.expense_category")))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.expense.transaction_category.name))])]), _vm._v(" "), _c("tr", [_c("td", {
+      staticClass: "font-weight-bold"
+    }, [_vm._v(_vm._s(_vm.trans("finance.date_of_expense")))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("moment")(_vm.expense.date_of_expense)))])]), _vm._v(" "), _c("tr", [_c("td", {
+      staticClass: "font-weight-bold"
+    }, [_vm._v(_vm._s(_vm.trans("finance.account")))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.expense.transaction.account.name))])]), _vm._v(" "), _c("tr", [_c("td", {
+      staticClass: "font-weight-bold"
+    }, [_vm._v(_vm._s(_vm.trans("finance.payment_method")))]), _vm._v(" "), _c("td", [_vm._v("\n\t                        \t\t\t\t\t" + _vm._s(_vm.expense.transaction.payment_method.name) + "\n\t                        \t\t\t\t\t"), _vm.expense.transaction.payment_method.options.requires_instrument_number ? _c("span", [_c("br"), _vm._v("\t" + _vm._s(_vm.trans("finance.instrument_number")) + ": " + _vm._s(_vm.expense.transaction.instrument_number) + "\n\t                        \t\t\t\t\t")]) : _vm._e(), _vm._v(" "), _vm.expense.transaction.payment_method.options.requires_instrument_date ? _c("span", [_c("br"), _vm._v("\t" + _vm._s(_vm.trans("finance.instrument_date")) + ": " + _vm._s(_vm._f("moment")(_vm.expense.transaction.instrument_date)) + "\n\t                        \t\t\t\t\t")]) : _vm._e(), _vm._v(" "), _vm.expense.transaction.payment_method.options.requires_instrument_bank_detail ? _c("span", [_c("br"), _vm._v("\t" + _vm._s(_vm.trans("finance.instrument_bank_detail")) + ": " + _vm._s(_vm.expense.transaction.instrument_bank_detail) + "\n\t                        \t\t\t\t\t")]) : _vm._e(), _vm._v(" "), _vm.expense.transaction.payment_method.options.requires_instrument_clearing_date ? _c("span", [_c("br"), _vm._v("\t" + _vm._s(_vm.trans("finance.instrument_clearing_date")) + ": " + _vm._s(_vm._f("moment")(_vm.expense.transaction.instrument_clearing_date)) + "\n\t                        \t\t\t\t\t")]) : _vm._e(), _vm._v(" "), _vm.expense.transaction.payment_method.options.requires_reference_number ? _c("span", [_c("br"), _vm._v("\t" + _vm._s(_vm.trans("finance.reference_number")) + ": " + _vm._s(_vm.expense.transaction.reference_number) + "\n\t                        \t\t\t\t\t")]) : _vm._e()])]), _vm._v(" "), _c("tr", [_c("td", {
+      staticClass: "font-weight-bold"
+    }, [_vm._v(_vm._s(_vm.trans("finance.amount")))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.formatCurrency(_vm.expense.amount)))])]), _vm._v(" "), _c("tr", [_c("td", {
+      staticClass: "font-weight-bold"
+    }, [_vm._v(_vm._s(_vm.trans("finance.expense_description")))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.expense.description))])]), _vm._v(" "), _c("tr", [_c("td", {
+      staticClass: "font-weight-bold"
+    }, [_vm._v(_vm._s(_vm.trans("general.created_by")))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getEmployeeName(_vm.expense.user.employee)) + " "), _c("br"), _vm._v(" " + _vm._s(_vm.getEmployeeDesignationOnDate(_vm.expense.user.employee, _vm.expense.date_of_expense)))])])])])]), _vm._v(" "), _vm.attachments.length ? _c("div", [_c("ul", {
+      staticClass: "m-t-10 upload-file-list"
+    }, _vm._l(_vm.attachments, function (attachment) {
+      return _c("li", {
+        staticClass: "upload-file-list-item"
+      }, [_c("a", {
+        staticClass: "no-link-color",
+        attrs: {
+          href: "/finance/transaction/expense/".concat(_vm.expense.uuid, "/attachment/").concat(attachment.uuid, "/download?token=").concat(_vm.authToken)
+        }
+      }, [_c("i", {
+        "class": ["file-icon", "fas", "fa-lg", attachment.file_info.icon]
+      }), _vm._v(" "), _c("span", {
+        staticClass: "upload-file-list-item-size"
+      }, [_vm._v(_vm._s(attachment.file_info.size))]), _vm._v(" " + _vm._s(attachment.user_filename))])]);
+    }), 0)]) : _vm._e(), _vm._v(" "), _c("hr"), _vm._v(" "), _c("p", [_c("i", {
+      staticClass: "far fa-clock"
+    }), _vm._v(" "), _c("small", [_vm._v(_vm._s(_vm.trans("general.created_at")) + " " + _vm._s(_vm._f("momentDateTime")(_vm.expense.created_at)))]), _vm._v(" "), _c("span", {
+      staticClass: "pull-right"
+    }, [_c("i", {
+      staticClass: "far fa-clock"
+    }), _vm._v(" "), _c("small", [_vm._v(_vm._s(_vm.trans("general.updated_at")) + " " + _vm._s(_vm._f("momentDateTime")(_vm.expense.updated_at)))])])])];
+  })], 2) : _vm._e()])])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=style&index=0&id=cf5c2572&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=style&index=0&id=cf5c2572&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.loading-overlay.is-full-page{\n    z-index: 1060;\n}\n", "",{"version":3,"sources":["webpack://./resources/js/views/configuration/finance/transaction/category/form.vue"],"names":[],"mappings":";AA0HA;IACA,aAAA;AACA","sourcesContent":["<template>\n    <form @submit.prevent=\"proceed\" @keydown=\"transactionCategoryForm.errors.clear($event.target.name)\">\n        <div class=\"row\">\n            <div class=\"col-12 col-sm-4\">\n                <div class=\"form-group\">\n                    <label for=\"\">{{trans('finance.transaction_category_name')}}</label>\n                    <input class=\"form-control\" type=\"text\" v-model=\"transactionCategoryForm.name\" name=\"name\" :placeholder=\"trans('finance.transaction_category_name')\">\n                    <show-error :form-name=\"transactionCategoryForm\" prop-name=\"name\"></show-error>\n                </div>\n            </div>\n            <div class=\"col-12 col-sm-4\">\n                <div class=\"form-group\">\n                    <label for=\"\">{{trans('finance.transaction_category_type')}}</label>\n                    <select v-model=\"transactionCategoryForm.type\" class=\"col-12 custom-select\" @change=\"transactionCategoryForm.errors.clear('type')\" name=\"type\">\n                      <option value=null selected>{{trans('general.select_one')}}</option>\n                      <option v-for=\"type in types\" v-bind:value=\"type.value\">\n                        {{ type.text }}\n                      </option>\n                    </select>\n                    <show-error :form-name=\"transactionCategoryForm\" prop-name=\"type\"></show-error>\n                </div>\n            </div>\n            <div class=\"col-12 col-sm-4\">\n                <div class=\"form-group\">\n                    <label for=\"\">{{trans('finance.transaction_category_description')}}</label>\n                    <input class=\"form-control\" type=\"text\" v-model=\"transactionCategoryForm.description\" name=\"description\" :placeholder=\"trans('finance.transaction_category_description')\">\n                    <show-error :form-name=\"transactionCategoryForm\" prop-name=\"description\"></show-error>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"card-footer text-right\">\n            <button v-if=\"!id\" type=\"button\" class=\"btn btn-danger waves-effect waves-light \" @click=\"$emit('cancel')\">{{trans('general.cancel')}}</button>\n            <router-link to=\"/configuration/finance/transaction/category\" class=\"btn btn-danger waves-effect waves-light \" v-show=\"id\">{{trans('general.cancel')}}</router-link>\n            <button type=\"submit\" class=\"btn btn-info waves-effect waves-light\">\n                <span v-if=\"id\">{{trans('general.update')}}</span>\n                <span v-else>{{trans('general.save')}}</span>\n            </button>\n        </div>\n    </form>\n</template>\n\n\n<script>\n    export default {\n        data() {\n            return {\n                transactionCategoryForm: new Form({\n                    name : '',\n                    type: '',\n                    description : ''\n                }),\n                types: [\n                    {\n                        text: i18n.finance.income,\n                        value: 'income'\n                    },\n                    {\n                        text: i18n.finance.expense,\n                        value: 'expense'\n                    }\n                ]\n            };\n        },\n        props: ['id'],\n        mounted() {\n            if(this.id)\n                this.get();\n        },\n        methods: {\n            proceed(){\n                if(this.id)\n                    this.update();\n                else\n                    this.store();\n            },\n            store(){\n                let loader = this.$loading.show();\n                this.transactionCategoryForm.post('/api/finance/transaction/category')\n                    .then(response => {\n                        toastr.success(response.message);\n                        this.$emit('completed');\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            get(){\n                let loader = this.$loading.show();\n                axios.get('/api/finance/transaction/category/'+this.id)\n                    .then(response => {\n                        this.transactionCategoryForm.name = response.name;\n                        this.transactionCategoryForm.type = response.type;\n                        this.transactionCategoryForm.description = response.description;\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                        this.$router.push('/configuration/finance/transaction/category');\n                    });\n            },\n            update(){\n                let loader = this.$loading.show();\n                this.transactionCategoryForm.patch('/api/finance/transaction/category/'+this.id)\n                    .then(response => {\n                        toastr.success(response.message);\n                        loader.hide();\n                        this.$router.push('/configuration/finance/transaction/category');\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            }\n        }\n    }\n</script>\n\n<style>\n.loading-overlay.is-full-page{\n    z-index: 1060;\n}\n</style>\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=style&index=0&id=cf5c2572&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=style&index=0&id=cf5c2572&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_cf5c2572_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=style&index=0&id=cf5c2572&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=style&index=0&id=cf5c2572&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_cf5c2572_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_cf5c2572_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/finance/transaction/category/form.vue":
+/*!********************************************************************************!*\
+  !*** ./resources/js/views/configuration/finance/transaction/category/form.vue ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_cf5c2572___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=cf5c2572& */ "./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=template&id=cf5c2572&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_style_index_0_id_cf5c2572_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./form.vue?vue&type=style&index=0&id=cf5c2572&lang=css& */ "./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=style&index=0&id=cf5c2572&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_cf5c2572___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_cf5c2572___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/configuration/finance/transaction/category/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/transaction/expense/form.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/views/finance/transaction/expense/form.vue ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_bd3aba80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=bd3aba80& */ "./resources/js/views/finance/transaction/expense/form.vue?vue&type=template&id=bd3aba80&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/finance/transaction/expense/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_bd3aba80___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_bd3aba80___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/finance/transaction/expense/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/transaction/expense/index.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/views/finance/transaction/expense/index.vue ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_1cdc2cf4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=1cdc2cf4& */ "./resources/js/views/finance/transaction/expense/index.vue?vue&type=template&id=1cdc2cf4&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/finance/transaction/expense/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_1cdc2cf4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_1cdc2cf4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/finance/transaction/expense/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/transaction/expense/show.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/views/finance/transaction/expense/show.vue ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _show_vue_vue_type_template_id_70f4ac79___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./show.vue?vue&type=template&id=70f4ac79& */ "./resources/js/views/finance/transaction/expense/show.vue?vue&type=template&id=70f4ac79&");
+/* harmony import */ var _show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./show.vue?vue&type=script&lang=js& */ "./resources/js/views/finance/transaction/expense/show.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _show_vue_vue_type_template_id_70f4ac79___WEBPACK_IMPORTED_MODULE_0__.render,
+  _show_vue_vue_type_template_id_70f4ac79___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/finance/transaction/expense/show.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/transaction/expense/form.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/views/finance/transaction/expense/form.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/transaction/expense/index.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/views/finance/transaction/expense/index.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/transaction/expense/show.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/views/finance/transaction/expense/show.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./show.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/show.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=template&id=cf5c2572&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=template&id=cf5c2572& ***!
+  \***************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_cf5c2572___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_cf5c2572___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_cf5c2572___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=cf5c2572& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=template&id=cf5c2572&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/transaction/expense/form.vue?vue&type=template&id=bd3aba80&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/views/finance/transaction/expense/form.vue?vue&type=template&id=bd3aba80& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_bd3aba80___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_bd3aba80___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_bd3aba80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=bd3aba80& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/form.vue?vue&type=template&id=bd3aba80&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/transaction/expense/index.vue?vue&type=template&id=1cdc2cf4&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/views/finance/transaction/expense/index.vue?vue&type=template&id=1cdc2cf4& ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_1cdc2cf4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_1cdc2cf4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_1cdc2cf4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=1cdc2cf4& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/index.vue?vue&type=template&id=1cdc2cf4&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/finance/transaction/expense/show.vue?vue&type=template&id=70f4ac79&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/views/finance/transaction/expense/show.vue?vue&type=template&id=70f4ac79& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_template_id_70f4ac79___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_template_id_70f4ac79___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_template_id_70f4ac79___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./show.vue?vue&type=template&id=70f4ac79& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/finance/transaction/expense/show.vue?vue&type=template&id=70f4ac79&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=style&index=0&id=cf5c2572&lang=css&":
+/*!*****************************************************************************************************************************!*\
+  !*** ./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=style&index=0&id=cf5c2572&lang=css& ***!
+  \*****************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_cf5c2572_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!../../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=style&index=0&id=cf5c2572&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/finance/transaction/category/form.vue?vue&type=style&index=0&id=cf5c2572&lang=css&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=ab7443a1ae591292

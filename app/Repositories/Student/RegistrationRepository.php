@@ -612,49 +612,50 @@ class RegistrationRepository
             throw ValidationException::withMessages(['message' => trans('general.invalid_action')]);
         }
 
-        if (! request('admission_remarks')) {
-            throw ValidationException::withMessages(['admission_remarks' => trans('validation.required', ['attribute' => trans('student.admission_remarks')])]);
-        }
+//        if (! request('admission_remarks')) {
+//            throw ValidationException::withMessages(['admission_remarks' => trans('validation.required', ['attribute' => trans('student.admission_remarks')])]);
+//        }
 
-        if (! request('admission_number')) {
-            throw ValidationException::withMessages(['admission_number' => trans('validation.required', ['attribute' => trans('student.admission_number')])]);
-        }
-        
-        if (! is_numeric(request('admission_number'))) {
-            throw ValidationException::withMessages(['admission_number' => trans('validation.numeric', ['attribute' => trans('student.admission_number')])]);
-        }
-        
-        if (request('admission_number') < 0) {
-            throw ValidationException::withMessages(['admission_number' => trans('validation.min.numeric', ['attribute' => trans('student.admission_number'), 'min' => 0])]);
-        }
-
-        $admission_number = ltrim(gv($params, 'admission_number'), '0');
-
-        if (! isInteger($admission_number)) {
-            throw ValidationException::withMessages(['admission_number' => trans('validation.integer', ['attribute' => trans('student.admission_number')])]);
-        }
-
-        $admission_number_prefix = gv($params, 'admission_number_prefix');
-
-        if ($this->admission->filterByNumber($admission_number)->filterByPrefix($admission_number_prefix)->count()) {
-            throw ValidationException::withMessages(['admission_number' => trans('student.admission_number_exists')]);
-        }
-
-        $date_of_admission = toDate(gv($params, 'date_of_admission'));
-
-        if ($date_of_admission < toDate($registration->date_of_registration)) {
-            throw ValidationException::withMessages(['date_of_admission' => trans('student.date_cannot_less_than_date_of_registration')]);
-        }
-
-        if (! dateLessThanSessionEnd($date_of_admission)) {
-            throw ValidationException::withMessages(['date_of_admission' => trans('academic.date_less_than_session_end')]);
-        }
 
         if ($status == 'rejected') {
             return $this->rejectRegistration($params, $registration);
         }
 
         if ($status == 'allotted') {
+            if (! request('admission_number')) {
+                throw ValidationException::withMessages(['admission_number' => trans('validation.required', ['attribute' => trans('student.admission_number')])]);
+            }
+
+            if (! is_numeric(request('admission_number'))) {
+                throw ValidationException::withMessages(['admission_number' => trans('validation.numeric', ['attribute' => trans('student.admission_number')])]);
+            }
+
+            if (request('admission_number') < 0) {
+                throw ValidationException::withMessages(['admission_number' => trans('validation.min.numeric', ['attribute' => trans('student.admission_number'), 'min' => 0])]);
+            }
+
+            $admission_number = ltrim(gv($params, 'admission_number'), '0');
+
+            if (! isInteger($admission_number)) {
+                throw ValidationException::withMessages(['admission_number' => trans('validation.integer', ['attribute' => trans('student.admission_number')])]);
+            }
+
+            $admission_number_prefix = gv($params, 'admission_number_prefix');
+
+            if ($this->admission->filterByNumber($admission_number)->filterByPrefix($admission_number_prefix)->count()) {
+                throw ValidationException::withMessages(['admission_number' => trans('student.admission_number_exists')]);
+            }
+
+            $date_of_admission = toDate(gv($params, 'date_of_admission'));
+
+            if ($date_of_admission < toDate($registration->date_of_registration)) {
+                throw ValidationException::withMessages(['date_of_admission' => trans('student.date_cannot_less_than_date_of_registration')]);
+            }
+
+            if (! dateLessThanSessionEnd($date_of_admission)) {
+                throw ValidationException::withMessages(['date_of_admission' => trans('academic.date_less_than_session_end')]);
+            }
+
             return $this->allotRegistration($params, $registration);
         }
     }
@@ -694,11 +695,11 @@ class RegistrationRepository
             throw ValidationException::withMessages(['batch_id' => trans('finance.no_fee_allocated')]);
         }
 
-        $transport_circle_id = gv($params, 'transport_circle_id');
-
-        if ($transport_circle_id && ! $this->transport_circle->find($transport_circle_id)) {
-            throw ValidationException::withMessages(['transport_circle_id' => trans('transport.could_not_find_circle')]);
-        }
+//        $transport_circle_id = gv($params, 'transport_circle_id');
+//
+//        if ($transport_circle_id && ! $this->transport_circle->find($transport_circle_id)) {
+//            throw ValidationException::withMessages(['transport_circle_id' => trans('transport.could_not_find_circle')]);
+//        }
 
         $fee_concession_id = gv($params, 'fee_concession_id');
 

@@ -1,2 +1,2076 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[8908],{50894:(e,t,n)=>{"use strict";n.d(t,{Z:()=>a});var s=n(94015),i=n.n(s),o=n(23645),r=n.n(o)()(i());r.push([e.id,".loading-overlay.is-full-page{z-index:1060}","",{version:3,sources:["webpack://./resources/js/views/communication/meeting/form.vue"],names:[],mappings:"AA2XA,8BACA,YACA",sourcesContent:['<template>\n    <div>\n        <form @submit.prevent="proceed" @keydown="meetingForm.errors.clear($event.target.name)">\n            <div class="row">\n                <div class="col-12 col-sm-6">\n                    <div class="form-group">\n                        <label for="">{{trans(\'communication.meeting_title\')}}</label>\n                        <input class="form-control" type="text" v-model="meetingForm.title" name="title" :placeholder="trans(\'communication.meeting_title\')">\n                        <show-error :form-name="meetingForm" prop-name="title"></show-error>\n                    </div>\n                    <div class="row">\n                        <div class="col-12 col-sm-6">\n                            <div class="form-group">\n                                <label for="">{{trans(\'communication.meeting_date\')}}</label>\n                                <datepicker v-model="meetingForm.date" :bootstrapStyling="true" @selected="meetingForm.errors.clear(\'date\')" :placeholder="trans(\'communication.meeting_date\')"></datepicker>\n                                <show-error :form-name="meetingForm" prop-name="date"></show-error>\n                            </div>\n                        </div>\n                        <div class="col-12 col-sm-6">\n                            <div class="form-group">\n                                <label for="">{{trans(\'communication.meeting_start_time\')}}</label>\n                                <timepicker :hour.sync="start_time.hour" :minute.sync="start_time.minute" :meridiem.sync="start_time.meridiem"></timepicker>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="row">\n                        <div class="col-12 col-sm-6">\n                            <div class="form-group">\n                                <label for="">{{trans(\'communication.meeting_end_time\')}}</label>\n                                <timepicker :hour.sync="end_time.hour" :minute.sync="end_time.minute" :meridiem.sync="end_time.meridiem"></timepicker>\n                            </div>\n                        </div>\n                        <div class="col-12 col-sm-6">\n                            \x3c!-- <div class="form-group">\n                                <label class="custom-control custom-checkbox">\n                                    <input type="checkbox" class="custom-control-input" value="1" v-model="meetingForm.owner_video_preference">\n                                    <span class="custom-control-label"><small>{{trans(\'communication.owner_video_preference\')}}</small></span>\n                                </label> \n                            </div> --\x3e\n                            <div class="form-group">\n                                <label class="custom-control custom-checkbox">\n                                    <input type="checkbox" class="custom-control-input" value="1" v-model="meetingForm.audience_video_preference">\n                                    <span class="custom-control-label"><small>{{trans(\'communication.audience_video_preference\')}}</small></span>\n                                </label> \n                            </div>\n                        </div>\n                    </div>\n                    <div class="row">\n                        <div class="col-12 col-sm-6">\n                            <div class="form-group">\n                                <label for="">{{trans(\'communication.meeting_audience\')}}</label>\n                                <select v-model="meetingForm.audience" class="custom-select col-12" name="audience" @change="meetingForm.errors.clear(\'audience\')">\n                                  <option value=null selected>{{trans(\'general.select_one\')}}</option>\n                                  <option v-for="option in audiences" v-bind:value="option.value">\n                                    {{ option.text }}\n                                  </option>\n                                </select>\n                                <show-error :form-name="meetingForm" prop-name="audience"></show-error>\n                            </div>\n                        </div>\n                        <div class="col-12 col-sm-6" v-if="meetingForm.audience == \'selected_course\'">\n                            <div class="form-group">\n                                <label for="">{{trans(\'academic.course\')}}</label>\n                                <v-select label="name" track-by="id" v-model="selected_courses" group-values="courses" group-label="course_group" :group-select="false" name="course_id" id="course_id" :options="courses" :placeholder="trans(\'academic.select_course\')" @select="onCourseSelect" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true" @remove="onCourseRemove" :selected="selected_courses">\n                                    <div class="multiselect__option" slot="afterList" v-if="!courses.length">\n                                        {{trans(\'general.no_option_found\')}}\n                                    </div>\n                                </v-select>\n                                <show-error :form-name="meetingForm" prop-name="course_id"></show-error>\n                            </div>\n                        </div>\n                        <div class="col-12 col-sm-6" v-if="meetingForm.audience == \'selected_batch\'">\n                            <div class="form-group">\n                                <label for="">{{trans(\'academic.batch\')}}</label>\n                                <v-select label="name" track-by="id" v-model="selected_batches" group-values="batches" group-label="course_group" :group-select="false" name="batch_id" id="batch_id" :options="batches" :placeholder="trans(\'academic.select_batch\')" @select="onBatchSelect" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true" @remove="onBatchRemove" :selected="selected_batches">\n                                    <div class="multiselect__option" slot="afterList" v-if="!batches.length">\n                                        {{trans(\'general.no_option_found\')}}\n                                    </div>\n                                </v-select>\n                                <show-error :form-name="meetingForm" prop-name="batch_id"></show-error>\n                            </div>\n                        </div>\n                        <div class="col-12 col-sm-6" v-if="meetingForm.audience == \'selected_department\'">\n                            <div class="form-group">\n                                <label for="">{{trans(\'employee.department\')}}</label>\n                                <v-select label="name" track-by="id" v-model="selected_departments" name="department_id" id="department_id" :options="departments" :placeholder="trans(\'employee.select_department\')" @select="onDepartmentSelect" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true" @remove="onDepartmentRemove" :selected="selected_departments">\n                                    <div class="multiselect__option" slot="afterList" v-if="!departments.length">\n                                        {{trans(\'general.no_option_found\')}}\n                                    </div>\n                                </v-select>\n                                <show-error :form-name="meetingForm" prop-name="department_id"></show-error>\n                            </div>\n                        </div>\n                        <div class="col-12 col-sm-6" v-if="meetingForm.audience == \'selected_employee_category\'">\n                            <div class="form-group">\n                                <label for="">{{trans(\'employee.category\')}}</label>\n                                <v-select label="name" track-by="id" v-model="selected_employee_categories" name="employee_category_id" id="employee_category_id" :options="employee_categories" :placeholder="trans(\'employee.select_category\')" @select="onEmployeeCategorySelect" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true" @remove="onEmployeeCategoryRemove" :selected="selected_employee_categories">\n                                    <div class="multiselect__option" slot="afterList" v-if="!employee_categories.length">\n                                        {{trans(\'general.no_option_found\')}}\n                                    </div>\n                                </v-select>\n                                <show-error :form-name="meetingForm" prop-name="employee_category_id"></show-error>\n                            </div>\n                        </div>\n                        <div class="col-12" v-if="! uuid">\n                            <user-search @searched="addToSearchResult"></user-search>\n\n                            <div class="form-group">\n                                <ul class="font-80pc">\n                                    <li v-for="result in searchResults" :key="result.key">\n                                        {{result.name+\' \'+result.description_1}} <span class="text-right text-danger" @click="deleteResult(result)"><i class="fas fa-times-circle"></i></span>\n                                        <span class="d-block">{{result.description_2}} {{result.contact_number}}</span>\n                                    </li>\n                                </ul>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="form-group">\n                        <file-upload-input :button-text="trans(\'general.upload_document\')" :token="meetingForm.upload_token" module="meeting" :clear-file="clearAttachment" :module-id="module_id"></file-upload-input>\n                    </div>\n                </div>\n                <div class="col-12 col-sm-6">\n                    <div class="form-group">\n                        <html-editor name="description" :model.sync="meetingForm.description" height="300" :isUpdate="uuid ? true : false" @clearErrors="meetingForm.errors.clear(\'description\')"></html-editor>\n                        <show-error :form-name="meetingForm" prop-name="description"></show-error>\n                    </div>\n                </div>\n            </div>\n\n            <div class="card-footer text-right">\n                <router-link to="/communication/meeting" class="btn btn-danger waves-effect waves-light " v-show="uuid">{{trans(\'general.cancel\')}}</router-link>\n                <button v-if="!uuid" type="button" class="btn btn-danger waves-effect waves-light " @click="$emit(\'cancel\')">{{trans(\'general.cancel\')}}</button>\n                <button type="submit" class="btn btn-info waves-effect waves-light">\n                    <span v-if="uuid">{{trans(\'general.update\')}}</span>\n                    <span v-else>{{trans(\'general.save\')}}</span>\n                </button>\n            </div>\n        </form>\n    </div>\n</template>\n\n\n<script>\n    import userSearch from "@components/user-search"\n\n    export default {\n        components: {userSearch},\n        data() {\n            return {\n                meetingForm: new Form({\n                    title: \'\',\n                    date: \'\',\n                    start_time: \'\',\n                    end_time: \'\',\n                    owner_video_preference: 0,\n                    audience_video_preference: 0,\n                    audience: null,\n                    course_id: [],\n                    batch_id: [],\n                    department_id: [],\n                    employee_category_id: [],\n                    description: \'\',\n                    upload_token: \'\',\n                    individual_students: [],\n                    individual_employees: []\n                }),\n                start_time: {\n                    hour: \'\',\n                    minute: \'\',\n                    meridiem: \'am\'\n                },\n                end_time: {\n                    hour: \'\',\n                    minute: \'\',\n                    meridiem: \'am\'\n                },\n                audiences: [],\n                courses: [],\n                selected_courses: null,\n                batches: [],\n                selected_batches: null,\n                departments: [],\n                selected_departments: null,\n                employee_categories: [],\n                selected_employee_categories: null,\n                module_id: \'\',\n                clearAttachment: true,\n                searchResults: []\n            };\n        },\n        props: [\'uuid\'],\n        mounted() {\n            if(!helper.hasPermission(\'create-meeting\') && !helper.hasPermission(\'edit-meeting\')){\n                helper.notAccessibleMsg();\n                this.$router.push(\'/dashboard\');\n            }\n\n            this.getPreRequisite();\n        },\n        methods: {\n            hasPermission(permission){\n                return helper.hasPermission(permission);\n            },\n            getPreRequisite(){\n                let loader = this.$loading.show();\n                axios.get(\'/api/meeting/pre-requisite\')\n                    .then(response => {\n                        this.audiences = response.audiences;\n                        this.courses = response.courses;\n                        this.batches = response.batches;\n                        this.departments = response.departments;\n                        this.employee_categories = response.employee_categories;\n                        \n                        if(this.uuid)\n                            this.get();\n                        else\n                            this.meetingForm.upload_token = this.$uuid.v4();\n\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    })\n            },\n            proceed(){\n                if(this.uuid)\n                    this.update();\n                else\n                    this.store();\n            },\n            store(){\n                this.meetingForm.individual_students = [];\n                this.meetingForm.individual_employees = [];\n                this.searchResults.forEach(result => {\n                    if (result.type === \'student\') {\n                        this.meetingForm.individual_students.push(result.id)\n                    } else {\n                        this.meetingForm.individual_employees.push(result.id)\n                    }\n                })\n                this.meetingForm.start_time = helper.toTime(this.start_time);\n                this.meetingForm.end_time   = helper.toTime(this.end_time);\n                let loader = this.$loading.show();\n                this.meetingForm.post(\'/api/meeting\')\n                    .then(response => {\n                        toastr.success(response.message);\n                        this.clearAttachment = !this.clearAttachment;\n                        this.meetingForm.upload_token = this.$uuid.v4();\n                        this.selected_courses = null;\n                        this.selected_batches = null;\n                        this.selected_departments = null;\n                        this.selected_employee_categories = null;\n                        this.meetingForm.individual_students = [];\n                        this.meetingForm.individual_employees = [];\n                        this.searchResults = [];\n                        this.$emit(\'completed\');\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            get(){\n                let loader = this.$loading.show();\n                axios.get(\'/api/meeting/\'+this.uuid)\n                    .then(response => {\n\n                        if (! response.is_editable) {\n                            toastr.error(i18n.user.permission_denied);\n                            loader.hide();\n                            this.$router.push(\'/communication/meeting\');\n                        }\n\n                        this.meetingForm.title = response.meeting.title;\n                        this.meetingForm.date = response.meeting.date;\n                        this.meetingForm.end_date = response.meeting.end_date;\n                        this.meetingForm.description = response.meeting.description;\n                        this.meetingForm.audience = response.meeting.audience;\n                        this.selected_courses = response.meeting.audience == \'selected_course\' ? response.selected_audience : [];\n                        this.meetingForm.course_id = response.meeting.audience == \'selected_course\' ? this.setMultiSelect(response.selected_audience) : [];\n                        this.selected_batches = response.meeting.audience == \'selected_batch\' ? response.selected_audience : [];\n                        this.meetingForm.batch_id = response.meeting.audience == \'selected_batch\' ? this.setMultiSelect(response.selected_audience) : [];\n                        this.selected_departments = response.meeting.audience == \'selected_department\' ? response.selected_audience : [];\n                        this.meetingForm.department_id = response.meeting.audience == \'selected_department\' ? this.setMultiSelect(response.selected_audience) : [];\n                        this.selected_employee_categories = response.meeting.audience == \'selected_employee_category\' ? response.selected_audience : [];\n                        this.meetingForm.employee_category_id = response.meeting.audience == \'selected_employee_category\' ? this.setMultiSelect(response.selected_audience) : [];\n                        this.start_time = response.start_time;\n                        this.end_time = response.end_time;\n                        this.meetingForm.upload_token = response.meeting.upload_token;\n                        this.module_id = response.meeting.id;\n                        this.meetingForm.owner_video_preference = response.meeting.owner_video_preference;\n                        this.meetingForm.audience_video_preference = response.meeting.audience_video_preference;\n                        \n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                        this.$router.push(\'/communication/meeting\');\n                    });\n            },\n            update(){\n                this.meetingForm.individual_students = [];\n                this.meetingForm.individual_employees = [];\n                this.searchResults.forEach(result => {\n                    if (result.type === \'student\') {\n                        this.meetingForm.individual_students.push(result.id)\n                    } else {\n                        this.meetingForm.individual_employees.push(result.id)\n                    }\n                })\n                this.meetingForm.start_time = helper.toTime(this.start_time);\n                this.meetingForm.end_time   = helper.toTime(this.end_time);\n                let loader = this.$loading.show();\n                this.meetingForm.patch(\'/api/meeting/\'+this.uuid)\n                    .then(response => {\n                        toastr.success(response.message);\n                        loader.hide();\n                        this.$router.push(\'/communication/meeting\');\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            onCourseSelect(selectedOption){\n                this.meetingForm.errors.clear(\'course_id\');\n                this.meetingForm.course_id.push(selectedOption.id);\n            },\n            onCourseRemove(removedOption){\n                this.meetingForm.course_id.splice(this.meetingForm.course_id.indexOf(removedOption.id), 1);\n            },\n            onBatchSelect(selectedOption){\n                this.meetingForm.errors.clear(\'batch_id\');\n                this.meetingForm.batch_id.push(selectedOption.id);\n            },\n            onBatchRemove(removedOption){\n                this.meetingForm.batch_id.splice(this.meetingForm.batch_id.indexOf(removedOption.id), 1);\n            },\n            onDepartmentSelect(selectedOption){\n                this.meetingForm.errors.clear(\'department_id\');\n                this.meetingForm.department_id.push(selectedOption.id);\n            },\n            onDepartmentRemove(removedOption){\n                this.meetingForm.department_id.splice(this.meetingForm.department_id.indexOf(removedOption.id), 1);\n            },\n            onEmployeeCategorySelect(selectedOption){\n                this.meetingForm.errors.clear(\'employee_category_id\');\n                this.meetingForm.employee_category_id.push(selectedOption.id);\n            },\n            onEmployeeCategoryRemove(removedOption){\n                this.meetingForm.employee_category_id.splice(this.meetingForm.employee_category_id.indexOf(removedOption.id), 1);\n            },\n            setMultiSelect(options) {\n                let data = [];\n                options.forEach(option => {\n                    data.push(option.id);\n                })\n\n                return data;\n            },\n            addToSearchResult(result) {\n                let existing_result = this.searchResults.findIndex(o => o.type === result.type && o.id === result.id)\n\n                if (existing_result < 0) {\n                    this.searchResults.push(result)\n                }\n            },\n            deleteResult(result) {\n                let idx = this.searchResults.findIndex(o => o.type === result.type && o.id === result.id)\n                this.searchResults.splice(idx, 1);\n            }\n        }\n    }\n<\/script>\n\n<style>\n.loading-overlay.is-full-page{\n    z-index: 1060;\n}\n</style>'],sourceRoot:""}]);const a=r},62278:(e,t,n)=>{"use strict";n.d(t,{Z:()=>a});var s=n(94015),i=n.n(s),o=n(23645),r=n.n(o)()(i());r.push([e.id,".topbar .top-navbar .app-search input[data-v-74374d6a]{background:rgba(0,20,40,.1);border:1px solid rgba(0,20,40,.1);border-radius:2px;color:#f1f2f4;width:240px}.topbar .top-navbar .app-search input[data-v-74374d6a]::-moz-placeholder{color:hsla(0,0%,100%,.4)}.topbar .top-navbar .app-search input[data-v-74374d6a]:-ms-input-placeholder{color:hsla(0,0%,100%,.4)}.topbar .top-navbar .app-search input[data-v-74374d6a]::placeholder{color:hsla(0,0%,100%,.4)}.topbar .top-navbar .app-search input[data-v-74374d6a]:focus{background:rgba(0,20,40,.2);border:1px solid rgba(0,20,40,.2);color:#fff}ul.autocomplete-results[data-v-74374d6a]{background:#fff;border:1px solid #d1d2d5;border-radius:0 0 6px 6px;border-top:none;box-shadow:0 2px 10px rgba(0,20,40,.2);margin:0;max-height:350px;overflow:auto;padding:0;position:absolute;width:100%;z-index:999999}ul.autocomplete-results li.autocomplete-heading[data-v-74374d6a]{border-bottom:1px solid rgba(0,20,40,.2);color:rgba(0,20,40,.4);font-size:16px;letter-spacing:.2px;padding:8px}ul.autocomplete-results li.autocomplete-no-result[data-v-74374d6a]{border-bottom:1px solid rgba(0,20,40,.2);color:rgba(0,20,40,.4);font-size:12px;letter-spacing:.2px;padding:8px}ul.autocomplete-results>li.autocomplete-result[data-v-74374d6a]{display:flex;list-style:none;text-align:left;width:100%}ul.autocomplete-results>li.autocomplete-result .item-info[data-v-74374d6a]{flex-grow:2;margin:0;padding:5px 8px}ul.autocomplete-results>li.autocomplete-result .item-info .item-heading[data-v-74374d6a]{font-size:13px;margin-bottom:0}ul.autocomplete-results>li.autocomplete-result .item-info .item-meta[data-v-74374d6a]{font-size:11px}ul.autocomplete-results>li.autocomplete-result[data-v-74374d6a]:nth-child(2n){background:rgba(210,215,220,.2)}ul.autocomplete-results>li.autocomplete-result+li.autocomplete-result[data-v-74374d6a]{border-top:1px solid rgba(0,20,40,.1)}ul.autocomplete-results>li.autocomplete-result[data-v-74374d6a]:hover{background:rgba(200,205,215,.5);color:rgba(0,20,40,.8)}ul.autocomplete-results>li.autocomplete-result:hover .item-heading[data-v-74374d6a],ul.autocomplete-results>li.autocomplete-result:hover .item-meta[data-v-74374d6a]{color:inherit}","",{version:3,sources:["webpack://./resources/js/components/user-search.vue"],names:[],mappings:"AAsIA,uDACI,2BAAA,CAEA,iCAAA,CACA,iBAAA,CAFA,aAAA,CAGA,WArIJ,CAuIA,yEACI,wBApIJ,CAmIA,6EACI,wBApIJ,CAmIA,oEACI,wBApIJ,CAsIA,6DACI,2BAAA,CAEA,iCAAA,CADA,UAlIJ,CAsIA,yCAOI,eAAA,CAEA,wBAAA,CAEA,yBAAA,CAFA,eAAA,CACA,sCAAA,CARA,QAAA,CACA,gBAAA,CACA,aAAA,CAHA,SAAA,CAIA,iBAAA,CACA,UAAA,CAMA,cAnIJ,CAqII,iEAKI,wCAAA,CADA,sBAAA,CAHA,cAAA,CAEA,mBAAA,CADA,WAhIR,CAqII,mEAKI,wCAAA,CADA,sBAAA,CAHA,cAAA,CAEA,mBAAA,CADA,WAhIR,CAsIA,gEACI,YAAA,CACA,eAAA,CACA,eAAA,CACA,UAnIJ,CAqII,2EAEI,WAAA,CADA,QAAA,CAEA,eAnIR,CAqIQ,yFACI,cAAA,CACA,eAnIZ,CAsIQ,sFACI,cApIZ,CAwIA,8EACI,+BArIJ,CAuIA,uFACI,qCApIJ,CAsIA,sEACI,+BAAA,CACA,sBAnIJ,CAqII,qKACI,aAnIR",sourcesContent:["\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.topbar .top-navbar .app-search input {\n    background: rgba(0,20,40,0.1);\n    color: #f1f2f4;\n    border: 1px solid rgba(0,20,40,0.1);\n    border-radius: 2px;\n    width: 240px;\n}\n.topbar .top-navbar .app-search input::placeholder {\n    color: rgba(255,255,255,0.4);\n}\n.topbar .top-navbar .app-search input:focus {\n    background: rgba(0,20,40,0.2);\n    color: #ffffff;\n    border: 1px solid rgba(0,20,40,0.2);\n}\n\nul.autocomplete-results {\n    padding: 0;\n    margin: 0;\n    max-height: 350px;\n    overflow: auto;\n    position: absolute;\n    width: 100%;\n    background: #ffffff;\n    border: 1px solid #d1d2d5;\n    border-top: none;\n    box-shadow: 0 2px 10px rgba(0,20,40,0.2);\n    border-radius: 0 0 6px 6px;\n    z-index: 999999;\n\n    li.autocomplete-heading {\n        font-size: 16px;\n        padding: 8px;\n        letter-spacing: 0.2px;\n        color: rgba(0,20,40,0.4);\n        border-bottom: 1px solid rgba(0,20,40,0.2);\n    }\n    li.autocomplete-no-result {\n        font-size: 12px;\n        padding: 8px;\n        letter-spacing: 0.2px;\n        color: rgba(0,20,40,0.4);\n        border-bottom: 1px solid rgba(0,20,40,0.2);\n    }\n}\nul.autocomplete-results > li.autocomplete-result {\n    display: flex;\n    list-style: none;\n    text-align: left;\n    width: 100%;\n\n    .item-info {\n        margin: 0;\n        flex-grow: 2;\n        padding: 5px 8px;\n\n        .item-heading {\n            font-size: 13px;\n            margin-bottom: 0;\n        }\n\n        .item-meta {\n            font-size: 11px;\n        }\n    }\n}\nul.autocomplete-results > li.autocomplete-result:nth-child(even) {\n    background: rgba(210,215,220,0.2);\n}\nul.autocomplete-results > li.autocomplete-result + li.autocomplete-result {\n    border-top: 1px solid rgba(0,20,40,0.1);\n}\nul.autocomplete-results > li.autocomplete-result:hover {\n    background: rgba(200,205,215,0.5);\n    color: rgba(0,20,40,0.8);\n\n    .item-heading, .item-meta {\n        color: inherit;\n    }\n}\n"],sourceRoot:""}]);const a=r},59567:(e,t,n)=>{"use strict";n.d(t,{Z:()=>l});const s={data:function(){return{search:"",student_search_results:[],employee_search_results:[],displayResult:!1,resultLoading:!1,timeout:null}},methods:{searchResult:function(){this.resultLoading=!0,clearTimeout(this.timeout);var e=this;this.timeout=setTimeout((function(){e.search.length<3||axios.get("/api/search?q="+e.search).then((function(t){e.student_search_results=t.student_records,e.employee_search_results=t.employees,e.resultLoading=!1})).catch((function(t){e.resultLoading=!1,helper.showErrorMsg(t)}))}),1e3)},getStudentName:function(e){return helper.getStudentName(e)},getEmployeeName:function(e){return helper.getEmployeeName(e)},getEmployeeDesignationOnDate:function(e){return helper.getEmployeeDesignationOnDate(e)},submitStudent:function(e){this.$emit("searched",{type:"student",id:e.id,key:"student_"+e.id,name:e.student.name,description_1:e.batch.course.name+" "+e.batch.name,description_2:e.student.parent.first_guardian_name,contact_number:e.student.contact_number}),this.displayResult=!1,this.search=""},submitEmployee:function(e){this.$emit("searched",{type:"employee",key:"employee_"+e.id,id:e.id,name:e.name,description_1:this.getEmployeeDesignationOnDate(e),description_2:e.employee_code,contact_number:e.contact_number}),this.displayResult=!1,this.search=""}},watch:{search:function(e){e.length>=3?this.searchResult():(this.student_search_results=[],this.employee_search_results=[])}}};var i=n(93379),o=n.n(i),r=n(62278),a={insert:"head",singleton:!1};o()(r.Z,a);r.Z.locals;const l=(0,n(51900).Z)(s,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"form-group"},[n("input",{directives:[{name:"model",rawName:"v-model",value:e.search,expression:"search"}],staticClass:"form-control",attrs:{type:"text",placeholder:"Search Student or Employee"},domProps:{value:e.search},on:{keydown:function(t){e.displayResult=!0},focus:function(t){e.displayResult=!0},input:function(t){t.target.composing||(e.search=t.target.value)}}}),e._v(" "),e.displayResult?[e.search.length?n("ul",{staticClass:"autocomplete-results"},[e.search.length&&e.search.length<3?n("li",{staticClass:"autocomplete-no-result"},[e._v(e._s(e.trans("general.type_min_3_char_for_search_result")))]):e.search.length>=3&&e.resultLoading?n("li",{staticClass:"autocomplete-no-result"},[e._v(e._s(e.trans("general.loading_progress")))]):e.search.length>=3&&!e.student_search_results.length&&!e.employee_search_results.length&&e.search.length&&!e.resultLoading?n("li",{staticClass:"autocomplete-no-result"},[e._v(e._s(e.trans("general.no_result_found")))]):e._e(),e._v(" "),e.student_search_results.length?[n("li",{staticClass:"autocomplete-heading"},[e._v(e._s(e.trans("student.student")))]),e._v(" "),e._l(e.student_search_results,(function(t){return n("li",{staticClass:"autocomplete-result pointer"},[n("div",{staticClass:"item-info",on:{click:function(n){return e.submitStudent(t)}}},[n("h5",{staticClass:"item-heading"},[e._v(e._s(e.getStudentName(t.student)))]),e._v(" "),n("div",{staticClass:"item-meta"},[n("span",{staticClass:"father-name"},[e._v(e._s(t.student.parent.first_guardian_name))]),e._v(" "),n("span",{staticClass:"contact"},[e._v(" / "+e._s(t.student.contact_number))])]),e._v(" "),n("div",{staticClass:"item-meta"},[n("span",{staticClass:"course-batch"},[e._v(e._s(t.batch.course.name+" "+t.batch.name))])])])])}))]:e._e(),e._v(" "),e.employee_search_results.length?[n("li",{staticClass:"autocomplete-heading"},[e._v(e._s(e.trans("employee.employee")))]),e._v(" "),e._l(e.employee_search_results,(function(t){return n("li",{staticClass:"autocomplete-result pointer"},[n("div",{staticClass:"item-info",on:{click:function(n){return e.submitEmployee(t)}}},[n("h5",{staticClass:"item-heading"},[e._v(e._s(e.getEmployeeName(t)))]),e._v(" "),n("div",{staticClass:"item-meta"},[n("span",{staticClass:"contact"},[e._v(" / "+e._s(t.contact_number))])]),e._v(" "),n("div",{staticClass:"item-meta"},[n("span",{staticClass:"course-batch"},[e._v(e._s(e.getEmployeeDesignationOnDate(t)))])])])])}))]:e._e()],2):e._e()]:e._e()],2)}),[],!1,null,"74374d6a",null).exports},22836:(e,t,n)=>{"use strict";n.d(t,{Z:()=>i});const s={props:["meeting"]};const i=(0,n(51900).Z)(s,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",["selected_course"==e.meeting.audience?[e._v("\n        "+e._s(e.trans("academic.course"))+" "),n("br"),e._v(" "),n("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},e._l(e.meeting.courses,(function(t){return n("li",[e._v(e._s(t.name+"("+t.course_group.name+")"))])})),0)]:"selected_batch"==e.meeting.audience?[e._v("\n        "+e._s(e.trans("academic.batch"))+" "),n("br"),e._v(" "),n("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},e._l(e.meeting.batches,(function(t){return n("li",[e._v(e._s(t.name+"("+t.course.name+")"))])})),0)]:"selected_department"==e.meeting.audience?[e._v("\n        "+e._s(e.trans("employee.department"))+" "),n("br"),e._v(" "),n("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},e._l(e.meeting.departments,(function(t){return n("li",[e._v(e._s(t.name))])})),0)]:"selected_employee_category"==e.meeting.audience?[e._v("\n        "+e._s(e.trans("employee.category"))+" "),n("br"),e._v(" "),n("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},e._l(e.meeting.employee_categorys,(function(t){return n("li",[e._v(e._s(t.name))])})),0)]:e._e(),e._v(" "),e.meeting.options.individual_students&&e.meeting.options.individual_students.length?[n("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},[n("li",[e._v(e._s(e.trans("communication.count_individual_students",{attribute:e.meeting.options.individual_students.length})))])])]:e._e(),e._v(" "),e.meeting.options.individual_employees&&e.meeting.options.individual_employees.length?[n("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},[n("li",[e._v(e._s(e.trans("communication.count_individual_employees",{attribute:e.meeting.options.individual_employees.length})))])])]:e._e()],2)}),[],!1,null,null,null).exports},32039:(e,t,n)=>{"use strict";n.d(t,{Z:()=>l});const s={components:{userSearch:n(59567).Z},data:function(){return{meetingForm:new Form({title:"",date:"",start_time:"",end_time:"",owner_video_preference:0,audience_video_preference:0,audience:null,course_id:[],batch_id:[],department_id:[],employee_category_id:[],description:"",upload_token:"",individual_students:[],individual_employees:[]}),start_time:{hour:"",minute:"",meridiem:"am"},end_time:{hour:"",minute:"",meridiem:"am"},audiences:[],courses:[],selected_courses:null,batches:[],selected_batches:null,departments:[],selected_departments:null,employee_categories:[],selected_employee_categories:null,module_id:"",clearAttachment:!0,searchResults:[]}},props:["uuid"],mounted:function(){helper.hasPermission("create-meeting")||helper.hasPermission("edit-meeting")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getPreRequisite()},methods:{hasPermission:function(e){return helper.hasPermission(e)},getPreRequisite:function(){var e=this,t=this.$loading.show();axios.get("/api/meeting/pre-requisite").then((function(n){e.audiences=n.audiences,e.courses=n.courses,e.batches=n.batches,e.departments=n.departments,e.employee_categories=n.employee_categories,e.uuid?e.get():e.meetingForm.upload_token=e.$uuid.v4(),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},proceed:function(){this.uuid?this.update():this.store()},store:function(){var e=this;this.meetingForm.individual_students=[],this.meetingForm.individual_employees=[],this.searchResults.forEach((function(t){"student"===t.type?e.meetingForm.individual_students.push(t.id):e.meetingForm.individual_employees.push(t.id)})),this.meetingForm.start_time=helper.toTime(this.start_time),this.meetingForm.end_time=helper.toTime(this.end_time);var t=this.$loading.show();this.meetingForm.post("/api/meeting").then((function(n){toastr.success(n.message),e.clearAttachment=!e.clearAttachment,e.meetingForm.upload_token=e.$uuid.v4(),e.selected_courses=null,e.selected_batches=null,e.selected_departments=null,e.selected_employee_categories=null,e.meetingForm.individual_students=[],e.meetingForm.individual_employees=[],e.searchResults=[],e.$emit("completed"),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},get:function(){var e=this,t=this.$loading.show();axios.get("/api/meeting/"+this.uuid).then((function(n){n.is_editable||(toastr.error(i18n.user.permission_denied),t.hide(),e.$router.push("/communication/meeting")),e.meetingForm.title=n.meeting.title,e.meetingForm.date=n.meeting.date,e.meetingForm.end_date=n.meeting.end_date,e.meetingForm.description=n.meeting.description,e.meetingForm.audience=n.meeting.audience,e.selected_courses="selected_course"==n.meeting.audience?n.selected_audience:[],e.meetingForm.course_id="selected_course"==n.meeting.audience?e.setMultiSelect(n.selected_audience):[],e.selected_batches="selected_batch"==n.meeting.audience?n.selected_audience:[],e.meetingForm.batch_id="selected_batch"==n.meeting.audience?e.setMultiSelect(n.selected_audience):[],e.selected_departments="selected_department"==n.meeting.audience?n.selected_audience:[],e.meetingForm.department_id="selected_department"==n.meeting.audience?e.setMultiSelect(n.selected_audience):[],e.selected_employee_categories="selected_employee_category"==n.meeting.audience?n.selected_audience:[],e.meetingForm.employee_category_id="selected_employee_category"==n.meeting.audience?e.setMultiSelect(n.selected_audience):[],e.start_time=n.start_time,e.end_time=n.end_time,e.meetingForm.upload_token=n.meeting.upload_token,e.module_id=n.meeting.id,e.meetingForm.owner_video_preference=n.meeting.owner_video_preference,e.meetingForm.audience_video_preference=n.meeting.audience_video_preference,t.hide()})).catch((function(n){t.hide(),helper.showErrorMsg(n),e.$router.push("/communication/meeting")}))},update:function(){var e=this;this.meetingForm.individual_students=[],this.meetingForm.individual_employees=[],this.searchResults.forEach((function(t){"student"===t.type?e.meetingForm.individual_students.push(t.id):e.meetingForm.individual_employees.push(t.id)})),this.meetingForm.start_time=helper.toTime(this.start_time),this.meetingForm.end_time=helper.toTime(this.end_time);var t=this.$loading.show();this.meetingForm.patch("/api/meeting/"+this.uuid).then((function(n){toastr.success(n.message),t.hide(),e.$router.push("/communication/meeting")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onCourseSelect:function(e){this.meetingForm.errors.clear("course_id"),this.meetingForm.course_id.push(e.id)},onCourseRemove:function(e){this.meetingForm.course_id.splice(this.meetingForm.course_id.indexOf(e.id),1)},onBatchSelect:function(e){this.meetingForm.errors.clear("batch_id"),this.meetingForm.batch_id.push(e.id)},onBatchRemove:function(e){this.meetingForm.batch_id.splice(this.meetingForm.batch_id.indexOf(e.id),1)},onDepartmentSelect:function(e){this.meetingForm.errors.clear("department_id"),this.meetingForm.department_id.push(e.id)},onDepartmentRemove:function(e){this.meetingForm.department_id.splice(this.meetingForm.department_id.indexOf(e.id),1)},onEmployeeCategorySelect:function(e){this.meetingForm.errors.clear("employee_category_id"),this.meetingForm.employee_category_id.push(e.id)},onEmployeeCategoryRemove:function(e){this.meetingForm.employee_category_id.splice(this.meetingForm.employee_category_id.indexOf(e.id),1)},setMultiSelect:function(e){var t=[];return e.forEach((function(e){t.push(e.id)})),t},addToSearchResult:function(e){this.searchResults.findIndex((function(t){return t.type===e.type&&t.id===e.id}))<0&&this.searchResults.push(e)},deleteResult:function(e){var t=this.searchResults.findIndex((function(t){return t.type===e.type&&t.id===e.id}));this.searchResults.splice(t,1)}}};var i=n(93379),o=n.n(i),r=n(50894),a={insert:"head",singleton:!1};o()(r.Z,a);r.Z.locals;const l=(0,n(51900).Z)(s,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[n("form",{on:{submit:function(t){return t.preventDefault(),e.proceed.apply(null,arguments)},keydown:function(t){return e.meetingForm.errors.clear(t.target.name)}}},[n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("communication.meeting_title")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.meetingForm.title,expression:"meetingForm.title"}],staticClass:"form-control",attrs:{type:"text",name:"title",placeholder:e.trans("communication.meeting_title")},domProps:{value:e.meetingForm.title},on:{input:function(t){t.target.composing||e.$set(e.meetingForm,"title",t.target.value)}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.meetingForm,"prop-name":"title"}})],1),e._v(" "),n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("communication.meeting_date")))]),e._v(" "),n("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("communication.meeting_date")},on:{selected:function(t){return e.meetingForm.errors.clear("date")}},model:{value:e.meetingForm.date,callback:function(t){e.$set(e.meetingForm,"date",t)},expression:"meetingForm.date"}}),e._v(" "),n("show-error",{attrs:{"form-name":e.meetingForm,"prop-name":"date"}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("communication.meeting_start_time")))]),e._v(" "),n("timepicker",{attrs:{hour:e.start_time.hour,minute:e.start_time.minute,meridiem:e.start_time.meridiem},on:{"update:hour":function(t){return e.$set(e.start_time,"hour",t)},"update:minute":function(t){return e.$set(e.start_time,"minute",t)},"update:meridiem":function(t){return e.$set(e.start_time,"meridiem",t)}}})],1)])]),e._v(" "),n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("communication.meeting_end_time")))]),e._v(" "),n("timepicker",{attrs:{hour:e.end_time.hour,minute:e.end_time.minute,meridiem:e.end_time.meridiem},on:{"update:hour":function(t){return e.$set(e.end_time,"hour",t)},"update:minute":function(t){return e.$set(e.end_time,"minute",t)},"update:meridiem":function(t){return e.$set(e.end_time,"meridiem",t)}}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{staticClass:"custom-control custom-checkbox"},[n("input",{directives:[{name:"model",rawName:"v-model",value:e.meetingForm.audience_video_preference,expression:"meetingForm.audience_video_preference"}],staticClass:"custom-control-input",attrs:{type:"checkbox",value:"1"},domProps:{checked:Array.isArray(e.meetingForm.audience_video_preference)?e._i(e.meetingForm.audience_video_preference,"1")>-1:e.meetingForm.audience_video_preference},on:{change:function(t){var n=e.meetingForm.audience_video_preference,s=t.target,i=!!s.checked;if(Array.isArray(n)){var o=e._i(n,"1");s.checked?o<0&&e.$set(e.meetingForm,"audience_video_preference",n.concat(["1"])):o>-1&&e.$set(e.meetingForm,"audience_video_preference",n.slice(0,o).concat(n.slice(o+1)))}else e.$set(e.meetingForm,"audience_video_preference",i)}}}),e._v(" "),n("span",{staticClass:"custom-control-label"},[n("small",[e._v(e._s(e.trans("communication.audience_video_preference")))])])])])])]),e._v(" "),n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("communication.meeting_audience")))]),e._v(" "),n("select",{directives:[{name:"model",rawName:"v-model",value:e.meetingForm.audience,expression:"meetingForm.audience"}],staticClass:"custom-select col-12",attrs:{name:"audience"},on:{change:[function(t){var n=Array.prototype.filter.call(t.target.options,(function(e){return e.selected})).map((function(e){return"_value"in e?e._value:e.value}));e.$set(e.meetingForm,"audience",t.target.multiple?n:n[0])},function(t){return e.meetingForm.errors.clear("audience")}]}},[n("option",{attrs:{value:"null",selected:""}},[e._v(e._s(e.trans("general.select_one")))]),e._v(" "),e._l(e.audiences,(function(t){return n("option",{domProps:{value:t.value}},[e._v("\n                                "+e._s(t.text)+"\n                              ")])}))],2),e._v(" "),n("show-error",{attrs:{"form-name":e.meetingForm,"prop-name":"audience"}})],1)]),e._v(" "),"selected_course"==e.meetingForm.audience?n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("academic.course")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id","group-values":"courses","group-label":"course_group","group-select":!1,name:"course_id",id:"course_id",options:e.courses,placeholder:e.trans("academic.select_course"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_courses},on:{select:e.onCourseSelect,remove:e.onCourseRemove},model:{value:e.selected_courses,callback:function(t){e.selected_courses=t},expression:"selected_courses"}},[e.courses.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                    "+e._s(e.trans("general.no_option_found"))+"\n                                ")])]),e._v(" "),n("show-error",{attrs:{"form-name":e.meetingForm,"prop-name":"course_id"}})],1)]):e._e(),e._v(" "),"selected_batch"==e.meetingForm.audience?n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("academic.batch")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id","group-values":"batches","group-label":"course_group","group-select":!1,name:"batch_id",id:"batch_id",options:e.batches,placeholder:e.trans("academic.select_batch"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_batches},on:{select:e.onBatchSelect,remove:e.onBatchRemove},model:{value:e.selected_batches,callback:function(t){e.selected_batches=t},expression:"selected_batches"}},[e.batches.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                    "+e._s(e.trans("general.no_option_found"))+"\n                                ")])]),e._v(" "),n("show-error",{attrs:{"form-name":e.meetingForm,"prop-name":"batch_id"}})],1)]):e._e(),e._v(" "),"selected_department"==e.meetingForm.audience?n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.department")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id",name:"department_id",id:"department_id",options:e.departments,placeholder:e.trans("employee.select_department"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_departments},on:{select:e.onDepartmentSelect,remove:e.onDepartmentRemove},model:{value:e.selected_departments,callback:function(t){e.selected_departments=t},expression:"selected_departments"}},[e.departments.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                    "+e._s(e.trans("general.no_option_found"))+"\n                                ")])]),e._v(" "),n("show-error",{attrs:{"form-name":e.meetingForm,"prop-name":"department_id"}})],1)]):e._e(),e._v(" "),"selected_employee_category"==e.meetingForm.audience?n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.category")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id",name:"employee_category_id",id:"employee_category_id",options:e.employee_categories,placeholder:e.trans("employee.select_category"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_employee_categories},on:{select:e.onEmployeeCategorySelect,remove:e.onEmployeeCategoryRemove},model:{value:e.selected_employee_categories,callback:function(t){e.selected_employee_categories=t},expression:"selected_employee_categories"}},[e.employee_categories.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                    "+e._s(e.trans("general.no_option_found"))+"\n                                ")])]),e._v(" "),n("show-error",{attrs:{"form-name":e.meetingForm,"prop-name":"employee_category_id"}})],1)]):e._e(),e._v(" "),e.uuid?e._e():n("div",{staticClass:"col-12"},[n("user-search",{on:{searched:e.addToSearchResult}}),e._v(" "),n("div",{staticClass:"form-group"},[n("ul",{staticClass:"font-80pc"},e._l(e.searchResults,(function(t){return n("li",{key:t.key},[e._v("\n                                    "+e._s(t.name+" "+t.description_1)+" "),n("span",{staticClass:"text-right text-danger",on:{click:function(n){return e.deleteResult(t)}}},[n("i",{staticClass:"fas fa-times-circle"})]),e._v(" "),n("span",{staticClass:"d-block"},[e._v(e._s(t.description_2)+" "+e._s(t.contact_number))])])})),0)])],1)]),e._v(" "),n("div",{staticClass:"form-group"},[n("file-upload-input",{attrs:{"button-text":e.trans("general.upload_document"),token:e.meetingForm.upload_token,module:"meeting","clear-file":e.clearAttachment,"module-id":e.module_id}})],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"form-group"},[n("html-editor",{attrs:{name:"description",model:e.meetingForm.description,height:"300",isUpdate:!!e.uuid},on:{"update:model":function(t){return e.$set(e.meetingForm,"description",t)},clearErrors:function(t){return e.meetingForm.errors.clear("description")}}}),e._v(" "),n("show-error",{attrs:{"form-name":e.meetingForm,"prop-name":"description"}})],1)])]),e._v(" "),n("div",{staticClass:"card-footer text-right"},[n("router-link",{directives:[{name:"show",rawName:"v-show",value:e.uuid,expression:"uuid"}],staticClass:"btn btn-danger waves-effect waves-light ",attrs:{to:"/communication/meeting"}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),e.uuid?e._e():n("button",{staticClass:"btn btn-danger waves-effect waves-light ",attrs:{type:"button"},on:{click:function(t){return e.$emit("cancel")}}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),n("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[e.uuid?n("span",[e._v(e._s(e.trans("general.update")))]):n("span",[e._v(e._s(e.trans("general.save")))])])],1)])])}),[],!1,null,null,null).exports},91744:(e,t,n)=>{"use strict";n.r(t),n.d(t,{default:()=>r});var s=n(32039),i=n(22836);const o={components:{meetingForm:s.Z,meetingAudience:i.Z},data:function(){return{meetings:{total:0,data:[]},filter:{sort_by:"date",order:"desc",keyword:"",course_id:[],batch_id:[],department_id:[],employee_category_id:[],page_length:helper.getConfig("page_length")},orderByOptions:[{value:"created_at",translation:i18n.general.created_at},{value:"date",translation:i18n.communication.meeting_date},{value:"title",translation:i18n.communication.meeting_title}],courses:[],selected_courses:null,batches:[],selected_batches:null,departments:[],selected_departments:null,employee_categories:[],selected_employee_categories:null,showFilterPanel:!1,showCreatePanel:!1,help_topic:""}},mounted:function(){helper.hasPermission("list-meeting")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getMeetings(),helper.showDemoNotification(["communication"])},methods:{hasPermission:function(e){return helper.hasPermission(e)},getEmployeeName:function(e){return helper.getEmployeeName(e)},getEmployeeDesignationOnDate:function(e,t){return helper.getEmployeeDesignationOnDate(e,t)},getMeetings:function(e){var t=this,n=this.$loading.show();"number"!=typeof e&&(e=1);var s=helper.getFilterURL(this.filter);axios.get("/api/meeting?page="+e+s).then((function(e){t.meetings=e.meetings,t.courses=e.filters.courses,t.batches=e.filters.batches,t.departments=e.filters.departments,t.employee_categories=e.filters.employee_categories,n.hide()})).catch((function(e){n.hide(),helper.showErrorMsg(e)}))},showMeeting:function(e){this.$router.push("/communication/meeting/"+e.uuid)},editMeeting:function(e){this.$router.push("/communication/meeting/"+e.uuid+"/edit")},confirmDelete:function(e){var t=this;return function(n){return t.deleteMeeting(e)}},deleteMeeting:function(e){var t=this,n=this.$loading.show();axios.delete("/api/meeting/"+e.uuid).then((function(e){toastr.success(e.message),t.getMeetings(),n.hide()})).catch((function(e){n.hide(),helper.showErrorMsg(e)}))},getConfig:function(e){return helper.getConfig(e)},onCourseSelect:function(e){this.filter.course_id.push(e.id)},onCourseRemove:function(e){this.filter.course_id.splice(this.filter.course_id.indexOf(e.id),1)},onBatchSelect:function(e){this.filter.batch_id.push(e.id)},onBatchRemove:function(e){this.filter.batch_id.splice(this.filter.batch_id.indexOf(e.id),1)},onDepartmentSelect:function(e){this.filter.department_id.push(e.id)},onDepartmentRemove:function(e){this.filter.department_id.splice(this.filter.department_id.indexOf(e.id),1)},onEmployeeCategorySelect:function(e){this.filter.employee_category_id.push(e.id)},onEmployeeCategoryRemove:function(e){this.filter.employee_category_id.splice(this.filter.employee_category_id.indexOf(e.id),1)}},filters:{moment:function(e){return helper.formatDate(e)},momentDateTime:function(e){return helper.formatDateTime(e)},momentTime:function(e){return helper.formatTime(e)}},watch:{"filter.sort_by":function(e){this.getMeetings()},"filter.order":function(e){this.getMeetings()},"filter.page_length":function(e){this.getMeetings()}},computed:{authToken:function(){return helper.getAuthToken()},isDemo:function(){return!helper.getConfig("mode")}}};const r=(0,n(51900).Z)(o,(function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[n("div",{staticClass:"page-titles"},[n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-6"},[n("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("communication.meeting"))+" \n                    "),e.meetings.total?n("span",{staticClass:"card-subtitle d-none d-sm-inline"},[e._v(e._s(e.trans("general.total_result_found",{count:e.meetings.total,from:e.meetings.from,to:e.meetings.to})))]):n("span",{staticClass:"card-subtitle d-none d-sm-inline"},[e._v(e._s(e.trans("general.no_result_found")))])])]),e._v(" "),n("div",{staticClass:"col-12 col-sm-6"},[n("div",{staticClass:"action-buttons pull-right"},[e.meetings.total&&!e.showCreatePanel&&e.hasPermission("create-meeting")?n("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.add_new"),expression:"trans('general.add_new')"}],staticClass:"btn btn-info btn-sm",on:{click:function(t){e.showCreatePanel=!e.showCreatePanel}}},[n("i",{staticClass:"fas fa-plus"}),e._v(" "),n("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("communication.add_new_meeting")))])]):e._e(),e._v(" "),e.showFilterPanel?e._e():n("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){e.showFilterPanel=!e.showFilterPanel}}},[n("i",{staticClass:"fas fa-filter"}),e._v(" "),n("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("general.filter")))])]),e._v(" "),n("sort-by",{attrs:{"order-by-options":e.orderByOptions,"sort-by":e.filter.sort_by,order:e.filter.order},on:{updateSortBy:function(t){e.filter.sort_by=t},updateOrder:function(t){e.filter.order=t}}}),e._v(" "),n("help-button",{on:{clicked:function(t){e.help_topic="meeting"}}})],1)])])]),e._v(" "),n("div",{staticClass:"container-fluid"},[n("transition",{attrs:{name:"fade"}},[e.showFilterPanel?n("div",{staticClass:"card card-form"},[n("div",{staticClass:"card-body"},[n("h4",{staticClass:"card-title"},[e._v(e._s(e.trans("general.filter"))+"\n                    ")]),e._v(" "),n("div",{staticClass:"row"},[n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("academic.course")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id","group-values":"courses","group-label":"course_group","group-select":!1,name:"course_id",id:"course_id",options:e.courses,placeholder:e.trans("academic.select_course"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_courses},on:{select:e.onCourseSelect,remove:e.onCourseRemove},model:{value:e.selected_courses,callback:function(t){e.selected_courses=t},expression:"selected_courses"}},[e.courses.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                        "+e._s(e.trans("general.no_option_found"))+"\n                                    ")])])],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("academic.batch")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id","group-values":"batches","group-label":"course_group","group-select":!1,name:"batch_id",id:"batch_id",options:e.batches,placeholder:e.trans("academic.select_batch"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_batches},on:{select:e.onBatchSelect,remove:e.onBatchRemove},model:{value:e.selected_batches,callback:function(t){e.selected_batches=t},expression:"selected_batches"}},[e.batches.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                        "+e._s(e.trans("general.no_option_found"))+"\n                                    ")])])],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.department")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id",name:"department_id",id:"department_id",options:e.departments,placeholder:e.trans("employee.select_department"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_departments},on:{select:e.onDepartmentSelect,remove:e.onDepartmentRemove},model:{value:e.selected_departments,callback:function(t){e.selected_departments=t},expression:"selected_departments"}},[e.departments.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                        "+e._s(e.trans("general.no_option_found"))+"\n                                    ")])])],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.category")))]),e._v(" "),n("v-select",{attrs:{label:"name","track-by":"id",name:"employee_category_id",id:"employee_category_id",options:e.employee_categories,placeholder:e.trans("employee.select_category"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:e.selected_employee_categories},on:{select:e.onEmployeeCategorySelect,remove:e.onEmployeeCategoryRemove},model:{value:e.selected_employee_categories,callback:function(t){e.selected_employee_categories=t},expression:"selected_employee_categories"}},[e.employee_categories.length?e._e():n("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                        "+e._s(e.trans("general.no_option_found"))+"\n                                    ")])])],1)]),e._v(" "),n("div",{staticClass:"col-12 col-sm-3"},[n("div",{staticClass:"form-group"},[n("label",{attrs:{for:""}},[e._v(e._s(e.trans("communication.meeting_keyword")))]),e._v(" "),n("input",{directives:[{name:"model",rawName:"v-model",value:e.filter.keyword,expression:"filter.keyword"}],staticClass:"form-control",attrs:{name:"keyword"},domProps:{value:e.filter.keyword},on:{input:function(t){t.target.composing||e.$set(e.filter,"keyword",t.target.value)}}})])])]),e._v(" "),n("div",{staticClass:"card-footer text-right"},[n("button",{staticClass:"btn btn-danger",attrs:{type:"button"},on:{click:function(t){e.showFilterPanel=!1}}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),n("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"button"},on:{click:e.getMeetings}},[e._v(e._s(e.trans("general.filter")))])])])]):e._e()]),e._v(" "),e.hasPermission("create-meeting")?n("transition",{attrs:{name:"fade"}},[e.showCreatePanel?n("div",{staticClass:"card card-form"},[n("div",{staticClass:"card-body"},[n("h4",{staticClass:"card-title"},[e._v(e._s(e.trans("communication.add_new_meeting")))]),e._v(" "),n("meeting-form",{on:{completed:e.getMeetings,cancel:function(t){e.showCreatePanel=!e.showCreatePanel}}})],1)]):e._e()]):e._e(),e._v(" "),n("div",{staticClass:"card"},[n("div",{staticClass:"card-body"},[e.isDemo?n("p",{staticClass:"alert alert-info m-4"},[e._v(e._s(e.trans("communication.demo_mode_meeting_description")))]):e._e(),e._v(" "),e.meetings.total?n("div",{staticClass:"table-responsive"},[n("table",{staticClass:"table table-sm"},[n("thead",[n("tr",[n("th",[e._v(e._s(e.trans("communication.meeting_title")))]),e._v(" "),n("th",[e._v(e._s(e.trans("communication.meeting_duration")))]),e._v(" "),n("th",[e._v(e._s(e.trans("communication.meeting_audience")))]),e._v(" "),n("th",[e._v(e._s(e.trans("communication.meeting_created_by")))]),e._v(" "),n("th",[e._v(e._s(e.trans("general.created_at")))]),e._v(" "),n("th",{staticClass:"table-option"},[e._v(e._s(e.trans("general.action")))])])]),e._v(" "),n("tbody",e._l(e.meetings.data,(function(t){return n("tr",[n("td",[e._v("\n                                    "+e._s(t.title)+"\n                                    "),t.is_live?n("span",{staticClass:"badge badge-success"},[e._v(e._s(e.trans("communication.live")))]):e._e(),e._v(" "),t.is_expired?n("span",{staticClass:"badge badge-danger"},[e._v(e._s(e.trans("communication.expired")))]):e._e()]),e._v(" "),n("td",[e._v("\n                                    "+e._s(e._f("moment")(t.date))+" "),t.start_time?n("span",[e._v(e._s(e._f("momentTime")(t.start_time)))]):e._e(),e._v(" "),t.end_time?n("span",[e._v(" "+e._s(e.trans("general.to"))+" \n                                    "+e._s(e._f("momentTime")(t.end_time)))]):e._e()]),e._v(" "),n("td",[n("meeting-audience",{attrs:{meeting:t}})],1),e._v(" "),n("td",[e._v(e._s(e.getEmployeeName(t.user.employee))+" "),n("br"),e._v(" "+e._s(e.getEmployeeDesignationOnDate(t.user.employee,t.date)))]),e._v(" "),n("td",[e._v(e._s(e._f("momentDateTime")(t.created_at)))]),e._v(" "),n("td",{staticClass:"table-option"},[n("div",{staticClass:"btn-group"},[n("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.view_detail"),expression:"trans('general.view_detail')"}],staticClass:"btn btn-success btn-sm",on:{click:function(n){return n.preventDefault(),e.showMeeting(t)}}},[n("i",{staticClass:"fas fa-arrow-circle-right"})]),e._v(" "),e.hasPermission("edit-meeting")?n("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("communication.edit_meeting"),expression:"trans('communication.edit_meeting')"}],staticClass:"btn btn-info btn-sm",on:{click:function(n){return n.preventDefault(),e.editMeeting(t)}}},[n("i",{staticClass:"fas fa-edit"})]):e._e(),e._v(" "),e.hasPermission("delete-meeting")?n("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:e.confirmDelete(t)},expression:"{ok: confirmDelete(meeting)}"},{name:"tooltip",rawName:"v-tooltip",value:e.trans("communication.delete_meeting"),expression:"trans('communication.delete_meeting')"}],key:t.id,staticClass:"btn btn-danger btn-sm"},[n("i",{staticClass:"fas fa-trash"})]):e._e()])])])})),0)])]):e._e(),e._v(" "),e.meetings.total?e._e():n("module-info",{attrs:{module:"communication",title:"meeting_module_title",description:"meeting_module_description",icon:"list"}},[n("div",{attrs:{slot:"btn"},slot:"btn"},[!e.showCreatePanel&&e.hasPermission("create-meeting")?n("button",{staticClass:"btn btn-info btn-md",on:{click:function(t){e.showCreatePanel=!e.showCreatePanel}}},[n("i",{staticClass:"fas fa-plus"}),e._v(" "+e._s(e.trans("general.add_new")))]):e._e()])]),e._v(" "),n("pagination-record",{attrs:{"page-length":e.filter.page_length,records:e.meetings},on:{"update:pageLength":function(t){return e.$set(e.filter,"page_length",t)},"update:page-length":function(t){return e.$set(e.filter,"page_length",t)},updateRecords:e.getMeetings}})],1)])],1),e._v(" "),n("right-panel",{attrs:{topic:e.help_topic}})],1)}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=index.js.map?id=433b78ba664ebaa9011a
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/communication/meeting/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      search: '',
+      student_search_results: [],
+      employee_search_results: [],
+      displayResult: false,
+      resultLoading: false,
+      timeout: null
+    };
+  },
+  methods: {
+    searchResult: function searchResult() {
+      this.resultLoading = true;
+      clearTimeout(this.timeout);
+      var self = this;
+      this.timeout = setTimeout(function () {
+        if (self.search.length < 3) {
+          return;
+        }
+        axios.get('/api/search?q=' + self.search).then(function (response) {
+          self.student_search_results = response.student_records;
+          self.employee_search_results = response.employees;
+          self.resultLoading = false;
+        })["catch"](function (error) {
+          self.resultLoading = false;
+          helper.showErrorMsg(error);
+        });
+      }, 1000);
+    },
+    getStudentName: function getStudentName(student) {
+      return helper.getStudentName(student);
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getEmployeeDesignationOnDate: function getEmployeeDesignationOnDate(employee) {
+      return helper.getEmployeeDesignationOnDate(employee);
+    },
+    submitStudent: function submitStudent(student_record) {
+      this.$emit('searched', {
+        type: 'student',
+        id: student_record.id,
+        key: 'student_' + student_record.id,
+        name: student_record.student.name,
+        description_1: student_record.batch.course.name + ' ' + student_record.batch.name,
+        description_2: student_record.student.parent.first_guardian_name,
+        contact_number: student_record.student.contact_number
+      });
+      this.displayResult = false;
+      this.search = '';
+    },
+    submitEmployee: function submitEmployee(employee) {
+      this.$emit('searched', {
+        type: 'employee',
+        key: 'employee_' + employee.id,
+        id: employee.id,
+        name: employee.name,
+        description_1: this.getEmployeeDesignationOnDate(employee),
+        description_2: employee.employee_code,
+        contact_number: employee.contact_number
+      });
+      this.displayResult = false;
+      this.search = '';
+    }
+  },
+  watch: {
+    search: function search(val) {
+      if (val.length >= 3) {
+        this.searchResult();
+      } else {
+        this.student_search_results = [];
+        this.employee_search_results = [];
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/audience.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/audience.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['meeting']
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _components_user_search__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @components/user-search */ "./resources/js/components/user-search.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    userSearch: _components_user_search__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      meetingForm: new Form({
+        title: '',
+        date: '',
+        start_time: '',
+        end_time: '',
+        owner_video_preference: 0,
+        audience_video_preference: 0,
+        audience: null,
+        course_id: [],
+        batch_id: [],
+        department_id: [],
+        employee_category_id: [],
+        description: '',
+        upload_token: '',
+        individual_students: [],
+        individual_employees: []
+      }),
+      start_time: {
+        hour: '',
+        minute: '',
+        meridiem: 'am'
+      },
+      end_time: {
+        hour: '',
+        minute: '',
+        meridiem: 'am'
+      },
+      audiences: [],
+      courses: [],
+      selected_courses: null,
+      batches: [],
+      selected_batches: null,
+      departments: [],
+      selected_departments: null,
+      employee_categories: [],
+      selected_employee_categories: null,
+      module_id: '',
+      clearAttachment: true,
+      searchResults: []
+    };
+  },
+  props: ['uuid'],
+  mounted: function mounted() {
+    if (!helper.hasPermission('create-meeting') && !helper.hasPermission('edit-meeting')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getPreRequisite();
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/meeting/pre-requisite').then(function (response) {
+        _this.audiences = response.audiences;
+        _this.courses = response.courses;
+        _this.batches = response.batches;
+        _this.departments = response.departments;
+        _this.employee_categories = response.employee_categories;
+        if (_this.uuid) _this.get();else _this.meetingForm.upload_token = _this.$uuid.v4();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    proceed: function proceed() {
+      if (this.uuid) this.update();else this.store();
+    },
+    store: function store() {
+      var _this2 = this;
+      this.meetingForm.individual_students = [];
+      this.meetingForm.individual_employees = [];
+      this.searchResults.forEach(function (result) {
+        if (result.type === 'student') {
+          _this2.meetingForm.individual_students.push(result.id);
+        } else {
+          _this2.meetingForm.individual_employees.push(result.id);
+        }
+      });
+      this.meetingForm.start_time = helper.toTime(this.start_time);
+      this.meetingForm.end_time = helper.toTime(this.end_time);
+      var loader = this.$loading.show();
+      this.meetingForm.post('/api/meeting').then(function (response) {
+        toastr.success(response.message);
+        _this2.clearAttachment = !_this2.clearAttachment;
+        _this2.meetingForm.upload_token = _this2.$uuid.v4();
+        _this2.selected_courses = null;
+        _this2.selected_batches = null;
+        _this2.selected_departments = null;
+        _this2.selected_employee_categories = null;
+        _this2.meetingForm.individual_students = [];
+        _this2.meetingForm.individual_employees = [];
+        _this2.searchResults = [];
+        _this2.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/meeting/' + this.uuid).then(function (response) {
+        if (!response.is_editable) {
+          toastr.error(i18n.user.permission_denied);
+          loader.hide();
+          _this3.$router.push('/communication/meeting');
+        }
+        _this3.meetingForm.title = response.meeting.title;
+        _this3.meetingForm.date = response.meeting.date;
+        _this3.meetingForm.end_date = response.meeting.end_date;
+        _this3.meetingForm.description = response.meeting.description;
+        _this3.meetingForm.audience = response.meeting.audience;
+        _this3.selected_courses = response.meeting.audience == 'selected_course' ? response.selected_audience : [];
+        _this3.meetingForm.course_id = response.meeting.audience == 'selected_course' ? _this3.setMultiSelect(response.selected_audience) : [];
+        _this3.selected_batches = response.meeting.audience == 'selected_batch' ? response.selected_audience : [];
+        _this3.meetingForm.batch_id = response.meeting.audience == 'selected_batch' ? _this3.setMultiSelect(response.selected_audience) : [];
+        _this3.selected_departments = response.meeting.audience == 'selected_department' ? response.selected_audience : [];
+        _this3.meetingForm.department_id = response.meeting.audience == 'selected_department' ? _this3.setMultiSelect(response.selected_audience) : [];
+        _this3.selected_employee_categories = response.meeting.audience == 'selected_employee_category' ? response.selected_audience : [];
+        _this3.meetingForm.employee_category_id = response.meeting.audience == 'selected_employee_category' ? _this3.setMultiSelect(response.selected_audience) : [];
+        _this3.start_time = response.start_time;
+        _this3.end_time = response.end_time;
+        _this3.meetingForm.upload_token = response.meeting.upload_token;
+        _this3.module_id = response.meeting.id;
+        _this3.meetingForm.owner_video_preference = response.meeting.owner_video_preference;
+        _this3.meetingForm.audience_video_preference = response.meeting.audience_video_preference;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this3.$router.push('/communication/meeting');
+      });
+    },
+    update: function update() {
+      var _this4 = this;
+      this.meetingForm.individual_students = [];
+      this.meetingForm.individual_employees = [];
+      this.searchResults.forEach(function (result) {
+        if (result.type === 'student') {
+          _this4.meetingForm.individual_students.push(result.id);
+        } else {
+          _this4.meetingForm.individual_employees.push(result.id);
+        }
+      });
+      this.meetingForm.start_time = helper.toTime(this.start_time);
+      this.meetingForm.end_time = helper.toTime(this.end_time);
+      var loader = this.$loading.show();
+      this.meetingForm.patch('/api/meeting/' + this.uuid).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this4.$router.push('/communication/meeting');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onCourseSelect: function onCourseSelect(selectedOption) {
+      this.meetingForm.errors.clear('course_id');
+      this.meetingForm.course_id.push(selectedOption.id);
+    },
+    onCourseRemove: function onCourseRemove(removedOption) {
+      this.meetingForm.course_id.splice(this.meetingForm.course_id.indexOf(removedOption.id), 1);
+    },
+    onBatchSelect: function onBatchSelect(selectedOption) {
+      this.meetingForm.errors.clear('batch_id');
+      this.meetingForm.batch_id.push(selectedOption.id);
+    },
+    onBatchRemove: function onBatchRemove(removedOption) {
+      this.meetingForm.batch_id.splice(this.meetingForm.batch_id.indexOf(removedOption.id), 1);
+    },
+    onDepartmentSelect: function onDepartmentSelect(selectedOption) {
+      this.meetingForm.errors.clear('department_id');
+      this.meetingForm.department_id.push(selectedOption.id);
+    },
+    onDepartmentRemove: function onDepartmentRemove(removedOption) {
+      this.meetingForm.department_id.splice(this.meetingForm.department_id.indexOf(removedOption.id), 1);
+    },
+    onEmployeeCategorySelect: function onEmployeeCategorySelect(selectedOption) {
+      this.meetingForm.errors.clear('employee_category_id');
+      this.meetingForm.employee_category_id.push(selectedOption.id);
+    },
+    onEmployeeCategoryRemove: function onEmployeeCategoryRemove(removedOption) {
+      this.meetingForm.employee_category_id.splice(this.meetingForm.employee_category_id.indexOf(removedOption.id), 1);
+    },
+    setMultiSelect: function setMultiSelect(options) {
+      var data = [];
+      options.forEach(function (option) {
+        data.push(option.id);
+      });
+      return data;
+    },
+    addToSearchResult: function addToSearchResult(result) {
+      var existing_result = this.searchResults.findIndex(function (o) {
+        return o.type === result.type && o.id === result.id;
+      });
+      if (existing_result < 0) {
+        this.searchResults.push(result);
+      }
+    },
+    deleteResult: function deleteResult(result) {
+      var idx = this.searchResults.findIndex(function (o) {
+        return o.type === result.type && o.id === result.id;
+      });
+      this.searchResults.splice(idx, 1);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/index.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/index.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/communication/meeting/form.vue");
+/* harmony import */ var _audience__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./audience */ "./resources/js/views/communication/meeting/audience.vue");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    meetingForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"],
+    meetingAudience: _audience__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      meetings: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        sort_by: 'date',
+        order: 'desc',
+        keyword: '',
+        course_id: [],
+        batch_id: [],
+        department_id: [],
+        employee_category_id: [],
+        page_length: helper.getConfig('page_length')
+      },
+      orderByOptions: [{
+        value: 'created_at',
+        translation: i18n.general.created_at
+      }, {
+        value: 'date',
+        translation: i18n.communication.meeting_date
+      }, {
+        value: 'title',
+        translation: i18n.communication.meeting_title
+      }],
+      courses: [],
+      selected_courses: null,
+      batches: [],
+      selected_batches: null,
+      departments: [],
+      selected_departments: null,
+      employee_categories: [],
+      selected_employee_categories: null,
+      showFilterPanel: false,
+      showCreatePanel: false,
+      help_topic: ''
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('list-meeting')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getMeetings();
+    helper.showDemoNotification(['communication']);
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getEmployeeDesignationOnDate: function getEmployeeDesignationOnDate(employee, date) {
+      return helper.getEmployeeDesignationOnDate(employee, date);
+    },
+    getMeetings: function getMeetings(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/meeting?page=' + page + url).then(function (response) {
+        _this.meetings = response.meetings;
+        _this.courses = response.filters.courses;
+        _this.batches = response.filters.batches;
+        _this.departments = response.filters.departments;
+        _this.employee_categories = response.filters.employee_categories;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    showMeeting: function showMeeting(meeting) {
+      this.$router.push('/communication/meeting/' + meeting.uuid);
+    },
+    editMeeting: function editMeeting(meeting) {
+      this.$router.push('/communication/meeting/' + meeting.uuid + '/edit');
+    },
+    confirmDelete: function confirmDelete(meeting) {
+      var _this2 = this;
+      return function (dialog) {
+        return _this2.deleteMeeting(meeting);
+      };
+    },
+    deleteMeeting: function deleteMeeting(meeting) {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios["delete"]('/api/meeting/' + meeting.uuid).then(function (response) {
+        toastr.success(response.message);
+        _this3.getMeetings();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    onCourseSelect: function onCourseSelect(selectedOption) {
+      this.filter.course_id.push(selectedOption.id);
+    },
+    onCourseRemove: function onCourseRemove(removedOption) {
+      this.filter.course_id.splice(this.filter.course_id.indexOf(removedOption.id), 1);
+    },
+    onBatchSelect: function onBatchSelect(selectedOption) {
+      this.filter.batch_id.push(selectedOption.id);
+    },
+    onBatchRemove: function onBatchRemove(removedOption) {
+      this.filter.batch_id.splice(this.filter.batch_id.indexOf(removedOption.id), 1);
+    },
+    onDepartmentSelect: function onDepartmentSelect(selectedOption) {
+      this.filter.department_id.push(selectedOption.id);
+    },
+    onDepartmentRemove: function onDepartmentRemove(removedOption) {
+      this.filter.department_id.splice(this.filter.department_id.indexOf(removedOption.id), 1);
+    },
+    onEmployeeCategorySelect: function onEmployeeCategorySelect(selectedOption) {
+      this.filter.employee_category_id.push(selectedOption.id);
+    },
+    onEmployeeCategoryRemove: function onEmployeeCategoryRemove(removedOption) {
+      this.filter.employee_category_id.splice(this.filter.employee_category_id.indexOf(removedOption.id), 1);
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    },
+    momentTime: function momentTime(time) {
+      return helper.formatTime(time);
+    }
+  },
+  watch: {
+    'filter.sort_by': function filterSort_by(val) {
+      this.getMeetings();
+    },
+    'filter.order': function filterOrder(val) {
+      this.getMeetings();
+    },
+    'filter.page_length': function filterPage_length(val) {
+      this.getMeetings();
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    },
+    isDemo: function isDemo() {
+      return !helper.getConfig('mode') ? true : false;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=template&id=369957ef&scoped=true&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=template&id=369957ef&scoped=true& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "form-group"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search,
+      expression: "search"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Search Student or Employee"
+    },
+    domProps: {
+      value: _vm.search
+    },
+    on: {
+      keydown: function keydown($event) {
+        _vm.displayResult = true;
+      },
+      focus: function focus($event) {
+        _vm.displayResult = true;
+      },
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.search = $event.target.value;
+      }
+    }
+  }), _vm._v(" "), _vm.displayResult ? [_vm.search.length ? _c("ul", {
+    staticClass: "autocomplete-results"
+  }, [_vm.search.length && _vm.search.length < 3 ? _c("li", {
+    staticClass: "autocomplete-no-result"
+  }, [_vm._v(_vm._s(_vm.trans("general.type_min_3_char_for_search_result")))]) : _vm.search.length >= 3 && _vm.resultLoading ? _c("li", {
+    staticClass: "autocomplete-no-result"
+  }, [_vm._v(_vm._s(_vm.trans("general.loading_progress")))]) : _vm.search.length >= 3 && !_vm.student_search_results.length && !_vm.employee_search_results.length && _vm.search.length && !_vm.resultLoading ? _c("li", {
+    staticClass: "autocomplete-no-result"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))]) : _vm._e(), _vm._v(" "), _vm.student_search_results.length ? [_c("li", {
+    staticClass: "autocomplete-heading"
+  }, [_vm._v(_vm._s(_vm.trans("student.student")))]), _vm._v(" "), _vm._l(_vm.student_search_results, function (result) {
+    return _c("li", {
+      staticClass: "autocomplete-result pointer"
+    }, [_c("div", {
+      staticClass: "item-info",
+      on: {
+        click: function click($event) {
+          return _vm.submitStudent(result);
+        }
+      }
+    }, [_c("h5", {
+      staticClass: "item-heading"
+    }, [_vm._v(_vm._s(_vm.getStudentName(result.student)))]), _vm._v(" "), _c("div", {
+      staticClass: "item-meta"
+    }, [_c("span", {
+      staticClass: "father-name"
+    }, [_vm._v(_vm._s(result.student.parent.first_guardian_name))]), _vm._v(" "), _c("span", {
+      staticClass: "contact"
+    }, [_vm._v(" / " + _vm._s(result.student.contact_number))])]), _vm._v(" "), _c("div", {
+      staticClass: "item-meta"
+    }, [_c("span", {
+      staticClass: "course-batch"
+    }, [_vm._v(_vm._s(result.batch.course.name + " " + result.batch.name))])])])]);
+  })] : _vm._e(), _vm._v(" "), _vm.employee_search_results.length ? [_c("li", {
+    staticClass: "autocomplete-heading"
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee")))]), _vm._v(" "), _vm._l(_vm.employee_search_results, function (result) {
+    return _c("li", {
+      staticClass: "autocomplete-result pointer"
+    }, [_c("div", {
+      staticClass: "item-info",
+      on: {
+        click: function click($event) {
+          return _vm.submitEmployee(result);
+        }
+      }
+    }, [_c("h5", {
+      staticClass: "item-heading"
+    }, [_vm._v(_vm._s(_vm.getEmployeeName(result)))]), _vm._v(" "), _c("div", {
+      staticClass: "item-meta"
+    }, [_c("span", {
+      staticClass: "contact"
+    }, [_vm._v(" / " + _vm._s(result.contact_number))])]), _vm._v(" "), _c("div", {
+      staticClass: "item-meta"
+    }, [_c("span", {
+      staticClass: "course-batch"
+    }, [_vm._v(_vm._s(_vm.getEmployeeDesignationOnDate(result)))])])])]);
+  })] : _vm._e()], 2) : _vm._e()] : _vm._e()], 2);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/audience.vue?vue&type=template&id=b67db6a0&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/audience.vue?vue&type=template&id=b67db6a0& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_vm.meeting.audience == "selected_course" ? [_vm._v("\n        " + _vm._s(_vm.trans("academic.course")) + " "), _c("br"), _vm._v(" "), _c("ul", {
+    staticStyle: {
+      "list-style": "none",
+      padding: "0",
+      margin: "0"
+    }
+  }, _vm._l(_vm.meeting.courses, function (course) {
+    return _c("li", [_vm._v(_vm._s(course.name + "(" + course.course_group.name + ")"))]);
+  }), 0)] : _vm.meeting.audience == "selected_batch" ? [_vm._v("\n        " + _vm._s(_vm.trans("academic.batch")) + " "), _c("br"), _vm._v(" "), _c("ul", {
+    staticStyle: {
+      "list-style": "none",
+      padding: "0",
+      margin: "0"
+    }
+  }, _vm._l(_vm.meeting.batches, function (batch) {
+    return _c("li", [_vm._v(_vm._s(batch.name + "(" + batch.course.name + ")"))]);
+  }), 0)] : _vm.meeting.audience == "selected_department" ? [_vm._v("\n        " + _vm._s(_vm.trans("employee.department")) + " "), _c("br"), _vm._v(" "), _c("ul", {
+    staticStyle: {
+      "list-style": "none",
+      padding: "0",
+      margin: "0"
+    }
+  }, _vm._l(_vm.meeting.departments, function (department) {
+    return _c("li", [_vm._v(_vm._s(department.name))]);
+  }), 0)] : _vm.meeting.audience == "selected_employee_category" ? [_vm._v("\n        " + _vm._s(_vm.trans("employee.category")) + " "), _c("br"), _vm._v(" "), _c("ul", {
+    staticStyle: {
+      "list-style": "none",
+      padding: "0",
+      margin: "0"
+    }
+  }, _vm._l(_vm.meeting.employee_categorys, function (employee_category) {
+    return _c("li", [_vm._v(_vm._s(employee_category.name))]);
+  }), 0)] : _vm._e(), _vm._v(" "), _vm.meeting.options.individual_students && _vm.meeting.options.individual_students.length ? [_c("ul", {
+    staticStyle: {
+      "list-style": "none",
+      padding: "0",
+      margin: "0"
+    }
+  }, [_c("li", [_vm._v(_vm._s(_vm.trans("communication.count_individual_students", {
+    attribute: _vm.meeting.options.individual_students.length
+  })))])])] : _vm._e(), _vm._v(" "), _vm.meeting.options.individual_employees && _vm.meeting.options.individual_employees.length ? [_c("ul", {
+    staticStyle: {
+      "list-style": "none",
+      padding: "0",
+      margin: "0"
+    }
+  }, [_c("li", [_vm._v(_vm._s(_vm.trans("communication.count_individual_employees", {
+    attribute: _vm.meeting.options.individual_employees.length
+  })))])])] : _vm._e()], 2);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=template&id=072b1170&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=template&id=072b1170& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.meetingForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.meeting_title")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.meetingForm.title,
+      expression: "meetingForm.title"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "title",
+      placeholder: _vm.trans("communication.meeting_title")
+    },
+    domProps: {
+      value: _vm.meetingForm.title
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.meetingForm, "title", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.meetingForm,
+      "prop-name": "title"
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.meeting_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("communication.meeting_date")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.meetingForm.errors.clear("date");
+      }
+    },
+    model: {
+      value: _vm.meetingForm.date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.meetingForm, "date", $$v);
+      },
+      expression: "meetingForm.date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.meetingForm,
+      "prop-name": "date"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.meeting_start_time")))]), _vm._v(" "), _c("timepicker", {
+    attrs: {
+      hour: _vm.start_time.hour,
+      minute: _vm.start_time.minute,
+      meridiem: _vm.start_time.meridiem
+    },
+    on: {
+      "update:hour": function updateHour($event) {
+        return _vm.$set(_vm.start_time, "hour", $event);
+      },
+      "update:minute": function updateMinute($event) {
+        return _vm.$set(_vm.start_time, "minute", $event);
+      },
+      "update:meridiem": function updateMeridiem($event) {
+        return _vm.$set(_vm.start_time, "meridiem", $event);
+      }
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.meeting_end_time")))]), _vm._v(" "), _c("timepicker", {
+    attrs: {
+      hour: _vm.end_time.hour,
+      minute: _vm.end_time.minute,
+      meridiem: _vm.end_time.meridiem
+    },
+    on: {
+      "update:hour": function updateHour($event) {
+        return _vm.$set(_vm.end_time, "hour", $event);
+      },
+      "update:minute": function updateMinute($event) {
+        return _vm.$set(_vm.end_time, "minute", $event);
+      },
+      "update:meridiem": function updateMeridiem($event) {
+        return _vm.$set(_vm.end_time, "meridiem", $event);
+      }
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "custom-control custom-checkbox"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.meetingForm.audience_video_preference,
+      expression: "meetingForm.audience_video_preference"
+    }],
+    staticClass: "custom-control-input",
+    attrs: {
+      type: "checkbox",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.meetingForm.audience_video_preference) ? _vm._i(_vm.meetingForm.audience_video_preference, "1") > -1 : _vm.meetingForm.audience_video_preference
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.meetingForm.audience_video_preference,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.meetingForm, "audience_video_preference", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.meetingForm, "audience_video_preference", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.meetingForm, "audience_video_preference", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("span", {
+    staticClass: "custom-control-label"
+  }, [_c("small", [_vm._v(_vm._s(_vm.trans("communication.audience_video_preference")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.meeting_audience")))]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.meetingForm.audience,
+      expression: "meetingForm.audience"
+    }],
+    staticClass: "custom-select col-12",
+    attrs: {
+      name: "audience"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.meetingForm, "audience", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.meetingForm.errors.clear("audience");
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "null",
+      selected: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _vm._l(_vm.audiences, function (option) {
+    return _c("option", {
+      domProps: {
+        value: option.value
+      }
+    }, [_vm._v("\n                                " + _vm._s(option.text) + "\n                              ")]);
+  })], 2), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.meetingForm,
+      "prop-name": "audience"
+    }
+  })], 1)]), _vm._v(" "), _vm.meetingForm.audience == "selected_course" ? _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.course")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      "group-values": "courses",
+      "group-label": "course_group",
+      "group-select": false,
+      name: "course_id",
+      id: "course_id",
+      options: _vm.courses,
+      placeholder: _vm.trans("academic.select_course"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_courses
+    },
+    on: {
+      select: _vm.onCourseSelect,
+      remove: _vm.onCourseRemove
+    },
+    model: {
+      value: _vm.selected_courses,
+      callback: function callback($$v) {
+        _vm.selected_courses = $$v;
+      },
+      expression: "selected_courses"
+    }
+  }, [!_vm.courses.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                    " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.meetingForm,
+      "prop-name": "course_id"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.meetingForm.audience == "selected_batch" ? _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      "group-values": "batches",
+      "group-label": "course_group",
+      "group-select": false,
+      name: "batch_id",
+      id: "batch_id",
+      options: _vm.batches,
+      placeholder: _vm.trans("academic.select_batch"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_batches
+    },
+    on: {
+      select: _vm.onBatchSelect,
+      remove: _vm.onBatchRemove
+    },
+    model: {
+      value: _vm.selected_batches,
+      callback: function callback($$v) {
+        _vm.selected_batches = $$v;
+      },
+      expression: "selected_batches"
+    }
+  }, [!_vm.batches.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                    " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.meetingForm,
+      "prop-name": "batch_id"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.meetingForm.audience == "selected_department" ? _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.department")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "department_id",
+      id: "department_id",
+      options: _vm.departments,
+      placeholder: _vm.trans("employee.select_department"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_departments
+    },
+    on: {
+      select: _vm.onDepartmentSelect,
+      remove: _vm.onDepartmentRemove
+    },
+    model: {
+      value: _vm.selected_departments,
+      callback: function callback($$v) {
+        _vm.selected_departments = $$v;
+      },
+      expression: "selected_departments"
+    }
+  }, [!_vm.departments.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                    " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.meetingForm,
+      "prop-name": "department_id"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.meetingForm.audience == "selected_employee_category" ? _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.category")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "employee_category_id",
+      id: "employee_category_id",
+      options: _vm.employee_categories,
+      placeholder: _vm.trans("employee.select_category"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_employee_categories
+    },
+    on: {
+      select: _vm.onEmployeeCategorySelect,
+      remove: _vm.onEmployeeCategoryRemove
+    },
+    model: {
+      value: _vm.selected_employee_categories,
+      callback: function callback($$v) {
+        _vm.selected_employee_categories = $$v;
+      },
+      expression: "selected_employee_categories"
+    }
+  }, [!_vm.employee_categories.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                    " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.meetingForm,
+      "prop-name": "employee_category_id"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), !_vm.uuid ? _c("div", {
+    staticClass: "col-12"
+  }, [_c("user-search", {
+    on: {
+      searched: _vm.addToSearchResult
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("ul", {
+    staticClass: "font-80pc"
+  }, _vm._l(_vm.searchResults, function (result) {
+    return _c("li", {
+      key: result.key
+    }, [_vm._v("\n                                    " + _vm._s(result.name + " " + result.description_1) + " "), _c("span", {
+      staticClass: "text-right text-danger",
+      on: {
+        click: function click($event) {
+          return _vm.deleteResult(result);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-times-circle"
+    })]), _vm._v(" "), _c("span", {
+      staticClass: "d-block"
+    }, [_vm._v(_vm._s(result.description_2) + " " + _vm._s(result.contact_number))])]);
+  }), 0)])], 1) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("file-upload-input", {
+    attrs: {
+      "button-text": _vm.trans("general.upload_document"),
+      token: _vm.meetingForm.upload_token,
+      module: "meeting",
+      "clear-file": _vm.clearAttachment,
+      "module-id": _vm.module_id
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("html-editor", {
+    attrs: {
+      name: "description",
+      model: _vm.meetingForm.description,
+      height: "300",
+      isUpdate: _vm.uuid ? true : false
+    },
+    on: {
+      "update:model": function updateModel($event) {
+        return _vm.$set(_vm.meetingForm, "description", $event);
+      },
+      clearErrors: function clearErrors($event) {
+        return _vm.meetingForm.errors.clear("description");
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.meetingForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.uuid,
+      expression: "uuid"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/communication/meeting"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.uuid ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.uuid ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/index.vue?vue&type=template&id=44d750d6&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/index.vue?vue&type=template&id=44d750d6& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("communication.meeting")) + " \n                    "), _vm.meetings.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.meetings.total,
+    from: _vm.meetings.from,
+    to: _vm.meetings.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_vm.meetings.total && !_vm.showCreatePanel && _vm.hasPermission("create-meeting") ? _c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.add_new"),
+      expression: "trans('general.add_new')"
+    }],
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("communication.add_new_meeting")))])]) : _vm._e(), _vm._v(" "), !_vm.showFilterPanel ? _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = !_vm.showFilterPanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-filter"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])]) : _vm._e(), _vm._v(" "), _c("sort-by", {
+    attrs: {
+      "order-by-options": _vm.orderByOptions,
+      "sort-by": _vm.filter.sort_by,
+      order: _vm.filter.order
+    },
+    on: {
+      updateSortBy: function updateSortBy(value) {
+        _vm.filter.sort_by = value;
+      },
+      updateOrder: function updateOrder(value) {
+        _vm.filter.order = value;
+      }
+    }
+  }), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "meeting";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showFilterPanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")) + "\n                    ")]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.course")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      "group-values": "courses",
+      "group-label": "course_group",
+      "group-select": false,
+      name: "course_id",
+      id: "course_id",
+      options: _vm.courses,
+      placeholder: _vm.trans("academic.select_course"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_courses
+    },
+    on: {
+      select: _vm.onCourseSelect,
+      remove: _vm.onCourseRemove
+    },
+    model: {
+      value: _vm.selected_courses,
+      callback: function callback($$v) {
+        _vm.selected_courses = $$v;
+      },
+      expression: "selected_courses"
+    }
+  }, [!_vm.courses.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      "group-values": "batches",
+      "group-label": "course_group",
+      "group-select": false,
+      name: "batch_id",
+      id: "batch_id",
+      options: _vm.batches,
+      placeholder: _vm.trans("academic.select_batch"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_batches
+    },
+    on: {
+      select: _vm.onBatchSelect,
+      remove: _vm.onBatchRemove
+    },
+    model: {
+      value: _vm.selected_batches,
+      callback: function callback($$v) {
+        _vm.selected_batches = $$v;
+      },
+      expression: "selected_batches"
+    }
+  }, [!_vm.batches.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.department")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "department_id",
+      id: "department_id",
+      options: _vm.departments,
+      placeholder: _vm.trans("employee.select_department"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_departments
+    },
+    on: {
+      select: _vm.onDepartmentSelect,
+      remove: _vm.onDepartmentRemove
+    },
+    model: {
+      value: _vm.selected_departments,
+      callback: function callback($$v) {
+        _vm.selected_departments = $$v;
+      },
+      expression: "selected_departments"
+    }
+  }, [!_vm.departments.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.category")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "employee_category_id",
+      id: "employee_category_id",
+      options: _vm.employee_categories,
+      placeholder: _vm.trans("employee.select_category"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_employee_categories
+    },
+    on: {
+      select: _vm.onEmployeeCategorySelect,
+      remove: _vm.onEmployeeCategoryRemove
+    },
+    model: {
+      value: _vm.selected_employee_categories,
+      callback: function callback($$v) {
+        _vm.selected_employee_categories = $$v;
+      },
+      expression: "selected_employee_categories"
+    }
+  }, [!_vm.employee_categories.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.meeting_keyword")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.keyword,
+      expression: "filter.keyword"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "keyword"
+    },
+    domProps: {
+      value: _vm.filter.keyword
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.filter, "keyword", $event.target.value);
+      }
+    }
+  })])])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("button", {
+    staticClass: "btn btn-danger",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = false;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.getMeetings
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])])])]) : _vm._e()]), _vm._v(" "), _vm.hasPermission("create-meeting") ? _c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showCreatePanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("communication.add_new_meeting")))]), _vm._v(" "), _c("meeting-form", {
+    on: {
+      completed: _vm.getMeetings,
+      cancel: function cancel($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  })], 1)]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.isDemo ? _c("p", {
+    staticClass: "alert alert-info m-4"
+  }, [_vm._v(_vm._s(_vm.trans("communication.demo_mode_meeting_description")))]) : _vm._e(), _vm._v(" "), _vm.meetings.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("communication.meeting_title")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("communication.meeting_duration")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("communication.meeting_audience")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("communication.meeting_created_by")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("general.created_at")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.meetings.data, function (meeting) {
+    return _c("tr", [_c("td", [_vm._v("\n                                    " + _vm._s(meeting.title) + "\n                                    "), meeting.is_live ? _c("span", {
+      staticClass: "badge badge-success"
+    }, [_vm._v(_vm._s(_vm.trans("communication.live")))]) : _vm._e(), _vm._v(" "), meeting.is_expired ? _c("span", {
+      staticClass: "badge badge-danger"
+    }, [_vm._v(_vm._s(_vm.trans("communication.expired")))]) : _vm._e()]), _vm._v(" "), _c("td", [_vm._v("\n                                    " + _vm._s(_vm._f("moment")(meeting.date)) + " "), meeting.start_time ? _c("span", [_vm._v(_vm._s(_vm._f("momentTime")(meeting.start_time)))]) : _vm._e(), _vm._v(" "), meeting.end_time ? _c("span", [_vm._v(" " + _vm._s(_vm.trans("general.to")) + " \n                                    " + _vm._s(_vm._f("momentTime")(meeting.end_time)))]) : _vm._e()]), _vm._v(" "), _c("td", [_c("meeting-audience", {
+      attrs: {
+        meeting: meeting
+      }
+    })], 1), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getEmployeeName(meeting.user.employee)) + " "), _c("br"), _vm._v(" " + _vm._s(_vm.getEmployeeDesignationOnDate(meeting.user.employee, meeting.date)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("momentDateTime")(meeting.created_at)))]), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [_c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("general.view_detail"),
+        expression: "trans('general.view_detail')"
+      }],
+      staticClass: "btn btn-success btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.showMeeting(meeting);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-arrow-circle-right"
+    })]), _vm._v(" "), _vm.hasPermission("edit-meeting") ? _c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("communication.edit_meeting"),
+        expression: "trans('communication.edit_meeting')"
+      }],
+      staticClass: "btn btn-info btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.editMeeting(meeting);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-edit"
+    })]) : _vm._e(), _vm._v(" "), _vm.hasPermission("delete-meeting") ? _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(meeting)
+        },
+        expression: "{ok: confirmDelete(meeting)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("communication.delete_meeting"),
+        expression: "trans('communication.delete_meeting')"
+      }],
+      key: meeting.id,
+      staticClass: "btn btn-danger btn-sm"
+    }, [_c("i", {
+      staticClass: "fas fa-trash"
+    })]) : _vm._e()])])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.meetings.total ? _c("module-info", {
+    attrs: {
+      module: "communication",
+      title: "meeting_module_title",
+      description: "meeting_module_description",
+      icon: "list"
+    }
+  }, [_c("div", {
+    attrs: {
+      slot: "btn"
+    },
+    slot: "btn"
+  }, [!_vm.showCreatePanel && _vm.hasPermission("create-meeting") ? _c("button", {
+    staticClass: "btn btn-info btn-md",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.add_new")))]) : _vm._e()])]) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.meetings
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getMeetings
+    }
+  })], 1)])], 1), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=style&index=0&id=072b1170&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=style&index=0&id=072b1170&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.loading-overlay.is-full-page{\n    z-index: 1060;\n}\n", "",{"version":3,"sources":["webpack://./resources/js/views/communication/meeting/form.vue"],"names":[],"mappings":";AA2XA;IACA,aAAA;AACA","sourcesContent":["<template>\n    <div>\n        <form @submit.prevent=\"proceed\" @keydown=\"meetingForm.errors.clear($event.target.name)\">\n            <div class=\"row\">\n                <div class=\"col-12 col-sm-6\">\n                    <div class=\"form-group\">\n                        <label for=\"\">{{trans('communication.meeting_title')}}</label>\n                        <input class=\"form-control\" type=\"text\" v-model=\"meetingForm.title\" name=\"title\" :placeholder=\"trans('communication.meeting_title')\">\n                        <show-error :form-name=\"meetingForm\" prop-name=\"title\"></show-error>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col-12 col-sm-6\">\n                            <div class=\"form-group\">\n                                <label for=\"\">{{trans('communication.meeting_date')}}</label>\n                                <datepicker v-model=\"meetingForm.date\" :bootstrapStyling=\"true\" @selected=\"meetingForm.errors.clear('date')\" :placeholder=\"trans('communication.meeting_date')\"></datepicker>\n                                <show-error :form-name=\"meetingForm\" prop-name=\"date\"></show-error>\n                            </div>\n                        </div>\n                        <div class=\"col-12 col-sm-6\">\n                            <div class=\"form-group\">\n                                <label for=\"\">{{trans('communication.meeting_start_time')}}</label>\n                                <timepicker :hour.sync=\"start_time.hour\" :minute.sync=\"start_time.minute\" :meridiem.sync=\"start_time.meridiem\"></timepicker>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col-12 col-sm-6\">\n                            <div class=\"form-group\">\n                                <label for=\"\">{{trans('communication.meeting_end_time')}}</label>\n                                <timepicker :hour.sync=\"end_time.hour\" :minute.sync=\"end_time.minute\" :meridiem.sync=\"end_time.meridiem\"></timepicker>\n                            </div>\n                        </div>\n                        <div class=\"col-12 col-sm-6\">\n                            <!-- <div class=\"form-group\">\n                                <label class=\"custom-control custom-checkbox\">\n                                    <input type=\"checkbox\" class=\"custom-control-input\" value=\"1\" v-model=\"meetingForm.owner_video_preference\">\n                                    <span class=\"custom-control-label\"><small>{{trans('communication.owner_video_preference')}}</small></span>\n                                </label> \n                            </div> -->\n                            <div class=\"form-group\">\n                                <label class=\"custom-control custom-checkbox\">\n                                    <input type=\"checkbox\" class=\"custom-control-input\" value=\"1\" v-model=\"meetingForm.audience_video_preference\">\n                                    <span class=\"custom-control-label\"><small>{{trans('communication.audience_video_preference')}}</small></span>\n                                </label> \n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col-12 col-sm-6\">\n                            <div class=\"form-group\">\n                                <label for=\"\">{{trans('communication.meeting_audience')}}</label>\n                                <select v-model=\"meetingForm.audience\" class=\"custom-select col-12\" name=\"audience\" @change=\"meetingForm.errors.clear('audience')\">\n                                  <option value=null selected>{{trans('general.select_one')}}</option>\n                                  <option v-for=\"option in audiences\" v-bind:value=\"option.value\">\n                                    {{ option.text }}\n                                  </option>\n                                </select>\n                                <show-error :form-name=\"meetingForm\" prop-name=\"audience\"></show-error>\n                            </div>\n                        </div>\n                        <div class=\"col-12 col-sm-6\" v-if=\"meetingForm.audience == 'selected_course'\">\n                            <div class=\"form-group\">\n                                <label for=\"\">{{trans('academic.course')}}</label>\n                                <v-select label=\"name\" track-by=\"id\" v-model=\"selected_courses\" group-values=\"courses\" group-label=\"course_group\" :group-select=\"false\" name=\"course_id\" id=\"course_id\" :options=\"courses\" :placeholder=\"trans('academic.select_course')\" @select=\"onCourseSelect\" :multiple=\"true\" :close-on-select=\"false\" :clear-on-select=\"false\" :hide-selected=\"true\" @remove=\"onCourseRemove\" :selected=\"selected_courses\">\n                                    <div class=\"multiselect__option\" slot=\"afterList\" v-if=\"!courses.length\">\n                                        {{trans('general.no_option_found')}}\n                                    </div>\n                                </v-select>\n                                <show-error :form-name=\"meetingForm\" prop-name=\"course_id\"></show-error>\n                            </div>\n                        </div>\n                        <div class=\"col-12 col-sm-6\" v-if=\"meetingForm.audience == 'selected_batch'\">\n                            <div class=\"form-group\">\n                                <label for=\"\">{{trans('academic.batch')}}</label>\n                                <v-select label=\"name\" track-by=\"id\" v-model=\"selected_batches\" group-values=\"batches\" group-label=\"course_group\" :group-select=\"false\" name=\"batch_id\" id=\"batch_id\" :options=\"batches\" :placeholder=\"trans('academic.select_batch')\" @select=\"onBatchSelect\" :multiple=\"true\" :close-on-select=\"false\" :clear-on-select=\"false\" :hide-selected=\"true\" @remove=\"onBatchRemove\" :selected=\"selected_batches\">\n                                    <div class=\"multiselect__option\" slot=\"afterList\" v-if=\"!batches.length\">\n                                        {{trans('general.no_option_found')}}\n                                    </div>\n                                </v-select>\n                                <show-error :form-name=\"meetingForm\" prop-name=\"batch_id\"></show-error>\n                            </div>\n                        </div>\n                        <div class=\"col-12 col-sm-6\" v-if=\"meetingForm.audience == 'selected_department'\">\n                            <div class=\"form-group\">\n                                <label for=\"\">{{trans('employee.department')}}</label>\n                                <v-select label=\"name\" track-by=\"id\" v-model=\"selected_departments\" name=\"department_id\" id=\"department_id\" :options=\"departments\" :placeholder=\"trans('employee.select_department')\" @select=\"onDepartmentSelect\" :multiple=\"true\" :close-on-select=\"false\" :clear-on-select=\"false\" :hide-selected=\"true\" @remove=\"onDepartmentRemove\" :selected=\"selected_departments\">\n                                    <div class=\"multiselect__option\" slot=\"afterList\" v-if=\"!departments.length\">\n                                        {{trans('general.no_option_found')}}\n                                    </div>\n                                </v-select>\n                                <show-error :form-name=\"meetingForm\" prop-name=\"department_id\"></show-error>\n                            </div>\n                        </div>\n                        <div class=\"col-12 col-sm-6\" v-if=\"meetingForm.audience == 'selected_employee_category'\">\n                            <div class=\"form-group\">\n                                <label for=\"\">{{trans('employee.category')}}</label>\n                                <v-select label=\"name\" track-by=\"id\" v-model=\"selected_employee_categories\" name=\"employee_category_id\" id=\"employee_category_id\" :options=\"employee_categories\" :placeholder=\"trans('employee.select_category')\" @select=\"onEmployeeCategorySelect\" :multiple=\"true\" :close-on-select=\"false\" :clear-on-select=\"false\" :hide-selected=\"true\" @remove=\"onEmployeeCategoryRemove\" :selected=\"selected_employee_categories\">\n                                    <div class=\"multiselect__option\" slot=\"afterList\" v-if=\"!employee_categories.length\">\n                                        {{trans('general.no_option_found')}}\n                                    </div>\n                                </v-select>\n                                <show-error :form-name=\"meetingForm\" prop-name=\"employee_category_id\"></show-error>\n                            </div>\n                        </div>\n                        <div class=\"col-12\" v-if=\"! uuid\">\n                            <user-search @searched=\"addToSearchResult\"></user-search>\n\n                            <div class=\"form-group\">\n                                <ul class=\"font-80pc\">\n                                    <li v-for=\"result in searchResults\" :key=\"result.key\">\n                                        {{result.name+' '+result.description_1}} <span class=\"text-right text-danger\" @click=\"deleteResult(result)\"><i class=\"fas fa-times-circle\"></i></span>\n                                        <span class=\"d-block\">{{result.description_2}} {{result.contact_number}}</span>\n                                    </li>\n                                </ul>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                        <file-upload-input :button-text=\"trans('general.upload_document')\" :token=\"meetingForm.upload_token\" module=\"meeting\" :clear-file=\"clearAttachment\" :module-id=\"module_id\"></file-upload-input>\n                    </div>\n                </div>\n                <div class=\"col-12 col-sm-6\">\n                    <div class=\"form-group\">\n                        <html-editor name=\"description\" :model.sync=\"meetingForm.description\" height=\"300\" :isUpdate=\"uuid ? true : false\" @clearErrors=\"meetingForm.errors.clear('description')\"></html-editor>\n                        <show-error :form-name=\"meetingForm\" prop-name=\"description\"></show-error>\n                    </div>\n                </div>\n            </div>\n\n            <div class=\"card-footer text-right\">\n                <router-link to=\"/communication/meeting\" class=\"btn btn-danger waves-effect waves-light \" v-show=\"uuid\">{{trans('general.cancel')}}</router-link>\n                <button v-if=\"!uuid\" type=\"button\" class=\"btn btn-danger waves-effect waves-light \" @click=\"$emit('cancel')\">{{trans('general.cancel')}}</button>\n                <button type=\"submit\" class=\"btn btn-info waves-effect waves-light\">\n                    <span v-if=\"uuid\">{{trans('general.update')}}</span>\n                    <span v-else>{{trans('general.save')}}</span>\n                </button>\n            </div>\n        </form>\n    </div>\n</template>\n\n\n<script>\n    import userSearch from \"@components/user-search\"\n\n    export default {\n        components: {userSearch},\n        data() {\n            return {\n                meetingForm: new Form({\n                    title: '',\n                    date: '',\n                    start_time: '',\n                    end_time: '',\n                    owner_video_preference: 0,\n                    audience_video_preference: 0,\n                    audience: null,\n                    course_id: [],\n                    batch_id: [],\n                    department_id: [],\n                    employee_category_id: [],\n                    description: '',\n                    upload_token: '',\n                    individual_students: [],\n                    individual_employees: []\n                }),\n                start_time: {\n                    hour: '',\n                    minute: '',\n                    meridiem: 'am'\n                },\n                end_time: {\n                    hour: '',\n                    minute: '',\n                    meridiem: 'am'\n                },\n                audiences: [],\n                courses: [],\n                selected_courses: null,\n                batches: [],\n                selected_batches: null,\n                departments: [],\n                selected_departments: null,\n                employee_categories: [],\n                selected_employee_categories: null,\n                module_id: '',\n                clearAttachment: true,\n                searchResults: []\n            };\n        },\n        props: ['uuid'],\n        mounted() {\n            if(!helper.hasPermission('create-meeting') && !helper.hasPermission('edit-meeting')){\n                helper.notAccessibleMsg();\n                this.$router.push('/dashboard');\n            }\n\n            this.getPreRequisite();\n        },\n        methods: {\n            hasPermission(permission){\n                return helper.hasPermission(permission);\n            },\n            getPreRequisite(){\n                let loader = this.$loading.show();\n                axios.get('/api/meeting/pre-requisite')\n                    .then(response => {\n                        this.audiences = response.audiences;\n                        this.courses = response.courses;\n                        this.batches = response.batches;\n                        this.departments = response.departments;\n                        this.employee_categories = response.employee_categories;\n                        \n                        if(this.uuid)\n                            this.get();\n                        else\n                            this.meetingForm.upload_token = this.$uuid.v4();\n\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    })\n            },\n            proceed(){\n                if(this.uuid)\n                    this.update();\n                else\n                    this.store();\n            },\n            store(){\n                this.meetingForm.individual_students = [];\n                this.meetingForm.individual_employees = [];\n                this.searchResults.forEach(result => {\n                    if (result.type === 'student') {\n                        this.meetingForm.individual_students.push(result.id)\n                    } else {\n                        this.meetingForm.individual_employees.push(result.id)\n                    }\n                })\n                this.meetingForm.start_time = helper.toTime(this.start_time);\n                this.meetingForm.end_time   = helper.toTime(this.end_time);\n                let loader = this.$loading.show();\n                this.meetingForm.post('/api/meeting')\n                    .then(response => {\n                        toastr.success(response.message);\n                        this.clearAttachment = !this.clearAttachment;\n                        this.meetingForm.upload_token = this.$uuid.v4();\n                        this.selected_courses = null;\n                        this.selected_batches = null;\n                        this.selected_departments = null;\n                        this.selected_employee_categories = null;\n                        this.meetingForm.individual_students = [];\n                        this.meetingForm.individual_employees = [];\n                        this.searchResults = [];\n                        this.$emit('completed');\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            get(){\n                let loader = this.$loading.show();\n                axios.get('/api/meeting/'+this.uuid)\n                    .then(response => {\n\n                        if (! response.is_editable) {\n                            toastr.error(i18n.user.permission_denied);\n                            loader.hide();\n                            this.$router.push('/communication/meeting');\n                        }\n\n                        this.meetingForm.title = response.meeting.title;\n                        this.meetingForm.date = response.meeting.date;\n                        this.meetingForm.end_date = response.meeting.end_date;\n                        this.meetingForm.description = response.meeting.description;\n                        this.meetingForm.audience = response.meeting.audience;\n                        this.selected_courses = response.meeting.audience == 'selected_course' ? response.selected_audience : [];\n                        this.meetingForm.course_id = response.meeting.audience == 'selected_course' ? this.setMultiSelect(response.selected_audience) : [];\n                        this.selected_batches = response.meeting.audience == 'selected_batch' ? response.selected_audience : [];\n                        this.meetingForm.batch_id = response.meeting.audience == 'selected_batch' ? this.setMultiSelect(response.selected_audience) : [];\n                        this.selected_departments = response.meeting.audience == 'selected_department' ? response.selected_audience : [];\n                        this.meetingForm.department_id = response.meeting.audience == 'selected_department' ? this.setMultiSelect(response.selected_audience) : [];\n                        this.selected_employee_categories = response.meeting.audience == 'selected_employee_category' ? response.selected_audience : [];\n                        this.meetingForm.employee_category_id = response.meeting.audience == 'selected_employee_category' ? this.setMultiSelect(response.selected_audience) : [];\n                        this.start_time = response.start_time;\n                        this.end_time = response.end_time;\n                        this.meetingForm.upload_token = response.meeting.upload_token;\n                        this.module_id = response.meeting.id;\n                        this.meetingForm.owner_video_preference = response.meeting.owner_video_preference;\n                        this.meetingForm.audience_video_preference = response.meeting.audience_video_preference;\n                        \n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                        this.$router.push('/communication/meeting');\n                    });\n            },\n            update(){\n                this.meetingForm.individual_students = [];\n                this.meetingForm.individual_employees = [];\n                this.searchResults.forEach(result => {\n                    if (result.type === 'student') {\n                        this.meetingForm.individual_students.push(result.id)\n                    } else {\n                        this.meetingForm.individual_employees.push(result.id)\n                    }\n                })\n                this.meetingForm.start_time = helper.toTime(this.start_time);\n                this.meetingForm.end_time   = helper.toTime(this.end_time);\n                let loader = this.$loading.show();\n                this.meetingForm.patch('/api/meeting/'+this.uuid)\n                    .then(response => {\n                        toastr.success(response.message);\n                        loader.hide();\n                        this.$router.push('/communication/meeting');\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            onCourseSelect(selectedOption){\n                this.meetingForm.errors.clear('course_id');\n                this.meetingForm.course_id.push(selectedOption.id);\n            },\n            onCourseRemove(removedOption){\n                this.meetingForm.course_id.splice(this.meetingForm.course_id.indexOf(removedOption.id), 1);\n            },\n            onBatchSelect(selectedOption){\n                this.meetingForm.errors.clear('batch_id');\n                this.meetingForm.batch_id.push(selectedOption.id);\n            },\n            onBatchRemove(removedOption){\n                this.meetingForm.batch_id.splice(this.meetingForm.batch_id.indexOf(removedOption.id), 1);\n            },\n            onDepartmentSelect(selectedOption){\n                this.meetingForm.errors.clear('department_id');\n                this.meetingForm.department_id.push(selectedOption.id);\n            },\n            onDepartmentRemove(removedOption){\n                this.meetingForm.department_id.splice(this.meetingForm.department_id.indexOf(removedOption.id), 1);\n            },\n            onEmployeeCategorySelect(selectedOption){\n                this.meetingForm.errors.clear('employee_category_id');\n                this.meetingForm.employee_category_id.push(selectedOption.id);\n            },\n            onEmployeeCategoryRemove(removedOption){\n                this.meetingForm.employee_category_id.splice(this.meetingForm.employee_category_id.indexOf(removedOption.id), 1);\n            },\n            setMultiSelect(options) {\n                let data = [];\n                options.forEach(option => {\n                    data.push(option.id);\n                })\n\n                return data;\n            },\n            addToSearchResult(result) {\n                let existing_result = this.searchResults.findIndex(o => o.type === result.type && o.id === result.id)\n\n                if (existing_result < 0) {\n                    this.searchResults.push(result)\n                }\n            },\n            deleteResult(result) {\n                let idx = this.searchResults.findIndex(o => o.type === result.type && o.id === result.id)\n                this.searchResults.splice(idx, 1);\n            }\n        }\n    }\n</script>\n\n<style>\n.loading-overlay.is-full-page{\n    z-index: 1060;\n}\n</style>"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".topbar .top-navbar .app-search input[data-v-369957ef] {\n  background: rgba(0, 20, 40, 0.1);\n  color: #f1f2f4;\n  border: 1px solid rgba(0, 20, 40, 0.1);\n  border-radius: 2px;\n  width: 240px;\n}\n.topbar .top-navbar .app-search input[data-v-369957ef]::-moz-placeholder {\n  color: rgba(255, 255, 255, 0.4);\n}\n.topbar .top-navbar .app-search input[data-v-369957ef]::placeholder {\n  color: rgba(255, 255, 255, 0.4);\n}\n.topbar .top-navbar .app-search input[data-v-369957ef]:focus {\n  background: rgba(0, 20, 40, 0.2);\n  color: #ffffff;\n  border: 1px solid rgba(0, 20, 40, 0.2);\n}\nul.autocomplete-results[data-v-369957ef] {\n  padding: 0;\n  margin: 0;\n  max-height: 350px;\n  overflow: auto;\n  position: absolute;\n  width: 100%;\n  background: #ffffff;\n  border: 1px solid #d1d2d5;\n  border-top: none;\n  box-shadow: 0 2px 10px rgba(0, 20, 40, 0.2);\n  border-radius: 0 0 6px 6px;\n  z-index: 999999;\n}\nul.autocomplete-results li.autocomplete-heading[data-v-369957ef] {\n  font-size: 16px;\n  padding: 8px;\n  letter-spacing: 0.2px;\n  color: rgba(0, 20, 40, 0.4);\n  border-bottom: 1px solid rgba(0, 20, 40, 0.2);\n}\nul.autocomplete-results li.autocomplete-no-result[data-v-369957ef] {\n  font-size: 12px;\n  padding: 8px;\n  letter-spacing: 0.2px;\n  color: rgba(0, 20, 40, 0.4);\n  border-bottom: 1px solid rgba(0, 20, 40, 0.2);\n}\nul.autocomplete-results > li.autocomplete-result[data-v-369957ef] {\n  display: flex;\n  list-style: none;\n  text-align: left;\n  width: 100%;\n}\nul.autocomplete-results > li.autocomplete-result .item-info[data-v-369957ef] {\n  margin: 0;\n  flex-grow: 2;\n  padding: 5px 8px;\n}\nul.autocomplete-results > li.autocomplete-result .item-info .item-heading[data-v-369957ef] {\n  font-size: 13px;\n  margin-bottom: 0;\n}\nul.autocomplete-results > li.autocomplete-result .item-info .item-meta[data-v-369957ef] {\n  font-size: 11px;\n}\nul.autocomplete-results > li.autocomplete-result[data-v-369957ef]:nth-child(even) {\n  background: rgba(210, 215, 220, 0.2);\n}\nul.autocomplete-results > li.autocomplete-result + li.autocomplete-result[data-v-369957ef] {\n  border-top: 1px solid rgba(0, 20, 40, 0.1);\n}\nul.autocomplete-results > li.autocomplete-result[data-v-369957ef]:hover {\n  background: rgba(200, 205, 215, 0.5);\n  color: rgba(0, 20, 40, 0.8);\n}\nul.autocomplete-results > li.autocomplete-result:hover .item-heading[data-v-369957ef], ul.autocomplete-results > li.autocomplete-result:hover .item-meta[data-v-369957ef] {\n  color: inherit;\n}", "",{"version":3,"sources":["webpack://./resources/js/components/user-search.vue"],"names":[],"mappings":"AACA;EACI,gCAAA;EACA,cAAA;EACA,sCAAA;EACA,kBAAA;EACA,YAAA;AAAJ;AAEA;EACI,+BAAA;AACJ;AAFA;EACI,+BAAA;AACJ;AACA;EACI,gCAAA;EACA,cAAA;EACA,sCAAA;AAEJ;AACA;EACI,UAAA;EACA,SAAA;EACA,iBAAA;EACA,cAAA;EACA,kBAAA;EACA,WAAA;EACA,mBAAA;EACA,yBAAA;EACA,gBAAA;EACA,2CAAA;EACA,0BAAA;EACA,eAAA;AAEJ;AAAI;EACI,eAAA;EACA,YAAA;EACA,qBAAA;EACA,2BAAA;EACA,6CAAA;AAER;AAAI;EACI,eAAA;EACA,YAAA;EACA,qBAAA;EACA,2BAAA;EACA,6CAAA;AAER;AACA;EACI,aAAA;EACA,gBAAA;EACA,gBAAA;EACA,WAAA;AAEJ;AAAI;EACI,SAAA;EACA,YAAA;EACA,gBAAA;AAER;AAAQ;EACI,eAAA;EACA,gBAAA;AAEZ;AACQ;EACI,eAAA;AACZ;AAGA;EACI,oCAAA;AAAJ;AAEA;EACI,0CAAA;AACJ;AACA;EACI,oCAAA;EACA,2BAAA;AAEJ;AAAI;EACI,cAAA;AAER","sourcesContent":["\n.topbar .top-navbar .app-search input {\n    background: rgba(0,20,40,0.1);\n    color: #f1f2f4;\n    border: 1px solid rgba(0,20,40,0.1);\n    border-radius: 2px;\n    width: 240px;\n}\n.topbar .top-navbar .app-search input::placeholder {\n    color: rgba(255,255,255,0.4);\n}\n.topbar .top-navbar .app-search input:focus {\n    background: rgba(0,20,40,0.2);\n    color: #ffffff;\n    border: 1px solid rgba(0,20,40,0.2);\n}\n\nul.autocomplete-results {\n    padding: 0;\n    margin: 0;\n    max-height: 350px;\n    overflow: auto;\n    position: absolute;\n    width: 100%;\n    background: #ffffff;\n    border: 1px solid #d1d2d5;\n    border-top: none;\n    box-shadow: 0 2px 10px rgba(0,20,40,0.2);\n    border-radius: 0 0 6px 6px;\n    z-index: 999999;\n\n    li.autocomplete-heading {\n        font-size: 16px;\n        padding: 8px;\n        letter-spacing: 0.2px;\n        color: rgba(0,20,40,0.4);\n        border-bottom: 1px solid rgba(0,20,40,0.2);\n    }\n    li.autocomplete-no-result {\n        font-size: 12px;\n        padding: 8px;\n        letter-spacing: 0.2px;\n        color: rgba(0,20,40,0.4);\n        border-bottom: 1px solid rgba(0,20,40,0.2);\n    }\n}\nul.autocomplete-results > li.autocomplete-result {\n    display: flex;\n    list-style: none;\n    text-align: left;\n    width: 100%;\n\n    .item-info {\n        margin: 0;\n        flex-grow: 2;\n        padding: 5px 8px;\n\n        .item-heading {\n            font-size: 13px;\n            margin-bottom: 0;\n        }\n\n        .item-meta {\n            font-size: 11px;\n        }\n    }\n}\nul.autocomplete-results > li.autocomplete-result:nth-child(even) {\n    background: rgba(210,215,220,0.2);\n}\nul.autocomplete-results > li.autocomplete-result + li.autocomplete-result {\n    border-top: 1px solid rgba(0,20,40,0.1);\n}\nul.autocomplete-results > li.autocomplete-result:hover {\n    background: rgba(200,205,215,0.5);\n    color: rgba(0,20,40,0.8);\n\n    .item-heading, .item-meta {\n        color: inherit;\n    }\n}\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=style&index=0&id=072b1170&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=style&index=0&id=072b1170&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_072b1170_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=style&index=0&id=072b1170&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=style&index=0&id=072b1170&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_072b1170_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_072b1170_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_19_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_19_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_19_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_user_search_vue_vue_type_style_index_0_id_369957ef_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_19_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_19_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_19_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_user_search_vue_vue_type_style_index_0_id_369957ef_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_19_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_19_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_19_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_user_search_vue_vue_type_style_index_0_id_369957ef_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./resources/js/components/user-search.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/user-search.vue ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _user_search_vue_vue_type_template_id_369957ef_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./user-search.vue?vue&type=template&id=369957ef&scoped=true& */ "./resources/js/components/user-search.vue?vue&type=template&id=369957ef&scoped=true&");
+/* harmony import */ var _user_search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user-search.vue?vue&type=script&lang=js& */ "./resources/js/components/user-search.vue?vue&type=script&lang=js&");
+/* harmony import */ var _user_search_vue_vue_type_style_index_0_id_369957ef_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true& */ "./resources/js/components/user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _user_search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _user_search_vue_vue_type_template_id_369957ef_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _user_search_vue_vue_type_template_id_369957ef_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "369957ef",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user-search.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/audience.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/audience.vue ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _audience_vue_vue_type_template_id_b67db6a0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./audience.vue?vue&type=template&id=b67db6a0& */ "./resources/js/views/communication/meeting/audience.vue?vue&type=template&id=b67db6a0&");
+/* harmony import */ var _audience_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./audience.vue?vue&type=script&lang=js& */ "./resources/js/views/communication/meeting/audience.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _audience_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _audience_vue_vue_type_template_id_b67db6a0___WEBPACK_IMPORTED_MODULE_0__.render,
+  _audience_vue_vue_type_template_id_b67db6a0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/communication/meeting/audience.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/form.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/views/communication/meeting/form.vue ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_072b1170___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=072b1170& */ "./resources/js/views/communication/meeting/form.vue?vue&type=template&id=072b1170&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/communication/meeting/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_style_index_0_id_072b1170_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./form.vue?vue&type=style&index=0&id=072b1170&lang=css& */ "./resources/js/views/communication/meeting/form.vue?vue&type=style&index=0&id=072b1170&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_072b1170___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_072b1170___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/communication/meeting/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/index.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/index.vue ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_44d750d6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=44d750d6& */ "./resources/js/views/communication/meeting/index.vue?vue&type=template&id=44d750d6&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/communication/meeting/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_44d750d6___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_44d750d6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/communication/meeting/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/user-search.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/user-search.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_user_search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./user-search.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_user_search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/audience.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/audience.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_audience_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./audience.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/audience.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_audience_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/form.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/form.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/index.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/index.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/user-search.vue?vue&type=template&id=369957ef&scoped=true&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/user-search.vue?vue&type=template&id=369957ef&scoped=true& ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_user_search_vue_vue_type_template_id_369957ef_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_user_search_vue_vue_type_template_id_369957ef_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_user_search_vue_vue_type_template_id_369957ef_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./user-search.vue?vue&type=template&id=369957ef&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=template&id=369957ef&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/audience.vue?vue&type=template&id=b67db6a0&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/audience.vue?vue&type=template&id=b67db6a0& ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_audience_vue_vue_type_template_id_b67db6a0___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_audience_vue_vue_type_template_id_b67db6a0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_audience_vue_vue_type_template_id_b67db6a0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./audience.vue?vue&type=template&id=b67db6a0& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/audience.vue?vue&type=template&id=b67db6a0&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/form.vue?vue&type=template&id=072b1170&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/form.vue?vue&type=template&id=072b1170& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_072b1170___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_072b1170___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_072b1170___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=072b1170& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=template&id=072b1170&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/index.vue?vue&type=template&id=44d750d6&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/index.vue?vue&type=template&id=44d750d6& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_44d750d6___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_44d750d6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_44d750d6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=44d750d6& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/index.vue?vue&type=template&id=44d750d6&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/form.vue?vue&type=style&index=0&id=072b1170&lang=css&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/form.vue?vue&type=style&index=0&id=072b1170&lang=css& ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_072b1170_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=style&index=0&id=072b1170&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/form.vue?vue&type=style&index=0&id=072b1170&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true& ***!
+  \***********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_19_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_19_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_19_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_user_search_vue_vue_type_style_index_0_id_369957ef_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-19.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-19.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-19.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/user-search.vue?vue&type=style&index=0&id=369957ef&lang=scss&scoped=true&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=b308fd03d38f2062

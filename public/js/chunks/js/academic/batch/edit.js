@@ -1,2 +1,839 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[9613],{48771:(t,e,a)=>{"use strict";a.r(e),a.d(e,{default:()=>r});const s={components:{batchForm:a(56112).Z},data:function(){return{id:this.$route.params.id}},mounted:function(){helper.hasPermission("edit-batch")||(helper.notAccessibleMsg(),this.$router.push("/dashboard"))}};const r=(0,a(51900).Z)(s,(function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("div",[a("div",{staticClass:"page-titles"},[a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-6"},[a("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("academic.edit_batch"))+"\n                    "),a("button",{staticClass:"btn btn-info btn-sm",on:{click:function(e){return t.$router.push("/academic/batch")}}},[a("i",{staticClass:"fas fa-list"}),t._v(" "),a("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("academic.batch")))])])])])])]),t._v(" "),a("div",{staticClass:"container-fluid"},[a("div",{staticClass:"card card-form"},[a("div",{staticClass:"card-body"},[a("batch-form",{attrs:{id:t.id}})],1)])])])}),[],!1,null,null,null).exports},56112:(t,e,a)=>{"use strict";a.d(e,{Z:()=>r});const s={components:{},data:function(){return{batchForm:new Form({name:"",course_id:"",exam_grade_id:"",exam_observation_id:"",max_strength:"",roll_number_prefix:"",roll_number_digit:0,default_attendance_method:"",description:"",holidays_except:[]}),holiday:"",attendance_methods:[],courses:[],selected_course:null,exam_grades:[],selected_exam_grade:null,exam_observations:[],selected_exam_observation:null}},props:["id"],mounted:function(){helper.hasPermission("create-batch")||helper.hasPermission("edit-batch")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.id&&this.get(),this.getPreRequisite()},methods:{proceed:function(){this.id?this.update():this.store()},getPreRequisite:function(){var t=this,e=this.$loading.show();axios.get("/api/batch/pre-requisite").then((function(a){t.courses=a.courses,t.exam_grades=a.exam_grades,t.exam_observations=a.exam_observations,t.attendance_methods=a.attendance_methods,e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},store:function(){var t=this,e=this.$loading.show();this.batchForm.post("/api/batch").then((function(a){toastr.success(a.message),t.selected_course=null,t.$emit("completed"),e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},get:function(){var t=this,e=this.$loading.show();axios.get("/api/batch/"+this.id).then((function(a){t.batchForm.name=a.batch.name,t.batchForm.course_id=a.batch.course_id,t.batchForm.exam_grade_id=a.batch.exam_grade_id,t.selected_exam_grade=a.batch.exam_grade_id?{id:a.batch.exam_grade_id,name:a.batch.grade.name}:null,t.batchForm.exam_observation_id=a.batch.exam_observation_id,t.selected_exam_observation=a.batch.exam_observation_id?{id:a.batch.exam_observation_id,name:a.batch.observation.name}:null,t.batchForm.description=a.batch.description,t.batchForm.max_strength=a.batch.options?a.batch.options.max_strength:helper.getConfig("default_max_strength_per_batch"),t.batchForm.default_attendance_method=a.batch.options?a.batch.options.default_attendance_method:"",t.batchForm.roll_number_prefix=a.batch.options?a.batch.options.roll_number_prefix:helper.getConfig("default_roll_number_prefix"),t.batchForm.roll_number_digit=a.batch.options&&a.batch.options.hasOwnProperty("roll_number_digit")?a.batch.options.roll_number_digit:0,t.selected_course=a.selected_course,t.batchForm.holidays_except=a.batch.options.holidays_except||[],e.hide()})).catch((function(a){e.hide(),helper.showErrorMsg(a),t.$router.push("/academic/batch")}))},update:function(){var t=this,e=this.$loading.show();this.batchForm.patch("/api/batch/"+this.id).then((function(a){toastr.success(a.message),e.hide(),t.batchForm.holidays_except=[],t.$router.push("/academic/batch")})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},onCourseSelect:function(t){return this.batchForm.course_id=t.id},onExamGradeSelect:function(t){return this.batchForm.exam_grade_id=t.id},onExamObservationSelect:function(t){return this.batchForm.exam_observation_id=t.id},onSelected:function(t){this.holiday="",t=helper.toDate(t),this.batchForm.holidays_except.indexOf(t)<0&&this.batchForm.holidays_except.push(t),this.batchForm.errors.clear("holidays_except"),this.holiday=""},remove:function(t){var e=this.batchForm.holidays_except.indexOf(t);e<0||(this.batchForm.holidays_except.splice(e,1),this.holiday="")}},filters:{momentWithDay:function(t){return helper.formatDateWithDay(t)}}};const r=(0,a(51900).Z)(s,(function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("form",{on:{submit:function(e){return e.preventDefault(),t.proceed.apply(null,arguments)},keydown:function(e){return t.batchForm.errors.clear(e.target.name)}}},[a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.batch_name")))]),t._v(" "),a("input",{directives:[{name:"model",rawName:"v-model",value:t.batchForm.name,expression:"batchForm.name"}],staticClass:"form-control",attrs:{type:"text",name:"name",placeholder:t.trans("academic.batch_name")},domProps:{value:t.batchForm.name},on:{input:function(e){e.target.composing||t.$set(t.batchForm,"name",e.target.value)}}}),t._v(" "),a("show-error",{attrs:{"form-name":t.batchForm,"prop-name":"name"}})],1)]),t._v(" "),a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.course")))]),t._v(" "),a("v-select",{attrs:{label:"name","group-values":"courses","group-label":"course_group","group-select":!1,name:"course_id",id:"course_id",options:t.courses,placeholder:t.trans("academic.select_course")},on:{select:t.onCourseSelect,close:function(e){return t.batchForm.errors.clear("course_id")},remove:function(e){t.batchForm.course_id=""}},model:{value:t.selected_course,callback:function(e){t.selected_course=e},expression:"selected_course"}},[t.courses.length?t._e():a("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                        "+t._s(t.trans("general.no_option_found"))+"\n                    ")])]),t._v(" "),a("show-error",{attrs:{"form-name":t.batchForm,"prop-name":"course_id"}})],1)]),t._v(" "),a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.max_strength")))]),t._v(" "),a("input",{directives:[{name:"model",rawName:"v-model",value:t.batchForm.max_strength,expression:"batchForm.max_strength"}],staticClass:"form-control",attrs:{type:"text",name:"max_strength",placeholder:t.trans("academic.max_strength")},domProps:{value:t.batchForm.max_strength},on:{input:function(e){e.target.composing||t.$set(t.batchForm,"max_strength",e.target.value)}}}),t._v(" "),a("show-error",{attrs:{"form-name":t.batchForm,"prop-name":"max_strength"}})],1)]),t._v(" "),a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.roll_number_prefix")))]),t._v(" "),a("input",{directives:[{name:"model",rawName:"v-model",value:t.batchForm.roll_number_prefix,expression:"batchForm.roll_number_prefix"}],staticClass:"form-control",attrs:{type:"text",name:"roll_number_prefix",placeholder:t.trans("academic.roll_number_prefix")},domProps:{value:t.batchForm.roll_number_prefix},on:{input:function(e){e.target.composing||t.$set(t.batchForm,"roll_number_prefix",e.target.value)}}}),t._v(" "),a("show-error",{attrs:{"form-name":t.batchForm,"prop-name":"roll_number_prefix"}})],1)]),t._v(" "),a("div",{staticClass:"col-12 col-sm-6"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.roll_number_digit")))]),t._v(" "),a("input",{directives:[{name:"model",rawName:"v-model",value:t.batchForm.roll_number_digit,expression:"batchForm.roll_number_digit"}],staticClass:"form-control",attrs:{type:"text",name:"roll_number_digit",placeholder:t.trans("academic.roll_number_digit")},domProps:{value:t.batchForm.roll_number_digit},on:{input:function(e){e.target.composing||t.$set(t.batchForm,"roll_number_digit",e.target.value)}}}),t._v(" "),a("show-error",{attrs:{"form-name":t.batchForm,"prop-name":"roll_number_digit"}})],1)])])]),t._v(" "),a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.default_attendance_method")))]),t._v(" "),a("select",{directives:[{name:"model",rawName:"v-model",value:t.batchForm.default_attendance_method,expression:"batchForm.default_attendance_method"}],staticClass:"custom-select col-12",attrs:{name:"default_attendance_method"},on:{change:function(e){var a=Array.prototype.filter.call(e.target.options,(function(t){return t.selected})).map((function(t){return"_value"in t?t._value:t.value}));t.$set(t.batchForm,"default_attendance_method",e.target.multiple?a:a[0])}}},[a("option",{attrs:{value:"",selected:""}},[t._v(t._s(t.trans("general.select_one")))]),t._v(" "),t._l(t.attendance_methods,(function(e){return a("option",{domProps:{value:e.value}},[t._v("\n                    "+t._s(e.text)+"\n                  ")])}))],2),t._v(" "),a("show-error",{attrs:{"form-name":t.batchForm,"prop-name":"default_attendance_method"}})],1)]),t._v(" "),a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.batch_description")))]),t._v(" "),a("autosize-textarea",{attrs:{rows:"1",name:"description",placeholder:t.trans("academic.batch_description")},model:{value:t.batchForm.description,callback:function(e){t.$set(t.batchForm,"description",e)},expression:"batchForm.description"}}),t._v(" "),a("show-error",{attrs:{"form-name":t.batchForm,"prop-name":"description"}})],1)])]),t._v(" "),t.exam_observations.length?[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("exam.configuration")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("exam.grade"))+" ("+t._s(t.trans("exam.observation"))+")")]),t._v(" "),a("v-select",{attrs:{label:"name",name:"exam_grade_id",id:"exam_grade_id",options:t.exam_grades,placeholder:t.trans("exam.select_grade")},on:{select:t.onExamGradeSelect,close:function(e){return t.batchForm.errors.clear("exam_grade_id")},remove:function(e){t.batchForm.exam_grade_id=""}},model:{value:t.selected_exam_grade,callback:function(e){t.selected_exam_grade=e},expression:"selected_exam_grade"}},[t.exam_grades.length?t._e():a("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                            "+t._s(t.trans("general.no_option_found"))+"\n                        ")])]),t._v(" "),a("show-error",{attrs:{"form-name":t.batchForm,"prop-name":"exam_grade_id"}})],1)]),t._v(" "),a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("label",{attrs:{for:""}},[t._v(t._s(t.trans("exam.observation")))]),t._v(" "),a("v-select",{attrs:{label:"name",name:"exam_observation_id",id:"exam_observation_id",options:t.exam_observations,placeholder:t.trans("exam.select_observation")},on:{select:t.onExamObservationSelect,close:function(e){return t.batchForm.errors.clear("exam_observation_id")},remove:function(e){t.batchForm.exam_observation_id=""}},model:{value:t.selected_exam_observation,callback:function(e){t.selected_exam_observation=e},expression:"selected_exam_observation"}},[t.exam_observations.length?t._e():a("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                            "+t._s(t.trans("general.no_option_found"))+"\n                        ")])]),t._v(" "),a("show-error",{attrs:{"form-name":t.batchForm,"prop-name":"exam_observation_id"}})],1)])])]:t._e(),t._v(" "),t.id?[a("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("calendar.holiday_configuration")))]),t._v(" "),a("p",{staticClass:"alert alert-info"},[t._v(t._s(t.trans("academic.batch_holiday_except_date_tip")))]),t._v(" "),a("div",{staticClass:"row"},[a("div",{staticClass:"col-12 col-sm-4"},[a("div",{staticClass:"form-group"},[a("datepicker",{attrs:{bootstrapStyling:!0},on:{selected:t.onSelected},model:{value:t.holiday,callback:function(e){t.holiday=e},expression:"holiday"}}),t._v(" "),a("show-error",{attrs:{"form-name":t.batchForm,"prop-name":"dates"}})],1)]),t._v(" "),a("div",{staticClass:"col-12 col-sm-9"},[a("div",{staticClass:"form-group"},t._l(t.batchForm.holidays_except,(function(e){return a("span",{staticClass:"label label-info m-r-10 m-b-10 p-10"},[t._v("\n                        "+t._s(t._f("momentWithDay")(e))+" "),a("i",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.remove"),expression:"trans('general.remove')"}],staticClass:"fas fa-times-circle cursor",on:{click:function(a){return t.remove(e)}}})])})),0)])])]:t._e(),t._v(" "),a("div",{staticClass:"card-footer text-right"},[a("router-link",{directives:[{name:"show",rawName:"v-show",value:t.id,expression:"id"}],staticClass:"btn btn-danger waves-effect waves-light ",attrs:{to:"/academic/batch"}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),t.id?t._e():a("button",{staticClass:"btn btn-danger waves-effect waves-light ",attrs:{type:"button"},on:{click:function(e){return t.$emit("cancel")}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),a("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[t.id?a("span",[t._v(t._s(t.trans("general.update")))]):a("span",[t._v(t._s(t.trans("general.save")))])])],1)],2)}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=edit.js.map?id=3c2402e11447cb1fad3c
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/academic/batch/edit"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/edit.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/edit.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/academic/batch/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    batchForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      id: this.$route.params.id
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('edit-batch')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/form.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/form.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      batchForm: new Form({
+        name: '',
+        course_id: '',
+        exam_grade_id: '',
+        exam_observation_id: '',
+        max_strength: '',
+        roll_number_prefix: '',
+        roll_number_digit: 0,
+        default_attendance_method: '',
+        description: '',
+        holidays_except: []
+      }),
+      holiday: '',
+      attendance_methods: [],
+      courses: [],
+      selected_course: null,
+      exam_grades: [],
+      selected_exam_grade: null,
+      exam_observations: [],
+      selected_exam_observation: null
+    };
+  },
+  props: ['id'],
+  mounted: function mounted() {
+    if (!helper.hasPermission('create-batch') && !helper.hasPermission('edit-batch')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    if (this.id) this.get();
+    this.getPreRequisite();
+  },
+  methods: {
+    proceed: function proceed() {
+      if (this.id) this.update();else this.store();
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/batch/pre-requisite').then(function (response) {
+        _this.courses = response.courses;
+        _this.exam_grades = response.exam_grades;
+        _this.exam_observations = response.exam_observations;
+        _this.attendance_methods = response.attendance_methods;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    store: function store() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      this.batchForm.post('/api/batch').then(function (response) {
+        toastr.success(response.message);
+        _this2.selected_course = null;
+        _this2.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/batch/' + this.id).then(function (response) {
+        _this3.batchForm.name = response.batch.name;
+        _this3.batchForm.course_id = response.batch.course_id;
+        _this3.batchForm.exam_grade_id = response.batch.exam_grade_id;
+        _this3.selected_exam_grade = response.batch.exam_grade_id ? {
+          id: response.batch.exam_grade_id,
+          name: response.batch.grade.name
+        } : null;
+        _this3.batchForm.exam_observation_id = response.batch.exam_observation_id;
+        _this3.selected_exam_observation = response.batch.exam_observation_id ? {
+          id: response.batch.exam_observation_id,
+          name: response.batch.observation.name
+        } : null;
+        _this3.batchForm.description = response.batch.description;
+        _this3.batchForm.max_strength = response.batch.options ? response.batch.options.max_strength : helper.getConfig('default_max_strength_per_batch');
+        _this3.batchForm.default_attendance_method = response.batch.options ? response.batch.options.default_attendance_method : '';
+        _this3.batchForm.roll_number_prefix = response.batch.options ? response.batch.options.roll_number_prefix : helper.getConfig('default_roll_number_prefix');
+        _this3.batchForm.roll_number_digit = response.batch.options && response.batch.options.hasOwnProperty('roll_number_digit') ? response.batch.options.roll_number_digit : 0, _this3.selected_course = response.selected_course;
+        _this3.batchForm.holidays_except = response.batch.options.holidays_except || [];
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this3.$router.push('/academic/batch');
+      });
+    },
+    update: function update() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      this.batchForm.patch('/api/batch/' + this.id).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this4.batchForm.holidays_except = [];
+        _this4.$router.push('/academic/batch');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onCourseSelect: function onCourseSelect(selectedOption) {
+      return this.batchForm.course_id = selectedOption.id;
+    },
+    onExamGradeSelect: function onExamGradeSelect(selectedOption) {
+      return this.batchForm.exam_grade_id = selectedOption.id;
+    },
+    onExamObservationSelect: function onExamObservationSelect(selectedOption) {
+      return this.batchForm.exam_observation_id = selectedOption.id;
+    },
+    onSelected: function onSelected(val) {
+      this.holiday = '';
+      val = helper.toDate(val);
+      if (this.batchForm.holidays_except.indexOf(val) < 0) this.batchForm.holidays_except.push(val);
+      this.batchForm.errors.clear('holidays_except');
+      this.holiday = '';
+    },
+    remove: function remove(date) {
+      var idx = this.batchForm.holidays_except.indexOf(date);
+      if (idx < 0) return;
+      this.batchForm.holidays_except.splice(idx, 1);
+      this.holiday = '';
+    }
+  },
+  filters: {
+    momentWithDay: function momentWithDay(date) {
+      return helper.formatDateWithDay(date);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/edit.vue?vue&type=template&id=b9c68dd0&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/edit.vue?vue&type=template&id=b9c68dd0& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("academic.edit_batch")) + "\n                    "), _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/academic/batch");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("batch-form", {
+    attrs: {
+      id: _vm.id
+    }
+  })], 1)])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/form.vue?vue&type=template&id=5fdb6ad2&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/form.vue?vue&type=template&id=5fdb6ad2& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.batchForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.batchForm.name,
+      expression: "batchForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name",
+      placeholder: _vm.trans("academic.batch_name")
+    },
+    domProps: {
+      value: _vm.batchForm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.batchForm, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "name"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.course")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "group-values": "courses",
+      "group-label": "course_group",
+      "group-select": false,
+      name: "course_id",
+      id: "course_id",
+      options: _vm.courses,
+      placeholder: _vm.trans("academic.select_course")
+    },
+    on: {
+      select: _vm.onCourseSelect,
+      close: function close($event) {
+        return _vm.batchForm.errors.clear("course_id");
+      },
+      remove: function remove($event) {
+        _vm.batchForm.course_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_course,
+      callback: function callback($$v) {
+        _vm.selected_course = $$v;
+      },
+      expression: "selected_course"
+    }
+  }, [!_vm.courses.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                    ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "course_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.max_strength")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.batchForm.max_strength,
+      expression: "batchForm.max_strength"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "max_strength",
+      placeholder: _vm.trans("academic.max_strength")
+    },
+    domProps: {
+      value: _vm.batchForm.max_strength
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.batchForm, "max_strength", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "max_strength"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.roll_number_prefix")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.batchForm.roll_number_prefix,
+      expression: "batchForm.roll_number_prefix"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "roll_number_prefix",
+      placeholder: _vm.trans("academic.roll_number_prefix")
+    },
+    domProps: {
+      value: _vm.batchForm.roll_number_prefix
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.batchForm, "roll_number_prefix", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "roll_number_prefix"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.roll_number_digit")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.batchForm.roll_number_digit,
+      expression: "batchForm.roll_number_digit"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "roll_number_digit",
+      placeholder: _vm.trans("academic.roll_number_digit")
+    },
+    domProps: {
+      value: _vm.batchForm.roll_number_digit
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.batchForm, "roll_number_digit", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "roll_number_digit"
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.default_attendance_method")))]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.batchForm.default_attendance_method,
+      expression: "batchForm.default_attendance_method"
+    }],
+    staticClass: "custom-select col-12",
+    attrs: {
+      name: "default_attendance_method"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.batchForm, "default_attendance_method", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      selected: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _vm._l(_vm.attendance_methods, function (option) {
+    return _c("option", {
+      domProps: {
+        value: option.value
+      }
+    }, [_vm._v("\n                    " + _vm._s(option.text) + "\n                  ")]);
+  })], 2), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "default_attendance_method"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch_description")))]), _vm._v(" "), _c("autosize-textarea", {
+    attrs: {
+      rows: "1",
+      name: "description",
+      placeholder: _vm.trans("academic.batch_description")
+    },
+    model: {
+      value: _vm.batchForm.description,
+      callback: function callback($$v) {
+        _vm.$set(_vm.batchForm, "description", $$v);
+      },
+      expression: "batchForm.description"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _vm.exam_observations.length ? [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("exam.configuration")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("exam.grade")) + " (" + _vm._s(_vm.trans("exam.observation")) + ")")]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "exam_grade_id",
+      id: "exam_grade_id",
+      options: _vm.exam_grades,
+      placeholder: _vm.trans("exam.select_grade")
+    },
+    on: {
+      select: _vm.onExamGradeSelect,
+      close: function close($event) {
+        return _vm.batchForm.errors.clear("exam_grade_id");
+      },
+      remove: function remove($event) {
+        _vm.batchForm.exam_grade_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_exam_grade,
+      callback: function callback($$v) {
+        _vm.selected_exam_grade = $$v;
+      },
+      expression: "selected_exam_grade"
+    }
+  }, [!_vm.exam_grades.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                            " + _vm._s(_vm.trans("general.no_option_found")) + "\n                        ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "exam_grade_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("exam.observation")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "exam_observation_id",
+      id: "exam_observation_id",
+      options: _vm.exam_observations,
+      placeholder: _vm.trans("exam.select_observation")
+    },
+    on: {
+      select: _vm.onExamObservationSelect,
+      close: function close($event) {
+        return _vm.batchForm.errors.clear("exam_observation_id");
+      },
+      remove: function remove($event) {
+        _vm.batchForm.exam_observation_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_exam_observation,
+      callback: function callback($$v) {
+        _vm.selected_exam_observation = $$v;
+      },
+      expression: "selected_exam_observation"
+    }
+  }, [!_vm.exam_observations.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                            " + _vm._s(_vm.trans("general.no_option_found")) + "\n                        ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "exam_observation_id"
+    }
+  })], 1)])])] : _vm._e(), _vm._v(" "), _vm.id ? [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("calendar.holiday_configuration")))]), _vm._v(" "), _c("p", {
+    staticClass: "alert alert-info"
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch_holiday_except_date_tip")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("datepicker", {
+    attrs: {
+      bootstrapStyling: true
+    },
+    on: {
+      selected: _vm.onSelected
+    },
+    model: {
+      value: _vm.holiday,
+      callback: function callback($$v) {
+        _vm.holiday = $$v;
+      },
+      expression: "holiday"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "dates"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-9"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, _vm._l(_vm.batchForm.holidays_except, function (date) {
+    return _c("span", {
+      staticClass: "label label-info m-r-10 m-b-10 p-10"
+    }, [_vm._v("\n                        " + _vm._s(_vm._f("momentWithDay")(date)) + " "), _c("i", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("general.remove"),
+        expression: "trans('general.remove')"
+      }],
+      staticClass: "fas fa-times-circle cursor",
+      on: {
+        click: function click($event) {
+          return _vm.remove(date);
+        }
+      }
+    })]);
+  }), 0)])])] : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.id,
+      expression: "id"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/academic/batch"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.id ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.id ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)], 2);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/academic/batch/edit.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/views/academic/batch/edit.vue ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _edit_vue_vue_type_template_id_b9c68dd0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit.vue?vue&type=template&id=b9c68dd0& */ "./resources/js/views/academic/batch/edit.vue?vue&type=template&id=b9c68dd0&");
+/* harmony import */ var _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue?vue&type=script&lang=js& */ "./resources/js/views/academic/batch/edit.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _edit_vue_vue_type_template_id_b9c68dd0___WEBPACK_IMPORTED_MODULE_0__.render,
+  _edit_vue_vue_type_template_id_b9c68dd0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/academic/batch/edit.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/academic/batch/form.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/views/academic/batch/form.vue ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_5fdb6ad2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=5fdb6ad2& */ "./resources/js/views/academic/batch/form.vue?vue&type=template&id=5fdb6ad2&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/academic/batch/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_5fdb6ad2___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_5fdb6ad2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/academic/batch/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/academic/batch/edit.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/views/academic/batch/edit.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/edit.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/academic/batch/form.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/views/academic/batch/form.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/academic/batch/edit.vue?vue&type=template&id=b9c68dd0&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/views/academic/batch/edit.vue?vue&type=template&id=b9c68dd0& ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_b9c68dd0___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_b9c68dd0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_b9c68dd0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=template&id=b9c68dd0& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/edit.vue?vue&type=template&id=b9c68dd0&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/academic/batch/form.vue?vue&type=template&id=5fdb6ad2&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/views/academic/batch/form.vue?vue&type=template&id=5fdb6ad2& ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_5fdb6ad2___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_5fdb6ad2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_5fdb6ad2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=5fdb6ad2& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/batch/form.vue?vue&type=template&id=5fdb6ad2&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=edit.js.map?id=59b2727a5a16fb12

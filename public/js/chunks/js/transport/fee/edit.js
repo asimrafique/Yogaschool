@@ -1,2 +1,910 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[6318],{24290:(t,r,e)=>{"use strict";e.d(r,{Z:()=>i});var n=e(94015),s=e.n(n),o=e(23645),a=e.n(o)()(s());a.push([t.id,".loading-overlay.is-full-page{z-index:1060}","",{version:3,sources:["webpack://./resources/js/views/transport/fee/form.vue"],names:[],mappings:"AAgMA,8BACA,YACA",sourcesContent:['<template>\n    <div>\n        <form @submit.prevent="proceed" @keydown="transportFeeForm.errors.clear($event.target.name)">\n            <div class="row">\n                <div class="col-12 col-sm-4">\n                    <div class="form-group">\n                        <label for="">{{trans(\'transport.fee_name\')}}</label>\n                        <input class="form-control" type="text" v-model="transportFeeForm.name" name="name" :placeholder="trans(\'transport.fee_name\')">\n                        <show-error :form-name="transportFeeForm" prop-name="name"></show-error>\n                    </div>\n                </div>\n                <div class="col-12 col-sm-4">\n                    <div class="form-group">\n                        <label for="">{{trans(\'transport.fee_description\')}}</label>\n                        <input class="form-control" type="text" v-model="transportFeeForm.description" name="description" :placeholder="trans(\'transport.fee_description\')">\n                        <show-error :form-name="transportFeeForm" prop-name="description"></show-error>\n                    </div>\n                </div>\n            </div>\n            <div class="row" v-for="transport_circle in transportFeeForm.transport_circles">\n                <div class="col-12 col-sm-4">\n                    <div class="form-group">\n                        <label for="" class="m-t-10">{{transport_circle.transport_circle_name+\' (\'+trans(\'finance.per_installment\')+\')\'}}</label>\n                    </div>\n                </div>\n                <div class="col-12 col-sm-4">\n                    <div class="form-group">\n                        <currency-input :position="default_currency.position" :symbol="default_currency.symbol" :name="`amount_${transport_circle.transport_circle_id}`" :placeholder="trans(\'transport.amount\')" v-model="transport_circle.amount"></currency-input>\n                        <show-error :form-name="transportFeeForm" :prop-name="`amount_${transport_circle.transport_circle_id}`"></show-error>\n                    </div>\n                </div>\n            </div>\n            <div class="card-footer">\n                <div class="row">\n                    <div class="col-12 col-sm-6">\n                        <button type="button" class="btn btn-info" v-if="hasPermission(\'access-configuration\')" @click="showTransportCircleModal = true">{{trans(\'transport.add_new_circle\')}}</button>\n                    </div>\n                    <div class="col-12 col-sm-6 text-right">\n                        <router-link to="/transport/fee" class="btn btn-danger waves-effect waves-light " v-show="id">{{trans(\'general.cancel\')}}</router-link>\n                        <button v-if="!id" type="button" class="btn btn-danger waves-effect waves-light " @click="$emit(\'cancel\')">{{trans(\'general.cancel\')}}</button>\n                        <button type="submit" class="btn btn-info waves-effect waves-light">\n                            <span v-if="id">{{trans(\'general.update\')}}</span>\n                            <span v-else>{{trans(\'general.save\')}}</span>\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </form>\n\n        <transition name="modal" v-if="showTransportCircleModal">\n            <div class="modal-mask">\n                <div class="modal-wrapper">\n                    <div class="modal-container modal-lg">\n                        <div class="modal-header">\n                            <slot name="header">\n                                {{trans(\'transport.add_new_circle\')}}\n                                <span class="float-right pointer" @click="showTransportCircleModal = false">x</span>\n                            </slot>\n                        </div>\n                        <div class="modal-body">\n                            <slot name="body">\n                                <transport-circle-form @completed="getPreRequisite" @cancel="showTransportCircleModal = false"></transport-circle-form>\n                                <div class="clearfix"></div>\n                            </slot>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </transition>\n    </div>\n</template>\n\n\n<script>\n    import transportCircleForm from \'../circle/form\'\n\n    export default {\n        components: {transportCircleForm},\n        data() {\n            return {\n                transportFeeForm: new Form({\n                    name : \'\',\n                    description : \'\',\n                    transport_circles: []\n                }),\n                default_currency: helper.getConfig(\'default_currency\'),\n                transport_circles: [],\n                showTransportCircleModal: false\n            };\n        },\n        props: [\'id\'],\n        mounted() {\n            if(!helper.hasPermission(\'create-transport-fee\') && !helper.hasPermission(\'edit-transport-fee\')){\n                helper.notAccessibleMsg();\n                this.$router.push(\'/dashboard\');\n            }\n\n            this.getPreRequisite();\n        },\n        methods: {\n            hasPermission(permission){\n                return helper.hasPermission(permission);\n            },\n            proceed(){\n                if(this.id)\n                    this.update();\n                else\n                    this.store();\n            },\n            getPreRequisite(){\n                let loader = this.$loading.show();\n                this.showTransportCircleModal = false;\n                axios.get(\'/api/transport/fee/pre-requisite\')\n                    .then(response => {\n                        this.transport_circles = response;\n                        this.populateTransportCircle();\n\n                        if(this.id)\n                            this.get();\n\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            store(){\n                let loader = this.$loading.show();\n                this.transportFeeForm.post(\'/api/transport/fee\')\n                    .then(response => {\n                        toastr.success(response.message);\n                        this.transportFeeForm.transport_circles = [];\n                        this.populateTransportCircle();\n                        this.$emit(\'completed\');\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            get(){\n                let loader = this.$loading.show();\n                axios.get(\'/api/transport/fee/\'+this.id)\n                    .then(response => {\n                        this.transportFeeForm.name = response.name;\n                        this.transportFeeForm.description = response.description;\n                        this.transportFeeForm.transport_circles.forEach(transport_circle => {\n                            let head = response.transport_fee_details.find( o => o.transport_circle_id == transport_circle.transport_circle_id);\n                            transport_circle.amount = (head) ? head.amount : 0;\n                        });\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                        this.$router.push(\'/transport/fee\');\n                    });\n            },\n            update(){\n                let loader = this.$loading.show();\n                this.transportFeeForm.patch(\'/api/transport/fee/\'+this.id)\n                    .then(response => {\n                        toastr.success(response.message);\n                        loader.hide();\n                        this.$router.push(\'/transport/fee\');\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            getConfig(config) {\n                return helper.getConfig(config);\n            },\n            populateTransportCircle(){\n                this.transport_circles.forEach(transport_circle => {\n                    if (this.transportFeeForm.transport_circles.findIndex(o => o.transport_circle_id == transport_circle.id) < 0) {\n                        this.transportFeeForm.transport_circles.push({\n                            transport_circle_id: transport_circle.id,\n                            transport_circle_name: transport_circle.name,\n                            amount: 0\n                        })\n                    }\n                });\n            }\n        }\n    }\n<\/script>\n\n<style>\n.loading-overlay.is-full-page{\n    z-index: 1060;\n}\n</style>\n'],sourceRoot:""}]);const i=a},20546:(t,r,e)=>{"use strict";e.d(r,{Z:()=>s});const n={data:function(){return{circleForm:new Form({name:"",description:""})}},props:["id"],mounted:function(){this.id&&this.get()},methods:{proceed:function(){this.id?this.update():this.store()},store:function(){var t=this,r=this.$loading.show();this.circleForm.post("/api/transport/circle").then((function(e){toastr.success(e.message),t.$emit("completed"),r.hide()})).catch((function(t){r.hide(),helper.showErrorMsg(t)}))},get:function(){var t=this,r=this.$loading.show();axios.get("/api/transport/circle/"+this.id).then((function(e){t.circleForm.name=e.name,t.circleForm.description=e.description,r.hide()})).catch((function(e){r.hide(),helper.showErrorMsg(e),t.$router.push("/transport/circle")}))},update:function(){var t=this,r=this.$loading.show();this.circleForm.patch("/api/transport/circle/"+this.id).then((function(e){toastr.success(e.message),r.hide(),t.$router.push("/transport/circle")})).catch((function(t){r.hide(),helper.showErrorMsg(t)}))}}};const s=(0,e(51900).Z)(n,(function(){var t=this,r=t.$createElement,e=t._self._c||r;return e("form",{on:{submit:function(r){return r.preventDefault(),t.proceed.apply(null,arguments)},keydown:function(r){return t.circleForm.errors.clear(r.target.name)}}},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("transport.circle_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.circleForm.name,expression:"circleForm.name"}],staticClass:"form-control",attrs:{type:"text",name:"name",placeholder:t.trans("transport.circle_name")},domProps:{value:t.circleForm.name},on:{input:function(r){r.target.composing||t.$set(t.circleForm,"name",r.target.value)}}}),t._v(" "),e("show-error",{attrs:{"form-name":t.circleForm,"prop-name":"name"}})],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("transport.circle_description")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.circleForm.description,expression:"circleForm.description"}],staticClass:"form-control",attrs:{type:"text",name:"description",placeholder:t.trans("transport.circle_description")},domProps:{value:t.circleForm.description},on:{input:function(r){r.target.composing||t.$set(t.circleForm,"description",r.target.value)}}}),t._v(" "),e("show-error",{attrs:{"form-name":t.circleForm,"prop-name":"description"}})],1)])]),t._v(" "),e("div",{staticClass:"card-footer text-right"},[e("router-link",{directives:[{name:"show",rawName:"v-show",value:t.id,expression:"id"}],staticClass:"btn btn-danger waves-effect waves-light ",attrs:{to:"/transport/circle"}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),t.id?t._e():e("button",{staticClass:"btn btn-danger waves-effect waves-light ",attrs:{type:"button"},on:{click:function(r){return t.$emit("cancel")}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),e("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[t.id?e("span",[t._v(t._s(t.trans("general.update")))]):e("span",[t._v(t._s(t.trans("general.save")))])])],1)])}),[],!1,null,null,null).exports},54317:(t,r,e)=>{"use strict";e.r(r),e.d(r,{default:()=>s});const n={components:{transportFeeForm:e(46744).Z},data:function(){return{id:this.$route.params.id}},mounted:function(){helper.hasPermission("edit-transport-fee")||(helper.notAccessibleMsg(),this.$router.push("/dashboard"))}};const s=(0,e(51900).Z)(n,(function(){var t=this,r=t.$createElement,e=t._self._c||r;return e("div",[e("div",{staticClass:"page-titles"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[e("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("transport.edit_fee")))])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("div",{staticClass:"action-buttons pull-right"},[e("button",{staticClass:"btn btn-info btn-sm",on:{click:function(r){return t.$router.push("/transport/fee")}}},[e("i",{staticClass:"fas fa-list"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("transport.edit_fee")))])])])])])]),t._v(" "),e("div",{staticClass:"container-fluid"},[e("div",{staticClass:"card card-form"},[e("div",{staticClass:"card-body p-t-20"},[e("transport-fee-form",{attrs:{id:t.id}})],1)])])])}),[],!1,null,null,null).exports},46744:(t,r,e)=>{"use strict";e.d(r,{Z:()=>c});const n={components:{transportCircleForm:e(20546).Z},data:function(){return{transportFeeForm:new Form({name:"",description:"",transport_circles:[]}),default_currency:helper.getConfig("default_currency"),transport_circles:[],showTransportCircleModal:!1}},props:["id"],mounted:function(){helper.hasPermission("create-transport-fee")||helper.hasPermission("edit-transport-fee")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getPreRequisite()},methods:{hasPermission:function(t){return helper.hasPermission(t)},proceed:function(){this.id?this.update():this.store()},getPreRequisite:function(){var t=this,r=this.$loading.show();this.showTransportCircleModal=!1,axios.get("/api/transport/fee/pre-requisite").then((function(e){t.transport_circles=e,t.populateTransportCircle(),t.id&&t.get(),r.hide()})).catch((function(t){r.hide(),helper.showErrorMsg(t)}))},store:function(){var t=this,r=this.$loading.show();this.transportFeeForm.post("/api/transport/fee").then((function(e){toastr.success(e.message),t.transportFeeForm.transport_circles=[],t.populateTransportCircle(),t.$emit("completed"),r.hide()})).catch((function(t){r.hide(),helper.showErrorMsg(t)}))},get:function(){var t=this,r=this.$loading.show();axios.get("/api/transport/fee/"+this.id).then((function(e){t.transportFeeForm.name=e.name,t.transportFeeForm.description=e.description,t.transportFeeForm.transport_circles.forEach((function(t){var r=e.transport_fee_details.find((function(r){return r.transport_circle_id==t.transport_circle_id}));t.amount=r?r.amount:0})),r.hide()})).catch((function(e){r.hide(),helper.showErrorMsg(e),t.$router.push("/transport/fee")}))},update:function(){var t=this,r=this.$loading.show();this.transportFeeForm.patch("/api/transport/fee/"+this.id).then((function(e){toastr.success(e.message),r.hide(),t.$router.push("/transport/fee")})).catch((function(t){r.hide(),helper.showErrorMsg(t)}))},getConfig:function(t){return helper.getConfig(t)},populateTransportCircle:function(){var t=this;this.transport_circles.forEach((function(r){t.transportFeeForm.transport_circles.findIndex((function(t){return t.transport_circle_id==r.id}))<0&&t.transportFeeForm.transport_circles.push({transport_circle_id:r.id,transport_circle_name:r.name,amount:0})}))}}};var s=e(93379),o=e.n(s),a=e(24290),i={insert:"head",singleton:!1};o()(a.Z,i);a.Z.locals;const c=(0,e(51900).Z)(n,(function(){var t=this,r=t.$createElement,e=t._self._c||r;return e("div",[e("form",{on:{submit:function(r){return r.preventDefault(),t.proceed.apply(null,arguments)},keydown:function(r){return t.transportFeeForm.errors.clear(r.target.name)}}},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-4"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("transport.fee_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.transportFeeForm.name,expression:"transportFeeForm.name"}],staticClass:"form-control",attrs:{type:"text",name:"name",placeholder:t.trans("transport.fee_name")},domProps:{value:t.transportFeeForm.name},on:{input:function(r){r.target.composing||t.$set(t.transportFeeForm,"name",r.target.value)}}}),t._v(" "),e("show-error",{attrs:{"form-name":t.transportFeeForm,"prop-name":"name"}})],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-4"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("transport.fee_description")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.transportFeeForm.description,expression:"transportFeeForm.description"}],staticClass:"form-control",attrs:{type:"text",name:"description",placeholder:t.trans("transport.fee_description")},domProps:{value:t.transportFeeForm.description},on:{input:function(r){r.target.composing||t.$set(t.transportFeeForm,"description",r.target.value)}}}),t._v(" "),e("show-error",{attrs:{"form-name":t.transportFeeForm,"prop-name":"description"}})],1)])]),t._v(" "),t._l(t.transportFeeForm.transport_circles,(function(r){return e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-4"},[e("div",{staticClass:"form-group"},[e("label",{staticClass:"m-t-10",attrs:{for:""}},[t._v(t._s(r.transport_circle_name+" ("+t.trans("finance.per_installment")+")"))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-4"},[e("div",{staticClass:"form-group"},[e("currency-input",{attrs:{position:t.default_currency.position,symbol:t.default_currency.symbol,name:"amount_"+r.transport_circle_id,placeholder:t.trans("transport.amount")},model:{value:r.amount,callback:function(e){t.$set(r,"amount",e)},expression:"transport_circle.amount"}}),t._v(" "),e("show-error",{attrs:{"form-name":t.transportFeeForm,"prop-name":"amount_"+r.transport_circle_id}})],1)])])})),t._v(" "),e("div",{staticClass:"card-footer"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[t.hasPermission("access-configuration")?e("button",{staticClass:"btn btn-info",attrs:{type:"button"},on:{click:function(r){t.showTransportCircleModal=!0}}},[t._v(t._s(t.trans("transport.add_new_circle")))]):t._e()]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6 text-right"},[e("router-link",{directives:[{name:"show",rawName:"v-show",value:t.id,expression:"id"}],staticClass:"btn btn-danger waves-effect waves-light ",attrs:{to:"/transport/fee"}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),t.id?t._e():e("button",{staticClass:"btn btn-danger waves-effect waves-light ",attrs:{type:"button"},on:{click:function(r){return t.$emit("cancel")}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),e("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[t.id?e("span",[t._v(t._s(t.trans("general.update")))]):e("span",[t._v(t._s(t.trans("general.save")))])])],1)])])],2),t._v(" "),t.showTransportCircleModal?e("transition",{attrs:{name:"modal"}},[e("div",{staticClass:"modal-mask"},[e("div",{staticClass:"modal-wrapper"},[e("div",{staticClass:"modal-container modal-lg"},[e("div",{staticClass:"modal-header"},[t._t("header",(function(){return[t._v("\n                            "+t._s(t.trans("transport.add_new_circle"))+"\n                            "),e("span",{staticClass:"float-right pointer",on:{click:function(r){t.showTransportCircleModal=!1}}},[t._v("x")])]}))],2),t._v(" "),e("div",{staticClass:"modal-body"},[t._t("body",(function(){return[e("transport-circle-form",{on:{completed:t.getPreRequisite,cancel:function(r){t.showTransportCircleModal=!1}}}),t._v(" "),e("div",{staticClass:"clearfix"})]}))],2)])])])]):t._e()],1)}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=edit.js.map?id=826e98bdffc3a3fac59c
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/transport/fee/edit"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/circle/form.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/circle/form.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      circleForm: new Form({
+        name: '',
+        description: ''
+      })
+    };
+  },
+  props: ['id'],
+  mounted: function mounted() {
+    if (this.id) this.get();
+  },
+  methods: {
+    proceed: function proceed() {
+      if (this.id) this.update();else this.store();
+    },
+    store: function store() {
+      var _this = this;
+      var loader = this.$loading.show();
+      this.circleForm.post('/api/transport/circle').then(function (response) {
+        toastr.success(response.message);
+        _this.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/transport/circle/' + this.id).then(function (response) {
+        _this2.circleForm.name = response.name;
+        _this2.circleForm.description = response.description;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this2.$router.push('/transport/circle');
+      });
+    },
+    update: function update() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      this.circleForm.patch('/api/transport/circle/' + this.id).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this3.$router.push('/transport/circle');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/edit.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/edit.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/transport/fee/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    transportFeeForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      id: this.$route.params.id
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('edit-transport-fee')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _circle_form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../circle/form */ "./resources/js/views/transport/circle/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    transportCircleForm: _circle_form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      transportFeeForm: new Form({
+        name: '',
+        description: '',
+        transport_circles: []
+      }),
+      default_currency: helper.getConfig('default_currency'),
+      transport_circles: [],
+      showTransportCircleModal: false
+    };
+  },
+  props: ['id'],
+  mounted: function mounted() {
+    if (!helper.hasPermission('create-transport-fee') && !helper.hasPermission('edit-transport-fee')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getPreRequisite();
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    proceed: function proceed() {
+      if (this.id) this.update();else this.store();
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      this.showTransportCircleModal = false;
+      axios.get('/api/transport/fee/pre-requisite').then(function (response) {
+        _this.transport_circles = response;
+        _this.populateTransportCircle();
+        if (_this.id) _this.get();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    store: function store() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      this.transportFeeForm.post('/api/transport/fee').then(function (response) {
+        toastr.success(response.message);
+        _this2.transportFeeForm.transport_circles = [];
+        _this2.populateTransportCircle();
+        _this2.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/transport/fee/' + this.id).then(function (response) {
+        _this3.transportFeeForm.name = response.name;
+        _this3.transportFeeForm.description = response.description;
+        _this3.transportFeeForm.transport_circles.forEach(function (transport_circle) {
+          var head = response.transport_fee_details.find(function (o) {
+            return o.transport_circle_id == transport_circle.transport_circle_id;
+          });
+          transport_circle.amount = head ? head.amount : 0;
+        });
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this3.$router.push('/transport/fee');
+      });
+    },
+    update: function update() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      this.transportFeeForm.patch('/api/transport/fee/' + this.id).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this4.$router.push('/transport/fee');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    populateTransportCircle: function populateTransportCircle() {
+      var _this5 = this;
+      this.transport_circles.forEach(function (transport_circle) {
+        if (_this5.transportFeeForm.transport_circles.findIndex(function (o) {
+          return o.transport_circle_id == transport_circle.id;
+        }) < 0) {
+          _this5.transportFeeForm.transport_circles.push({
+            transport_circle_id: transport_circle.id,
+            transport_circle_name: transport_circle.name,
+            amount: 0
+          });
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/circle/form.vue?vue&type=template&id=7d404ece&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/circle/form.vue?vue&type=template&id=7d404ece& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.circleForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.circle_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.circleForm.name,
+      expression: "circleForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name",
+      placeholder: _vm.trans("transport.circle_name")
+    },
+    domProps: {
+      value: _vm.circleForm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.circleForm, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.circleForm,
+      "prop-name": "name"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.circle_description")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.circleForm.description,
+      expression: "circleForm.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "description",
+      placeholder: _vm.trans("transport.circle_description")
+    },
+    domProps: {
+      value: _vm.circleForm.description
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.circleForm, "description", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.circleForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.id,
+      expression: "id"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/transport/circle"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.id ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.id ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/edit.vue?vue&type=template&id=3347f450&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/edit.vue?vue&type=template&id=3347f450& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("transport.edit_fee")))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/transport/fee");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("transport.edit_fee")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body p-t-20"
+  }, [_c("transport-fee-form", {
+    attrs: {
+      id: _vm.id
+    }
+  })], 1)])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=template&id=b9ca90dc&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=template&id=b9ca90dc& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.transportFeeForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.fee_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.transportFeeForm.name,
+      expression: "transportFeeForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name",
+      placeholder: _vm.trans("transport.fee_name")
+    },
+    domProps: {
+      value: _vm.transportFeeForm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.transportFeeForm, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.transportFeeForm,
+      "prop-name": "name"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.fee_description")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.transportFeeForm.description,
+      expression: "transportFeeForm.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "description",
+      placeholder: _vm.trans("transport.fee_description")
+    },
+    domProps: {
+      value: _vm.transportFeeForm.description
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.transportFeeForm, "description", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.transportFeeForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _vm._l(_vm.transportFeeForm.transport_circles, function (transport_circle) {
+    return _c("div", {
+      staticClass: "row"
+    }, [_c("div", {
+      staticClass: "col-12 col-sm-4"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("label", {
+      staticClass: "m-t-10",
+      attrs: {
+        "for": ""
+      }
+    }, [_vm._v(_vm._s(transport_circle.transport_circle_name + " (" + _vm.trans("finance.per_installment") + ")"))])])]), _vm._v(" "), _c("div", {
+      staticClass: "col-12 col-sm-4"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("currency-input", {
+      attrs: {
+        position: _vm.default_currency.position,
+        symbol: _vm.default_currency.symbol,
+        name: "amount_".concat(transport_circle.transport_circle_id),
+        placeholder: _vm.trans("transport.amount")
+      },
+      model: {
+        value: transport_circle.amount,
+        callback: function callback($$v) {
+          _vm.$set(transport_circle, "amount", $$v);
+        },
+        expression: "transport_circle.amount"
+      }
+    }), _vm._v(" "), _c("show-error", {
+      attrs: {
+        "form-name": _vm.transportFeeForm,
+        "prop-name": "amount_".concat(transport_circle.transport_circle_id)
+      }
+    })], 1)])]);
+  }), _vm._v(" "), _c("div", {
+    staticClass: "card-footer"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_vm.hasPermission("access-configuration") ? _c("button", {
+    staticClass: "btn btn-info",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        _vm.showTransportCircleModal = true;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("transport.add_new_circle")))]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6 text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.id,
+      expression: "id"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/transport/fee"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.id ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.id ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)])])], 2), _vm._v(" "), _vm.showTransportCircleModal ? _c("transition", {
+    attrs: {
+      name: "modal"
+    }
+  }, [_c("div", {
+    staticClass: "modal-mask"
+  }, [_c("div", {
+    staticClass: "modal-wrapper"
+  }, [_c("div", {
+    staticClass: "modal-container modal-lg"
+  }, [_c("div", {
+    staticClass: "modal-header"
+  }, [_vm._t("header", function () {
+    return [_vm._v("\n                            " + _vm._s(_vm.trans("transport.add_new_circle")) + "\n                            "), _c("span", {
+      staticClass: "float-right pointer",
+      on: {
+        click: function click($event) {
+          _vm.showTransportCircleModal = false;
+        }
+      }
+    }, [_vm._v("x")])];
+  })], 2), _vm._v(" "), _c("div", {
+    staticClass: "modal-body"
+  }, [_vm._t("body", function () {
+    return [_c("transport-circle-form", {
+      on: {
+        completed: _vm.getPreRequisite,
+        cancel: function cancel($event) {
+          _vm.showTransportCircleModal = false;
+        }
+      }
+    }), _vm._v(" "), _c("div", {
+      staticClass: "clearfix"
+    })];
+  })], 2)])])])]) : _vm._e()], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.loading-overlay.is-full-page{\n    z-index: 1060;\n}\n", "",{"version":3,"sources":["webpack://./resources/js/views/transport/fee/form.vue"],"names":[],"mappings":";AAgMA;IACA,aAAA;AACA","sourcesContent":["<template>\n    <div>\n        <form @submit.prevent=\"proceed\" @keydown=\"transportFeeForm.errors.clear($event.target.name)\">\n            <div class=\"row\">\n                <div class=\"col-12 col-sm-4\">\n                    <div class=\"form-group\">\n                        <label for=\"\">{{trans('transport.fee_name')}}</label>\n                        <input class=\"form-control\" type=\"text\" v-model=\"transportFeeForm.name\" name=\"name\" :placeholder=\"trans('transport.fee_name')\">\n                        <show-error :form-name=\"transportFeeForm\" prop-name=\"name\"></show-error>\n                    </div>\n                </div>\n                <div class=\"col-12 col-sm-4\">\n                    <div class=\"form-group\">\n                        <label for=\"\">{{trans('transport.fee_description')}}</label>\n                        <input class=\"form-control\" type=\"text\" v-model=\"transportFeeForm.description\" name=\"description\" :placeholder=\"trans('transport.fee_description')\">\n                        <show-error :form-name=\"transportFeeForm\" prop-name=\"description\"></show-error>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\" v-for=\"transport_circle in transportFeeForm.transport_circles\">\n                <div class=\"col-12 col-sm-4\">\n                    <div class=\"form-group\">\n                        <label for=\"\" class=\"m-t-10\">{{transport_circle.transport_circle_name+' ('+trans('finance.per_installment')+')'}}</label>\n                    </div>\n                </div>\n                <div class=\"col-12 col-sm-4\">\n                    <div class=\"form-group\">\n                        <currency-input :position=\"default_currency.position\" :symbol=\"default_currency.symbol\" :name=\"`amount_${transport_circle.transport_circle_id}`\" :placeholder=\"trans('transport.amount')\" v-model=\"transport_circle.amount\"></currency-input>\n                        <show-error :form-name=\"transportFeeForm\" :prop-name=\"`amount_${transport_circle.transport_circle_id}`\"></show-error>\n                    </div>\n                </div>\n            </div>\n            <div class=\"card-footer\">\n                <div class=\"row\">\n                    <div class=\"col-12 col-sm-6\">\n                        <button type=\"button\" class=\"btn btn-info\" v-if=\"hasPermission('access-configuration')\" @click=\"showTransportCircleModal = true\">{{trans('transport.add_new_circle')}}</button>\n                    </div>\n                    <div class=\"col-12 col-sm-6 text-right\">\n                        <router-link to=\"/transport/fee\" class=\"btn btn-danger waves-effect waves-light \" v-show=\"id\">{{trans('general.cancel')}}</router-link>\n                        <button v-if=\"!id\" type=\"button\" class=\"btn btn-danger waves-effect waves-light \" @click=\"$emit('cancel')\">{{trans('general.cancel')}}</button>\n                        <button type=\"submit\" class=\"btn btn-info waves-effect waves-light\">\n                            <span v-if=\"id\">{{trans('general.update')}}</span>\n                            <span v-else>{{trans('general.save')}}</span>\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </form>\n\n        <transition name=\"modal\" v-if=\"showTransportCircleModal\">\n            <div class=\"modal-mask\">\n                <div class=\"modal-wrapper\">\n                    <div class=\"modal-container modal-lg\">\n                        <div class=\"modal-header\">\n                            <slot name=\"header\">\n                                {{trans('transport.add_new_circle')}}\n                                <span class=\"float-right pointer\" @click=\"showTransportCircleModal = false\">x</span>\n                            </slot>\n                        </div>\n                        <div class=\"modal-body\">\n                            <slot name=\"body\">\n                                <transport-circle-form @completed=\"getPreRequisite\" @cancel=\"showTransportCircleModal = false\"></transport-circle-form>\n                                <div class=\"clearfix\"></div>\n                            </slot>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </transition>\n    </div>\n</template>\n\n\n<script>\n    import transportCircleForm from '../circle/form'\n\n    export default {\n        components: {transportCircleForm},\n        data() {\n            return {\n                transportFeeForm: new Form({\n                    name : '',\n                    description : '',\n                    transport_circles: []\n                }),\n                default_currency: helper.getConfig('default_currency'),\n                transport_circles: [],\n                showTransportCircleModal: false\n            };\n        },\n        props: ['id'],\n        mounted() {\n            if(!helper.hasPermission('create-transport-fee') && !helper.hasPermission('edit-transport-fee')){\n                helper.notAccessibleMsg();\n                this.$router.push('/dashboard');\n            }\n\n            this.getPreRequisite();\n        },\n        methods: {\n            hasPermission(permission){\n                return helper.hasPermission(permission);\n            },\n            proceed(){\n                if(this.id)\n                    this.update();\n                else\n                    this.store();\n            },\n            getPreRequisite(){\n                let loader = this.$loading.show();\n                this.showTransportCircleModal = false;\n                axios.get('/api/transport/fee/pre-requisite')\n                    .then(response => {\n                        this.transport_circles = response;\n                        this.populateTransportCircle();\n\n                        if(this.id)\n                            this.get();\n\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            store(){\n                let loader = this.$loading.show();\n                this.transportFeeForm.post('/api/transport/fee')\n                    .then(response => {\n                        toastr.success(response.message);\n                        this.transportFeeForm.transport_circles = [];\n                        this.populateTransportCircle();\n                        this.$emit('completed');\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            get(){\n                let loader = this.$loading.show();\n                axios.get('/api/transport/fee/'+this.id)\n                    .then(response => {\n                        this.transportFeeForm.name = response.name;\n                        this.transportFeeForm.description = response.description;\n                        this.transportFeeForm.transport_circles.forEach(transport_circle => {\n                            let head = response.transport_fee_details.find( o => o.transport_circle_id == transport_circle.transport_circle_id);\n                            transport_circle.amount = (head) ? head.amount : 0;\n                        });\n                        loader.hide();\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                        this.$router.push('/transport/fee');\n                    });\n            },\n            update(){\n                let loader = this.$loading.show();\n                this.transportFeeForm.patch('/api/transport/fee/'+this.id)\n                    .then(response => {\n                        toastr.success(response.message);\n                        loader.hide();\n                        this.$router.push('/transport/fee');\n                    })\n                    .catch(error => {\n                        loader.hide();\n                        helper.showErrorMsg(error);\n                    });\n            },\n            getConfig(config) {\n                return helper.getConfig(config);\n            },\n            populateTransportCircle(){\n                this.transport_circles.forEach(transport_circle => {\n                    if (this.transportFeeForm.transport_circles.findIndex(o => o.transport_circle_id == transport_circle.id) < 0) {\n                        this.transportFeeForm.transport_circles.push({\n                            transport_circle_id: transport_circle.id,\n                            transport_circle_name: transport_circle.name,\n                            amount: 0\n                        })\n                    }\n                });\n            }\n        }\n    }\n</script>\n\n<style>\n.loading-overlay.is-full-page{\n    z-index: 1060;\n}\n</style>\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_b9ca90dc_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_b9ca90dc_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_b9ca90dc_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/circle/form.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/views/transport/circle/form.vue ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_7d404ece___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=7d404ece& */ "./resources/js/views/transport/circle/form.vue?vue&type=template&id=7d404ece&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/transport/circle/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_7d404ece___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_7d404ece___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/transport/circle/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/fee/edit.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/views/transport/fee/edit.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _edit_vue_vue_type_template_id_3347f450___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit.vue?vue&type=template&id=3347f450& */ "./resources/js/views/transport/fee/edit.vue?vue&type=template&id=3347f450&");
+/* harmony import */ var _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue?vue&type=script&lang=js& */ "./resources/js/views/transport/fee/edit.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _edit_vue_vue_type_template_id_3347f450___WEBPACK_IMPORTED_MODULE_0__.render,
+  _edit_vue_vue_type_template_id_3347f450___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/transport/fee/edit.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/fee/form.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/views/transport/fee/form.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_b9ca90dc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=b9ca90dc& */ "./resources/js/views/transport/fee/form.vue?vue&type=template&id=b9ca90dc&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/transport/fee/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_style_index_0_id_b9ca90dc_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css& */ "./resources/js/views/transport/fee/form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_b9ca90dc___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_b9ca90dc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/transport/fee/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/circle/form.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/views/transport/circle/form.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/circle/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/fee/edit.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/views/transport/fee/edit.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/edit.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/fee/form.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/views/transport/fee/form.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/circle/form.vue?vue&type=template&id=7d404ece&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/views/transport/circle/form.vue?vue&type=template&id=7d404ece& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7d404ece___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7d404ece___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7d404ece___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=7d404ece& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/circle/form.vue?vue&type=template&id=7d404ece&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/fee/edit.vue?vue&type=template&id=3347f450&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/views/transport/fee/edit.vue?vue&type=template&id=3347f450& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_3347f450___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_3347f450___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_3347f450___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=template&id=3347f450& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/edit.vue?vue&type=template&id=3347f450&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/fee/form.vue?vue&type=template&id=b9ca90dc&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/views/transport/fee/form.vue?vue&type=template&id=b9ca90dc& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_b9ca90dc___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_b9ca90dc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_b9ca90dc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=b9ca90dc& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=template&id=b9ca90dc&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/transport/fee/form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/views/transport/fee/form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_16_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_16_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_style_index_0_id_b9ca90dc_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-16.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-16.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/transport/fee/form.vue?vue&type=style&index=0&id=b9ca90dc&lang=css&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=edit.js.map?id=0c458fbb8c68d257

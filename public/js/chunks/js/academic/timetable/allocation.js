@@ -1,2 +1,369 @@
-(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[4703],{39218:(t,e,s)=>{"use strict";s.r(e),s.d(e,{default:()=>i});const a={components:{},data:function(){return{uuid:this.$route.params.uuid,timetable:{},timetableAllocationForm:new Form({days:[]},!1),subjects:[],subject_alloted_count:[]}},mounted:function(){var t=this,e=this.$loading.show();axios.get("/api/timetable/"+this.uuid).then((function(s){t.timetable=s.timetable,t.subjects=s.subjects,t.subjects.forEach((function(e){t.subject_alloted_count.push({subject_id:e.id,count:0})})),t.timetable.timetable_allocations.forEach((function(e){var s=[];e.class_timing&&e.class_timing.class_timing_sessions.forEach((function(t){var a=e.timetable_allocation_details.find((function(s){return s.timetable_allocation_id==e.id&&s.class_timing_session_id==t.id}));s.push({id:t.id,name:t.name,start:t.start,end:t.end,is_a_break:t.is_a_break,subject_id:a?a.subject_id:null,selected_subject:null})})),t.timetableAllocationForm.days.push({day:e.day,timetable_allocation_id:e.id,sessions:s})})),t.calculateAllottedSubject(),e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)})),helper.showDemoNotification(["academic_timetable"])},methods:{getSubjectName:function(t,e){return t+"_"+e+"_subject"},getSubjectDetail:function(t){var e=t.name+" ("+t.code+")",s=this.getSubjectTeacher(t);return e+(s?" "+s:"")},getEmployeeName:function(t){return helper.getEmployeeName(t)},getSubjectTeacher:function(t){var e=this,s=t.subject_teachers.filter((function(t){return t.date_effective<=e.timetable.date_effective}));return s.length?this.getEmployeeName(t.subject_teachers[s.length-1].employee):""},calculateAllottedSubject:function(){var t=this;this.subject_alloted_count.forEach((function(e){e.count=0,t.timetableAllocationForm.days.forEach((function(t){t.sessions.forEach((function(t){t.subject_id==e.subject_id&&e.count++}))}))}))},getSubjectCount:function(t){var e=this.subject_alloted_count.find((function(e){return e.subject_id==t.id}));return e?e.count:0},getSessionStartTime:function(t){return moment(t.start,"HH:mm:ss").format("h:mm a")},getSessionEndTime:function(t){return moment(t.end,"HH:mm:ss").format("h:mm a")},submit:function(){var t=this.$loading.show();this.timetableAllocationForm.post("/api/timetable/"+this.uuid+"/allocation").then((function(e){toastr.success(e.message),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},getTotalCount:function(){var t=this,e=0;this.subjects.forEach((function(s){e+=t.getSubjectCount(s)}));var s=0;return this.timetableAllocationForm.days.forEach((function(t){t.sessions.forEach((function(t){t.is_a_break||s++}))})),e+"/"+s}},filters:{moment:function(t){return helper.formatDate(t)},momentDateTime:function(t){return helper.formatDateTime(t)}}};const i=(0,s(51900).Z)(a,(function(){var t=this,e=t.$createElement,s=t._self._c||e;return s("div",[s("div",{staticClass:"page-titles"},[s("div",{staticClass:"row"},[s("div",{staticClass:"col-12 col-sm-6"},[s("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("academic.timetable_allocation"))+" "),t.timetable.batch?s("span",[t._v(" - "),s("small",[t._v(t._s(t.timetable.batch.course.name+" "+t.timetable.batch.name)+" "+t._s(t.trans("general.from"))+" "+t._s(t._f("moment")(t.timetable.date_effective)))])]):t._e()])]),t._v(" "),s("div",{staticClass:"col-12 col-sm-6"},[s("div",{staticClass:"action-buttons pull-right"},[s("button",{staticClass:"btn btn-info btn-sm",on:{click:function(e){return t.$router.push("/academic/timetable")}}},[s("i",{staticClass:"fas fa-list"}),t._v(" "),s("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("academic.timetable")))])])])])])]),t._v(" "),s("div",{staticClass:"container-fluid"},[s("div",{staticClass:"card card-form"},[s("div",{staticClass:"card-body"},[t.timetable?s("form",{on:{submit:function(e){return e.preventDefault(),t.submit.apply(null,arguments)},keydown:function(e){return t.timetableAllocationForm.errors.clear(e.target.name)}}},[t._l(t.timetableAllocationForm.days,(function(e,a){return s("div",{staticClass:"row"},[s("div",{staticClass:"col-12 col-sm-1"},[t._v("\n                    \t\t\t"+t._s(t.trans("list."+e.day))+"\n                    \t\t")]),t._v(" "),s("div",{staticClass:"col-12 col-sm-11"},[e.sessions.length?s("div",{staticClass:"row"},t._l(e.sessions,(function(e,i){return s("div",{staticClass:"col-12 col-sm-2"},[s("small",[t._v(t._s(e.name)+" ("+t._s(t.getSessionStartTime(e)+" "+t.trans("general.to")+" "+t.getSessionEndTime(e))+")")]),t._v(" "),e.is_a_break?s("div",{staticClass:"text-center"},[t._v("-")]):s("div",{staticClass:"form-group"},[s("select",{directives:[{name:"model",rawName:"v-model",value:e.subject_id,expression:"session.subject_id"}],staticClass:"custom-select col-12",attrs:{name:t.getSubjectName(a,i)},on:{change:[function(s){var a=Array.prototype.filter.call(s.target.options,(function(t){return t.selected})).map((function(t){return"_value"in t?t._value:t.value}));t.$set(e,"subject_id",s.target.multiple?a:a[0])},t.calculateAllottedSubject]}},[s("option",{attrs:{value:"null"}},[t._v(t._s(t.trans("academic.select_subject")))]),t._v(" "),t._l(t.subjects,(function(e){return s("option",{domProps:{value:e.id}},[t._v("\n                                                "+t._s(e.name+" ("+e.code+")")+"\n                                              ")])}))],2),t._v(" "),s("show-error",{attrs:{"form-name":t.timetableAllocationForm,"prop-name":"getSubjectName(index, index1)"}})],1)])})),0):s("div",{staticClass:"text-center m-4"},[t._v("-")])])])})),t._v(" "),s("div",{staticClass:"card-footer text-right"},[s("button",{staticClass:"btn btn-danger waves-effect waves-light ",attrs:{type:"button"},on:{click:function(e){return t.$router.push("/academic/timetable")}}},[t._v(t._s(t.trans("general.back")))]),t._v(" "),s("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[t._v(t._s(t.trans("general.save")))])])],2):t._e()])]),t._v(" "),s("div",{staticClass:"card"},[s("div",{staticClass:"card-body"},[t.subjects.length?s("div",{staticClass:"table-responsive"},[s("table",{staticClass:"table table-sm"},[s("thead",[s("tr",[s("th",[t._v(t._s(t.trans("academic.subject")))]),t._v(" "),s("th",[t._v(t._s(t.trans("academic.subject_teacher")))]),t._v(" "),s("th",[t._v(t._s(t.trans("academic.subject_max_class_per_week")))]),t._v(" "),s("th",[t._v(t._s(t.trans("academic.subject_alloted_class_per_week")))])])]),t._v(" "),s("tbody",t._l(t.subjects,(function(e){return s("tr",[s("td",[t._v(t._s(e.name+" ("+e.code+")"))]),t._v(" "),s("td",[t._v(t._s(t.getSubjectTeacher(e)))]),t._v(" "),s("td",[t._v(t._s(e.max_class_per_week))]),t._v(" "),s("td",[t._v(t._s(t.getSubjectCount(e)))])])})),0),t._v(" "),s("tfoot",[s("tr",[s("td",{domProps:{textContent:t._s(t.trans("general.total"))}}),t._v(" "),s("td"),t._v(" "),s("td"),t._v(" "),s("td",[t._v(t._s(t.getTotalCount()))])])])])]):t._e()])])])])}),[],!1,null,null,null).exports}}]);
-//# sourceMappingURL=allocation.js.map?id=57588865fa03ec945858
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/academic/timetable/allocation"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/timetable/allocation.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/timetable/allocation.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      uuid: this.$route.params.uuid,
+      timetable: {},
+      timetableAllocationForm: new Form({
+        days: []
+      }, false),
+      subjects: [],
+      subject_alloted_count: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+    var loader = this.$loading.show();
+    axios.get('/api/timetable/' + this.uuid).then(function (response) {
+      _this.timetable = response.timetable;
+      _this.subjects = response.subjects;
+      _this.subjects.forEach(function (subject) {
+        _this.subject_alloted_count.push({
+          subject_id: subject.id,
+          count: 0
+        });
+      });
+      _this.timetable.timetable_allocations.forEach(function (allocation) {
+        var sessions = [];
+        if (allocation.class_timing) {
+          allocation.class_timing.class_timing_sessions.forEach(function (session) {
+            var timetable_detail = allocation.timetable_allocation_details.find(function (o) {
+              return o.timetable_allocation_id == allocation.id && o.class_timing_session_id == session.id;
+            });
+            sessions.push({
+              id: session.id,
+              name: session.name,
+              start: session.start,
+              end: session.end,
+              is_a_break: session.is_a_break,
+              subject_id: timetable_detail ? timetable_detail.subject_id : null,
+              selected_subject: null
+            });
+          });
+        }
+        _this.timetableAllocationForm.days.push({
+          day: allocation.day,
+          timetable_allocation_id: allocation.id,
+          sessions: sessions
+        });
+      });
+      _this.calculateAllottedSubject();
+      loader.hide();
+    })["catch"](function (error) {
+      loader.hide();
+      helper.showErrorMsg(error);
+    });
+    helper.showDemoNotification(['academic_timetable']);
+  },
+  methods: {
+    getSubjectName: function getSubjectName(index, index1) {
+      return index + '_' + index1 + '_subject';
+    },
+    getSubjectDetail: function getSubjectDetail(subject) {
+      var name = subject.name + ' (' + subject.code + ')';
+      var employee = this.getSubjectTeacher(subject);
+      return name + (employee ? ' ' + employee : '');
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getSubjectTeacher: function getSubjectTeacher(subject) {
+      var _this2 = this;
+      var employee = subject.subject_teachers.filter(function (o) {
+        return o.date_effective <= _this2.timetable.date_effective;
+      });
+      return employee.length ? this.getEmployeeName(subject.subject_teachers[employee.length - 1].employee) : '';
+    },
+    calculateAllottedSubject: function calculateAllottedSubject() {
+      var _this3 = this;
+      this.subject_alloted_count.forEach(function (subject) {
+        subject.count = 0;
+        _this3.timetableAllocationForm.days.forEach(function (day) {
+          day.sessions.forEach(function (session) {
+            if (session.subject_id == subject.subject_id) subject.count++;
+          });
+        });
+      });
+    },
+    getSubjectCount: function getSubjectCount(subject) {
+      var sub = this.subject_alloted_count.find(function (o) {
+        return o.subject_id == subject.id;
+      });
+      return sub ? sub.count : 0;
+    },
+    getSessionStartTime: function getSessionStartTime(session) {
+      return moment(session.start, 'HH:mm:ss').format('h:mm a');
+    },
+    getSessionEndTime: function getSessionEndTime(session) {
+      return moment(session.end, 'HH:mm:ss').format('h:mm a');
+    },
+    submit: function submit() {
+      var loader = this.$loading.show();
+      this.timetableAllocationForm.post('/api/timetable/' + this.uuid + '/allocation').then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getTotalCount: function getTotalCount() {
+      var _this4 = this;
+      var allocated = 0;
+      this.subjects.forEach(function (subject) {
+        allocated += _this4.getSubjectCount(subject);
+      });
+      var total = 0;
+      this.timetableAllocationForm.days.forEach(function (day) {
+        day.sessions.forEach(function (session) {
+          if (!session.is_a_break) total++;
+        });
+      });
+      return allocated + '/' + total;
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/timetable/allocation.vue?vue&type=template&id=08137327&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/timetable/allocation.vue?vue&type=template&id=08137327& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("academic.timetable_allocation")) + " "), _vm.timetable.batch ? _c("span", [_vm._v(" - "), _c("small", [_vm._v(_vm._s(_vm.timetable.batch.course.name + " " + _vm.timetable.batch.name) + " " + _vm._s(_vm.trans("general.from")) + " " + _vm._s(_vm._f("moment")(_vm.timetable.date_effective)))])]) : _vm._e()])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/academic/timetable");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("academic.timetable")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.timetable ? _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submit.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.timetableAllocationForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_vm._l(_vm.timetableAllocationForm.days, function (day, index) {
+    return _c("div", {
+      staticClass: "row"
+    }, [_c("div", {
+      staticClass: "col-12 col-sm-1"
+    }, [_vm._v("\n                    \t\t\t" + _vm._s(_vm.trans("list." + day.day)) + "\n                    \t\t")]), _vm._v(" "), _c("div", {
+      staticClass: "col-12 col-sm-11"
+    }, [day.sessions.length ? _c("div", {
+      staticClass: "row"
+    }, _vm._l(day.sessions, function (session, index1) {
+      return _c("div", {
+        staticClass: "col-12 col-sm-2"
+      }, [_c("small", [_vm._v(_vm._s(session.name) + " (" + _vm._s(_vm.getSessionStartTime(session) + " " + _vm.trans("general.to") + " " + _vm.getSessionEndTime(session)) + ")")]), _vm._v(" "), !session.is_a_break ? _c("div", {
+        staticClass: "form-group"
+      }, [_c("select", {
+        directives: [{
+          name: "model",
+          rawName: "v-model",
+          value: session.subject_id,
+          expression: "session.subject_id"
+        }],
+        staticClass: "custom-select col-12",
+        attrs: {
+          name: _vm.getSubjectName(index, index1)
+        },
+        on: {
+          change: [function ($event) {
+            var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+              return o.selected;
+            }).map(function (o) {
+              var val = "_value" in o ? o._value : o.value;
+              return val;
+            });
+            _vm.$set(session, "subject_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+          }, _vm.calculateAllottedSubject]
+        }
+      }, [_c("option", {
+        attrs: {
+          value: "null"
+        }
+      }, [_vm._v(_vm._s(_vm.trans("academic.select_subject")))]), _vm._v(" "), _vm._l(_vm.subjects, function (subject) {
+        return _c("option", {
+          domProps: {
+            value: subject.id
+          }
+        }, [_vm._v("\n                                                " + _vm._s(subject.name + " (" + subject.code + ")") + "\n                                              ")]);
+      })], 2), _vm._v(" "), _c("show-error", {
+        attrs: {
+          "form-name": _vm.timetableAllocationForm,
+          "prop-name": "getSubjectName(index, index1)"
+        }
+      })], 1) : _c("div", {
+        staticClass: "text-center"
+      }, [_vm._v("-")])]);
+    }), 0) : _c("div", {
+      staticClass: "text-center m-4"
+    }, [_vm._v("-")])])]);
+  }), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/academic/timetable");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.back")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.save")))])])], 2) : _vm._e()])]), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.subjects.length ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("academic.subject")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.subject_teacher")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.subject_max_class_per_week")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.subject_alloted_class_per_week")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.subjects, function (subject) {
+    return _c("tr", [_c("td", [_vm._v(_vm._s(subject.name + " (" + subject.code + ")"))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getSubjectTeacher(subject)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(subject.max_class_per_week))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getSubjectCount(subject)))])]);
+  }), 0), _vm._v(" "), _c("tfoot", [_c("tr", [_c("td", {
+    domProps: {
+      textContent: _vm._s(_vm.trans("general.total"))
+    }
+  }), _vm._v(" "), _c("td"), _vm._v(" "), _c("td"), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getTotalCount()))])])])])]) : _vm._e()])])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/academic/timetable/allocation.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/views/academic/timetable/allocation.vue ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _allocation_vue_vue_type_template_id_08137327___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./allocation.vue?vue&type=template&id=08137327& */ "./resources/js/views/academic/timetable/allocation.vue?vue&type=template&id=08137327&");
+/* harmony import */ var _allocation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./allocation.vue?vue&type=script&lang=js& */ "./resources/js/views/academic/timetable/allocation.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _allocation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _allocation_vue_vue_type_template_id_08137327___WEBPACK_IMPORTED_MODULE_0__.render,
+  _allocation_vue_vue_type_template_id_08137327___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/academic/timetable/allocation.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/academic/timetable/allocation.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/views/academic/timetable/allocation.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_allocation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./allocation.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/timetable/allocation.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_allocation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/academic/timetable/allocation.vue?vue&type=template&id=08137327&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/views/academic/timetable/allocation.vue?vue&type=template&id=08137327& ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_allocation_vue_vue_type_template_id_08137327___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_allocation_vue_vue_type_template_id_08137327___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_allocation_vue_vue_type_template_id_08137327___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./allocation.vue?vue&type=template&id=08137327& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/academic/timetable/allocation.vue?vue&type=template&id=08137327&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=allocation.js.map?id=f8e41ce28a7af92c
