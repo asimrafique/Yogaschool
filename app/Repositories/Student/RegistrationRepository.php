@@ -695,11 +695,11 @@ class RegistrationRepository
             throw ValidationException::withMessages(['batch_id' => trans('finance.no_fee_allocated')]);
         }
 
-//        $transport_circle_id = gv($params, 'transport_circle_id');
-//
-//        if ($transport_circle_id && ! $this->transport_circle->find($transport_circle_id)) {
-//            throw ValidationException::withMessages(['transport_circle_id' => trans('transport.could_not_find_circle')]);
-//        }
+        $transport_circle_id = gv($params, 'transport_circle_id');
+
+        if ($transport_circle_id && ! $this->transport_circle->find($transport_circle_id)) {
+            throw ValidationException::withMessages(['transport_circle_id' => trans('transport.could_not_find_circle')]);
+        }
 
         $fee_concession_id = gv($params, 'fee_concession_id');
 
