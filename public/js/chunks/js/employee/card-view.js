@@ -1807,4 +1807,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=card-view.js.map?id=653376955e0a040d
+//# sourceMappingURL=card-view.js.map?id=18b72c7cbc5ebfd4

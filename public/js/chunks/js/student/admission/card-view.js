@@ -1224,4 +1224,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=card-view.js.map?id=069fe879de79d259
+//# sourceMappingURL=card-view.js.map?id=94a0b1410ca9d52c

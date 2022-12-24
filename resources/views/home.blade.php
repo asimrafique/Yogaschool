@@ -57,24 +57,24 @@
         </style>
     </head>
     <body class="fix-header fix-sidebar">
-        @if(config('app.mode') != 'live')
-            @php
-                $finishTime = Carbon\Carbon::parse('2020-01-26 19:59');
-                $diff = $finishTime->diffInHours(Carbon\Carbon::now());
+{{--        @if(config('app.mode') != 'live')--}}
+{{--            @php--}}
+{{--                $finishTime = Carbon\Carbon::parse('2020-01-26 19:59');--}}
+{{--                $diff = $finishTime->diffInHours(Carbon\Carbon::now());--}}
 
-                if (! $diff) {
-                    $diff = $finishTime->diffInMinutes(Carbon\Carbon::now()).' minutes';
-                }
-                else {
-                    $diff .= ' hours';
-                }
-            @endphp
-            @if(Carbon\Carbon::now() <= $finishTime)
-                <div class="topbar-content d-none d-sm-block">Flash Sales: <strong>30% Discount on Regular, 20% Discount on Extended License</strong> for next {{$diff}} + Free Mobile App on Release | Free Lifetime Updates</div>
-            @else
-                <div class="topbar-content d-none d-sm-block">Version 2.9 released. Go to Communication -> Meeting & Start offering Screen Share, Live Classes to Students, Schedule Live Meeting with selected Staff! WhatsApp +91-8-3055-7055-8 (Sales Only, No Support)</div>
-            @endif
-        @endif
+{{--                if (! $diff) {--}}
+{{--                    $diff = $finishTime->diffInMinutes(Carbon\Carbon::now()).' minutes';--}}
+{{--                }--}}
+{{--                else {--}}
+{{--                    $diff .= ' hours';--}}
+{{--                }--}}
+{{--            @endphp--}}
+{{--            @if(Carbon\Carbon::now() <= $finishTime)--}}
+{{--                <div class="topbar-content d-none d-sm-block">Flash Sales: <strong>30% Discount on Regular, 20% Discount on Extended License</strong> for next {{$diff}} + Free Mobile App on Release | Free Lifetime Updates</div>--}}
+{{--            @else--}}
+{{--                <div class="topbar-content d-none d-sm-block">Version 2.9 released. Go to Communication -> Meeting & Start offering Screen Share, Live Classes to Students, Schedule Live Meeting with selected Staff! WhatsApp +91-8-3055-7055-8 (Sales Only, No Support)</div>--}}
+{{--            @endif--}}
+{{--        @endif--}}
         <div class="preloader">
             <svg class="circular" viewBox="25 25 50 50">
                 <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
@@ -98,7 +98,7 @@
                 <script src="https://pgi.billdesk.com/payments-checkout-widget/src/app.bundle.js"></script>
             @endif
         @endif
-        @if(Carbon\Carbon::now() > Carbon\Carbon::parse('2020-07-10 00:00') && 
+        @if(Carbon\Carbon::now() > Carbon\Carbon::parse('2020-07-10 00:00') &&
             Carbon\Carbon::now() <= Carbon\Carbon::parse('2020-07-12 23:59'))
             <script>
                 $(document).ready(function(){
