@@ -3,6 +3,7 @@
   'academic_configuration' => 'Academic Configuration',
   'academic_session' => 'Academic Session',
   'academics' => 'Academic',
+  'accommodation' => 'Accommodation choice Netherland',
   'add_atleast_one_subject' => 'Please add atleast one subject.',
   'add_class_timing_session' => 'Add Session',
   'add_new_batch' => 'Add New Batch',
@@ -116,6 +117,7 @@
   'course_group_name' => 'Name',
   'course_group_order' => 'Order',
   'course_group_updated' => 'Course group updated.',
+  'course_locations' => 'Select Course Location',
   'course_module_description' => 'Add different courses your institute offers, associate those with multiple batches, and configure course level options',
   'course_module_title' => 'Listing all Courses here!',
   'course_name' => 'Name',
@@ -310,7 +312,4 @@
   'timetable_updated' => 'Timetable updated.',
   'transfer_certificate_format' => 'Transfer Certificate Format',
   'week_days_missing' => 'Some week days are missing.',
-    'course_locations' => 'Select Course Location',
-    'accommodation' => 'Accommodation choice Netherland',
-
 );

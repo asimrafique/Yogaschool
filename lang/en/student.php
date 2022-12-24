@@ -370,6 +370,7 @@
   'second_guardian_qualification' => 'Second Guardian Qualification',
   'second_guardian_relation' => 'Second Guardian Relation',
   'second_guardian_unique_identification_number' => 'Second Guardian Unique Identification Number',
+  'select_course_location' => 'Select Course Location',
   'select_parent' => 'Select Parent',
   'select_student' => 'Select Student',
   'select_student_group' => 'Select Student Group',
@@ -415,8 +416,7 @@
   'student_type' => 'Student',
   'student_username' => 'Student Username',
   'subject_wise' => 'Subject Wise',
-  'select_course_location' => 'Select Course Location',
-  'tc_props' =>
+  'tc_props' => 
   array (
     'admission_date_and_class' => 'Date of First Admission in the School with Class',
     'last_exam_with_result' => 'School / Board Annual Examination last taken with result',
