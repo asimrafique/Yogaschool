@@ -63,6 +63,32 @@
                     <show-error :form-name="batchForm" prop-name="description"></show-error>
                 </div>
             </div>
+          <div class="col-12 col-sm-4">
+            <div class="form-group">
+              <label for="">{{trans('academic.session_start_date')}}</label>
+              <datepicker v-model="batchForm.start_date" :bootstrapStyling="true" @selected="batchForm.errors.clear('start_date')" :placeholder="trans('academic.session_start_date')" :disabled="id ? true : false"></datepicker>
+              <show-error :form-name="batchForm" prop-name="start_date"></show-error>
+            </div>
+          </div>
+          <div class="col-12 col-sm-4">
+            <div class="form-group">
+              <label for="">{{trans('academic.session_end_date')}}</label>
+              <datepicker v-model="batchForm.end_date" :bootstrapStyling="true" @selected="batchForm.errors.clear('end_date')" :placeholder="trans('academic.session_end_date')" :disabled="id ? true : false"></datepicker>
+              <show-error :form-name="batchForm" prop-name="end_date"></show-error>
+            </div>
+          </div>
+          <div class="col-12 col-sm-4">
+            <div class="form-group">
+              <label for="">Select Location</label>
+              <select class="custom-select col-12" required name="location" id="location" v-model="batchForm.location"
+                      @change="batchForm.errors.clear('location')">
+                <option value="">{{ trans('general.select_one') }}</option>
+                <option value="India">India</option>
+                <option value="Netherlands">Netherlands</option>
+              </select>
+              <show-error :form-name="batchForm" prop-name="location"></show-error>
+            </div>
+          </div>
         </div>
 
         <template v-if="exam_observations.length">
@@ -140,7 +166,10 @@
                     roll_number_digit: 0,
                     default_attendance_method: '',
                     description: '',
-                    holidays_except: []
+                    holidays_except: [],
+                    start_date: '',
+                    end_date: '',
+                    location: '',
                 }),
                 holiday: '',
                 attendance_methods: [],
@@ -212,6 +241,9 @@
                         this.selected_exam_observation = response.batch.exam_observation_id ? {id: response.batch.exam_observation_id, name: response.batch.observation.name} : null;
                         this.batchForm.description = response.batch.description;
                         this.batchForm.max_strength = response.batch.options ? response.batch.options.max_strength : helper.getConfig('default_max_strength_per_batch');
+                        this.batchForm.start_date = response.batch.options ? response.batch.options.start_date:'' ;
+                        this.batchForm.end_date = response.batch.options ? response.batch.options.end_date :'';
+                        this.batchForm.location = response.batch.options ? response.batch.options.location :'';
                         this.batchForm.default_attendance_method = response.batch.options ? response.batch.options.default_attendance_method : '';
                         this.batchForm.roll_number_prefix = response.batch.options ? response.batch.options.roll_number_prefix : helper.getConfig('default_roll_number_prefix');
                         this.batchForm.roll_number_digit = response.batch.options && response.batch.options.hasOwnProperty('roll_number_digit') ? response.batch.options.roll_number_digit : 0,

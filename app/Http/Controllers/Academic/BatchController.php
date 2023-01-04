@@ -96,6 +96,7 @@ class BatchController extends Controller
      */
     public function store(BatchRequest $request)
     {
+
         $this->authorize('create', Batch::class);
 
         $batch = $this->repo->create($this->request->all());

@@ -35,6 +35,10 @@
 		"more_than_once",
 		"subject_wise"
 	],
+	"batch_location": [
+		"Arhanta Yoga Ashram India",
+		"Arhanta Yoga Ashram Netherlands"
+	],
 	"student_termination_reasons": [
 		"transferred",
 		"passed",

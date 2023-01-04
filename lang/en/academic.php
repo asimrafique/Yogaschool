@@ -313,4 +313,7 @@
   'timetable_updated' => 'Timetable updated.',
   'transfer_certificate_format' => 'Transfer Certificate Format',
   'week_days_missing' => 'Some week days are missing.',
+  'location_batch' => 'Location',
+  'start_date' => 'Start Date',
+  'end_date' => 'End Date',
 );

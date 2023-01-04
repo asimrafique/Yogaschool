@@ -69,6 +69,9 @@
                                     <th>{{trans('academic.max_strength')}}</th>
                                     <th>{{trans('academic.current_strength')}}</th>
                                     <th>{{trans('academic.roll_number_prefix')}}</th>
+                                    <th>{{trans('academic.location_batch')}}</th>
+                                    <th>{{trans('academic.start_date')}}</th>
+                                    <th>{{trans('academic.end_date')}}</th>
                                     <th>{{trans('academic.batch_description')}}</th>
                                     <th class="table-option">{{trans('general.action')}}</th>
                                 </tr>
@@ -80,6 +83,9 @@
                                     <td v-text="batch.options ? batch.options.max_strength : getConfig('default_max_strength_per_batch')"></td>
                                     <td v-text="batch.student_records_count"></td>
                                     <td v-text="batch.options ? batch.options.roll_number_prefix : getConfig('default_roll_number_prefix')"></td>
+                                    <td v-text="batch.options ? batch.options.location :''"></td>
+                                    <td v-text="batch.options ? batch.options.start_date :''"></td>
+                                    <td v-text="batch.options ? batch.options.end_date :''"></td>
                                     <td v-text="batch.description"></td>
                                     <td class="table-option">
                                         <div class="btn-group">

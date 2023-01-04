@@ -25,7 +25,10 @@ __webpack_require__.r(__webpack_exports__);
         roll_number_digit: 0,
         default_attendance_method: '',
         description: '',
-        holidays_except: []
+        holidays_except: [],
+        start_date: '',
+        end_date: '',
+        location: ''
       }),
       holiday: '',
       attendance_methods: [],
@@ -95,6 +98,9 @@ __webpack_require__.r(__webpack_exports__);
         } : null;
         _this3.batchForm.description = response.batch.description;
         _this3.batchForm.max_strength = response.batch.options ? response.batch.options.max_strength : helper.getConfig('default_max_strength_per_batch');
+        _this3.batchForm.start_date = response.batch.options ? response.batch.options.start_date : '';
+        _this3.batchForm.end_date = response.batch.options ? response.batch.options.end_date : '';
+        _this3.batchForm.location = response.batch.options ? response.batch.options.location : '';
         _this3.batchForm.default_attendance_method = response.batch.options ? response.batch.options.default_attendance_method : '';
         _this3.batchForm.roll_number_prefix = response.batch.options ? response.batch.options.roll_number_prefix : helper.getConfig('default_roll_number_prefix');
         _this3.batchForm.roll_number_digit = response.batch.options && response.batch.options.hasOwnProperty('roll_number_digit') ? response.batch.options.roll_number_digit : 0, _this3.selected_course = response.selected_course;
@@ -591,6 +597,119 @@ var render = function render() {
       "form-name": _vm.batchForm,
       "prop-name": "description"
     }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.session_start_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("academic.session_start_date"),
+      disabled: _vm.id ? true : false
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.batchForm.errors.clear("start_date");
+      }
+    },
+    model: {
+      value: _vm.batchForm.start_date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.batchForm, "start_date", $$v);
+      },
+      expression: "batchForm.start_date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "start_date"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.session_end_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("academic.session_end_date"),
+      disabled: _vm.id ? true : false
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.batchForm.errors.clear("end_date");
+      }
+    },
+    model: {
+      value: _vm.batchForm.end_date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.batchForm, "end_date", $$v);
+      },
+      expression: "batchForm.end_date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "end_date"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("Select Location")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.batchForm.location,
+      expression: "batchForm.location"
+    }],
+    staticClass: "custom-select col-12",
+    attrs: {
+      required: "",
+      name: "location",
+      id: "location"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.batchForm, "location", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.batchForm.errors.clear("location");
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "India"
+    }
+  }, [_vm._v("India")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "Netherlands"
+    }
+  }, [_vm._v("Netherlands")])]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.batchForm,
+      "prop-name": "location"
+    }
   })], 1)])]), _vm._v(" "), _vm.exam_observations.length ? [_c("h4", {
     staticClass: "card-title"
   }, [_vm._v(_vm._s(_vm.trans("exam.configuration")))]), _vm._v(" "), _c("div", {
@@ -987,7 +1106,7 @@ var render = function render() {
     staticClass: "table-responsive"
   }, [_c("table", {
     staticClass: "table table-sm"
-  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("academic.batch_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.course")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.max_strength")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.current_strength")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.roll_number_prefix")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.batch_description")))]), _vm._v(" "), _c("th", {
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("academic.batch_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.course")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.max_strength")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.current_strength")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.roll_number_prefix")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.location_batch")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.start_date")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.end_date")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.batch_description")))]), _vm._v(" "), _c("th", {
     staticClass: "table-option"
   }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.batches.data, function (batch) {
     return _c("tr", [_c("td", {
@@ -1009,6 +1128,18 @@ var render = function render() {
     }), _vm._v(" "), _c("td", {
       domProps: {
         textContent: _vm._s(batch.options ? batch.options.roll_number_prefix : _vm.getConfig("default_roll_number_prefix"))
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(batch.options ? batch.options.location : "")
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(batch.options ? batch.options.start_date : "")
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(batch.options ? batch.options.end_date : "")
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
@@ -1239,4 +1370,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=index.js.map?id=e77c5ce7d58841bb
+//# sourceMappingURL=index.js.map?id=8c48d789692f1637

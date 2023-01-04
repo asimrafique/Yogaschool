@@ -321,12 +321,15 @@ class BatchRepository
                 throw ValidationException::withMessages(['exam_observation_id' => trans('exam.could_not_find_observation')]);
             }
         }
-
+        $start_date = toDate(gv($params, 'start_date'));
+        $end_date   = toDate(gv($params, 'end_date'));
         $options['max_strength']       = gv($params, 'max_strength', config('config.default_max_strength_per_batch'));
         $options['roll_number_prefix'] = gv($params, 'roll_number_prefix', config('config.default_roll_number_prefix'));
         $options['default_attendance_method'] = gv($params, 'default_attendance_method');
         $options['roll_number_digit']  = gv($params, 'roll_number_digit', 0);
-        $options['holidays_except'] = gv($params, 'holidays_except', []);
+        $options['start_date'] = $start_date;
+        $options['end_date'] = $end_date;
+        $options['location'] = gv($params, 'location', 'India');
 
         $formatted = [
             'name'                => $name,
