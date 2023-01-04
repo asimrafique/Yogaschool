@@ -26,7 +26,21 @@
                     <show-error :form-name="roomForm" prop-name="floor_number"></show-error>
                 </div>
             </div>
-            <div class="col-12 col-sm-12">
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                  <label for="">Type</label>
+                  <select class="custom-select col-12" required name="type" id="type" v-model="roomForm.type"
+                          @change="roomForm.errors.clear('type')">
+                    <option value="">{{ trans('general.select_one') }}</option>
+                    <option value="Single_room">Single room</option>
+                    <option value="Double_shared_room">Double shared room</option>
+                    <option value="Dormitory">Dormitory</option>
+                  </select>
+                  <show-error :form-name="roomForm" prop-name="type"></show-error>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-8">
                 <div class="form-group">
                     <label for="">{{trans('asset.room_description')}}</label>
                     <input class="form-control" type="text" v-model="roomForm.description" name="description" :placeholder="trans('asset.room_description')">
@@ -54,7 +68,8 @@
                     name : '',
                     floor_number: '',
                     building_id: '',
-                    description : ''
+                    description : '',
+                    type : '',
                 }),
                 buildings: [],
                 selected_building: null
@@ -109,6 +124,7 @@
                         this.roomForm.building_id = response.room.building_id;
                         this.selected_building = response.selected_building;
                         this.roomForm.description = response.room.description;
+                        this.roomForm.type = response.room.type;
                         loader.hide();
                     })
                     .catch(error => {

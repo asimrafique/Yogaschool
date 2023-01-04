@@ -1,4 +1,5 @@
 <?php return array (
+  'location' => 'Location wise',
   'academic' => 'Academic',
   'academic_configuration' => 'Academic Configuration',
   'academic_session' => 'Academic Session',

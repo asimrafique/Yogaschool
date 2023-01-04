@@ -13,7 +13,8 @@ class Building extends Model
     protected $fillable = [
                             'name',
                             'description',
-                            'options'
+                            'options',
+                            'location',
                         ];
     protected $casts = ['options' => 'array'];
     protected $primaryKey = 'id';

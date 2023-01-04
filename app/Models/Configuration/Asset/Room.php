@@ -15,6 +15,7 @@ class Room extends Model
                             'building_id',
                             'floor_number',
                             'description',
+                            'type',
                             'options'
                         ];
     protected $casts = ['options' => 'array'];

@@ -189,6 +189,7 @@ class RoomRepository
             'description' => gv($params, 'description'),
             'building_id' => gv($params, 'building_id'),
             'floor_number' => gv($params, 'floor_number'),
+            'type' => gv($params, 'type'),
         ];
         
         $formatted['options'] = [];

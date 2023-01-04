@@ -44,6 +44,7 @@
                                     <th>{{trans('asset.building')}}</th>
                                     <th>{{trans('asset.room_name')}}</th>
                                     <th>{{trans('asset.room_floor_number')}}</th>
+                                    <th>Type</th>
                                     <th>{{trans('asset.room_description')}}</th>
                                     <th class="table-option">{{trans('general.action')}}</th>
                                 </tr>
@@ -53,6 +54,7 @@
                                     <td v-text="room.building.name"></td>
                                     <td v-text="room.name"></td>
                                     <td v-text="room.floor_number"></td>
+                                    <td v-text="room.type"></td>
                                     <td v-text="room.description"></td>
                                     <td class="table-option">
                                         <div class="btn-group">

@@ -42,6 +42,7 @@
                             <thead>
                                 <tr>
                                     <th>{{trans('asset.building_name')}}</th>
+                                    <th>location</th>
                                     <th>{{trans('asset.building_description')}}</th>
                                     <th class="table-option">{{trans('general.action')}}</th>
                                 </tr>
@@ -49,6 +50,7 @@
                             <tbody>
                                 <tr v-for="building in buildings.data">
                                     <td v-text="building.name"></td>
+                                    <td v-text="building.location"></td>
                                     <td v-text="building.description"></td>
                                     <td class="table-option">
                                         <div class="btn-group">

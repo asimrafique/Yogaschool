@@ -168,7 +168,8 @@ class BuildingRepository
     {
         $formatted = [
             'name'        => gv($params, 'name'),
-            'description' => gv($params, 'description')
+            'description' => gv($params, 'description'),
+            'location'   => gv($params, 'location'),
         ];
         
         $formatted['options'] = [];

@@ -172,6 +172,56 @@
                                         </div>
                                     </div>
                                 </div>
+                              <div class="card" style="overflow: visible;">
+                                <div class="card-header collapsed" id="other_details" @click="tab = 'other_details'" data-toggle="collapse" data-target="#collapseother_details" aria-expanded="false" aria-controls="collapseBasic">
+                                  <h5><i class="fas fa-lg fa-graduation-cap fa-fix-w-32"></i> Other Details</h5>
+                                </div>
+
+                                <div id="collapseother_details" class="collapse" aria-labelledby="other_details" data-parent="#accordion">
+                                  <div class="card-body">
+                                  <div>
+                                    <div class="row">
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.course_location')" :value="student.course_location" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.accommodation')" :value="student.accommodation" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.occupation')" :value="student.occupation" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.how_long_yoga')" :value="student.how_long_yoga" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.teaching_experience')" :value="student.teaching_experience" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.joining_reason')" :value="student.joining_reason" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.important_to_life')" :value="student.important_to_life" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.why_choose_us')" :value="student.why_choose_us" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.how_hear_about_us')" :value="student.how_hear_about_us" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.allergies_dietary_needs')" :value="student.allergies_dietary_needs" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.use_drugs')" :value="student.use_drugs" />
+                                      </div>
+                                      <div class="col-12 col-sm-4">
+                                        <view-label :label="trans('student.substance_frequency_of_use')" :value="student.substance_frequency_of_use" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                         </div>
                     </div>

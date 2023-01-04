@@ -36,6 +36,7 @@ Route::get('/frontend/calendar/event', 'Frontend\FrontendController@getCalendarE
 Route::get('/frontend/online-registration/pre-requisite', 'Frontend\FrontendController@getOnlineRegistrationPreRequisite');
 Route::post('/frontend/online-registration', 'Student\RegistrationController@onlineRegistration');
 
+
 Route::group(['middleware' => ['auth:api']], function () {
 
     // Authentication Routes
@@ -228,6 +229,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/asset/building/pdf', 'Configuration\Asset\BuildingController@pdf');
     Route::patch('/asset/building/{id}', 'Configuration\Asset\BuildingController@update');
     Route::delete('/asset/building/{id}', 'Configuration\Asset\BuildingController@destroy');
+    Route::get('/asset/building/pre-requisite', 'Configuration\Asset\BuildingController@statusPreRequisite');
+
 
     Route::get('/asset/room/pre-requisite', 'Configuration\Asset\RoomController@preRequisite');
     Route::get('/asset/room', 'Configuration\Asset\RoomController@index');

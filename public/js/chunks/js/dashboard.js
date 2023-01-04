@@ -906,24 +906,32 @@ var render = function render() {
   }, [_vm.hasAnyRole(["admin", "manager", "principal"]) ? [_c("h4", {
     staticClass: "card-title"
   }, [_vm._v(_vm._s(_vm.trans("student.total_strength", {
-    total: _vm.total_strength
+    total: _vm.total_strength,
+    type: _vm.strength_chart_type
   })) + "\n                                "), _c("span", {
     staticClass: "pull-right"
-  }, [_vm.strength_chart_type == "batch" ? _c("button", {
+  }, [_c("button", {
     staticClass: "btn btn-sm btn-info",
     on: {
       click: function click($event) {
         _vm.strength_chart_type = "course";
       }
     }
-  }, [_vm._v(_vm._s(_vm.trans("academic.course_wise")))]) : _vm._e(), _vm._v(" "), _vm.strength_chart_type == "course" ? _c("button", {
+  }, [_vm._v(_vm._s(_vm.trans("academic.course_wise")))]), _vm._v(" "), _c("button", {
     staticClass: "btn btn-sm btn-info",
     on: {
       click: function click($event) {
         _vm.strength_chart_type = "batch";
       }
     }
-  }, [_vm._v(_vm._s(_vm.trans("academic.batch_wise")))]) : _vm._e()])]), _vm._v(" "), _c("bar-chart", {
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch_wise")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-sm btn-info",
+    on: {
+      click: function click($event) {
+        _vm.strength_chart_type = "location";
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.location")) + " ")])])]), _vm._v(" "), _c("bar-chart", {
     attrs: {
       chart: _vm.chart.strength
     }
@@ -19940,4 +19948,4 @@ render._withStripped = true
 /***/ })
 
 }]);
-//# sourceMappingURL=dashboard.js.map?id=a945ae3c9fef8429
+//# sourceMappingURL=dashboard.js.map?id=d1aadbd366f5c51e

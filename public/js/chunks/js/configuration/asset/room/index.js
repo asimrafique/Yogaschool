@@ -18,7 +18,8 @@ __webpack_require__.r(__webpack_exports__);
         name: '',
         floor_number: '',
         building_id: '',
-        description: ''
+        description: '',
+        type: ''
       }),
       buildings: [],
       selected_building: null
@@ -66,6 +67,7 @@ __webpack_require__.r(__webpack_exports__);
         _this3.roomForm.building_id = response.room.building_id;
         _this3.selected_building = response.selected_building;
         _this3.roomForm.description = response.room.description;
+        _this3.roomForm.type = response.room.type;
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -367,7 +369,62 @@ var render = function render() {
       "prop-name": "floor_number"
     }
   })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "col-12 col-sm-12"
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("Type")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.roomForm.type,
+      expression: "roomForm.type"
+    }],
+    staticClass: "custom-select col-12",
+    attrs: {
+      required: "",
+      name: "type",
+      id: "type"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.roomForm, "type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.roomForm.errors.clear("type");
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "Single_room"
+    }
+  }, [_vm._v("Single room")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "Double_shared_room"
+    }
+  }, [_vm._v("Double shared room")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "Dormitory"
+    }
+  }, [_vm._v("Dormitory")])]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.roomForm,
+      "prop-name": "type"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-8"
   }, [_c("div", {
     staticClass: "form-group"
   }, [_c("label", {
@@ -576,7 +633,7 @@ var render = function render() {
     staticClass: "table-responsive"
   }, [_c("table", {
     staticClass: "table table-sm"
-  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("asset.building")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_floor_number")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_description")))]), _vm._v(" "), _c("th", {
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("asset.building")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_floor_number")))]), _vm._v(" "), _c("th", [_vm._v("Type")]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_description")))]), _vm._v(" "), _c("th", {
     staticClass: "table-option"
   }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.rooms.data, function (room) {
     return _c("tr", [_c("td", {
@@ -590,6 +647,10 @@ var render = function render() {
     }), _vm._v(" "), _c("td", {
       domProps: {
         textContent: _vm._s(room.floor_number)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(room.type)
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
@@ -825,4 +886,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=index.js.map?id=549a7d6a7098b4a7
+//# sourceMappingURL=index.js.map?id=71266b5da020f5f1

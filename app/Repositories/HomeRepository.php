@@ -134,37 +134,52 @@ class HomeRepository
         }
 
         $strength_chart_type = gv($params, 'strength_chart_type', 'course');
+        if ($strength_chart_type == 'batch' ||$strength_chart_type == 'course') {
 
-        $chart_data = array();
-        $batches = $this->batch->with('course')->withCount(['studentRecords' => function ($q) {
-            $q->whereNull('date_of_exit');
-        }])->filterBySession()->get();
 
-        $total = 0;
-        foreach ($batches as $batch) {
-            $total += $batch->student_records_count;
-            $chart_data[$batch->course->name.' '.$batch->name] = $batch->student_records_count;
-        }
-
-        $batches = $chart_data;
-
-        if ($strength_chart_type == 'course') {
             $chart_data = array();
-            $courses = $this->course->with('batches')->filterBySession()->get();
+            $batches = $this->batch->with('course')->withCount(['studentRecords' => function ($q) {
+                $q->whereNull('date_of_exit');
+            }])->filterBySession()->get();
 
-            foreach ($courses as $course) {
-                $strength = 0;
-                foreach ($course->batches as $batch) {
-                    $strength += gv($batches, $course->name.' '.$batch->name);
-                }
-
-                $chart_data[$course->name] = $strength;
+            $total = 0;
+            foreach ($batches as $batch) {
+                $total += $batch->student_records_count;
+                $chart_data[$batch->course->name . ' ' . $batch->name] = $batch->student_records_count;
             }
+
+            $batches = $chart_data;
+
+            if ($strength_chart_type == 'course') {
+                $chart_data = array();
+                $courses = $this->course->with('batches')->filterBySession()->get();
+
+                foreach ($courses as $course) {
+                    $strength = 0;
+                    foreach ($course->batches as $batch) {
+                        $strength += gv($batches, $course->name . ' ' . $batch->name);
+                    }
+
+                    $chart_data[$course->name] = $strength;
+                }
+            }
+
+            $strength = $this->getChartData($chart_data);
+            return compact('strength','total');
+
+        }else
+        if ($strength_chart_type == 'location') {
+            $chart_data = array();
+            $india=$this->student->wherecourse_location('India')->count();
+            $Netherlands=$this->student->wherecourse_location('Netherlands')->count();
+            $chart_data['India'] = $india;
+            $chart_data['Netherlands'] = $Netherlands;
+            $strength = $this->getChartData($chart_data);
+            $total=$india+$Netherlands;
+            return compact('strength','total');
+
         }
 
-        $strength = $this->getChartData($chart_data);
-
-        return compact('strength','total');
     }
 
     public function getChartData($chart_data)

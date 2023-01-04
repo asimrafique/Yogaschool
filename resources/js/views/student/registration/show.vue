@@ -116,6 +116,68 @@
                                         	<td>{{trans('student.registration_remarks')}}</td>
                                         	<td>{{registration.registration_remarks}}</td>
                                         </tr>
+
+
+                                        <tr v-if="registration.course_location">
+                                        	<td>Course Location</td>
+                                        	<td>{{registration.course_location}}</td>
+                                        </tr>
+                                        <tr v-if="registration.student.accommodation">
+                                        	<td>Accommodation</td>
+                                        	<td>{{registration.student.accommodation}}</td>
+                                        </tr>
+
+                                        <tr v-if="registration.student.occupation">
+                                        	<td>Occupation</td>
+                                        	<td>{{registration.student.occupation}}</td>
+                                        </tr>
+
+                                        <tr v-if="registration.student.how_long_yoga">
+                                        	<td>How long have you been practicing Yoga?</td>
+                                        	<td>{{registration.student.how_long_yoga}}</td>
+                                        </tr>
+
+                                        <tr v-if="registration.student.teaching_experience">
+                                        	<td>Do you have any experience teaching yoga?</td>
+                                        	<td>{{registration.student.teaching_experience}}</td>
+                                        </tr>
+
+                                        <tr v-if="registration.student.joining_reason">
+                                        	<td>What is your primary reason to join the course?</td>
+                                        	<td>{{registration.student.joining_reason}}</td>
+                                        </tr>
+
+                                        <tr v-if="registration.student.important_to_life">
+                                        	<td>What is important to you in life?</td>
+                                        	<td>{{registration.student.important_to_life}}</td>
+                                        </tr>
+
+                                        <tr v-if="registration.student.why_choose_us">
+                                        	<td>Why did you choose Arhanta Yoga?</td>
+                                        	<td>{{registration.student.why_choose_us}}</td>
+                                        </tr>
+
+                                        <tr v-if="registration.student.how_hear_about_us">
+                                        	<td>How did you hear about us?</td>
+                                        	<td>{{registration.student.how_hear_about_us}}</td>
+                                        </tr>
+
+                                        <tr v-if="registration.student.allergies_dietary_needs">
+                                        	<td>Please mention in case you have any allergies or special dietary needs:</td>
+                                        	<td>{{registration.student.allergies_dietary_needs}}</td>
+                                        </tr>
+
+                                        <tr v-if="registration.student.use_drugs">
+                                        	<td>Have you in the last 12 months used tobacco, alcohol, recreational drugs, or illicit substances?</td>
+                                        	<td>{{registration.student.use_drugs}}</td>
+                                        </tr>
+
+
+                                        <tr v-if="registration.student.substance_frequency_of_use">
+                                        	<td>Please list substance and frequency of use</td>
+                                        	<td>{{registration.student.substance_frequency_of_use}}</td>
+                                        </tr>
+
                                         <tr>
                                         	<td>{{trans('general.created_at')}}</td>
                                         	<td>{{registration.student.created_at | momentDateTime}}</td>
@@ -271,7 +333,8 @@
                 registration_custom_fields: [],
                 online_registration_custom_fields: [],
                 editModal: false,
-                showReceiptModal: false
+                showReceiptModal: false,
+
             }
         },
         mounted(){

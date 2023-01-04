@@ -14,26 +14,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      locations: '',
       buildingForm: new Form({
         name: '',
+        location: '',
         description: ''
       })
     };
   },
   props: ['id'],
   mounted: function mounted() {
-    if (this.id) this.get();
+    var _this = this;
+    if (this.id) {
+      this.get();
+    }
+    var loader = this.$loading.show();
+    axios.get('/api/frontend/asset/building/pre-requisite').then(function (response) {
+      _this.locations = response.locations;
+      loader.hide();
+    })["catch"](function (error) {
+      loader.hide();
+      helper.showErrorMsg(error);
+    });
   },
   methods: {
     proceed: function proceed() {
       if (this.id) this.update();else this.store();
     },
     store: function store() {
-      var _this = this;
+      var _this2 = this;
       var loader = this.$loading.show();
       this.buildingForm.post('/api/asset/building').then(function (response) {
         toastr.success(response.message);
-        _this.$emit('completed');
+        _this2.$emit('completed');
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -41,25 +54,26 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     get: function get() {
-      var _this2 = this;
+      var _this3 = this;
       var loader = this.$loading.show();
       axios.get('/api/asset/building/' + this.id).then(function (response) {
-        _this2.buildingForm.name = response.name;
-        _this2.buildingForm.description = response.description;
+        _this3.buildingForm.name = response.name;
+        _this3.buildingForm.description = response.description;
+        _this3.buildingForm.location = response.location;
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
         helper.showErrorMsg(error);
-        _this2.$router.push('/configuration/asset/building');
+        _this3.$router.push('/configuration/asset/building');
       });
     },
     update: function update() {
-      var _this3 = this;
+      var _this4 = this;
       var loader = this.$loading.show();
       this.buildingForm.patch('/api/asset/building/' + this.id).then(function (response) {
         toastr.success(response.message);
         loader.hide();
-        _this3.$router.push('/configuration/asset/building');
+        _this4.$router.push('/configuration/asset/building');
       })["catch"](function (error) {
         loader.hide();
         helper.showErrorMsg(error);
@@ -273,6 +287,57 @@ var render = function render() {
     attrs: {
       "for": ""
     }
+  }, [_vm._v("Select Location")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.buildingForm.location,
+      expression: "buildingForm.location"
+    }],
+    staticClass: "custom-select col-12",
+    attrs: {
+      required: "",
+      name: "location",
+      id: "location"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.buildingForm, "location", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.buildingForm.errors.clear("location");
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "India"
+    }
+  }, [_vm._v("India")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "Netherlands"
+    }
+  }, [_vm._v("Netherlands")])]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.buildingForm,
+      "prop-name": "location"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
   }, [_vm._v(_vm._s(_vm.trans("asset.building_description")))]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
@@ -313,7 +378,7 @@ var render = function render() {
     attrs: {
       to: "/configuration/asset/building"
     }
-  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.id ? _c("button", {
+  }, [_vm._v("\n      " + _vm._s(_vm.trans("general.cancel")) + "\n    ")]), _vm._v(" "), !_vm.id ? _c("button", {
     staticClass: "btn btn-danger waves-effect waves-light",
     attrs: {
       type: "button"
@@ -323,7 +388,7 @@ var render = function render() {
         return _vm.$emit("cancel");
       }
     }
-  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+  }, [_vm._v("\n      " + _vm._s(_vm.trans("general.cancel")) + "\n    ")]) : _vm._e(), _vm._v(" "), _c("button", {
     staticClass: "btn btn-info waves-effect waves-light",
     attrs: {
       type: "submit"
@@ -475,12 +540,16 @@ var render = function render() {
     staticClass: "table-responsive"
   }, [_c("table", {
     staticClass: "table table-sm"
-  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("asset.building_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.building_description")))]), _vm._v(" "), _c("th", {
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("asset.building_name")))]), _vm._v(" "), _c("th", [_vm._v("location")]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.building_description")))]), _vm._v(" "), _c("th", {
     staticClass: "table-option"
   }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.buildings.data, function (building) {
     return _c("tr", [_c("td", {
       domProps: {
         textContent: _vm._s(building.name)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(building.location)
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
@@ -716,4 +785,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=index.js.map?id=483c585840afba5e
+//# sourceMappingURL=index.js.map?id=594e1d1cd2792c0e

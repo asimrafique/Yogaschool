@@ -34,13 +34,15 @@
                     <div class="card border-right">
                         <div class="card-body p-4">
                             <template v-if="hasAnyRole(['admin','manager','principal'])">
-                                <h4 class="card-title">{{trans('student.total_strength', {total: total_strength})}}
+                                <h4 class="card-title">{{trans('student.total_strength', {total: total_strength,type:strength_chart_type})}}
                                     <span class="pull-right">
-                                        <button v-if="strength_chart_type == 'batch'" class="btn btn-sm btn-info" @click="strength_chart_type = 'course'">{{trans('academic.course_wise')}}</button>
-                                        <button v-if="strength_chart_type == 'course'" class="btn btn-sm btn-info" @click="strength_chart_type = 'batch'">{{trans('academic.batch_wise')}}</button>
+                                        <button  class="btn btn-sm btn-info" @click="strength_chart_type = 'course'">{{trans('academic.course_wise')}}</button>
+                                        <button  class="btn btn-sm btn-info" @click="strength_chart_type = 'batch'">{{trans('academic.batch_wise')}}</button>
+                                      <button  class="btn btn-sm btn-info" @click="strength_chart_type = 'location'">{{trans('academic.location')}} </button>
                                     </span>
                                 </h4>
                                 <bar-chart :chart="chart.strength"></bar-chart>
+
                             </template>
 
                             <calendar></calendar>

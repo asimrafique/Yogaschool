@@ -420,6 +420,7 @@ class RegistrationRepository
      */
     public function onlineRegistration($params = array())
     {
+
         if (! config('config.online_registration')) {
             throw ValidationException::withMessages(['message' => trans('general.invalid_action')]);
         }

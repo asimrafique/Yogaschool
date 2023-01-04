@@ -258,7 +258,7 @@ class StudentRepository
         $category_id      = is_array($category_id) ? $category_id : ($category_id ? explode(',', $category_id) : []);
         $gender          = is_array($gender) ? $gender : ($gender ? explode(',', $gender) : []);
         $student_group_id = is_array($student_group_id) ? $student_group_id : ($student_group_id ? explode(',', $student_group_id) : []);
-        
+
         $auth_user = \Auth::user();
 
         $student_user_id = [];
@@ -558,7 +558,20 @@ class StudentRepository
             'present_city'           => gv($params, 'city'),
             'present_state'          => gv($params, 'state'),
             'present_zipcode'        => gv($params, 'zipcode'),
-            'present_country'        => gv($params, 'country')
+            'present_country'        => gv($params, 'country'),
+            'course_location'        => gv($params, 'course_location'),
+            'accommodation'          => gv($params, 'accommodation'),
+            'nationality'            => gv($params, 'nationality'),
+            'occupation'             => gv($params, 'occupation'),
+            'how_long_yoga'          => gv($params, 'how_long_yoga'),
+            'teaching_experience'    => gv($params, 'teaching_experience'),
+            'joining_reason'         => gv($params, 'joining_reason'),
+            'important_to_life'      => gv($params, 'important_to_life'),
+            'why_choose_us'          => gv($params, 'why_choose_us'),
+            'how_hear_about_us'      => gv($params, 'how_hear_about_us'),
+            'allergies_dietary_needs'=> gv($params, 'allergies_dietary_needs'),
+            'use_drugs'              => gv($params, 'use_drugs'),
+            'substance_frequency_of_use' => gv($params, 'substance_frequency_of_use'),
         ];
 
 
@@ -601,7 +614,7 @@ class StudentRepository
             } else {
                 $parent->forceFill($this->updateParent($params))->save();
             }
-            
+
             $options = $parent->options;
             $options['custom_values'] = mergeByKey($parent->getOption('custom_values'), $custom_values);
             $parent->options = $options;
