@@ -143,16 +143,16 @@ router.beforeEach((to, from, next) => {
             // }
 
             // Check for valid license; If invalid, redirect to "/license"
-            if (m.meta.validate.indexOf('has_valid_license') > -1 && !helper.getConfig('l') && to.fullPath != '/license'){
-                toastr.error(i18n.install.invalid_license);
-                pageLoader.hide();
-                if(helper.hasRole('admin')){
-                    return next({ path: '/license' })
-                } else {
-                    helper.clearSession();
-                    return next({ path: '/login' })
-                }
-            }
+            // if (m.meta.validate.indexOf('has_valid_license') > -1 && !helper.getConfig('l') && to.fullPath != '/license'){
+            //     toastr.error(i18n.install.invalid_license);
+            //     pageLoader.hide();
+            //     if(helper.hasRole('admin')){
+            //         return next({ path: '/license' })
+            //     } else {
+            //         helper.clearSession();
+            //         return next({ path: '/login' })
+            //     }
+            // }
 
             // Check for valid academic session; If invalid redirect to "/dashboard"
             if (m.meta.validate.indexOf('has_academic_session') > -1 && ! helper.getDefaultAcademicSession()){

@@ -20,8 +20,11 @@ __webpack_require__.r(__webpack_exports__);
       courses: [],
       genders: [],
       course_details: [],
+      data_to_show: [],
+      batches: [],
       registrationForm: new Form({
         course_id: '',
+        batch_id: '',
         first_name: '',
         course_location_id: '',
         middle_name: '',
@@ -59,6 +62,7 @@ __webpack_require__.r(__webpack_exports__);
         substance_frequency_of_use: ''
       }),
       selected_course: null,
+      selected_batch: null,
       guardian_relations: [],
       custom_fields: [],
       custom_values: [],
@@ -81,6 +85,7 @@ __webpack_require__.r(__webpack_exports__);
       _this.genders = response.genders;
       _this.courses = response.courses.courses;
       _this.course_details = response.courses.course_details;
+      // this.batches = response.batches;
       _this.custom_fields = response.custom_fields;
       _this.guardian_relations = response.guardian_relations;
       _this.accommodations = response.accommodations;
@@ -122,6 +127,40 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.enable_registration_fee = course != 'undefined' ? course.enable_registration_fee : 0;
       this.registration_fee = this.enable_registration_fee ? course.registration_fee : 0;
+      // let course = this.course_details.find(o => o.course_id == selectedOption.id);
+      var batches = this.course_details.find(function (o) {
+        return o.course_id == selectedOption.id;
+      });
+      this.batches = batches.batch_data;
+      // let location_data = batches.batch_data.find(o => o.location);
+      // console.table(location_data);
+
+      // console.log(batches.batch_data);
+      // this.batches = this.course_details.find(o => o.course_id == selectedOption.id);
+      // console.log(this.batches,this.batches.find(o => o.course_id == selectedOption.id));
+      // let valObj = this.course_details.filter(function(elem){
+      //   if(elem.course_id == selectedOption.id) return elem.batch_data;
+      // });
+      // this.batches=valObj;
+    },
+    onBatchSelect: function onBatchSelect(selectedOption) {
+      var _this3 = this;
+      // this.registrationForm.batch_id = selectedOption.id;
+      // this.registrationForm.batch_id = selectedOption.id;
+      // let batches = this.batches.find(o => o.course_id == selectedOption.id);
+      // this.batches = batches;
+
+      // this.enable_registration_fee = (course != 'undefined') ? course.enable_registration_fee : 0;
+      // this.registration_fee = (this.enable_registration_fee) ? course.registration_fee : 0
+
+      var loader = this.$loading.show();
+      axios.get('/api/frontend/online-registration/getlocationforbatch/' + this.registrationForm.batch_id).then(function (response) {
+        _this3.course_locations = response.course_location;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
     },
     formatCurrency: function formatCurrency(amount) {
       return helper.formatCurrency(amount);
@@ -691,6 +730,51 @@ var render = function render() {
     attrs: {
       "form-name": _vm.registrationForm,
       "prop-name": "course_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("Select Course Batches")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.registrationForm.batch_id,
+      expression: "registrationForm.batch_id"
+    }],
+    staticClass: "custom-select col-12",
+    attrs: {
+      name: "batch_id"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.registrationForm, "batch_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, _vm.onBatchSelect]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _vm._l(_vm.batches, function (Batch) {
+    return _c("option", {
+      domProps: {
+        value: Batch.id
+      }
+    }, [_vm._v("\n                    " + _vm._s(Batch.name) + "\n                  ")]);
+  })], 2), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.registrationForm,
+      "prop-name": "batch_id"
     }
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "col-4"
@@ -4156,4 +4240,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=onlineRegistration.js.map?id=287ba90c6504e27d
+//# sourceMappingURL=onlineRegistration.js.map?id=37c65ab53ede8f0e

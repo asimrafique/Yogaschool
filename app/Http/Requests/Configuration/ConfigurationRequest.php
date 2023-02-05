@@ -23,6 +23,7 @@ class ConfigurationRequest extends FormRequest
      */
     public function rules()
     {
+
         $rule = [
             'institute_name'                 => 'sometimes|required',
             'address_line_1'                 => 'sometimes|required',
@@ -43,7 +44,7 @@ class ConfigurationRequest extends FormRequest
             'mailgun_secret'                 => 'required_if:driver,mailgun',
             'mandrill_secret'                => 'required_if:driver,mandrill',
             'smtp_encryption'                => 'in:ssl,tls,'.config('system.hidden_field'),
-            'mailgun_encryption'             => 'in:ssl,tls,'.config('system.hidden_field'),
+//            'mailgun_encryption'             => 'in:ssl,tls,'.config('system.hidden_field'),
             'config_type'                    => 'required',
             'token_lifetime'                 => 'sometimes|integer|min:10',
             'sms_gateway'                    => 'sometimes|required|in:nexmo,twilio,custom',

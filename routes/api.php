@@ -34,6 +34,7 @@ Route::get('/frontend/event/{uuid}/detail', 'Frontend\FrontendController@getEven
 Route::get('/frontend/teacher/list', 'Frontend\FrontendController@listTeacher');
 Route::get('/frontend/calendar/event', 'Frontend\FrontendController@getCalendarEvent');
 Route::get('/frontend/online-registration/pre-requisite', 'Frontend\FrontendController@getOnlineRegistrationPreRequisite');
+Route::get('/frontend/online-registration/getlocationforbatch/{id}', 'Frontend\FrontendController@getLocationForBatch');
 Route::post('/frontend/online-registration', 'Student\RegistrationController@onlineRegistration');
 
 

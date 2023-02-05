@@ -276,7 +276,7 @@ class RegistrationController extends Controller
 
     public function onlineRegistration(OnlineRegistrationRequest $request)
     {
-        $registration = $this->repo->onlineRegistration($this->request->all());
+         $this->repo->onlineRegistration($this->request->all());
 
         return $this->success(['message' => config('config.online_registration_success_message')]);
     }

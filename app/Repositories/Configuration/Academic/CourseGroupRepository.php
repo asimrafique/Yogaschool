@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Repositories\Configuration\Academic;
 
-use Illuminate\Validation\ValidationException;
+use App\Models\Academic\Batch;
 use App\Models\Configuration\Academic\CourseGroup;
+use Illuminate\Validation\ValidationException;
 
 class CourseGroupRepository
 {
@@ -15,7 +17,8 @@ class CourseGroupRepository
      */
     public function __construct(
         CourseGroup $course_group
-    ) {
+    )
+    {
         $this->course_group = $course_group;
     }
 
@@ -98,14 +101,14 @@ class CourseGroupRepository
      */
     public function getCourseOption($session_id = null)
     {
-        $course_groups = $this->course_group->with('courses', 'courses.batches')->filterBySession($session_id)->orderBy('position','asc')->get();
+        $course_groups = $this->course_group->with('courses', 'courses.batches')->filterBySession($session_id)->orderBy('position', 'asc')->get();
 
         $is_student_or_parent = 0;
         $student_batch_ids = [];
         if (\Auth::user()->hasAnyRole([
-                config('system.default_role.parent'),
-                config('system.default_role.student'),
-            ])
+            config('system.default_role.parent'),
+            config('system.default_role.student'),
+        ])
         ) {
             $is_student_or_parent = 1;
             $student_batch_ids = getAuthUserBatchId();
@@ -115,7 +118,7 @@ class CourseGroupRepository
         foreach ($course_groups as $course_group) {
             $data = array();
             foreach ($course_group->courses->sortBy('position')->all() as $course) {
-                if (! $is_student_or_parent || ($is_student_or_parent && count(array_intersect($student_batch_ids, $course->batches->pluck('id')->all())))) {
+                if (!$is_student_or_parent || ($is_student_or_parent && count(array_intersect($student_batch_ids, $course->batches->pluck('id')->all())))) {
                     $data[] = array(
                         'id' => $course->id,
                         'name' => $course->name
@@ -141,25 +144,46 @@ class CourseGroupRepository
      */
     public function getCourseOptionWithDetail($session_id = null)
     {
-        $course_groups = $this->course_group->with('courses')->filterBySession($session_id)->orderBy('position','asc')->get();
+        $course_groups = $this->course_group->with('courses')->filterBySession($session_id)->orderBy('position', 'asc')->get();
 
         $courses = array();
         $course_details = array();
         foreach ($course_groups as $course_group) {
             $data = array();
-            foreach ($course_group->courses->sortBy('position')->all() as $course) {
-                if ($course->getOption('enable_registration')) {
-                    $data[] = array(
-                    'id' => $course->id,
-                    'name' => $course->name
-                );
-                }
 
-                $course_details[] = array(
-                    'course_id' => $course->id,
-                    'enable_registration_fee' => $course->getOption('enable_registration_fee'),
-                    'registration_fee' => $course->getOption('registration_fee') ? : 0
-                );
+            foreach ($course_group->courses->sortBy('position')->all() as $course) {
+                $course_batches = $course->batches->sortBy('position')->values()->all();
+                $batch_data = array();
+                foreach ($course_batches as $batch) {
+
+                    $studentRecords = Batch::where('id', '=', $batch->id)->withCount(['studentRecords' => function ($q) {
+                        $q->whereNull('date_of_exit');
+                    }])->filterBySession($session_id)->first();
+
+                    $student_records_count = ($studentRecords) ? $studentRecords->student_records_count : 0;
+
+                    if ($student_records_count < $batch->getOption('max_strength')) {
+                        $batch_data[] = array(
+                            'id' => $batch->id,
+                            'name' => $course->name . ' ' . $batch->name,
+                        );
+
+                    }
+                }
+                if ($course_batches) {
+                    if ($course->getOption('enable_registration')) {
+                        $data[] = array(
+                            'id' => $course->id,
+                            'name' => $course->name,
+                        );
+                    }
+                    $course_details[] = array(
+                        'course_id' => $course->id,
+                        'enable_registration_fee' => $course->getOption('enable_registration_fee'),
+                        'registration_fee' => $course->getOption('registration_fee') ?: 0,
+                        'batch_data' => $batch_data,
+                    );
+                }
             }
 
             $courses[] = array(
@@ -167,7 +191,7 @@ class CourseGroupRepository
                 'courses' => $data
             );
         }
-
+//    dd($course_details);
         return compact('courses', 'course_details');
     }
 
@@ -178,13 +202,13 @@ class CourseGroupRepository
      */
     public function getBatchOption($session_id = null)
     {
-        $course_groups = $this->course_group->with(['courses','courses.batches'])->filterBySession($session_id)->orderBy('position','asc')->get();
+        $course_groups = $this->course_group->with(['courses', 'courses.batches'])->filterBySession($session_id)->orderBy('position', 'asc')->get();
 
         $is_student_or_parent = 0;
         if (\Auth::user()->hasAnyRole([
-                config('system.default_role.parent'),
-                config('system.default_role.student'),
-            ])
+            config('system.default_role.parent'),
+            config('system.default_role.student'),
+        ])
         ) {
             $is_student_or_parent = 1;
             $student_batch_ids = getAuthUserBatchId();
@@ -196,10 +220,10 @@ class CourseGroupRepository
             foreach ($course_group->courses->sortBy('position')->all() as $course) {
                 $course_batches = $course->batches->sortBy('position')->values()->all();
                 foreach ($course_batches as $batch) {
-                    if (! $is_student_or_parent || ($is_student_or_parent && in_array($batch->id, $student_batch_ids))) {
+                    if (!$is_student_or_parent || ($is_student_or_parent && in_array($batch->id, $student_batch_ids))) {
                         $batch_data[] = array(
                             'id' => $batch->id,
-                            'name' => $course->name.' '.$batch->name
+                            'name' => $course->name . ' ' . $batch->name
                         );
                     }
                 }
@@ -217,34 +241,49 @@ class CourseGroupRepository
     }
 
     /**
-     * Find course group with given id or throw an error.
+     * Get batch option with course group.
      *
-     * @param integer $id
-     * @return CourseGroup
+     * @return Array $batches
      */
-    public function findOrFail($id, $field = 'message')
+    public function getBatchOptionFront($session_id = null)
     {
-        $course_group = $this->course_group->info()->filterBySession()->find($id);
+        $course_groups = $this->course_group->with(['courses', 'courses.batches'])->filterBySession($session_id)->orderBy('position', 'asc')->get();
 
-        if (! $course_group) {
-            throw ValidationException::withMessages([$field => trans('academic.could_not_find_course_group')]);
+        $is_student_or_parent = 0;
+//        if (\Auth::user()->hasAnyRole([
+//            config('system.default_role.parent'),
+//            config('system.default_role.student'),
+//        ])
+//        ) {
+//            $is_student_or_parent = 1;
+//            $student_batch_ids = getAuthUserBatchId();
+//        }
+
+        $batches = array();
+        foreach ($course_groups as $course_group) {
+            $batch_data = array();
+            foreach ($course_group->courses->sortBy('position')->all() as $course) {
+                $course_batches = $course->batches->sortBy('position')->values()->all();
+                foreach ($course_batches as $batch) {
+//                    if (! $is_student_or_parent || ($is_student_or_parent && in_array($batch->id, $student_batch_ids))) {
+                    $batch_data[] = array(
+                        'id' => $batch->id,
+                        'course_id' => $course->id,
+                        'name' => $course->name . ' ' . $batch->name . ' (' . $batch->options['start_date'] . ' to ' . $batch->options['end_date'] . ')',
+                    );
+//                    }
+                }
+            }
+
+            if ($batch_data) {
+                $batches[] = array(
+//                    'course_group' => $course_group->name,
+                    'batches' => $batch_data
+                );
+            }
         }
 
-        return $course_group;
-    }
-
-    /**
-     * Get all filtered data
-     *
-     * @param array $params
-     * @return CourseGroup
-     */
-    public function getData($params)
-    {
-        $sort_by     = gv($params, 'sort_by', 'position');
-        $order       = gv($params, 'order', 'asc');
-
-        return $this->course_group->info()->filterBySession()->orderBy($sort_by, $order);
+        return $batches;
     }
 
     /**
@@ -258,6 +297,20 @@ class CourseGroupRepository
         $page_length = gv($params, 'page_length', config('config.page_length'));
 
         return $this->getData($params)->paginate($page_length);
+    }
+
+    /**
+     * Get all filtered data
+     *
+     * @param array $params
+     * @return CourseGroup
+     */
+    public function getData($params)
+    {
+        $sort_by = gv($params, 'sort_by', 'position');
+        $order = gv($params, 'order', 'asc');
+
+        return $this->course_group->info()->filterBySession()->orderBy($sort_by, $order);
     }
 
     /**
@@ -313,11 +366,11 @@ class CourseGroupRepository
         }
 
         $formatted = [
-            'name'        => gv($params, 'name'),
+            'name' => gv($params, 'name'),
             'description' => gv($params, 'description')
         ];
 
-        if (! $course_group_id) {
+        if (!$course_group_id) {
             $formatted['academic_session_id'] = config('config.default_academic_session.id');
         }
 
@@ -351,6 +404,23 @@ class CourseGroupRepository
 
         if ($course_group->courses()->count()) {
             throw ValidationException::withMessages(['message' => trans('academic.course_group_associated_with_course')]);
+        }
+
+        return $course_group;
+    }
+
+    /**
+     * Find course group with given id or throw an error.
+     *
+     * @param integer $id
+     * @return CourseGroup
+     */
+    public function findOrFail($id, $field = 'message')
+    {
+        $course_group = $this->course_group->info()->filterBySession()->find($id);
+
+        if (!$course_group) {
+            throw ValidationException::withMessages([$field => trans('academic.could_not_find_course_group')]);
         }
 
         return $course_group;

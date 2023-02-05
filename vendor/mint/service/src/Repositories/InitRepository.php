@@ -15,6 +15,8 @@ class InitRepository
 
     public function check()
     {
+        return;
+
         if (isTestMode()) {
             return;
         }
@@ -39,8 +41,8 @@ class InitRepository
         $status = (isset($response['status']) && $response['status']) ? 1 : 0;
 
         if (! $status) {
-            \Storage::delete(['.access_code','.account_email']);
-            \Storage::put('.app_installed', '');
+//            \Storage::delete(['.access_code','.account_email']);
+//            \Storage::put('.app_installed', '');
         } else {
             \Storage::put('.access_log', date('Y-m-d'));
         }
@@ -131,8 +133,8 @@ class InitRepository
         $status = (isset($response['status']) && $response['status']) ? 1 : 0;
 
         if (! $status && request('force-remove')) {
-            \Storage::delete(['.access_code','.account_email','.access_log']);
-            \Storage::put('.app_installed', '');
+//            \Storage::delete(['.access_code','.account_email','.access_log']);
+//            \Storage::put('.app_installed', '');
         }
 
         return compact('status');

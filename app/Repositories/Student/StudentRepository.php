@@ -550,6 +550,7 @@ class StudentRepository
             'last_name'              => gv($params, 'last_name'),
             'date_of_birth'          => toDate(gv($params, 'date_of_birth')),
             'middle_name'            => gv($params, 'middle_name'),
+            'email'                  => gv($params, 'email'),
             'contact_number'         => gv($params, 'contact_number'),
             'gender'                 => gv($params, 'gender'),
             'student_parent_id'      => gv($params, 'student_parent_id'),
@@ -771,18 +772,24 @@ class StudentRepository
     public function updateUserLogin(Student $student, $params)
     {
         $enable_student_login    = gbv($params, 'enable_student_login');
-        $enable_parent_login     = gbv($params, 'enable_parent_login');
+//        $enable_parent_login     = gbv($params, 'enable_parent_login');
         $change_student_password = gbv($params, 'change_student_password');
         $change_parent_password  = gbv($params, 'change_parent_password');
         $student_email           = gv($params, 'student_email');
         $student_username        = gv($params, 'student_username');
-        $parent_email            = gv($params, 'parent_email');
-        $parent_username         = gv($params, 'parent_username');
+//        $parent_email            = gv($params, 'parent_email');
+//        $parent_username         = gv($params, 'parent_username');
         $student_password        = gv($params, 'student_password');
-        $parent_password         = gv($params, 'parent_password');
+//        $parent_password         = gv($params, 'parent_password');
 
         $student_user = $student->User;
-        $parent_user  = $student->Parent->User;
+//        $parent_user  = $student->Parent->User;
+        $mail['email']   = $student_email;
+        $mail['subject'] = "login Details";
+
+        \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($mail) {
+            $message->to($mail['email'])->subject($mail['subject']);
+        });
 
         if ($enable_student_login && ! $student_user) {
             if (! $student_password) {
@@ -812,40 +819,52 @@ class StudentRepository
 
             $student->user_id = $student_user->id;
             $student->save();
+
+            \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($student_email) {
+                $message->to($student_email)->subject("Your Registration Approved and your login Details created Successfully!");
+            });
+
+//            $email->record([
+//                'to'        => $mail['email'],
+//                'subject'   => $mail['subject'],
+//                'body'      => $body,
+//                'module'    => $this->config['module'],
+//                'module_id' => $this->config['module_id']
+//            ]);
             $student_user->syncRoles([config('system.default_role.student')]);
         }
 
-        if ($enable_parent_login && ! $parent_user) {
-            if (! $parent_password) {
-                throw ValidationException::withMessages(['parent_password' => trans('validation.required', ['attribute' => trans('student.parent_password')])]);
-            }
-
-            if (! $parent_username && ! $parent_email) {
-                throw ValidationException::withMessages(['message' => trans('auth.username_or_email_required')]);
-            }
-
-            if ($parent_email && $this->user->whereEmail($parent_email)->count()) {
-                throw ValidationException::withMessages(['message' => trans('auth.email_already_exists')]);
-            }
-
-            if ($parent_username && $this->user->whereUsername($parent_username)->count()) {
-                throw ValidationException::withMessages(['message' => trans('auth.username_already_exists')]);
-            }
-
-            $parent_user = $this->user->forceCreate([
-                'email'            => $parent_email,
-                'username'         => $parent_username,
-                'password'         => bcrypt($parent_password),
-                'status'           => 'activated',
-                'uuid'             => Str::uuid(),
-                'activation_token' => Str::uuid()
-            ]);
-
-            $parent = $student->Parent;
-            $parent->user_id = $parent_user->id;
-            $parent->save();
-            $parent_user->syncRoles([config('system.default_role.parent')]);
-        }
+//        if ($enable_parent_login && ! $parent_user) {
+//            if (! $parent_password) {
+//                throw ValidationException::withMessages(['parent_password' => trans('validation.required', ['attribute' => trans('student.parent_password')])]);
+//            }
+//
+//            if (! $parent_username && ! $parent_email) {
+//                throw ValidationException::withMessages(['message' => trans('auth.username_or_email_required')]);
+//            }
+//
+//            if ($parent_email && $this->user->whereEmail($parent_email)->count()) {
+//                throw ValidationException::withMessages(['message' => trans('auth.email_already_exists')]);
+//            }
+//
+//            if ($parent_username && $this->user->whereUsername($parent_username)->count()) {
+//                throw ValidationException::withMessages(['message' => trans('auth.username_already_exists')]);
+//            }
+//
+//            $parent_user = $this->user->forceCreate([
+//                'email'            => $parent_email,
+//                'username'         => $parent_username,
+//                'password'         => bcrypt($parent_password),
+//                'status'           => 'activated',
+//                'uuid'             => Str::uuid(),
+//                'activation_token' => Str::uuid()
+//            ]);
+//
+//            $parent = $student->Parent;
+//            $parent->user_id = $parent_user->id;
+//            $parent->save();
+//            $parent_user->syncRoles([config('system.default_role.parent')]);
+//        }
 
         if ($enable_student_login) {
             if (! $change_student_password) {
@@ -853,6 +872,11 @@ class StudentRepository
                 $student_user->email = $student_email;
                 $student_user->username = $student_username;
                 $student_user->save();
+
+                \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($student_email) {
+                    $message->to($student_email)->subject("Your account Password is updated");
+                });
+
             } else {
                 $student_user->password = bcrypt($student_password);
                 $student_user->save();
@@ -862,20 +886,20 @@ class StudentRepository
             $student_user->save();
         }
 
-        if ($enable_parent_login) {
-            if (! $change_parent_password) {
-                $parent_user->status = 'activated';
-                $parent_user->email = $parent_email;
-                $parent_user->username = $parent_username;
-                $parent_user->save();
-            } else {
-                $parent_user->password = bcrypt($parent_password);
-                $parent_user->save();
-            }
-        } else if ($parent_user) {
-            $parent_user->status = 'banned';
-            $parent_user->save();
-        }
+//        if ($enable_parent_login) {
+//            if (! $change_parent_password) {
+//                $parent_user->status = 'activated';
+//                $parent_user->email = $parent_email;
+//                $parent_user->username = $parent_username;
+//                $parent_user->save();
+//            } else {
+//                $parent_user->password = bcrypt($parent_password);
+//                $parent_user->save();
+//            }
+//        } else if ($parent_user) {
+//            $parent_user->status = 'banned';
+//            $parent_user->save();
+//        }
 
         return $student;
     }

@@ -37,6 +37,19 @@
               </div>
               <div class="col-4">
                 <div class="form-group">
+                  <label for="">Select Course Batches</label>
+                  <select v-model="registrationForm.batch_id" class="custom-select col-12" name="batch_id"
+                          @change="onBatchSelect"  >
+                    <option value="">{{ trans('general.select_one') }}</option>
+                    <option v-for="Batch in batches" v-bind:value="Batch.id">
+                      {{ Batch.name }}
+                    </option>
+                  </select>
+                  <show-error :form-name="registrationForm" prop-name="batch_id"></show-error>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
                   <label for="">Select Course Location</label>
                   <select v-model="registrationForm.course_location" class="custom-select col-12" name="course_location"
                           @change="registrationForm.errors.clear('course_location')">
@@ -409,8 +422,11 @@ export default {
       courses: [],
       genders: [],
       course_details: [],
+      data_to_show: [],
+      batches: [],
       registrationForm: new Form({
         course_id: '',
+        batch_id: '',
         first_name: '',
         course_location_id: '',
         middle_name: '',
@@ -448,6 +464,7 @@ export default {
         substance_frequency_of_use: '',
       }),
       selected_course: null,
+      selected_batch: null,
       guardian_relations: [],
       custom_fields: [],
       custom_values: [],
@@ -471,6 +488,7 @@ export default {
           this.genders = response.genders;
           this.courses = response.courses.courses;
           this.course_details = response.courses.course_details;
+          // this.batches = response.batches;
           this.custom_fields = response.custom_fields;
           this.guardian_relations = response.guardian_relations;
           this.accommodations = response.accommodations;
@@ -512,6 +530,43 @@ export default {
       let course = this.course_details.find(o => o.course_id == selectedOption.id);
       this.enable_registration_fee = (course != 'undefined') ? course.enable_registration_fee : 0;
       this.registration_fee = (this.enable_registration_fee) ? course.registration_fee : 0
+      // let course = this.course_details.find(o => o.course_id == selectedOption.id);
+      let batches = this.course_details.find(
+          o => o.course_id == selectedOption.id
+      );
+
+      this.batches=batches.batch_data;
+      // let location_data = batches.batch_data.find(o => o.location);
+      // console.table(location_data);
+
+// console.log(batches.batch_data);
+      // this.batches = this.course_details.find(o => o.course_id == selectedOption.id);
+      // console.log(this.batches,this.batches.find(o => o.course_id == selectedOption.id));
+      // let valObj = this.course_details.filter(function(elem){
+      //   if(elem.course_id == selectedOption.id) return elem.batch_data;
+      // });
+      // this.batches=valObj;
+    },
+    onBatchSelect(selectedOption) {
+      // this.registrationForm.batch_id = selectedOption.id;
+      // this.registrationForm.batch_id = selectedOption.id;
+      // let batches = this.batches.find(o => o.course_id == selectedOption.id);
+      // this.batches = batches;
+
+      // this.enable_registration_fee = (course != 'undefined') ? course.enable_registration_fee : 0;
+      // this.registration_fee = (this.enable_registration_fee) ? course.registration_fee : 0
+
+      let loader = this.$loading.show();
+      axios.get('/api/frontend/online-registration/getlocationforbatch/'+this.registrationForm.batch_id)
+          .then(response => {
+            this.course_locations = response.course_location;
+            loader.hide();
+          })
+          .catch(error => {
+            loader.hide();
+            helper.showErrorMsg(error);
+          })
+
     },
     formatCurrency(amount) {
       return helper.formatCurrency(amount);

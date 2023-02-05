@@ -316,4 +316,5 @@
   'location_batch' => 'Location',
   'start_date' => 'Start Date',
   'end_date' => 'End Date',
+  'Batch' => 'Batches',
 );

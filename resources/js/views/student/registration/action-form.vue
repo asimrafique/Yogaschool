@@ -97,6 +97,19 @@
 			                    <show-error :form-name="actionForm" prop-name="admission_remarks"></show-error>
 			                </div>
 	                    </div>
+	                    <div class="col-12 col-sm-6">
+                        <div class="form-group">
+<!--                             v-if="stockTransferForm.type == 'room'"-->
+
+                          <label for="">{{trans('asset.room')}}</label>
+                          <v-select label="name" v-model="actionForm.room_id" name="room_id" id="room_id" :options="rooms" :placeholder="trans('inventory.select_room')" @select="onRoomSelect" @close="actionForm.errors.clear('room_id')" @remove="actionForm.room_id = ''">
+                            <div class="multiselect__option" slot="afterList" v-if="!rooms.length">
+                              {{trans('general.no_option_found')}}
+                            </div>
+                          </v-select>
+                          <show-error :form-name="actionForm" prop-name="room_id"></show-error>
+                        </div>
+	                    </div>
 	                </div>
 		            <div class="card-footer text-right">
 		                <button type="submit" class="btn btn-info waves-effect waves-light">{{trans('general.save')}}</button>
@@ -115,6 +128,7 @@
 			return {
 				actionForm: new Form({
 					status: '',
+          room_id: '',
 					batch_id: null,
 					admission_number_prefix: '',
 					admission_number: '',
@@ -125,6 +139,7 @@
 					fee_concession_id: null
 				}),
 				admission_numbers: [],
+        rooms: [],
 				batch_current_strength: 0,
 				options: [ 
 					{
@@ -156,7 +171,8 @@
 				let loader = this.$loading.show();
 				axios.get('/api/registration/status/pre-requisite')
 					.then(response => {
-						this.transport_circles = response.transport_circles;
+            this.rooms = response.rooms
+            this.transport_circles = response.transport_circles;
 						this.fee_concessions = response.fee_concessions;
 						this.admission_numbers = response.admission_numbers;
 						this.actionForm.admission_number_prefix = helper.getConfig('admission_number_prefix');
@@ -167,6 +183,9 @@
 						helper.showErrorMsg(error);
 					});
 			},
+      onRoomSelect(selectedOption){
+        this.actionForm.room_id = selectedOption.id;
+      },
 			submit(){
 				let loader = this.$loading.show();
 				this.actionForm.post('/api/registration/'+this.registration.id+'/update/status')

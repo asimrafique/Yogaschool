@@ -48,6 +48,7 @@ class BatchController extends Controller
      */
     public function index()
     {
+
         $this->authorize('list', Batch::class);
 
         $batches = $this->repo->paginate($this->request->all());

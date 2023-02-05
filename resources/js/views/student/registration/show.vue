@@ -79,6 +79,10 @@
                                         	<td>{{registration.student.contact_number}}</td>
                                         </tr>
                                         <tr>
+                                        	<td>{{trans('student.email')}}</td>
+                                        	<td>{{registration.student.email}}</td>
+                                        </tr>
+                                        <tr>
                                         	<td>{{trans('student.gender')}}</td>
                                         	<td>{{trans('list.'+registration.student.gender)}}</td>
                                         </tr>

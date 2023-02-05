@@ -1,6 +1,8 @@
 <?php
 namespace App\Repositories\Student;
 
+use App\Models\Student\Student;
+use App\Repositories\Configuration\Asset\RoomRepository;
 use Illuminate\Support\Str;
 use App\Models\Student\Admission;
 use App\Models\Student\Registration;
@@ -24,6 +26,7 @@ use App\Repositories\Configuration\Finance\Transaction\PaymentMethodRepository;
 
 class RegistrationRepository
 {
+    protected $room;
     protected $registration;
     protected $course;
     protected $student;
@@ -49,6 +52,7 @@ class RegistrationRepository
      * @return void
      */
     public function __construct(
+        RoomRepository $room,
         Registration $registration,
         CourseRepository $course,
         StudentRepository $student,
@@ -69,6 +73,7 @@ class RegistrationRepository
         CustomFieldRepository $custom_field
     ) {
         $this->registration = $registration;
+        $this->room = $room;
         $this->course = $course;
         $this->student = $student;
         $this->account = $account;
@@ -297,8 +302,9 @@ class RegistrationRepository
         $transport_circles = $this->transport_circle->selectAll();
         $fee_concessions = $this->fee_concession->selectAll();
         $admission_numbers = $this->admission->groupBy('prefix')->get(['prefix', \DB::raw('MAX(number) as number')]);
+        $rooms = $this->room->selectAll();
 
-        return compact('transport_circles', 'fee_concessions', 'admission_numbers');
+        return compact('transport_circles', 'fee_concessions', 'admission_numbers','rooms');
     }
 
     /**
@@ -544,6 +550,7 @@ class RegistrationRepository
         }
 
         $number = $this->transaction->filterByAccountId($account->id)->filterByType(1)->max('number');
+        $amount = $registration->registration_fee;
 
         $this->transaction->forceCreate([
             'uuid'                     => Str::uuid(),
@@ -551,7 +558,7 @@ class RegistrationRepository
             'prefix'                   => $account->prefix,
             'number'                   => ($number) ? $number + 1 : 1,
             'user_id'                  => \Auth::user()->id,
-            'amount'                   => $registration->registration_fee,
+            'amount'                   => $amount,
             'account_id'               => $account_id,
             'head'                     => 'registration_fee',
             'registration_id'          => $registration->id,
@@ -568,6 +575,17 @@ class RegistrationRepository
 
         $registration->registration_fee_status = 'paid';
         $registration->save();
+
+        $student = Student::where('id','=',$registration->student_id)->first();
+
+        $mail   = $student->email;
+        \Mail::send('emails.student_fee_payed', compact('amount'), function ($message) use ($mail) {
+            $message->to($mail)->subject('Your Registration fee is payed!');
+        });
+
+
+
+
     }
 
     /**

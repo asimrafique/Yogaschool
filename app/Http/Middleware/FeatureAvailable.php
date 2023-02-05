@@ -16,7 +16,8 @@ class FeatureAvailable
      */
     public function handle($request, Closure $next, $feature)
     {
-        if (! config('config.'.$feature)) {
+//        if (! config('config.'.$feature)) {
+        if (false) {
             return response()->json(['error' => trans('general.feature_not_available')], 422);
         }
 
