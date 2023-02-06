@@ -22,7 +22,18 @@ class OnlineRegistrationRequest extends FormRequest {
 	public function rules() {
 
         $relations = implode(',', gv(getVar('list'), 'relations', []));
-
+        $passwordRule='required';
+        $emailRule='required';
+        if (request()->get('check')==false) {
+            $emailRule='required|email|unique:users,email|max:191';
+            // $phoneRule='required_without_all:email|unique:users,phone|max:191';
+            $passwordRule='required|min:8|max:191|confirmed';
+        }
+        else
+        {   
+        	$emailRule='required|exists:users,email';
+        }
+        
 		return [
 			'first_name'                      => 'required|min:2',
 			// 'last_name'                       => 'required|min:2',
@@ -41,6 +52,9 @@ class OnlineRegistrationRequest extends FormRequest {
 			'state'                           => 'required',
 			'zipcode'                         => 'required',
 			'country'                         => 'required',
+			'email'                         => $emailRule,
+			'password'                         => $passwordRule,
+
 		];
 	}
 

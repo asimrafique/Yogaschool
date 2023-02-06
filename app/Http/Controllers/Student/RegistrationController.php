@@ -12,6 +12,7 @@ use App\Models\Student\Registration;
 use App\Repositories\Student\RegistrationRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Auth;
 
 class RegistrationController extends Controller
 {
@@ -275,8 +276,35 @@ class RegistrationController extends Controller
     }
 
     public function onlineRegistration(OnlineRegistrationRequest $request)
-    {
-         $this->repo->onlineRegistration($this->request->all());
+    {    
+        
+        //dd($this->request->all());
+
+        $credentials = $request->only(['email', 'password']);
+//dd($credentials);
+        if(request()->get('check'))
+        {
+            if (Auth::attempt($credentials)) {
+            // Authentication was successful.
+                // return response()->json([
+                //     'message' => 'Authentication was successful.',
+                //     'user' => Auth::user()
+                // ], 200);
+            } else {
+                // Authentication was not successful.
+              
+                  return response(['errors'=>['email' => ['The provided credentials are incorrect.']]], 422);
+            }
+        }
+
+
+         //exit;
+         
+$this->repo->onlineRegistration($this->request->all());
+
+         
+
+
 
         return $this->success(['message' => config('config.online_registration_success_message')]);
     }

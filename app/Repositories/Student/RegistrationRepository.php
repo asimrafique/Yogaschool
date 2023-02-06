@@ -23,6 +23,7 @@ use App\Repositories\Transport\TransportCircleRepository;
 use App\Repositories\Configuration\Academic\InstituteRepository;
 use App\Repositories\Configuration\Academic\CourseGroupRepository;
 use App\Repositories\Configuration\Finance\Transaction\PaymentMethodRepository;
+use App\User;
 
 class RegistrationRepository
 {
@@ -45,6 +46,7 @@ class RegistrationRepository
     protected $institute;
     protected $academic_session;
     protected $custom_field;
+    protected $user;
 
     /**
      * Instantiate a new instance.
@@ -70,7 +72,8 @@ class RegistrationRepository
         StudentParentRepository $student_parent,
         InstituteRepository $institute,
         AcademicSession $academic_session,
-        CustomFieldRepository $custom_field
+        CustomFieldRepository $custom_field,
+         User $user,
     ) {
         $this->registration = $registration;
         $this->room = $room;
@@ -91,6 +94,7 @@ class RegistrationRepository
         $this->institute = $institute;
         $this->academic_session = $academic_session;
         $this->custom_field = $custom_field;
+        $this->user = $user;
     }
 
     /**
@@ -459,7 +463,22 @@ class RegistrationRepository
         
         $student_parent = $this->student_parent->getExistingParent($params);
 
-        $student = $this->student->getExistingStudent($params);
+      //  $student = $this->student->getExistingStudent($params);
+        $student = $this->student->getExistingStudentbyEmail($params['email']);
+      //  dd($student);
+
+        // in case of  true  dont need to create a student   we have  just get that  student  and assign registeration data 
+
+        if($params['check']==true)
+        {
+
+
+        }
+
+
+        
+
+
 
         if ($student_parent && $student && $student->student_parent_id != $student_parent->id) {
             throw ValidationException::withMessages(['message' => trans('student.parent_detail_mismatch')]);
@@ -469,11 +488,35 @@ class RegistrationRepository
             $student_parent = $this->student_parent->create($params);
         }
 
-        if (! $student) {
+
+
+
+        // in case of false it means  new student register  and make login  and assign register  data 
+        if($params['check']==false)
+        {
             $student = $this->student->create($params);
+           // $loginCreate=$this->student->updateUserLogin($student,$params);
+             $student_user = $this->user->forceCreate([
+                'email'            => $params['email'],
+                'username'         => $student_username='asdasdasd',
+                'password'         => bcrypt($params['password']),
+                'status'           => 'activated',
+                'uuid'             => Str::uuid(),
+                'activation_token' => Str::uuid()
+            ]);
+             $student_user->syncRoles([config('system.default_role.student')]);
             $params['student_parent_id'] = $student_parent->id;
             $this->student->updateParentId($student, $params);
+            $this->student->createLogin($student, $student_user->id);
+
+
         }
+
+        // if (! $student) {
+        //     $student = $this->student->create($params);
+        //     $params['student_parent_id'] = $student_parent->id;
+        //     $this->student->updateParentId($student, $params);
+        // }
 
         $params['date_of_registration'] = today();
         $this->student->validateStudentForRegistration($student, $params);

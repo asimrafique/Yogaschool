@@ -145,12 +145,43 @@
               </div>
 
             </div>
+             <h2>Customer Information</h2>
+            <input type="checkbox" id="checkbox" v-model="checked" />
+<label for="checkbox">Already Have an account? (login)</label><br>
+        <!--      <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+  <label for="vehicle1">Already Have an account (please checked)</label> --><br>
+  <div class="row">
+    <div class="col-12 col-sm-12">
+                <div class="form-group">
+                  <label for="">Email</label>
+                  <input class="form-control" type="email" v-model="registrationForm.email"
+                         name="email" :placeholder="trans('student.contact_name')">
+                  <show-error :form-name="registrationForm" prop-name="email"></show-error>
+                </div>
+              </div>
+              <div class="col-12 col-sm-12">
+                <div class="form-group">
+                  <label for="">Password </label>
+                  <input class="form-control" type="password" v-model="registrationForm.password"
+                         name="password" :placeholder="trans('student.contact_name')">
+                  <show-error :form-name="registrationForm" prop-name="password"></show-error>
+                </div>
+              </div>
+               <div class="col-12 col-sm-12" v-show="!checked">
+                <div class="form-group">
+                  <label for="">confirm Password </label>
+                  <input class="form-control" type="password" v-model="registrationForm.password_confirmation"
+                         name="confirm_password" :placeholder="trans('student.contact_name')">
+                  <show-error :form-name="registrationForm" prop-name="confirm_password"></show-error>
+                </div>
+              </div>
+  </div>
 
             <h2>{{ trans('student.registration_field_info', {name: trans('student.guardian')}) }}</h2>
             <div class="row">
               <div class="col-12 col-sm-4">
                 <div class="form-group">
-                  <label for="">{{ trans('student.first_guardian_name') }}</label>
+                  <label for="">Nabeel easy way </label>
                   <input class="form-control" type="text" v-model="registrationForm.first_guardian_name"
                          name="first_guardian_name" :placeholder="trans('student.contact_name')">
                   <show-error :form-name="registrationForm" prop-name="first_guardian_name"></show-error>
@@ -424,6 +455,7 @@ export default {
       course_details: [],
       data_to_show: [],
       batches: [],
+      checked:false,
       registrationForm: new Form({
         course_id: '',
         batch_id: '',
@@ -462,6 +494,11 @@ export default {
         use_drugs: '',
         use_drugs_details: '',
         substance_frequency_of_use: '',
+        email:'',
+        password:'',
+        password_confirmation:'',
+        check:false
+
       }),
       selected_course: null,
       selected_batch: null,
@@ -507,11 +544,24 @@ export default {
     getConfig(config) {
       return helper.getConfig(config)
     },
+    check(){
+    alert(this.checked);
+    },
     updateCustomValues(value) {
       this.registrationForm.custom_values = value;
     },
     submit() {
       let loader = this.$loading.show();
+    
+       if (this.checked) {
+        this.registrationForm.password_confirmation='';
+        this.registrationForm.check=this.checked;
+       }
+       else
+       {
+        this.registrationForm.check=false;
+       }
+       
       this.registrationForm.post('/api/frontend/online-registration')
           .then(response => {
             toastr.success(response.message);
@@ -522,6 +572,7 @@ export default {
           .catch(error => {
             loader.hide();
             this.customFieldFormErrors = error;
+            console.log('error',error);
             helper.showErrorMsg(error);
           });
     },

@@ -155,6 +155,7 @@ class AuthRepository
      */
     public function validateStatus($auth_user)
     {
+       // dd($auth_user->hasPermissionTo('enable-login'),$auth_user->getRoleNames()->all());
         if ($auth_user->status === 'pending_activation') {
             throw ValidationException::withMessages(['email_or_username' => trans('auth.pending_activation')]);
         }

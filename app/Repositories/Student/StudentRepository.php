@@ -512,6 +512,16 @@ class StudentRepository
 
         return $student_exist_query->filterByFirstName($first_name, 1)->filterByMiddleName($middle_name, 1)->filterByLastName($last_name, 1)->filterByDateOfBirth($date_of_birth)->first();
     }
+     public function getExistingStudentbyEmail($email)
+    {
+        
+
+      $student_exist_query=  $this->student->where('email',  $email);
+
+        
+
+        return $student_exist_query->first();
+    }
 
     /**
      * Validate student for registration
@@ -650,6 +660,13 @@ class StudentRepository
         $student->student_parent_id = $student_parent_id;
         $student->save();
     }
+    public function createLogin(Student $student, $user_id)
+    {
+        //$student_parent_id = gv($params, 'student_parent_id');
+
+        $student->user_id = $user_id;
+            $student->save();
+    }
 
     /**
      * Prepare basic params for inserting into database.
@@ -771,6 +788,7 @@ class StudentRepository
      */
     public function updateUserLogin(Student $student, $params)
     {
+      //  dd($student,$params);
         $enable_student_login    = gbv($params, 'enable_student_login');
 //        $enable_parent_login     = gbv($params, 'enable_parent_login');
         $change_student_password = gbv($params, 'change_student_password');
@@ -787,9 +805,9 @@ class StudentRepository
         $mail['email']   = $student_email;
         $mail['subject'] = "login Details";
 
-        \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($mail) {
-            $message->to($mail['email'])->subject($mail['subject']);
-        });
+        // \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($mail) {
+        //     $message->to($mail['email'])->subject($mail['subject']);
+        // });
 
         if ($enable_student_login && ! $student_user) {
             if (! $student_password) {
@@ -819,10 +837,11 @@ class StudentRepository
 
             $student->user_id = $student_user->id;
             $student->save();
+            //dd($student_user,$student);
 
-            \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($student_email) {
-                $message->to($student_email)->subject("Your Registration Approved and your login Details created Successfully!");
-            });
+            // \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($student_email) {
+            //     $message->to($student_email)->subject("Your Registration Approved and your login Details created Successfully!");
+            // });
 
 //            $email->record([
 //                'to'        => $mail['email'],
@@ -900,7 +919,7 @@ class StudentRepository
 //            $parent_user->status = 'banned';
 //            $parent_user->save();
 //        }
-
+     //dd($student);
         return $student;
     }
 
