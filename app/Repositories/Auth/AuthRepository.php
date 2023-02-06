@@ -155,7 +155,6 @@ class AuthRepository
      */
     public function validateStatus($auth_user)
     {
-       // dd($auth_user->hasPermissionTo('enable-login'),$auth_user->getRoleNames()->all());
         if ($auth_user->status === 'pending_activation') {
             throw ValidationException::withMessages(['email_or_username' => trans('auth.pending_activation')]);
         }
@@ -189,9 +188,9 @@ class AuthRepository
                 $q->whereNull('date_of_exit')->whereIsPromoted(0);
             })->first();
 
-            if (! $valid_student) {
-                throw ValidationException::withMessages(['email_or_username' => trans('student.login_permission_disabled')]);
-            }
+//            if (! $valid_student) {
+//                throw ValidationException::withMessages(['email_or_username' => trans('student.login_permission_disabled')]);
+//            }
 
             return $student->name;
         } elseif (in_array(config('system.default_role.parent'), $user_roles)) {
