@@ -12,17 +12,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _student_registration__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../student/registration */ "./resources/js/views/student/registration/index.vue");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {},
   data: function data() {
+    var _Form;
     return {
       courses: [],
       genders: [],
       course_details: [],
       data_to_show: [],
       batches: [],
-      registrationForm: new Form({
+      checked: false,
+      registrationForm: new Form((_Form = {
         course_id: '',
         batch_id: '',
         first_name: '',
@@ -60,7 +66,7 @@ __webpack_require__.r(__webpack_exports__);
         use_drugs: '',
         use_drugs_details: '',
         substance_frequency_of_use: ''
-      }),
+      }, _defineProperty(_Form, "email", ''), _defineProperty(_Form, "password", ''), _defineProperty(_Form, "password_confirmation", ''), _defineProperty(_Form, "check", false), _Form)),
       selected_course: null,
       selected_batch: null,
       guardian_relations: [],
@@ -103,12 +109,21 @@ __webpack_require__.r(__webpack_exports__);
     getConfig: function getConfig(config) {
       return helper.getConfig(config);
     },
+    check: function check() {
+      alert(this.checked);
+    },
     updateCustomValues: function updateCustomValues(value) {
       this.registrationForm.custom_values = value;
     },
     submit: function submit() {
       var _this2 = this;
       var loader = this.$loading.show();
+      if (this.checked) {
+        this.registrationForm.password_confirmation = '';
+        this.registrationForm.check = this.checked;
+      } else {
+        this.registrationForm.check = false;
+      }
       this.registrationForm.post('/api/frontend/online-registration').then(function (response) {
         toastr.success(response.message);
         _this2.selected_course = null;
@@ -117,6 +132,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         loader.hide();
         _this2.customFieldFormErrors = error;
+        console.log('error', error);
         helper.showErrorMsg(error);
       });
     },
@@ -724,7 +740,7 @@ var render = function render() {
       slot: "afterList"
     },
     slot: "afterList"
-  }, [_vm._v("\n                    " + _vm._s(_vm.trans("general.no_option_found")) + "\n                  ")]) : _vm._e()]), _vm._v(" "), _vm.registrationForm.course_id && _vm.enable_registration_fee && _vm.registration_fee >= 0 ? _c("span", {
+  }, [_vm._v("\n                      " + _vm._s(_vm.trans("general.no_option_found")) + "\n                    ")]) : _vm._e()]), _vm._v(" "), _vm.registrationForm.course_id && _vm.enable_registration_fee && _vm.registration_fee >= 0 ? _c("span", {
     staticClass: "help-block"
   }, [_vm._v(_vm._s(_vm.trans("student.registration_fee")) + " " + _vm._s(_vm.formatCurrency(_vm.registration_fee)))]) : _vm._e(), _vm._v(" "), _c("show-error", {
     attrs: {
@@ -770,7 +786,7 @@ var render = function render() {
       domProps: {
         value: Batch.id
       }
-    }, [_vm._v("\n                    " + _vm._s(Batch.name) + "\n                  ")]);
+    }, [_vm._v("\n                      " + _vm._s(Batch.name) + "\n                    ")]);
   })], 2), _vm._v(" "), _c("show-error", {
     attrs: {
       "form-name": _vm.registrationForm,
@@ -817,7 +833,7 @@ var render = function render() {
       domProps: {
         value: course_location.id
       }
-    }, [_vm._v("\n                    " + _vm._s(course_location.name) + "\n                  ")]);
+    }, [_vm._v("\n                      " + _vm._s(course_location.name) + "\n                    ")]);
   })], 2), _vm._v(" "), _c("show-error", {
     attrs: {
       "form-name": _vm.registrationForm,
@@ -864,7 +880,7 @@ var render = function render() {
       domProps: {
         value: accommodation.id
       }
-    }, [_vm._v("\n                    " + _vm._s(accommodation.name) + "\n                  ")]);
+    }, [_vm._v("\n                      " + _vm._s(accommodation.name) + "\n                    ")]);
   })], 2), _vm._v(" "), _c("show-error", {
     attrs: {
       "form-name": _vm.registrationForm,
@@ -1126,6 +1142,155 @@ var render = function render() {
       "form-name": _vm.registrationForm,
       "prop-name": "gender"
     }
+  })], 1)])]), _vm._v(" "), _c("h2", [_vm._v("Customer Information")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.checked,
+      expression: "checked"
+    }],
+    attrs: {
+      type: "checkbox",
+      id: "checkbox"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.checked) ? _vm._i(_vm.checked, null) > -1 : _vm.checked
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.checked,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.checked = $$a.concat([$$v]));
+          } else {
+            $$i > -1 && (_vm.checked = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.checked = $$c;
+        }
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "checkbox"
+    }
+  }, [_vm._v("Already Have an account? (login)")]), _c("br"), _vm._v(" "), _c("br"), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("Email")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.registrationForm.email,
+      expression: "registrationForm.email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "email",
+      name: "email",
+      placeholder: _vm.trans("student.contact_name")
+    },
+    domProps: {
+      value: _vm.registrationForm.email
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.registrationForm, "email", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.registrationForm,
+      "prop-name": "email"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("Password ")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.registrationForm.password,
+      expression: "registrationForm.password"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "password",
+      name: "password",
+      placeholder: _vm.trans("student.contact_name")
+    },
+    domProps: {
+      value: _vm.registrationForm.password
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.registrationForm, "password", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.registrationForm,
+      "prop-name": "password"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.checked,
+      expression: "!checked"
+    }],
+    staticClass: "col-12 col-sm-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("confirm Password ")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.registrationForm.password_confirmation,
+      expression: "registrationForm.password_confirmation"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "password",
+      name: "confirm_password",
+      placeholder: _vm.trans("student.contact_name")
+    },
+    domProps: {
+      value: _vm.registrationForm.password_confirmation
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.registrationForm, "password_confirmation", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.registrationForm,
+      "prop-name": "confirm_password"
+    }
   })], 1)])]), _vm._v(" "), _c("h2", [_vm._v(_vm._s(_vm.trans("student.registration_field_info", {
     name: _vm.trans("student.guardian")
   })))]), _vm._v(" "), _c("div", {
@@ -1138,7 +1303,7 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v(_vm._s(_vm.trans("student.first_guardian_name")))]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Nabeel easy way ")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -1206,7 +1371,7 @@ var render = function render() {
       domProps: {
         value: relation.id
       }
-    }, [_vm._v("\n                    " + _vm._s(relation.name) + "\n                  ")]);
+    }, [_vm._v("\n                      " + _vm._s(relation.name) + "\n                    ")]);
   })], 2), _vm._v(" "), _c("show-error", {
     attrs: {
       "form-name": _vm.registrationForm,
@@ -1358,7 +1523,7 @@ var render = function render() {
       domProps: {
         value: relation.id
       }
-    }, [_vm._v("\n                    " + _vm._s(relation.name) + "\n                  ")]);
+    }, [_vm._v("\n                      " + _vm._s(relation.name) + "\n                    ")]);
   })], 2), _vm._v(" "), _c("show-error", {
     attrs: {
       "form-name": _vm.registrationForm,
@@ -1700,7 +1865,7 @@ var render = function render() {
       domProps: {
         value: how_log_option.id
       }
-    }, [_vm._v("\n                  " + _vm._s(how_log_option.name) + "\n                ")]);
+    }, [_vm._v("\n                    " + _vm._s(how_log_option.name) + "\n                  ")]);
   })], 2)]), _vm._v(" "), _c("div", {
     staticClass: "col-4"
   }, [_c("div", {
@@ -1742,7 +1907,7 @@ var render = function render() {
       domProps: {
         value: teaching_experience_option.id
       }
-    }, [_vm._v("\n                    " + _vm._s(teaching_experience_option.name) + "\n                  ")]);
+    }, [_vm._v("\n                      " + _vm._s(teaching_experience_option.name) + "\n                    ")]);
   })], 2), _vm._v(" "), _c("show-error", {
     attrs: {
       "form-name": _vm.registrationForm,
@@ -1928,7 +2093,7 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("Have you in the last 12 months used tobacco, alcohol, recreational drugs, or illicit\n                  substances?(Required)")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("Have you in the last 12 months used tobacco, alcohol, recreational drugs, or illicit\n                    substances?(Required)")]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -1961,7 +2126,7 @@ var render = function render() {
       domProps: {
         value: use_drugs_option.id
       }
-    }, [_vm._v("\n                    " + _vm._s(use_drugs_option.name) + "\n                  ")]);
+    }, [_vm._v("\n                      " + _vm._s(use_drugs_option.name) + "\n                    ")]);
   })], 2), _vm._v(" "), _c("show-error", {
     attrs: {
       "form-name": _vm.registrationForm,
@@ -2009,7 +2174,7 @@ var render = function render() {
     attrs: {
       type: "submit"
     }
-  }, [_vm._v("\n          " + _vm._s(_vm.trans("general.submit")) + "\n        ")])])], 1)])])])]);
+  }, [_vm._v("\n            " + _vm._s(_vm.trans("general.submit")) + "\n          ")])])], 1)])])])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -4240,4 +4405,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=onlineRegistration.js.map?id=37c65ab53ede8f0e
+//# sourceMappingURL=onlineRegistration.js.map?id=af3b753921d91600
