@@ -805,9 +805,9 @@ class StudentRepository
         $mail['email']   = $student_email;
         $mail['subject'] = "login Details";
 
-        // \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($mail) {
-        //     $message->to($mail['email'])->subject($mail['subject']);
-        // });
+        \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($mail) {
+            $message->to($mail['email'])->subject($mail['subject']);
+        });
 
         if ($enable_student_login && ! $student_user) {
             if (! $student_password) {
@@ -839,9 +839,9 @@ class StudentRepository
             $student->save();
             //dd($student_user,$student);
 
-            // \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($student_email) {
-            //     $message->to($student_email)->subject("Your Registration Approved and your login Details created Successfully!");
-            // });
+            \Mail::send('emails.student_login', compact('student_password','student_email'), function ($message) use ($student_email) {
+                $message->to($student_email)->subject("Your Registration Approved and your login Details created Successfully!");
+            });
 
 //            $email->record([
 //                'to'        => $mail['email'],
