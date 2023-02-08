@@ -522,6 +522,16 @@ class StudentRepository
 
         return $student_exist_query->first();
     }
+    public function getExistingStudentByUserId($user_id)
+    {
+        
+
+      $student_exist_query=  $this->student->where('user_id',  $user_id);
+
+        
+
+        return $student_exist_query->first();
+    }
 
     /**
      * Validate student for registration

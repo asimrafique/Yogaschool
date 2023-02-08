@@ -76,7 +76,7 @@ class RegistrationController extends Controller
     public function index()
     {
         $this->authorize('list', Registration::class);
-
+// dd($this->request->all());
         $registrations = $this->repo->paginate($this->request->all());
 
         $filters = $this->repo->getFilters();

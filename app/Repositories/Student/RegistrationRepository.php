@@ -24,6 +24,7 @@ use App\Repositories\Configuration\Academic\InstituteRepository;
 use App\Repositories\Configuration\Academic\CourseGroupRepository;
 use App\Repositories\Configuration\Finance\Transaction\PaymentMethodRepository;
 use App\User;
+use Auth;
 
 class RegistrationRepository
 {
@@ -174,7 +175,10 @@ class RegistrationRepository
      * @return Registration
      */
     public function getData($params)
-    {
+    {    $auth_user=Auth::user();
+       
+        //$checkRole=$auth_user->getRoleNames()->all()[0];
+      //  dd($auth_user->id);
         $sort_by                         = gv($params, 'sort_by', 'created_at');
         $order                           = gv($params, 'order', 'desc');
         $course_id                       = gv($params, 'course_id');
@@ -190,10 +194,14 @@ class RegistrationRepository
         $query = $this->registration->with('student', 'student.parent', 'course', 'course.courseGroup', 'previousInstitute')->filterBySession()->dateOfRegistrationBetween([
             'start_date' => $date_of_registration_start_date,
             'end_date' => $date_of_registration_end_date
-        ])->filterByRegistrationStatus($status);
+        ]);
 
         if (count($course_id)) {
             $query->whereIn('course_id', $course_id);
+        }
+        if ($auth_user->hasRole('student')) {
+             $student = $this->student->getExistingStudentByUserId($auth_user->id);
+            $query->where('student_id', $student->id);
         }
 
         if ($registration_type) {
@@ -531,6 +539,7 @@ class RegistrationRepository
         $options['custom_values'] = mergeByKey($registration->getOption('custom_values'), $custom_values);
         $registration->options = $options;
         $registration->save();
+
 
         commitTransaction();
 

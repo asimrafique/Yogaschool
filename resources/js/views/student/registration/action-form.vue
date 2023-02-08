@@ -1,6 +1,7 @@
 <template>
     <div class="card card-form">
-        <div class="card-body">
+        <div class="card-body" v-show="showPendingForm">
+
 			<h4 class="card-title">{{trans('student.registration_action')}}</h4>
             <form @submit.prevent="submit" @keydown="actionForm.errors.clear($event.target.name)">
                 <div class="row">
@@ -99,7 +100,7 @@
 	                    </div>
 	                    <div class="col-12 col-sm-6">
                         <div class="form-group">
-<!--                             v-if="stockTransferForm.type == 'room'"-->
+                            
 
                           <label for="">{{trans('asset.room')}}</label>
                           <v-select label="name" v-model="actionForm.room_id" name="room_id" id="room_id" :options="rooms" :placeholder="trans('inventory.select_room')" @select="onRoomSelect" @close="actionForm.errors.clear('room_id')" @remove="actionForm.room_id = ''">
@@ -126,6 +127,7 @@
 		props: ['registration'],
 		data() {
 			return {
+				showPendingForm:true,
 				actionForm: new Form({
 					status: '',
           room_id: '',
@@ -165,6 +167,15 @@
 			this.actionForm.date_of_admission = moment().format();
 
 			this.getPreRequisite();
+
+			if(helper.hasRole('admin'))
+			{
+                this.showPendingForm=true;
+			}
+			else
+			{
+             this.showPendingForm=false;
+			}
 		},
 		methods: {
 			getPreRequisite(){
