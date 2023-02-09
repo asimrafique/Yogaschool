@@ -17,4 +17,5 @@ tasks.xml
 /node_modules/
 /public/js/
 /public/css/
+/public/*
 
