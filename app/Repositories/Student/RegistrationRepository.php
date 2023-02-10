@@ -316,7 +316,7 @@ class RegistrationRepository
         $fee_concessions = $this->fee_concession->selectAll();
         $admission_numbers = $this->admission->groupBy('prefix')->get(['prefix', \DB::raw('MAX(number) as number')]);
         $rooms = $this->room->selectAll();
-        $accommodations = isset($list['accommodations']) ? $list['accommodations'] : [];
+        $accommodations = generateTranslatedSelectOption(isset($list['accommodations']) ? $list['accommodations'] : []);
 
         return compact('transport_circles', 'fee_concessions', 'admission_numbers','rooms','accommodations');
     }
