@@ -310,13 +310,25 @@ class RegistrationRepository
      * @return Array
      */
     public function getStatusPreRequisite()
-    {
+    {   
+        $list = getVar('list');
         $transport_circles = $this->transport_circle->selectAll();
         $fee_concessions = $this->fee_concession->selectAll();
         $admission_numbers = $this->admission->groupBy('prefix')->get(['prefix', \DB::raw('MAX(number) as number')]);
         $rooms = $this->room->selectAll();
+        $accommodations = isset($list['accommodations']) ? $list['accommodations'] : [];
 
-        return compact('transport_circles', 'fee_concessions', 'admission_numbers','rooms');
+        return compact('transport_circles', 'fee_concessions', 'admission_numbers','rooms','accommodations');
+    }
+    public function getAvailableRoom($accommodation)
+    {   
+
+       //dd($accommodation);
+      
+        $rooms = $this->room->selectRoomByType($accommodation);
+        
+
+        return compact('rooms');
     }
 
     /**

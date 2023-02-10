@@ -181,7 +181,7 @@
             <div class="row">
               <div class="col-12 col-sm-4">
                 <div class="form-group">
-                  <label for="">Nabeel easy way </label>
+                  <label for="">First Guardian Name</label>
                   <input class="form-control" type="text" v-model="registrationForm.first_guardian_name"
                          name="first_guardian_name" :placeholder="trans('student.contact_name')">
                   <show-error :form-name="registrationForm" prop-name="first_guardian_name"></show-error>

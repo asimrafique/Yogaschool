@@ -63,6 +63,16 @@ class RoomRepository
     {
         return $this->room->get(['name', 'id']);
     }
+    public function selectRoomByType($accommodation)
+    {
+      $accommodation= str_replace(' ', '_', $accommodation);
+      //dd($accommodation);
+        $student_exist_query=  $this->room->where('type',  $accommodation);
+
+        
+
+        return $student_exist_query->get();
+    }
 
     /**
      * List all rooms by id

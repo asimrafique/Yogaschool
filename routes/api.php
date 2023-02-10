@@ -702,6 +702,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::delete('/registration/{id}', 'Student\RegistrationController@destroy');
 
     Route::get('/registration/status/pre-requisite', 'Student\RegistrationController@statusPreRequisite');
+     Route::post('/registration/get-available-room', 'Student\RegistrationController@getAvailableRoom');
     Route::post('/registration/{id}/update/status', 'Student\RegistrationController@updateStatus');
 
     Route::get('/registration/fee/pre-requisite', 'Student\RegistrationController@feePreRequisite');

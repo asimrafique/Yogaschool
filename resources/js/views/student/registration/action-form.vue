@@ -105,6 +105,19 @@
 			                </div>
 	                    </div>
 	                    <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label for="">Accommodation choice</label>
+                  <select v-model="actionForm.accommodation" class="custom-select col-12" name="accommodation"
+                          @change="getAvailableRoom($event)" >
+                    <option value="">{{ trans('general.select_one') }}</option>
+                    <option v-for="accommodation in accommodations" v-bind:value="accommodation.id">
+                      {{ accommodation.name }}
+                    </option>
+                  </select>
+                  <show-error :form-name="actionForm" prop-name="accommodation"></show-error>
+                </div>
+              </div>
+	                    <div class="col-12 col-sm-6">
                         <div class="form-group">
                             
 
@@ -165,7 +178,8 @@
 				],
 				transport_circles: [],
 				fee_concessions: [],
-				batches: []	
+				batches: []	,
+				accommodations: [],
 			}
 		},
 		mounted(){
@@ -184,6 +198,34 @@
 			}
 		},
 		methods: {
+			getAvailableRoom(event){
+
+				let loader = this.$loading.show();
+				// axios.get("/api/registration/getAvailableRoom", {
+    //             accommodation: this.registration.student.accommodation,
+    //           })
+    //           .then((resp) => {
+    //           //	loader.hide();
+
+    //           });
+    //
+    //,{
+              //   accommodation: this.registration.student.accommodation,
+              // }
+      axios.post("/api/registration/get-available-room",{
+                accommodation: event.target.value,
+              })
+          .then(response => {
+            this.course_locations = response.course_location;
+            loader.hide();
+          })
+          .catch(error => {
+            loader.hide();
+            helper.showErrorMsg(error);
+          })
+
+
+			},
 			getPreRequisite(){
 				let loader = this.$loading.show();
 				axios.get('/api/registration/status/pre-requisite')
@@ -192,6 +234,7 @@
             this.transport_circles = response.transport_circles;
 						this.fee_concessions = response.fee_concessions;
 						this.admission_numbers = response.admission_numbers;
+						this.accommodations = response.accommodations;
 						this.actionForm.admission_number_prefix = helper.getConfig('admission_number_prefix');
 						loader.hide();
 					})
