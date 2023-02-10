@@ -21,7 +21,7 @@
                                                     <td class="text-right">
                                                         0
                                                     </td>
-                                                    <td class="text-right" v-text="200"></td>
+                                                    <td class="text-right" v-text="formatCurrency(registration.registration_fee)"></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
@@ -33,6 +33,14 @@
                                             </tfoot>
                                         </table>
                                     </div>
+
+                                    <div class="col-12 col-sm-6">
+		                <div class="form-group">
+		                    <label for="">{{trans('finance.date_of_payment')}}</label>
+		                    <datepicker v-model="registrationFeeForm.date" :bootstrapStyling="true" @selected="registrationFeeForm.errors.clear('date')" :placeholder="trans('student.date_of_payment')"></datepicker>
+		                    <show-error :form-name="registrationFeeForm" prop-name="date"></show-error>
+		                </div>
+		            </div>
                                     <div>
                                         <h4 class="card-title">{{trans('finance.choose_payment_gateway')}}</h4>
                                         <div class="radio radio-success" v-if="getConfig('razorpay') && razorpay_loaded">
@@ -101,11 +109,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button type="button" @click="stripeCheckout" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button>
+                                            <button type="button" @click="stripeCheckout1" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button>
                                         </template>
                                     </div>
                                 </form>
-		    <form @submit.prevent="submit" @keydown="registrationFeeForm.errors.clear($event.target.name)" v-show="feeSubmissionForRole">
+		    <form @submit.prevent="submit" @keydown="registrationFeeForm.errors.clear($event.target.name)"  v-if="feeSubmissionForRole==true">
 		        <div class="row">
 		            <div class="col-12 col-sm-6">
 		                <div class="form-group">
@@ -250,6 +258,32 @@
                     exp_year: this.stripe.year
                 }, this.stripeResponseHandler);
                 loader.hide();
+            },
+            stripeCheckout1(gateway)
+            {
+            	let loader = this.$loading.show();
+                    this.registrationFeeForm.account_id=1;
+                    
+                    this.registrationFeeForm.instrument_bank_detail='';
+                    this.registrationFeeForm.instrument_clearing_date='';
+                    this.registrationFeeForm.instrument_date='';
+                    this.registrationFeeForm.instrument_number='';
+                    this.registrationFeeForm.payment_method_id=1;
+                    this.registrationFeeForm.reference_number='';
+                    this.registrationFeeForm.remarks='';
+				this.registrationFeeForm.post('/api/registration/'+this.registration.id+'/fee/payment')
+					.then(response => {
+						toastr.success(response.message);
+						this.selected_account = null;
+						this.$emit('completed');
+						this.stripeButton = true;
+						loader.hide();
+					})
+					.catch(error => {
+						loader.hide();
+						helper.showErrorMsg(error);
+					});
+
             },
             stripeResponseHandler(status, response) {
                 if(status == 200){

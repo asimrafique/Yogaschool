@@ -1,5 +1,11 @@
 <template>
     <div class="card card-form">
+    	<div class="card-body" v-if="showPendingForm==false && registration.status=='pending'">
+    			<h4 class="card-title">Waiting for admin approval</h4>
+    	</div>
+    	<div class="card-body" v-if="showPendingForm==false && registration.status=='allotted'">
+    			<h4 class="card-title">Registration Approved</h4>
+    	</div>
         <div class="card-body" v-show="showPendingForm">
 
 			<h4 class="card-title">{{trans('student.registration_action')}}</h4>

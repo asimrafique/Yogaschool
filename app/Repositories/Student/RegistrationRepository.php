@@ -683,6 +683,7 @@ class RegistrationRepository
             throw ValidationException::withMessages(['message' => trans('general.invalid_action')]);
         }
 
+
 //        if (! request('admission_remarks')) {
 //            throw ValidationException::withMessages(['admission_remarks' => trans('validation.required', ['attribute' => trans('student.admission_remarks')])]);
 //        }
@@ -700,6 +701,7 @@ class RegistrationRepository
             if (! is_numeric(request('admission_number'))) {
                 throw ValidationException::withMessages(['admission_number' => trans('validation.numeric', ['attribute' => trans('student.admission_number')])]);
             }
+
 
             if (request('admission_number') < 0) {
                 throw ValidationException::withMessages(['admission_number' => trans('validation.min.numeric', ['attribute' => trans('student.admission_number'), 'min' => 0])]);
@@ -765,6 +767,7 @@ class RegistrationRepository
         if (! $fee_allocation) {
             throw ValidationException::withMessages(['batch_id' => trans('finance.no_fee_allocated')]);
         }
+       // dd($fee_allocation);
 
         $transport_circle_id = gv($params, 'transport_circle_id');
 

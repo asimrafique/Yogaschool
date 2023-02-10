@@ -193,7 +193,7 @@ class RegistrationController extends Controller
         $registration = $this->repo->findOrFail($id);
 
         $this->authorize('feePayment', Registration::class);
-
+        //dd($this->request->all());
         $this->repo->payment($this->request->all(), $registration);
 
         return $this->success(['message' => trans('student.registration_fee_paid')]);
