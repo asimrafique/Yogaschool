@@ -95,6 +95,16 @@ class RoomRepository
          //dd('hi again');
          return $booking;
     }
+    public function checkRoomBookedBySameUser($student_id)
+    {
+       $check= $this->roomBooking->where('user_id',$student_id)->first();
+       if ($check) {
+        return true;
+       }
+       else{
+         return false;
+       }
+    }
     public function selectAvailableRoomByType($req)
     {
       //$accommodation= str_replace(' ', '_', $accommodation);

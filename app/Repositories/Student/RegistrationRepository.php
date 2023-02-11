@@ -795,6 +795,13 @@ class RegistrationRepository
             throw ValidationException::withMessages(['fee_concession_id' => trans('finance.could_not_find_fee_concession')]);
         }
 
+        $student_id =$registration->Student->id
+        $bookedRoomChecked=$this->room->checkRoomBookedBySameUser($student_id);
+
+        if ($bookedRoomChecked) {
+            throw ValidationException::withMessages(['room_id' => 'User Already Booked Room']);
+        }
+
         $this->student->validateStudentForRegistration($registration->student, [
             'course_id' => $registration->course_id,
             'date_of_registration' => $registration->date_of_registration
