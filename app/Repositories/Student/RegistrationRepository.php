@@ -316,16 +316,17 @@ class RegistrationRepository
         $fee_concessions = $this->fee_concession->selectAll();
         $admission_numbers = $this->admission->groupBy('prefix')->get(['prefix', \DB::raw('MAX(number) as number')]);
         $rooms = $this->room->selectAll();
-        $accommodations = generateTranslatedSelectOption(isset($list['accommodations']) ? $list['accommodations'] : []);
+        //$accommodations = generateTranslatedSelectOption(isset($list['accommodations']) ? $list['accommodations'] : []);
+        $accommodations=$this->room->getRoomTypesGroupBy();
 
         return compact('transport_circles', 'fee_concessions', 'admission_numbers','rooms','accommodations');
     }
-    public function getAvailableRoom($accommodation)
+    public function getAvailableRoom($type)
     {   
 
        //dd($accommodation);
       
-        $rooms = $this->room->selectRoomByType($accommodation);
+        $rooms = $this->room->selectRoomByType($type);
         
 
         return compact('rooms');

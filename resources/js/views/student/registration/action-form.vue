@@ -110,8 +110,8 @@
                   <select v-model="actionForm.accommodation" class="custom-select col-12" name="accommodation"
                           @change="getAvailableRoom($event)" >
                     <option value="">{{ trans('general.select_one') }}</option>
-                    <option v-for="accommodation in accommodations" v-bind:value="accommodation.id">
-                      {{ accommodation.name }}
+                    <option v-for="accommodation in accommodations" v-bind:value="accommodation.types">
+                      {{ accommodation.type_name }}
                     </option>
                   </select>
                   <show-error :form-name="actionForm" prop-name="accommodation"></show-error>
@@ -122,11 +122,13 @@
                             
 
                           <label for="">{{trans('asset.room')}}</label>
-                          <v-select label="name" v-model="actionForm.room_id" name="room_id" id="room_id" :options="rooms" :placeholder="trans('inventory.select_room')" @select="onRoomSelect" @close="actionForm.errors.clear('room_id')" @remove="actionForm.room_id = ''">
-                            <div class="multiselect__option" slot="afterList" v-if="!rooms.length">
-                              {{trans('general.no_option_found')}}
-                            </div>
-                          </v-select>
+                          <select v-model="actionForm.accommodation" class="custom-select col-12" name="accommodation"
+                           >
+                    <option value="">{{ trans('general.select_one') }}</option>
+                    <option v-for="room in rooms" v-bind:value="room.id">
+                      {{ room.name }}
+                    </option>
+                  </select>
                           <show-error :form-name="actionForm" prop-name="room_id"></show-error>
                         </div>
 	                    </div>
@@ -216,7 +218,7 @@
                 accommodation: event.target.value,
               })
           .then(response => {
-            this.course_locations = response.course_location;
+            this.rooms = response.rooms;
             loader.hide();
           })
           .catch(error => {

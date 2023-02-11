@@ -63,11 +63,15 @@ class RoomRepository
     {
         return $this->room->get(['name', 'id']);
     }
-    public function selectRoomByType($accommodation)
+    public function getRoomTypesGroupBy()
     {
-      $accommodation= str_replace(' ', '_', $accommodation);
+       return $student_exist_query=  $this->room->where('building_id',1)->groupBy('types')->get();
+    }
+    public function selectRoomByType($type)
+    {
+      //$accommodation= str_replace(' ', '_', $accommodation);
       //dd($accommodation);
-        $student_exist_query=  $this->room->where('type',  $accommodation);
+        $student_exist_query=  $this->room->where('types',  $type);
 
         
 
