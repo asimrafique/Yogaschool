@@ -326,7 +326,8 @@ class RegistrationRepository
 
        //dd($accommodation);
       
-        $rooms = $this->room->selectRoomByType($type);
+        //$rooms = $this->room->selectRoomByType($type);
+        $rooms = $this->room->selectAvailableRoomByType($type);
         
 
         return compact('rooms');

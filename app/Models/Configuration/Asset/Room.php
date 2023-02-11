@@ -18,7 +18,10 @@ class Room extends Model
                             'types',
                             'type_name',
                             'options',
-                            'room_no'
+                            'room_no',
+                            'reserved_count',
+                            'allowed',
+                            'gender_allotted'
                         ];
     protected $casts = ['options' => 'array'];
     protected $primaryKey = 'id';

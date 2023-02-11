@@ -77,6 +77,30 @@ class RoomRepository
 
         return $student_exist_query->get();
     }
+    public function selectAvailableRoomByType($type)
+    {
+      //$accommodation= str_replace(' ', '_', $accommodation);
+      //dd($accommodation);
+        $building_id=1;
+        $gender='M';
+        $count;
+        if ($type=='single') {
+            $count=1;
+        }
+        if ($type=='dormitory') {
+            $count=4;
+        }
+        if ($type=='double_shared_room') {
+            $count=2;
+        }
+
+        
+        $student_exist_query=  $this->room->where('types',  $type)->where('allowed','<',$count)->where('gender_allotted',$gender)->where('building_id',$building_id);
+
+        
+
+        return $student_exist_query->get();
+    }
 
     /**
      * List all rooms by id
