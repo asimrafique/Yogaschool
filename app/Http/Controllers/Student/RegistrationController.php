@@ -48,7 +48,7 @@ class RegistrationController extends Controller
         //$this->authorize('preRequisite', Registration::class);
         //dd($request->all());
 
-        return $this->success($this->repo->getAvailableRoom($request->get('accommodation')));
+        return $this->success($this->repo->getAvailableRoom($request));
     }
 
     /**

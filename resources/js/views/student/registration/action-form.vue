@@ -122,7 +122,7 @@
                             
 
                           <label for="">{{trans('asset.room')}}</label>
-                          <select v-model="actionForm.accommodation" class="custom-select col-12" name="accommodation"
+                          <select v-model="actionForm.room_id" class="custom-select col-12" name="accommodation"
                            >
                     <option value="">{{ trans('general.select_one') }}</option>
                     <option v-for="room in rooms" v-bind:value="room.id">
@@ -216,6 +216,7 @@
               // }
       axios.post("/api/registration/get-available-room",{
                 accommodation: event.target.value,
+                gender: this.registration.student.gender
               })
           .then(response => {
             this.rooms = response.rooms;
@@ -250,6 +251,7 @@
       },
 			submit(){
 				let loader = this.$loading.show();
+				this.actionForm.gender=this.registration.student.gender;
 				this.actionForm.post('/api/registration/'+this.registration.id+'/update/status')
 					.then(response => {
 						toastr.success(response.message);

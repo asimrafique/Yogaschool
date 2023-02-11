@@ -21,6 +21,14 @@ class RoomBooking extends Model
     protected $casts = ['options' => 'array'];
     protected $primaryKey = 'id';
     protected $table = 'rooms_bookings';
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('rooms_bookings')
+            ->logAll()
+            ->logExcept(['updated_at'])
+            ->logOnlyDirty();
+    }
 
     
 

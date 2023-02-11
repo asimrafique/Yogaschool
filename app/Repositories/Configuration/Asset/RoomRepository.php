@@ -2,12 +2,14 @@
 namespace App\Repositories\Configuration\Asset;
 
 use App\Models\Configuration\Asset\Room;
+use App\Models\Configuration\Asset\RoomBooking;
 use App\Repositories\Configuration\Asset\BuildingRepository;
 use Illuminate\Validation\ValidationException;
 
 class RoomRepository
 {
     protected $room;
+    protected $roomBooking;
     protected $building;
 
     /**
@@ -17,10 +19,12 @@ class RoomRepository
      */
     public function __construct(
         Room $room,
+        RoomBooking $roomBooking,
         BuildingRepository $building
     ) {
         $this->room = $room;
         $this->building = $building;
+        $this->roomBooking=$roomBooking;
     }
 
     /**
@@ -77,12 +81,27 @@ class RoomRepository
 
         return $student_exist_query->get();
     }
-    public function selectAvailableRoomByType($type)
+    public function updateRoomCountAndCreateRoomBookedCustom($room_id,$student_id)
+    {   
+
+
+          $this->room->where('id',$room_id)->increment('allowed', 1);
+        //  dd('hi');
+        // dd($room_id,$student_id);
+          $booking = new RoomBooking;
+          $booking->room_id=$room_id;
+          $booking->user_id=$student_id;
+          $booking->save();
+         //dd('hi again');
+         return $booking;
+    }
+    public function selectAvailableRoomByType($req)
     {
       //$accommodation= str_replace(' ', '_', $accommodation);
       //dd($accommodation);
         $building_id=1;
-        $gender='M';
+        $gender=$req->get('gender');
+        $type=$req->get('accommodation');
         $count;
         if ($type=='single') {
             $count=1;

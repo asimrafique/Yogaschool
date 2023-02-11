@@ -321,13 +321,13 @@ class RegistrationRepository
 
         return compact('transport_circles', 'fee_concessions', 'admission_numbers','rooms','accommodations');
     }
-    public function getAvailableRoom($type)
+    public function getAvailableRoom($request)
     {   
 
        //dd($accommodation);
       
         //$rooms = $this->room->selectRoomByType($type);
-        $rooms = $this->room->selectAvailableRoomByType($type);
+        $rooms = $this->room->selectAvailableRoomByType($request);
         
 
         return compact('rooms');
@@ -799,6 +799,7 @@ class RegistrationRepository
             'course_id' => $registration->course_id,
             'date_of_registration' => $registration->date_of_registration
         ]);
+        
 
 
         \DB::beginTransaction();
@@ -811,6 +812,12 @@ class RegistrationRepository
             'registration_id'   => $registration->id,
             'admission_remarks' => gv($params, 'admission_remarks')
         ]);
+        
+        if ($room_id=gv($params, 'room_id')) {
+            $bookingRoom=$this->room->updateRoomCountAndCreateRoomBookedCustom($room_id,$registration->Student->id);
+
+            # code...
+        }
 
         $student_record = $this->student_record->forceCreate([
             'admission_id'        => isset($admission) ? $admission->id : null,
