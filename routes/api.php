@@ -694,8 +694,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     */
     Route::get('/registration/pre-requisite', 'Student\RegistrationController@preRequisite');
     Route::get('/registration', 'Student\RegistrationController@index');
+    Route::get('/registration/room', 'Student\RegistrationController@indexRoom');
     Route::get('/registration/{id}', 'Student\RegistrationController@show');
     Route::post('/registration', 'Student\RegistrationController@store');
+    Route::get('/registration/fee/stripe', 'Student\RegistrationController@stripePaymentRegister');
     Route::post('/registration/print', 'Student\RegistrationController@print');
     Route::post('/registration/pdf', 'Student\RegistrationController@pdf');
     Route::patch('/registration/{id}', 'Student\RegistrationController@update');
@@ -779,6 +781,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/student/{uuid}/payment/{record_id}/rzp', 'Student\StudentFeePaymentController@razorpayPayment');
     Route::post('/student/{uuid}/payment/{record_id}/paystack', 'Student\StudentFeePaymentController@paystackPayment');
     Route::post('/student/{uuid}/payment/{record_id}/stripe', 'Student\StudentFeePaymentController@stripePayment');
+
     Route::post('/student/{uuid}/payment/{record_id}/paypal', 'Student\StudentFeePaymentController@paypalPayment');
     Route::post('/student/{uuid}/payment/{record_id}/billdesk', 'Student\StudentFeePaymentController@billdeskPayment');
 

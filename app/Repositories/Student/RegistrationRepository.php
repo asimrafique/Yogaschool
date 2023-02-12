@@ -254,6 +254,49 @@ class RegistrationRepository
         ];
         return compact('courses','previous_institutes','registration_types');
     }
+    public function getUserRoom($student_id)
+    {
+       return $this->room->getRoomBookingByStdId($student_id);
+    }
+    public function stripePaymentRegister($pharam)
+    {
+        dd($params);
+        $stripeToken        = gv($params, 'stripeToken');
+        
+       
+        $amount             = gv($params, 'amount', 0);
+
+        $fee                = gv($params, 'fee');
+        
+        $currency           = getDefaultCurrency()['name'];
+        \Stripe\Stripe::setApiKey(config('config.stripe_private_key'));
+        try {
+            $charge = \Stripe\Charge::create([
+                'amount'   => $amount,
+                'currency' => $currency,
+                'source'   => $stripeToken
+            ]);
+        } catch (Card $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (StripeApi $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (InvalidRequest $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (RateLimit $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (ApiConnection $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (Authentication $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+
+        return true;
+    }
 
     public function getRegistrationCustomField()
     {

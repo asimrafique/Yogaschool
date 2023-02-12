@@ -87,8 +87,30 @@ class RegistrationController extends Controller
         $registrations = $this->repo->paginate($this->request->all());
 
         $filters = $this->repo->getFilters();
+       
 
         return $this->success(compact('registrations', 'filters'));
+    }
+    public function stripePaymentRegister()
+    {
+
+       $this->authorize('list', Registration::class);
+         $this->repo->stripePaymentRegister($this->request->all());
+
+        return $this->success(['message' => trans('finance.fee_paid')]);
+    }
+    public function indexRoom()
+    {
+        $this->authorize('list', Registration::class);
+// dd($this->request->all());
+        $registrations = $this->repo->paginate($this->request->all());
+
+        $filters = $this->repo->getFilters();
+       // dd($registrations[0]->student_id);
+       $room_alloted = $this->repo->getUserRoom($registrations[0]->student_id);
+        // $room_alloted = null;
+
+        return $this->success(compact('registrations', 'filters','room_alloted'));
     }
 
     /**

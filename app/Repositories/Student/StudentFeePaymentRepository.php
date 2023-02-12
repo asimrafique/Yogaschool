@@ -167,6 +167,45 @@ class StudentFeePaymentRepository
      * @param array $params
      * @return null
      */
+
+    public function stripePaymentRegister($params)
+    {
+
+         dd($params);
+        $stripeToken        = gv($params, 'stripeToken');
+        
+       
+        $amount             = gv($params, 'amount', 0);
+
+        $fee                = gv($params, 'fee');
+        
+        $currency           = getDefaultCurrency()['name'];
+        \Stripe\Stripe::setApiKey(config('config.stripe_private_key'));
+        try {
+            $charge = \Stripe\Charge::create([
+                'amount'   => $amount,
+                'currency' => $currency,
+                'source'   => $stripeToken
+            ]);
+        } catch (Card $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (StripeApi $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (InvalidRequest $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (RateLimit $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (ApiConnection $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (Authentication $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+    }
     public function stripePayment(StudentRecord $student_record, $params)
     {
         $stripeToken        = gv($params, 'stripeToken');

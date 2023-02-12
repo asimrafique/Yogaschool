@@ -109,7 +109,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button type="button" @click="stripeCheckout" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button>
+                                            <button type="button" @click="stripeCheckout1" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button>
                                         </template>
                                     </div>
                                 </form>
@@ -261,7 +261,7 @@
             },
             stripeCheckout1(gateway)
             {
-            	
+            	let loader = this.$loading.show();
                     this.registrationFeeForm.account_id=1;
                     
                     this.registrationFeeForm.instrument_bank_detail='';
@@ -277,7 +277,7 @@
 						this.selected_account = null;
 						this.$emit('completed');
 						this.stripeButton = true;
-						this.$loading.hide();
+						loader.hide();
 					})
 					.catch(error => {
 						loader.hide();
@@ -288,15 +288,19 @@
             stripeResponseHandler(status, response) {
                 if(status == 200){
                     let loader = this.$loading.show();
-                    axios.get('/registration/fee/stripe',{
+                    axios.post('/api/student/'+this.uuid+'/payment/'+this.id+'/stripe',{
                             stripeToken: response.id,
-                            amount: this.registration.registration_fee*100,
-                            fee: this.registration.registration_fee*100,
-                           
+                            amount: this.total * 100,
+                            fee: this.feePaymentForm.amount,
+                            handling_fee: this.handlingFee,
+                            fee_installment_id: this.feePaymentForm.installment_id,
+                            installments: this.feePaymentForm.installments
                         })
                         .then(response => {
-                            this.stripeCheckout1('stripe');
-                            
+                            loader.hide();
+                            toastr.success(response.message);
+                            this.$emit('completed');
+                            this.stripeButton = true;
                         })
                         .catch(error => {
                             loader.hide();

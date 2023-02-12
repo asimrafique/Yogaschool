@@ -95,6 +95,16 @@ class RoomRepository
          //dd('hi again');
          return $booking;
     }
+    public function getRoomBookingByStdId($student_id)
+    {         
+           return  $this->room->select('rooms.*','rb.id as rooms_booking_id','b.name as building_name','b.location as b_location')
+                    ->join('buildings as b','b.id','=','rooms.building_id')
+                    ->join('rooms_bookings as rb','rb.room_id','=','rooms.id')
+
+                    ->where('rb.user_id',$student_id)->first();
+                    //->join('students as user','rb.user_id','=','user.id')
+      // return $this->roomBooking->where('user_id',$student_id)->first();
+    }
     public function checkRoomBookedBySameUser($student_id)
     {
        $check= $this->roomBooking->where('user_id',$student_id)->first();

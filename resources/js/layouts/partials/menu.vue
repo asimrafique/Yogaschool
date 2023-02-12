@@ -161,7 +161,11 @@
             <a class="has-arrow" href="#" aria-expanded="false"><i class="fas fa-graduation-cap fa-fw"></i> <span class="hide-menu">{{trans('student.student')}}</span></a>
             <ul aria-expanded="false" class="collapse">
                 <li v-if="hasPermission('import-student') && showMenu('student_import')"><router-link to="/student/import"><i class="fas fa-angle-double-right"></i> {{trans('student.import')}}</router-link></li>
+
                 <li v-if="hasPermission('list-registration') && showMenu('registration')"><router-link to="/student/registration/card-view"><i class="fas fa-angle-double-right"></i> {{trans('student.registration')}}</router-link></li>
+
+                <li v-if="hasPermission('list-registration') && showMenu('registration')"><router-link to="/student/room/card-view"><i class="fas fa-angle-double-right"></i> Accomodation </router-link></li>
+
                 <li v-if="(hasPermission('list-student') || hasPermission('list-class-teacher-wise-student')) && showMenu('student_list')"><router-link to="/student/card-view"><i class="fas fa-angle-double-right"></i> {{trans('student.student_list')}}</router-link></li>
                 <li v-if="hasPermission('edit-roll-number') && showMenu('roll_number')"><router-link to="/student/roll/number"><i class="fas fa-angle-double-right"></i> {{trans('student.roll_number')}}</router-link></li>
                 <li v-if="hasPermission('generate-student-id-card') && showMenu('student_id_card')"><router-link to="/student/id-card"><i class="fas fa-angle-double-right"></i> {{trans('student.id_card')}}</router-link></li>
