@@ -26,15 +26,35 @@
                     <show-error :form-name="roomForm" prop-name="floor_number"></show-error>
                 </div>
             </div>
+             <div class="col-12 col-sm-4">
+                <div class="form-group">
+                    <label for="">Room No</label>
+                    <input class="form-control" type="text" v-model="roomForm.room_no" name="room_no" placeholder="Room No">
+                    <show-error :form-name="roomForm" prop-name="room_no"></show-error>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="form-group">
+                  <label for="">Room Gender</label>
+                  <select class="custom-select col-12" required name="gender_allotted" id="gender_allotted" v-model="roomForm.gender_allotted"
+                          @change="roomForm.errors.clear('gender_allotted')">
+                    <option value="">{{ trans('general.select_one') }}</option>
+                    <option value="male">Male Room</option>
+                    <option value="female">Female Room</option>
+                    
+                  </select>
+                  <show-error :form-name="roomForm" prop-name="gender_allotted"></show-error>
+                </div>
+            </div>
             <div class="col-12 col-sm-4">
                 <div class="form-group">
                   <label for="">Type</label>
                   <select class="custom-select col-12" required name="type" id="type" v-model="roomForm.type"
                           @change="roomForm.errors.clear('type')">
                     <option value="">{{ trans('general.select_one') }}</option>
-                    <option value="Single_room">Single room</option>
-                    <option value="Double_shared_room">Double shared room</option>
-                    <option value="Dormitory">Dormitory</option>
+                    <option value="single">Single room</option>
+                    <option value="double_shared_room">Double shared room</option>
+                    <option value="dormitory">Dormitory</option>
                   </select>
                   <show-error :form-name="roomForm" prop-name="type"></show-error>
                 </div>
@@ -70,6 +90,8 @@
                     building_id: '',
                     description : '',
                     type : '',
+                    gender_allotted:'',
+                    room_no:''
                 }),
                 buildings: [],
                 selected_building: null
