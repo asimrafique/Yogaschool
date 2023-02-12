@@ -1,1 +1,1204 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[6590],{4853:(t,e,a)=>{a.d(e,{Z:()=>i});const o={components:{},data:function(){return{callLogForm:new Form({name:"",incoming_number:"",outgoing_number:"",type:"outgoing",calling_purpose_id:"",date:"",start_time:"",end_time:"",description:""}),loaded:!1,start_time:{hour:"",minute:"",meridiem:"am"},end_time:{hour:"",minute:"",meridiem:"am"},calling_purposes:[],selected_calling_purpose:null}},props:["uuid"],mounted:function(){helper.hasPermission("create-call-log")||helper.hasPermission("edit-call-log")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getPreRequisite()},methods:{timePadding:function(t){return helper.formatWithPadding(t,2)},proceed:function(){this.uuid?this.update():this.store()},getPreRequisite:function(){var t=this,e=this.$loading.show();axios.get("/api/call/log/pre-requisite").then((function(a){t.calling_purposes=a.calling_purposes,t.callLogForm.date=helper.today(),t.uuid||(t.loaded=!0),t.uuid&&t.get(),e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},store:function(){var t=this;this.callLogForm.start_time=this.start_time.hour&&this.start_time.minute?helper.formatWithPadding(this.start_time.hour,2)+":"+helper.formatWithPadding(this.start_time.minute,2)+" "+this.start_time.meridiem:"",this.callLogForm.end_time=this.end_time.hour&&this.end_time.minute?helper.formatWithPadding(this.end_time.hour,2)+":"+helper.formatWithPadding(this.end_time.minute,2)+" "+this.end_time.meridiem:"";var e=this.$loading.show();this.callLogForm.post("/api/call/log").then((function(a){toastr.success(a.message),t.selected_calling_purpose=null,t.start_time.hour="",t.start_time.minute="",t.start_time.meridiem="am",t.end_time.hour="",t.end_time.minute="",t.end_time.meridiem="am",t.callLogForm.type="outgoing",t.$emit("completed"),e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},get:function(){var t=this,e=this.$loading.show();axios.get("/api/call/log/"+this.uuid).then((function(a){t.callLogForm.type=a.call_log.type,t.callLogForm.name=a.call_log.name,t.callLogForm.incoming_number=a.call_log.incoming_number,t.callLogForm.outgoing_number=a.call_log.outgoing_number,t.callLogForm.calling_purpose_id=a.call_log.calling_purpose_id,t.selected_calling_purpose=a.selected_calling_purpose,t.callLogForm.description=a.call_log.description,t.callLogForm.date=a.call_log.date,t.start_time.hour=a.start_time.hour,t.start_time.minute=a.start_time.minute,t.start_time.meridiem=a.start_time.meridiem,a.call_log.end_time&&(t.end_time.hour=a.end_time.hour,t.end_time.minute=a.end_time.minute,t.end_time.meridiem=a.end_time.meridiem),t.loaded=!0,e.hide()})).catch((function(a){e.hide(),helper.showErrorMsg(a),t.$router.push("/reception/call/log")}))},update:function(){var t=this;this.callLogForm.start_time=this.start_time.hour&&this.start_time.minute?helper.formatWithPadding(this.start_time.hour,2)+":"+helper.formatWithPadding(this.start_time.minute,2)+" "+this.start_time.meridiem:"",this.callLogForm.end_time=this.end_time.hour&&this.end_time.minute?helper.formatWithPadding(this.end_time.hour,2)+":"+helper.formatWithPadding(this.end_time.minute,2)+" "+this.end_time.meridiem:"";var e=this.$loading.show();this.callLogForm.patch("/api/call/log/"+this.uuid).then((function(a){toastr.success(a.message),e.hide(),t.$router.push("/reception/call/log")})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},onCallingPurposeSelect:function(t){return this.callLogForm.calling_purpose_id=t.id}}};const i=(0,a(51900).Z)(o,(function(){var t=this,e=t._self._c;return e("form",{on:{submit:function(e){return e.preventDefault(),t.proceed.apply(null,arguments)},keydown:function(e){return t.callLogForm.errors.clear(e.target.name)}}},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.calling_purpose")))]),t._v(" "),e("v-select",{attrs:{label:"name",name:"calling_purpose_id",id:"calling_purpose_id",options:t.calling_purposes,placeholder:t.trans("reception.select_calling_purpose")},on:{select:t.onCallingPurposeSelect,close:function(e){return t.callLogForm.errors.clear("calling_purpose_id")},remove:function(e){t.callLogForm.calling_purpose_id=""}},model:{value:t.selected_calling_purpose,callback:function(e){t.selected_calling_purpose=e},expression:"selected_calling_purpose"}},[t.calling_purposes.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                        "+t._s(t.trans("general.no_option_found"))+"\n                    ")])]),t._v(" "),e("show-error",{attrs:{"form-name":t.callLogForm,"prop-name":"calling_purpose_id"}})],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.call_type")))]),t._v(" "),e("select",{directives:[{name:"model",rawName:"v-model",value:t.callLogForm.type,expression:"callLogForm.type"}],staticClass:"custom-select col-12",on:{select:function(e){return t.callLogForm.errors.clear("type")},change:function(e){var a=Array.prototype.filter.call(e.target.options,(function(t){return t.selected})).map((function(t){return"_value"in t?t._value:t.value}));t.$set(t.callLogForm,"type",e.target.multiple?a:a[0])}}},[e("option",{attrs:{value:"outgoing"}},[t._v(t._s(t.trans("reception.call_type_outgoing")))]),t._v(" "),e("option",{attrs:{value:"incoming"}},[t._v(t._s(t.trans("reception.call_type_incoming")))])]),t._v(" "),e("show-error",{attrs:{"form-name":t.callLogForm,"prop-name":"type"}})],1)])]),t._v(" "),e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.call_log_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.callLogForm.name,expression:"callLogForm.name"}],staticClass:"form-control",attrs:{type:"text",name:"name",placeholder:t.trans("reception.call_log_name")},domProps:{value:t.callLogForm.name},on:{input:function(e){e.target.composing||t.$set(t.callLogForm,"name",e.target.value)}}}),t._v(" "),e("show-error",{attrs:{"form-name":t.callLogForm,"prop-name":"name"}})],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.call_log_incoming_number")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.callLogForm.incoming_number,expression:"callLogForm.incoming_number"}],staticClass:"form-control",attrs:{type:"text",name:"incoming_number",placeholder:t.trans("reception.call_log_incoming_number")},domProps:{value:t.callLogForm.incoming_number},on:{input:function(e){e.target.composing||t.$set(t.callLogForm,"incoming_number",e.target.value)}}}),t._v(" "),e("show-error",{attrs:{"form-name":t.callLogForm,"prop-name":"incoming_number"}})],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.call_log_outgoing_number")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.callLogForm.outgoing_number,expression:"callLogForm.outgoing_number"}],staticClass:"form-control",attrs:{type:"text",name:"outgoing_number",placeholder:t.trans("reception.call_log_outgoing_number")},domProps:{value:t.callLogForm.outgoing_number},on:{input:function(e){e.target.composing||t.$set(t.callLogForm,"outgoing_number",e.target.value)}}}),t._v(" "),e("show-error",{attrs:{"form-name":t.callLogForm,"prop-name":"outgoing_number"}})],1)])]),t._v(" "),e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-4"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.date")))]),t._v(" "),e("datepicker",{attrs:{bootstrapStyling:!0,placeholder:t.trans("reception.date")},on:{selected:function(e){return t.callLogForm.errors.clear("date")}},model:{value:t.callLogForm.date,callback:function(e){t.$set(t.callLogForm,"date",e)},expression:"callLogForm.date"}}),t._v(" "),e("show-error",{attrs:{"form-name":t.callLogForm,"prop-name":"date"}})],1)]),t._v(" "),t.loaded?e("div",{staticClass:"col-12 col-sm-4"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.start_time")))]),t._v(" "),e("timepicker",{attrs:{hour:t.start_time.hour,minute:t.start_time.minute,meridiem:t.start_time.meridiem},on:{"update:hour":function(e){return t.$set(t.start_time,"hour",e)},"update:minute":function(e){return t.$set(t.start_time,"minute",e)},"update:meridiem":function(e){return t.$set(t.start_time,"meridiem",e)}}})],1)]):t._e(),t._v(" "),t.loaded?e("div",{staticClass:"col-12 col-sm-4"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.end_time")))]),t._v(" "),e("timepicker",{attrs:{hour:t.end_time.hour,minute:t.end_time.minute,meridiem:t.end_time.meridiem},on:{"update:hour":function(e){return t.$set(t.end_time,"hour",e)},"update:minute":function(e){return t.$set(t.end_time,"minute",e)},"update:meridiem":function(e){return t.$set(t.end_time,"meridiem",e)}}})],1)]):t._e(),t._v(" "),e("div",{staticClass:"col-12"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.call_log_description")))]),t._v(" "),e("autosize-textarea",{attrs:{rows:"1",name:"description",placeholder:t.trans("reception.call_log_description")},model:{value:t.callLogForm.description,callback:function(e){t.$set(t.callLogForm,"description",e)},expression:"callLogForm.description"}}),t._v(" "),e("show-error",{attrs:{"form-name":t.callLogForm,"prop-name":"description"}})],1)])]),t._v(" "),e("div",{staticClass:"card-footer text-right"},[e("router-link",{directives:[{name:"show",rawName:"v-show",value:t.uuid,expression:"uuid"}],staticClass:"btn btn-danger waves-effect waves-light",attrs:{to:"/reception/call/log"}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),t.uuid?t._e():e("button",{staticClass:"btn btn-danger waves-effect waves-light",attrs:{type:"button"},on:{click:function(e){return t.$emit("cancel")}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),e("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[t.uuid?e("span",[t._v(t._s(t.trans("general.update")))]):e("span",[t._v(t._s(t.trans("general.save")))])])],1)])}),[],!1,null,null,null).exports},70265:(t,e,a)=>{a.r(e),a.d(e,{default:()=>s});const o={components:{callLogForm:a(4853).Z},data:function(){return{call_logs:{total:0,data:[]},filter:{sort_by:"created_at",order:"desc",type:null,calling_purpose_id:[],date_start_date:"",date_end_date:"",page_length:helper.getConfig("page_length")},orderByOptions:[{value:"created_at",translation:i18n.general.created_at}],types:[{text:i18n.reception.call_type_incoming,value:"incoming"},{text:i18n.reception.call_type_outgoing,value:"outgoing"}],showFilterPanel:!1,showCreatePanel:!1,calling_purposes:[],selected_calling_purposes:null,help_topic:"",showUuid:"",showModal:!1}},mounted:function(){helper.hasPermission("list-call-log")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getCallLogs(),helper.showDemoNotification(["reception"])},methods:{hasPermission:function(t){return helper.hasPermission(t)},showAction:function(t){this.showUuid=t.uuid,this.showModal=!0},getCallLogs:function(t){var e=this,a=this.$loading.show();"number"!=typeof t&&(t=1),this.filter.date_start_date=helper.toDate(this.filter.date_start_date),this.filter.date_end_date=helper.toDate(this.filter.date_end_date);var o=helper.getFilterURL(this.filter);axios.get("/api/call/log?page="+t+o).then((function(t){e.call_logs=t.call_logs,e.calling_purposes=t.filters.calling_purposes,a.hide()})).catch((function(t){a.hide(),helper.showErrorMsg(t)}))},editCallLog:function(t){this.$router.push("/reception/call/log/"+t.uuid+"/edit")},confirmDelete:function(t){var e=this;return function(a){return e.deleteCallLog(t)}},deleteCallLog:function(t){var e=this,a=this.$loading.show();axios.delete("/api/call/log/"+t.uuid).then((function(t){toastr.success(t.message),e.getCallLogs(),a.hide()})).catch((function(t){a.hide(),helper.showErrorMsg(t)}))},getConfig:function(t){return helper.getConfig(t)},getEmployeeName:function(t){return helper.getEmployeeName(t)},getEmployeeDesignationOnDate:function(t,e){return helper.getEmployeeDesignationOnDate(t,e)},print:function(){var t=this.$loading.show();axios.post("/api/call/log/print",{filter:this.filter}).then((function(e){var a=window.open("/print");t.hide(),a.document.write(e)})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},pdf:function(){var t=this,e=this.$loading.show();axios.post("/api/call/log/pdf",{filter:this.filter}).then((function(a){e.hide(),window.open("/download/report/"+a+"?token="+t.authToken)})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},onCallingPurposeSelect:function(t){this.filter.calling_purpose_id.push(t.id)},onCallingPurposeRemove:function(t){this.filter.calling_purpose_id.splice(this.filter.calling_purpose_id.indexOf(t.id),1)}},filters:{moment:function(t){return helper.formatDate(t)},momentDateTime:function(t){return helper.formatDateTime(t)},momentTime:function(t){return helper.formatTime(t)}},watch:{"filter.sort_by":function(t){this.getCallLogs()},"filter.order":function(t){this.getCallLogs()},"filter.page_length":function(t){this.getCallLogs()}},computed:{authToken:function(){return helper.getAuthToken()}}},i=o;var l=(0,a(51900).Z)(i,(function(){var t=this,e=t._self._c;return e("div",[e("div",{staticClass:"page-titles"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[e("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("reception.call_log"))+" \n                    "),t.call_logs.total?e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.total_result_found",{count:t.call_logs.total,from:t.call_logs.from,to:t.call_logs.to})))]):e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.no_result_found")))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("div",{staticClass:"action-buttons pull-right"},[t.call_logs.total&&!t.showCreatePanel&&t.hasPermission("create-call-log")?e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.add_new"),expression:"trans('general.add_new')"}],staticClass:"btn btn-info btn-sm",on:{click:function(e){t.showCreatePanel=!t.showCreatePanel}}},[e("i",{staticClass:"fas fa-plus"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("reception.add_new_call_log")))])]):t._e(),t._v(" "),t.showFilterPanel?t._e():e("button",{staticClass:"btn btn-info btn-sm",on:{click:function(e){t.showFilterPanel=!t.showFilterPanel}}},[e("i",{staticClass:"fas fa-filter"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("general.filter")))])]),t._v(" "),e("sort-by",{attrs:{"order-by-options":t.orderByOptions,"sort-by":t.filter.sort_by,order:t.filter.order},on:{updateSortBy:function(e){t.filter.sort_by=e},updateOrder:function(e){t.filter.order=e}}}),t._v(" "),e("div",{staticClass:"btn-group"},[e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.more_option"),expression:"trans('general.more_option')"}],staticClass:"btn btn-info btn-sm dropdown-toggle no-caret",attrs:{type:"button",role:"menu",id:"moreOption","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[e("i",{staticClass:"fas fa-ellipsis-h"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"})]),t._v(" "),e("div",{class:["dropdown-menu","ltr"==t.getConfig("direction")?"dropdown-menu-right":""],attrs:{"aria-labelledby":"moreOption"}},[e("button",{staticClass:"dropdown-item custom-dropdown",on:{click:t.print}},[e("i",{staticClass:"fas fa-print"}),t._v(" "+t._s(t.trans("general.print")))]),t._v(" "),e("button",{staticClass:"dropdown-item custom-dropdown",on:{click:t.pdf}},[e("i",{staticClass:"fas fa-file-pdf"}),t._v(" "+t._s(t.trans("general.generate_pdf")))])])]),t._v(" "),e("help-button",{on:{clicked:function(e){t.help_topic="reception.call-log"}}})],1)])])]),t._v(" "),e("div",{staticClass:"container-fluid"},[e("transition",{attrs:{name:"fade"}},[t.showFilterPanel?e("div",{staticClass:"card card-form"},[e("div",{staticClass:"card-body"},[e("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("general.filter")))]),t._v(" "),e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.call_type")))]),t._v(" "),e("select",{directives:[{name:"model",rawName:"v-model",value:t.filter.type,expression:"filter.type"}],staticClass:"custom-select col-12",on:{change:function(e){var a=Array.prototype.filter.call(e.target.options,(function(t){return t.selected})).map((function(t){return"_value"in t?t._value:t.value}));t.$set(t.filter,"type",e.target.multiple?a:a[0])}}},[e("option",{attrs:{value:"null",selected:""}},[t._v(t._s(t.trans("general.select_one")))]),t._v(" "),t._l(t.types,(function(a){return e("option",{domProps:{value:a.value}},[t._v("\n                                    "+t._s(a.text)+"\n                                  ")])}))],2)])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("reception.calling_purpose")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id",name:"calling_purpose_id",id:"calling_purpose_id",options:t.calling_purposes,placeholder:t.trans("reception.select_calling_purpose"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_calling_purposes},on:{select:t.onCallingPurposeSelect,remove:t.onCallingPurposeRemove},model:{value:t.selected_calling_purposes,callback:function(e){t.selected_calling_purposes=e},expression:"selected_calling_purposes"}},[t.calling_purposes.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("date-range-picker",{attrs:{"start-date":t.filter.date_start_date,"end-date":t.filter.date_end_date,label:t.trans("general.date_between")},on:{"update:startDate":function(e){return t.$set(t.filter,"date_start_date",e)},"update:start-date":function(e){return t.$set(t.filter,"date_start_date",e)},"update:endDate":function(e){return t.$set(t.filter,"date_end_date",e)},"update:end-date":function(e){return t.$set(t.filter,"date_end_date",e)}}})],1)]),t._v(" "),e("div",{staticClass:"card-footer text-right"},[e("button",{staticClass:"btn btn-danger",attrs:{type:"button"},on:{click:function(e){t.showFilterPanel=!1}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),e("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"button"},on:{click:t.getCallLogs}},[t._v(t._s(t.trans("general.filter")))])])])]):t._e()]),t._v(" "),t.hasPermission("create-call-log")?e("transition",{attrs:{name:"fade"}},[t.showCreatePanel?e("div",{staticClass:"card card-form"},[e("div",{staticClass:"card-body"},[e("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("reception.add_new_call_log")))]),t._v(" "),e("call-log-form",{on:{completed:t.getCallLogs,cancel:function(e){t.showCreatePanel=!t.showCreatePanel}}})],1)]):t._e()]):t._e(),t._v(" "),e("div",{staticClass:"card"},[e("div",{staticClass:"card-body"},[t.call_logs.total?e("div",{staticClass:"table-responsive"},[e("table",{staticClass:"table table-sm"},[e("thead",[e("tr",[e("th",[t._v("#")]),t._v(" "),e("th",[t._v(t._s(t.trans("reception.calling_purpose")))]),t._v(" "),e("th",[t._v(t._s(t.trans("reception.call_detail")))]),t._v(" "),e("th",[t._v(t._s(t.trans("reception.call_log_name")))]),t._v(" "),e("th",[t._v(t._s(t.trans("reception.date")))]),t._v(" "),e("th",[t._v(t._s(t.trans("reception.start_time")))]),t._v(" "),e("th",[t._v(t._s(t.trans("reception.end_time")))]),t._v(" "),e("th",[t._v(t._s(t.trans("reception.call_duration")))]),t._v(" "),e("th",[t._v(t._s(t.trans("reception.call_log_description")))]),t._v(" "),e("th",[t._v(t._s(t.trans("general.entry_by")))]),t._v(" "),e("th",{staticClass:"table-option"},[t._v(t._s(t.trans("general.action")))])])]),t._v(" "),e("tbody",t._l(t.call_logs.data,(function(a){return e("tr",[e("td",{domProps:{textContent:t._s(a.id)}}),t._v(" "),e("td",{domProps:{textContent:t._s(a.calling_purpose.name)}}),t._v(" "),e("td",[t._v("\n                                    "+t._s(a.outgoing_number)+" "+t._s(t.trans("general.to"))+" "+t._s(a.incoming_number)+"\n                                ")]),t._v(" "),e("td",[t._v(t._s(a.name))]),t._v(" "),e("td",[t._v(t._s(t._f("moment")(a.date)))]),t._v(" "),e("td",[t._v(t._s(t._f("momentTime")(a.start_time)))]),t._v(" "),e("td",[t._v(t._s(t._f("momentTime")(a.end_time)))]),t._v(" "),e("td",[t._v(t._s(a.call_duration))]),t._v(" "),e("td",[t._v(t._s(a.description))]),t._v(" "),e("td",[t._v(t._s(t.getEmployeeName(a.user.employee))+" "),e("br"),t._v(" "+t._s(t.getEmployeeDesignationOnDate(a.user.employee,a.date)))]),t._v(" "),e("td",{staticClass:"table-option"},[e("div",{staticClass:"btn-group"},[t.hasPermission("edit-call-log")?e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("reception.edit_call_log"),expression:"trans('reception.edit_call_log')"}],staticClass:"btn btn-info btn-sm",on:{click:function(e){return e.preventDefault(),t.editCallLog(a)}}},[e("i",{staticClass:"fas fa-edit"})]):t._e(),t._v(" "),t.hasPermission("delete-call-log")?e("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:t.confirmDelete(a)},expression:"{ok: confirmDelete(call_log)}"},{name:"tooltip",rawName:"v-tooltip",value:t.trans("reception.delete_call_log"),expression:"trans('reception.delete_call_log')"}],key:a.id,staticClass:"btn btn-danger btn-sm"},[e("i",{staticClass:"fas fa-trash"})]):t._e()])])])})),0)])]):t._e(),t._v(" "),t.call_logs.total?t._e():e("module-info",{attrs:{module:"reception",title:"call_log_module_title",description:"call_log_module_description",icon:"list"}},[e("div",{attrs:{slot:"btn"},slot:"btn"},[!t.showCreatePanel&&t.hasPermission("create-call-log")?e("button",{staticClass:"btn btn-info btn-md",on:{click:function(e){t.showCreatePanel=!t.showCreatePanel}}},[e("i",{staticClass:"fas fa-plus"}),t._v(" "+t._s(t.trans("general.add_new")))]):t._e()])]),t._v(" "),e("pagination-record",{attrs:{"page-length":t.filter.page_length,records:t.call_logs},on:{"update:pageLength":function(e){return t.$set(t.filter,"page_length",e)},"update:page-length":function(e){return t.$set(t.filter,"page_length",e)},updateRecords:t.getCallLogs}})],1)])],1),t._v(" "),e("right-panel",{attrs:{topic:t.help_topic}})],1)}),[],!1,null,null,null);const s=l.exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/reception/callLog/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/form.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/form.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      callLogForm: new Form({
+        name: '',
+        incoming_number: '',
+        outgoing_number: '',
+        type: 'outgoing',
+        calling_purpose_id: '',
+        date: '',
+        start_time: '',
+        end_time: '',
+        description: ''
+      }),
+      loaded: false,
+      start_time: {
+        hour: '',
+        minute: '',
+        meridiem: 'am'
+      },
+      end_time: {
+        hour: '',
+        minute: '',
+        meridiem: 'am'
+      },
+      calling_purposes: [],
+      selected_calling_purpose: null
+    };
+  },
+  props: ['uuid'],
+  mounted: function mounted() {
+    if (!helper.hasPermission('create-call-log') && !helper.hasPermission('edit-call-log')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getPreRequisite();
+  },
+  methods: {
+    timePadding: function timePadding(time) {
+      return helper.formatWithPadding(time, 2);
+    },
+    proceed: function proceed() {
+      if (this.uuid) this.update();else this.store();
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/call/log/pre-requisite').then(function (response) {
+        _this.calling_purposes = response.calling_purposes;
+        _this.callLogForm.date = helper.today();
+        if (!_this.uuid) _this.loaded = true;
+        if (_this.uuid) _this.get();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    store: function store() {
+      var _this2 = this;
+      this.callLogForm.start_time = this.start_time.hour && this.start_time.minute ? helper.formatWithPadding(this.start_time.hour, 2) + ':' + helper.formatWithPadding(this.start_time.minute, 2) + ' ' + this.start_time.meridiem : '';
+      this.callLogForm.end_time = this.end_time.hour && this.end_time.minute ? helper.formatWithPadding(this.end_time.hour, 2) + ':' + helper.formatWithPadding(this.end_time.minute, 2) + ' ' + this.end_time.meridiem : '';
+      var loader = this.$loading.show();
+      this.callLogForm.post('/api/call/log').then(function (response) {
+        toastr.success(response.message);
+        _this2.selected_calling_purpose = null;
+        _this2.start_time.hour = '';
+        _this2.start_time.minute = '';
+        _this2.start_time.meridiem = 'am';
+        _this2.end_time.hour = '';
+        _this2.end_time.minute = '';
+        _this2.end_time.meridiem = 'am';
+        _this2.callLogForm.type = 'outgoing';
+        _this2.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/call/log/' + this.uuid).then(function (response) {
+        _this3.callLogForm.type = response.call_log.type;
+        _this3.callLogForm.name = response.call_log.name;
+        _this3.callLogForm.incoming_number = response.call_log.incoming_number;
+        _this3.callLogForm.outgoing_number = response.call_log.outgoing_number;
+        _this3.callLogForm.calling_purpose_id = response.call_log.calling_purpose_id;
+        _this3.selected_calling_purpose = response.selected_calling_purpose;
+        _this3.callLogForm.description = response.call_log.description;
+        _this3.callLogForm.date = response.call_log.date;
+        _this3.start_time.hour = response.start_time.hour;
+        _this3.start_time.minute = response.start_time.minute;
+        _this3.start_time.meridiem = response.start_time.meridiem;
+        if (response.call_log.end_time) {
+          _this3.end_time.hour = response.end_time.hour;
+          _this3.end_time.minute = response.end_time.minute;
+          _this3.end_time.meridiem = response.end_time.meridiem;
+        }
+        _this3.loaded = true;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this3.$router.push('/reception/call/log');
+      });
+    },
+    update: function update() {
+      var _this4 = this;
+      this.callLogForm.start_time = this.start_time.hour && this.start_time.minute ? helper.formatWithPadding(this.start_time.hour, 2) + ':' + helper.formatWithPadding(this.start_time.minute, 2) + ' ' + this.start_time.meridiem : '';
+      this.callLogForm.end_time = this.end_time.hour && this.end_time.minute ? helper.formatWithPadding(this.end_time.hour, 2) + ':' + helper.formatWithPadding(this.end_time.minute, 2) + ' ' + this.end_time.meridiem : '';
+      var loader = this.$loading.show();
+      this.callLogForm.patch('/api/call/log/' + this.uuid).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this4.$router.push('/reception/call/log');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onCallingPurposeSelect: function onCallingPurposeSelect(selectedOption) {
+      return this.callLogForm.calling_purpose_id = selectedOption.id;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/index.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/index.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/reception/call-log/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    callLogForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      call_logs: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        sort_by: 'created_at',
+        order: 'desc',
+        type: null,
+        calling_purpose_id: [],
+        date_start_date: '',
+        date_end_date: '',
+        page_length: helper.getConfig('page_length')
+      },
+      orderByOptions: [{
+        value: 'created_at',
+        translation: i18n.general.created_at
+      }],
+      types: [{
+        text: i18n.reception.call_type_incoming,
+        value: 'incoming'
+      }, {
+        text: i18n.reception.call_type_outgoing,
+        value: 'outgoing'
+      }],
+      showFilterPanel: false,
+      showCreatePanel: false,
+      calling_purposes: [],
+      selected_calling_purposes: null,
+      help_topic: '',
+      showUuid: '',
+      showModal: false
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('list-call-log')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getCallLogs();
+    helper.showDemoNotification(['reception']);
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    showAction: function showAction(call_log) {
+      this.showUuid = call_log.uuid;
+      this.showModal = true;
+    },
+    getCallLogs: function getCallLogs(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      this.filter.date_start_date = helper.toDate(this.filter.date_start_date);
+      this.filter.date_end_date = helper.toDate(this.filter.date_end_date);
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/call/log?page=' + page + url).then(function (response) {
+        _this.call_logs = response.call_logs;
+        _this.calling_purposes = response.filters.calling_purposes;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    editCallLog: function editCallLog(call_log) {
+      this.$router.push('/reception/call/log/' + call_log.uuid + '/edit');
+    },
+    confirmDelete: function confirmDelete(call_log) {
+      var _this2 = this;
+      return function (dialog) {
+        return _this2.deleteCallLog(call_log);
+      };
+    },
+    deleteCallLog: function deleteCallLog(call_log) {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios["delete"]('/api/call/log/' + call_log.uuid).then(function (response) {
+        toastr.success(response.message);
+        _this3.getCallLogs();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getEmployeeDesignationOnDate: function getEmployeeDesignationOnDate(employee, date) {
+      return helper.getEmployeeDesignationOnDate(employee, date);
+    },
+    print: function print() {
+      var loader = this.$loading.show();
+      axios.post('/api/call/log/print', {
+        filter: this.filter
+      }).then(function (response) {
+        var print = window.open("/print");
+        loader.hide();
+        print.document.write(response);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    pdf: function pdf() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      axios.post('/api/call/log/pdf', {
+        filter: this.filter
+      }).then(function (response) {
+        loader.hide();
+        window.open('/download/report/' + response + '?token=' + _this4.authToken);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onCallingPurposeSelect: function onCallingPurposeSelect(selectedOption) {
+      this.filter.calling_purpose_id.push(selectedOption.id);
+    },
+    onCallingPurposeRemove: function onCallingPurposeRemove(removedOption) {
+      this.filter.calling_purpose_id.splice(this.filter.calling_purpose_id.indexOf(removedOption.id), 1);
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    },
+    momentTime: function momentTime(time) {
+      return helper.formatTime(time);
+    }
+  },
+  watch: {
+    'filter.sort_by': function filterSort_by(val) {
+      this.getCallLogs();
+    },
+    'filter.order': function filterOrder(val) {
+      this.getCallLogs();
+    },
+    'filter.page_length': function filterPage_length(val) {
+      this.getCallLogs();
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/form.vue?vue&type=template&id=c25ea162&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/form.vue?vue&type=template&id=c25ea162& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.callLogForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.calling_purpose")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "calling_purpose_id",
+      id: "calling_purpose_id",
+      options: _vm.calling_purposes,
+      placeholder: _vm.trans("reception.select_calling_purpose")
+    },
+    on: {
+      select: _vm.onCallingPurposeSelect,
+      close: function close($event) {
+        return _vm.callLogForm.errors.clear("calling_purpose_id");
+      },
+      remove: function remove($event) {
+        _vm.callLogForm.calling_purpose_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_calling_purpose,
+      callback: function callback($$v) {
+        _vm.selected_calling_purpose = $$v;
+      },
+      expression: "selected_calling_purpose"
+    }
+  }, [!_vm.calling_purposes.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                    ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.callLogForm,
+      "prop-name": "calling_purpose_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.call_type")))]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.callLogForm.type,
+      expression: "callLogForm.type"
+    }],
+    staticClass: "custom-select col-12",
+    on: {
+      select: function select($event) {
+        return _vm.callLogForm.errors.clear("type");
+      },
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.callLogForm, "type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "outgoing"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.call_type_outgoing")))]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "incoming"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.call_type_incoming")))])]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.callLogForm,
+      "prop-name": "type"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.call_log_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.callLogForm.name,
+      expression: "callLogForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name",
+      placeholder: _vm.trans("reception.call_log_name")
+    },
+    domProps: {
+      value: _vm.callLogForm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.callLogForm, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.callLogForm,
+      "prop-name": "name"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.call_log_incoming_number")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.callLogForm.incoming_number,
+      expression: "callLogForm.incoming_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "incoming_number",
+      placeholder: _vm.trans("reception.call_log_incoming_number")
+    },
+    domProps: {
+      value: _vm.callLogForm.incoming_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.callLogForm, "incoming_number", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.callLogForm,
+      "prop-name": "incoming_number"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.call_log_outgoing_number")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.callLogForm.outgoing_number,
+      expression: "callLogForm.outgoing_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "outgoing_number",
+      placeholder: _vm.trans("reception.call_log_outgoing_number")
+    },
+    domProps: {
+      value: _vm.callLogForm.outgoing_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.callLogForm, "outgoing_number", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.callLogForm,
+      "prop-name": "outgoing_number"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("reception.date")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.callLogForm.errors.clear("date");
+      }
+    },
+    model: {
+      value: _vm.callLogForm.date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.callLogForm, "date", $$v);
+      },
+      expression: "callLogForm.date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.callLogForm,
+      "prop-name": "date"
+    }
+  })], 1)]), _vm._v(" "), _vm.loaded ? _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.start_time")))]), _vm._v(" "), _c("timepicker", {
+    attrs: {
+      hour: _vm.start_time.hour,
+      minute: _vm.start_time.minute,
+      meridiem: _vm.start_time.meridiem
+    },
+    on: {
+      "update:hour": function updateHour($event) {
+        return _vm.$set(_vm.start_time, "hour", $event);
+      },
+      "update:minute": function updateMinute($event) {
+        return _vm.$set(_vm.start_time, "minute", $event);
+      },
+      "update:meridiem": function updateMeridiem($event) {
+        return _vm.$set(_vm.start_time, "meridiem", $event);
+      }
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.loaded ? _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.end_time")))]), _vm._v(" "), _c("timepicker", {
+    attrs: {
+      hour: _vm.end_time.hour,
+      minute: _vm.end_time.minute,
+      meridiem: _vm.end_time.meridiem
+    },
+    on: {
+      "update:hour": function updateHour($event) {
+        return _vm.$set(_vm.end_time, "hour", $event);
+      },
+      "update:minute": function updateMinute($event) {
+        return _vm.$set(_vm.end_time, "minute", $event);
+      },
+      "update:meridiem": function updateMeridiem($event) {
+        return _vm.$set(_vm.end_time, "meridiem", $event);
+      }
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.call_log_description")))]), _vm._v(" "), _c("autosize-textarea", {
+    attrs: {
+      rows: "1",
+      name: "description",
+      placeholder: _vm.trans("reception.call_log_description")
+    },
+    model: {
+      value: _vm.callLogForm.description,
+      callback: function callback($$v) {
+        _vm.$set(_vm.callLogForm, "description", $$v);
+      },
+      expression: "callLogForm.description"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.callLogForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.uuid,
+      expression: "uuid"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/reception/call/log"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.uuid ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.uuid ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/index.vue?vue&type=template&id=bc352252&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/index.vue?vue&type=template&id=bc352252& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("reception.call_log")) + " \n                    "), _vm.call_logs.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.call_logs.total,
+    from: _vm.call_logs.from,
+    to: _vm.call_logs.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_vm.call_logs.total && !_vm.showCreatePanel && _vm.hasPermission("create-call-log") ? _c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.add_new"),
+      expression: "trans('general.add_new')"
+    }],
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("reception.add_new_call_log")))])]) : _vm._e(), _vm._v(" "), !_vm.showFilterPanel ? _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = !_vm.showFilterPanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-filter"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])]) : _vm._e(), _vm._v(" "), _c("sort-by", {
+    attrs: {
+      "order-by-options": _vm.orderByOptions,
+      "sort-by": _vm.filter.sort_by,
+      order: _vm.filter.order
+    },
+    on: {
+      updateSortBy: function updateSortBy(value) {
+        _vm.filter.sort_by = value;
+      },
+      updateOrder: function updateOrder(value) {
+        _vm.filter.order = value;
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "btn-group"
+  }, [_c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.more_option"),
+      expression: "trans('general.more_option')"
+    }],
+    staticClass: "btn btn-info btn-sm dropdown-toggle no-caret",
+    attrs: {
+      type: "button",
+      role: "menu",
+      id: "moreOption",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-ellipsis-h"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  })]), _vm._v(" "), _c("div", {
+    "class": ["dropdown-menu", _vm.getConfig("direction") == "ltr" ? "dropdown-menu-right" : ""],
+    attrs: {
+      "aria-labelledby": "moreOption"
+    }
+  }, [_c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.print
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-print"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.print")))]), _vm._v(" "), _c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.pdf
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-file-pdf"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.generate_pdf")))])])]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "reception.call-log";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showFilterPanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.call_type")))]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.type,
+      expression: "filter.type"
+    }],
+    staticClass: "custom-select col-12",
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.filter, "type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "null",
+      selected: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _vm._l(_vm.types, function (option) {
+    return _c("option", {
+      domProps: {
+        value: option.value
+      }
+    }, [_vm._v("\n                                    " + _vm._s(option.text) + "\n                                  ")]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.calling_purpose")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "calling_purpose_id",
+      id: "calling_purpose_id",
+      options: _vm.calling_purposes,
+      placeholder: _vm.trans("reception.select_calling_purpose"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_calling_purposes
+    },
+    on: {
+      select: _vm.onCallingPurposeSelect,
+      remove: _vm.onCallingPurposeRemove
+    },
+    model: {
+      value: _vm.selected_calling_purposes,
+      callback: function callback($$v) {
+        _vm.selected_calling_purposes = $$v;
+      },
+      expression: "selected_calling_purposes"
+    }
+  }, [!_vm.calling_purposes.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("date-range-picker", {
+    attrs: {
+      "start-date": _vm.filter.date_start_date,
+      "end-date": _vm.filter.date_end_date,
+      label: _vm.trans("general.date_between")
+    },
+    on: {
+      "update:startDate": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "date_start_date", $event);
+      },
+      "update:start-date": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "date_start_date", $event);
+      },
+      "update:endDate": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "date_end_date", $event);
+      },
+      "update:end-date": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "date_end_date", $event);
+      }
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("button", {
+    staticClass: "btn btn-danger",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = false;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.getCallLogs
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])])])]) : _vm._e()]), _vm._v(" "), _vm.hasPermission("create-call-log") ? _c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showCreatePanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("reception.add_new_call_log")))]), _vm._v(" "), _c("call-log-form", {
+    on: {
+      completed: _vm.getCallLogs,
+      cancel: function cancel($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  })], 1)]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.call_logs.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v("#")]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("reception.calling_purpose")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("reception.call_detail")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("reception.call_log_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("reception.date")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("reception.start_time")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("reception.end_time")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("reception.call_duration")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("reception.call_log_description")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("general.entry_by")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.call_logs.data, function (call_log) {
+    return _c("tr", [_c("td", {
+      domProps: {
+        textContent: _vm._s(call_log.id)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(call_log.calling_purpose.name)
+      }
+    }), _vm._v(" "), _c("td", [_vm._v("\n                                    " + _vm._s(call_log.outgoing_number) + " " + _vm._s(_vm.trans("general.to")) + " " + _vm._s(call_log.incoming_number) + "\n                                ")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(call_log.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("moment")(call_log.date)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("momentTime")(call_log.start_time)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("momentTime")(call_log.end_time)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(call_log.call_duration))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(call_log.description))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getEmployeeName(call_log.user.employee)) + " "), _c("br"), _vm._v(" " + _vm._s(_vm.getEmployeeDesignationOnDate(call_log.user.employee, call_log.date)))]), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [_vm.hasPermission("edit-call-log") ? _c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("reception.edit_call_log"),
+        expression: "trans('reception.edit_call_log')"
+      }],
+      staticClass: "btn btn-info btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.editCallLog(call_log);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-edit"
+    })]) : _vm._e(), _vm._v(" "), _vm.hasPermission("delete-call-log") ? _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(call_log)
+        },
+        expression: "{ok: confirmDelete(call_log)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("reception.delete_call_log"),
+        expression: "trans('reception.delete_call_log')"
+      }],
+      key: call_log.id,
+      staticClass: "btn btn-danger btn-sm"
+    }, [_c("i", {
+      staticClass: "fas fa-trash"
+    })]) : _vm._e()])])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.call_logs.total ? _c("module-info", {
+    attrs: {
+      module: "reception",
+      title: "call_log_module_title",
+      description: "call_log_module_description",
+      icon: "list"
+    }
+  }, [_c("div", {
+    attrs: {
+      slot: "btn"
+    },
+    slot: "btn"
+  }, [!_vm.showCreatePanel && _vm.hasPermission("create-call-log") ? _c("button", {
+    staticClass: "btn btn-info btn-md",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.add_new")))]) : _vm._e()])]) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.call_logs
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getCallLogs
+    }
+  })], 1)])], 1), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/call-log/form.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/views/reception/call-log/form.vue ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_c25ea162___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=c25ea162& */ "./resources/js/views/reception/call-log/form.vue?vue&type=template&id=c25ea162&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/reception/call-log/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_c25ea162___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_c25ea162___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/reception/call-log/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/call-log/index.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/views/reception/call-log/index.vue ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_bc352252___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=bc352252& */ "./resources/js/views/reception/call-log/index.vue?vue&type=template&id=bc352252&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/reception/call-log/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_bc352252___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_bc352252___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/reception/call-log/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/call-log/form.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/views/reception/call-log/form.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/call-log/index.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/views/reception/call-log/index.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/call-log/form.vue?vue&type=template&id=c25ea162&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/views/reception/call-log/form.vue?vue&type=template&id=c25ea162& ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_c25ea162___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_c25ea162___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_c25ea162___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=c25ea162& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/form.vue?vue&type=template&id=c25ea162&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/call-log/index.vue?vue&type=template&id=bc352252&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/views/reception/call-log/index.vue?vue&type=template&id=bc352252& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_bc352252___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_bc352252___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_bc352252___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=bc352252& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/call-log/index.vue?vue&type=template&id=bc352252&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=f12ed8834b3bbbeb

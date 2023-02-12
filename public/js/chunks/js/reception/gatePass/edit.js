@@ -1,1 +1,632 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[7710],{18179:(e,t,s)=>{s.r(t),s.d(t,{default:()=>r});const a={components:{gatePassForm:s(90562).Z},data:function(){return{uuid:this.$route.params.uuid}},mounted:function(){helper.hasPermission("edit-gate-pass")||(helper.notAccessibleMsg(),this.$router.push("/dashboard"))}};const r=(0,s(51900).Z)(a,(function(){var e=this,t=e._self._c;return t("div",[t("div",{staticClass:"page-titles"},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-6"},[t("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("reception.edit_gate_pass")))])]),e._v(" "),t("div",{staticClass:"col-12 col-sm-6"},[t("div",{staticClass:"action-buttons pull-right"},[t("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){return e.$router.push("/reception/gate/pass")}}},[t("i",{staticClass:"fas fa-list"}),e._v(" "),t("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("reception.gate_pass")))])])])])])]),e._v(" "),t("div",{staticClass:"container-fluid"},[t("div",{staticClass:"card card-form"},[t("div",{staticClass:"card-body p-t-20"},[t("gate-pass-form",{attrs:{uuid:e.uuid}})],1)])])])}),[],!1,null,null,null).exports},90562:(e,t,s)=>{s.d(t,{Z:()=>r});const a={components:{},data:function(){return{gatePassForm:new Form({type:"student",student_id:"",employee_id:"",date:"",time:"",reason:""}),loaded:!1,time:{hour:"",minute:"",meridiem:"am"},students:[],selected_student:null,employees:[],selected_employee:null}},props:["uuid"],mounted:function(){helper.hasPermission("create-gate-pass")||helper.hasPermission("edit-gate-pass")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.uuid&&this.get(),this.getPreRequisite()},methods:{timePadding:function(e){return helper.formatWithPadding(e,2)},proceed:function(){this.uuid?this.update():this.store()},getPreRequisite:function(){var e=this,t=this.$loading.show();axios.get("/api/gate/pass/pre-requisite").then((function(s){e.students=s.students,e.employees=s.employees,e.gatePassForm.date=helper.today(),e.uuid||(e.loaded=!0),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},store:function(){var e=this;this.gatePassForm.time=this.time.hour&&this.time.minute?helper.formatWithPadding(this.time.hour,2)+":"+helper.formatWithPadding(this.time.minute,2)+" "+this.time.meridiem:"";var t=this.$loading.show();this.gatePassForm.post("/api/gate/pass").then((function(s){toastr.success(s.message),e.time.hour="",e.time.minute="",e.time.meridiem="am",e.gatePassForm.type="student",e.selected_student=null,e.selected_employee=null,e.$emit("completed"),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},get:function(){var e=this,t=this.$loading.show();axios.get("/api/gate/pass/"+this.uuid).then((function(s){e.gatePassForm.type=s.gate_pass.type,e.gatePassForm.reason=s.gate_pass.reason,e.gatePassForm.date=s.gate_pass.date,e.time.hour=s.time.hour,e.time.minute=s.time.minute,e.time.meridiem=s.time.meridiem,e.gatePassForm.student_id=s.gate_pass.student_id,e.selected_student=s.selected_student,e.gatePassForm.employee_id=s.gate_pass.employee_id,e.selected_employee=s.selected_employee,e.loaded=!0,t.hide()})).catch((function(s){t.hide(),helper.showErrorMsg(s),e.$router.push("/reception/gate/pass")}))},update:function(){var e=this;this.gatePassForm.time=this.time.hour&&this.time.minute?helper.formatWithPadding(this.time.hour,2)+":"+helper.formatWithPadding(this.time.minute,2)+" "+this.time.meridiem:"";var t=this.$loading.show();this.gatePassForm.patch("/api/gate/pass/"+this.uuid).then((function(s){toastr.success(s.message),t.hide(),e.$router.push("/reception/gate/pass")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onStudentSelect:function(e){return this.gatePassForm.student_id=e.id},onEmployeeSelect:function(e){return this.gatePassForm.employee_id=e.id}}};const r=(0,s(51900).Z)(a,(function(){var e=this,t=e._self._c;return t("form",{on:{submit:function(t){return t.preventDefault(),e.proceed.apply(null,arguments)},keydown:function(t){return e.gatePassForm.errors.clear(t.target.name)}}},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("reception.gate_pass_type")))]),e._v(" "),t("select",{directives:[{name:"model",rawName:"v-model",value:e.gatePassForm.type,expression:"gatePassForm.type"}],staticClass:"custom-select col-12",on:{select:function(t){return e.gatePassForm.errors.clear("type")},change:function(t){var s=Array.prototype.filter.call(t.target.options,(function(e){return e.selected})).map((function(e){return"_value"in e?e._value:e.value}));e.$set(e.gatePassForm,"type",t.target.multiple?s:s[0])}}},[t("option",{attrs:{value:"student"}},[e._v(e._s(e.trans("student.student")))]),e._v(" "),t("option",{attrs:{value:"employee"}},[e._v(e._s(e.trans("employee.employee")))])]),e._v(" "),t("show-error",{attrs:{"form-name":e.gatePassForm,"prop-name":"type"}})],1)])]),e._v(" "),t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-4"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("reception.gate_pass_date")))]),e._v(" "),t("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("reception.gate_pass_date")},on:{selected:function(t){return e.gatePassForm.errors.clear("date")}},model:{value:e.gatePassForm.date,callback:function(t){e.$set(e.gatePassForm,"date",t)},expression:"gatePassForm.date"}}),e._v(" "),t("show-error",{attrs:{"form-name":e.gatePassForm,"prop-name":"date"}})],1)]),e._v(" "),e.loaded?t("div",{staticClass:"col-12 col-sm-4"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("reception.gate_pass_time")))]),e._v(" "),t("timepicker",{attrs:{hour:e.time.hour,minute:e.time.minute,meridiem:e.time.meridiem},on:{"update:hour":function(t){return e.$set(e.time,"hour",t)},"update:minute":function(t){return e.$set(e.time,"minute",t)},"update:meridiem":function(t){return e.$set(e.time,"meridiem",t)}}})],1)]):e._e(),e._v(" "),"student"==e.gatePassForm.type?t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("student.student")))]),e._v(" "),t("v-select",{attrs:{label:"name",name:"student_id",id:"student_id",options:e.students,placeholder:e.trans("student.select_student")},on:{select:e.onStudentSelect,close:function(t){return e.gatePassForm.errors.clear("student_id")},remove:function(t){e.gatePassForm.student_id=""}},model:{value:e.selected_student,callback:function(t){e.selected_student=t},expression:"selected_student"}},[e.students.length?e._e():t("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                        "+e._s(e.trans("general.no_option_found"))+"\n                    ")])]),e._v(" "),t("show-error",{attrs:{"form-name":e.gatePassForm,"prop-name":"student_id"}})],1)]):e._e(),e._v(" "),"employee"==e.gatePassForm.type?t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.employee")))]),e._v(" "),t("v-select",{attrs:{label:"name",name:"employee_id",id:"employee_id",options:e.employees,placeholder:e.trans("employee.select_employee")},on:{select:e.onEmployeeSelect,close:function(t){return e.gatePassForm.errors.clear("employee_id")},remove:function(t){e.gatePassForm.employee_id=""}},model:{value:e.selected_employee,callback:function(t){e.selected_employee=t},expression:"selected_employee"}},[e.employees.length?e._e():t("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                        "+e._s(e.trans("general.no_option_found"))+"\n                    ")])]),e._v(" "),t("show-error",{attrs:{"form-name":e.gatePassForm,"prop-name":"employee_id"}})],1)]):e._e(),e._v(" "),t("div",{staticClass:"col-12"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("reception.gate_pass_reason")))]),e._v(" "),t("autosize-textarea",{attrs:{rows:"1",name:"reason",placeholder:e.trans("reception.gate_pass_reason")},model:{value:e.gatePassForm.reason,callback:function(t){e.$set(e.gatePassForm,"reason",t)},expression:"gatePassForm.reason"}}),e._v(" "),t("show-error",{attrs:{"form-name":e.gatePassForm,"prop-name":"reason"}})],1)])]),e._v(" "),t("div",{staticClass:"card-footer text-right"},[t("router-link",{directives:[{name:"show",rawName:"v-show",value:e.uuid,expression:"uuid"}],staticClass:"btn btn-danger waves-effect waves-light",attrs:{to:"/reception/gate/pass"}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),e.uuid?e._e():t("button",{staticClass:"btn btn-danger waves-effect waves-light",attrs:{type:"button"},on:{click:function(t){return e.$emit("cancel")}}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),t("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[e.uuid?t("span",[e._v(e._s(e.trans("general.update")))]):t("span",[e._v(e._s(e.trans("general.save")))])])],1)])}),[],!1,null,null,null).exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/reception/gatePass/edit"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/edit.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/edit.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/reception/gate-pass/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    gatePassForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      uuid: this.$route.params.uuid
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('edit-gate-pass')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/form.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/form.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      gatePassForm: new Form({
+        type: 'student',
+        student_id: '',
+        employee_id: '',
+        date: '',
+        time: '',
+        reason: ''
+      }),
+      loaded: false,
+      time: {
+        hour: '',
+        minute: '',
+        meridiem: 'am'
+      },
+      students: [],
+      selected_student: null,
+      employees: [],
+      selected_employee: null
+    };
+  },
+  props: ['uuid'],
+  mounted: function mounted() {
+    if (!helper.hasPermission('create-gate-pass') && !helper.hasPermission('edit-gate-pass')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    if (this.uuid) this.get();
+    this.getPreRequisite();
+  },
+  methods: {
+    timePadding: function timePadding(time) {
+      return helper.formatWithPadding(time, 2);
+    },
+    proceed: function proceed() {
+      if (this.uuid) this.update();else this.store();
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/gate/pass/pre-requisite').then(function (response) {
+        _this.students = response.students;
+        _this.employees = response.employees;
+        _this.gatePassForm.date = helper.today();
+        if (!_this.uuid) _this.loaded = true;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    store: function store() {
+      var _this2 = this;
+      this.gatePassForm.time = this.time.hour && this.time.minute ? helper.formatWithPadding(this.time.hour, 2) + ':' + helper.formatWithPadding(this.time.minute, 2) + ' ' + this.time.meridiem : '';
+      var loader = this.$loading.show();
+      this.gatePassForm.post('/api/gate/pass').then(function (response) {
+        toastr.success(response.message);
+        _this2.time.hour = '';
+        _this2.time.minute = '';
+        _this2.time.meridiem = 'am';
+        _this2.gatePassForm.type = 'student';
+        _this2.selected_student = null;
+        _this2.selected_employee = null;
+        _this2.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/gate/pass/' + this.uuid).then(function (response) {
+        _this3.gatePassForm.type = response.gate_pass.type;
+        _this3.gatePassForm.reason = response.gate_pass.reason;
+        _this3.gatePassForm.date = response.gate_pass.date;
+        _this3.time.hour = response.time.hour;
+        _this3.time.minute = response.time.minute;
+        _this3.time.meridiem = response.time.meridiem;
+        _this3.gatePassForm.student_id = response.gate_pass.student_id;
+        _this3.selected_student = response.selected_student;
+        _this3.gatePassForm.employee_id = response.gate_pass.employee_id;
+        _this3.selected_employee = response.selected_employee;
+        _this3.loaded = true;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this3.$router.push('/reception/gate/pass');
+      });
+    },
+    update: function update() {
+      var _this4 = this;
+      this.gatePassForm.time = this.time.hour && this.time.minute ? helper.formatWithPadding(this.time.hour, 2) + ':' + helper.formatWithPadding(this.time.minute, 2) + ' ' + this.time.meridiem : '';
+      var loader = this.$loading.show();
+      this.gatePassForm.patch('/api/gate/pass/' + this.uuid).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this4.$router.push('/reception/gate/pass');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onStudentSelect: function onStudentSelect(selectedOption) {
+      return this.gatePassForm.student_id = selectedOption.id;
+    },
+    onEmployeeSelect: function onEmployeeSelect(selectedOption) {
+      return this.gatePassForm.employee_id = selectedOption.id;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/edit.vue?vue&type=template&id=407ac505&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/edit.vue?vue&type=template&id=407ac505& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("reception.edit_gate_pass")))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/reception/gate/pass");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("reception.gate_pass")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body p-t-20"
+  }, [_c("gate-pass-form", {
+    attrs: {
+      uuid: _vm.uuid
+    }
+  })], 1)])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/form.vue?vue&type=template&id=058d1282&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/form.vue?vue&type=template&id=058d1282& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.gatePassForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.gate_pass_type")))]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.gatePassForm.type,
+      expression: "gatePassForm.type"
+    }],
+    staticClass: "custom-select col-12",
+    on: {
+      select: function select($event) {
+        return _vm.gatePassForm.errors.clear("type");
+      },
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.gatePassForm, "type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "student"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.student")))]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "employee"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee")))])]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.gatePassForm,
+      "prop-name": "type"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.gate_pass_date")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("reception.gate_pass_date")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.gatePassForm.errors.clear("date");
+      }
+    },
+    model: {
+      value: _vm.gatePassForm.date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.gatePassForm, "date", $$v);
+      },
+      expression: "gatePassForm.date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.gatePassForm,
+      "prop-name": "date"
+    }
+  })], 1)]), _vm._v(" "), _vm.loaded ? _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.gate_pass_time")))]), _vm._v(" "), _c("timepicker", {
+    attrs: {
+      hour: _vm.time.hour,
+      minute: _vm.time.minute,
+      meridiem: _vm.time.meridiem
+    },
+    on: {
+      "update:hour": function updateHour($event) {
+        return _vm.$set(_vm.time, "hour", $event);
+      },
+      "update:minute": function updateMinute($event) {
+        return _vm.$set(_vm.time, "minute", $event);
+      },
+      "update:meridiem": function updateMeridiem($event) {
+        return _vm.$set(_vm.time, "meridiem", $event);
+      }
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.gatePassForm.type == "student" ? _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.student")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "student_id",
+      id: "student_id",
+      options: _vm.students,
+      placeholder: _vm.trans("student.select_student")
+    },
+    on: {
+      select: _vm.onStudentSelect,
+      close: function close($event) {
+        return _vm.gatePassForm.errors.clear("student_id");
+      },
+      remove: function remove($event) {
+        _vm.gatePassForm.student_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_student,
+      callback: function callback($$v) {
+        _vm.selected_student = $$v;
+      },
+      expression: "selected_student"
+    }
+  }, [!_vm.students.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                    ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.gatePassForm,
+      "prop-name": "student_id"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.gatePassForm.type == "employee" ? _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "employee_id",
+      id: "employee_id",
+      options: _vm.employees,
+      placeholder: _vm.trans("employee.select_employee")
+    },
+    on: {
+      select: _vm.onEmployeeSelect,
+      close: function close($event) {
+        return _vm.gatePassForm.errors.clear("employee_id");
+      },
+      remove: function remove($event) {
+        _vm.gatePassForm.employee_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_employee,
+      callback: function callback($$v) {
+        _vm.selected_employee = $$v;
+      },
+      expression: "selected_employee"
+    }
+  }, [!_vm.employees.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                    ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.gatePassForm,
+      "prop-name": "employee_id"
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("reception.gate_pass_reason")))]), _vm._v(" "), _c("autosize-textarea", {
+    attrs: {
+      rows: "1",
+      name: "reason",
+      placeholder: _vm.trans("reception.gate_pass_reason")
+    },
+    model: {
+      value: _vm.gatePassForm.reason,
+      callback: function callback($$v) {
+        _vm.$set(_vm.gatePassForm, "reason", $$v);
+      },
+      expression: "gatePassForm.reason"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.gatePassForm,
+      "prop-name": "reason"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.uuid,
+      expression: "uuid"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/reception/gate/pass"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.uuid ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.uuid ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/gate-pass/edit.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/views/reception/gate-pass/edit.vue ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _edit_vue_vue_type_template_id_407ac505___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit.vue?vue&type=template&id=407ac505& */ "./resources/js/views/reception/gate-pass/edit.vue?vue&type=template&id=407ac505&");
+/* harmony import */ var _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue?vue&type=script&lang=js& */ "./resources/js/views/reception/gate-pass/edit.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _edit_vue_vue_type_template_id_407ac505___WEBPACK_IMPORTED_MODULE_0__.render,
+  _edit_vue_vue_type_template_id_407ac505___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/reception/gate-pass/edit.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/gate-pass/form.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/views/reception/gate-pass/form.vue ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_058d1282___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=058d1282& */ "./resources/js/views/reception/gate-pass/form.vue?vue&type=template&id=058d1282&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/reception/gate-pass/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_058d1282___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_058d1282___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/reception/gate-pass/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/gate-pass/edit.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/views/reception/gate-pass/edit.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/edit.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/gate-pass/form.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/views/reception/gate-pass/form.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/gate-pass/edit.vue?vue&type=template&id=407ac505&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/views/reception/gate-pass/edit.vue?vue&type=template&id=407ac505& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_407ac505___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_407ac505___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_407ac505___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=template&id=407ac505& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/edit.vue?vue&type=template&id=407ac505&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/reception/gate-pass/form.vue?vue&type=template&id=058d1282&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/views/reception/gate-pass/form.vue?vue&type=template&id=058d1282& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_058d1282___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_058d1282___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_058d1282___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=058d1282& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/reception/gate-pass/form.vue?vue&type=template&id=058d1282&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=edit.js.map?id=fbf00079dc04ce5a

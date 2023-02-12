@@ -1,1 +1,640 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[1661],{62350:(t,i,e)=>{e.d(i,{Z:()=>r});const s={components:{},data:function(){return{ipFilterForm:new Form({start_ip:"",end_ip:"",description:""})}},props:["id"],mounted:function(){this.id&&this.getIpFilter()},methods:{proceed:function(){this.id?this.updateIpFilter():this.storeIpFilter()},storeIpFilter:function(){var t=this,i=this.$loading.show();this.ipFilterForm.post("/api/ip-filter").then((function(e){toastr.success(e.message),t.$emit("completed"),i.hide()})).catch((function(t){i.hide(),helper.showErrorMsg(t)}))},getIpFilter:function(){var t=this,i=this.$loading.show();axios.get("/api/ip-filter/"+this.id).then((function(e){t.ipFilterForm.start_ip=e.start_ip,t.ipFilterForm.end_ip=e.end_ip,t.ipFilterForm.description=e.description,i.hide()})).catch((function(e){i.hide(),helper.showErrorMsg(e),t.$router.push("/utility/ip-filter")}))},updateIpFilter:function(){var t=this,i=this.$loading.show();this.ipFilterForm.patch("/api/ip-filter/"+this.id).then((function(e){toastr.success(e.message),i.hide(),t.$router.push("/utility/ip-filter")})).catch((function(t){i.hide(),helper.showErrorMsg(t)}))}}};const r=(0,e(51900).Z)(s,(function(){var t=this,i=t._self._c;return i("form",{on:{submit:function(i){return i.preventDefault(),t.proceed.apply(null,arguments)},keydown:function(i){return t.ipFilterForm.errors.clear(i.target.name)}}},[i("div",{staticClass:"row"},[i("div",{staticClass:"col-12 col-sm-3"},[i("div",{staticClass:"form-group"},[i("label",{attrs:{for:""}},[t._v(t._s(t.trans("utility.start_ip")))]),t._v(" "),i("input",{directives:[{name:"model",rawName:"v-model",value:t.ipFilterForm.start_ip,expression:"ipFilterForm.start_ip"}],staticClass:"form-control",attrs:{type:"text",name:"start_ip",placeholder:t.trans("utility.start_ip")},domProps:{value:t.ipFilterForm.start_ip},on:{input:function(i){i.target.composing||t.$set(t.ipFilterForm,"start_ip",i.target.value)}}}),t._v(" "),i("show-error",{attrs:{"form-name":t.ipFilterForm,"prop-name":"start_ip"}})],1)]),t._v(" "),i("div",{staticClass:"col-12 col-sm-3"},[i("div",{staticClass:"form-group"},[i("label",{attrs:{for:""}},[t._v(t._s(t.trans("utility.end_ip")))]),t._v(" "),i("input",{directives:[{name:"model",rawName:"v-model",value:t.ipFilterForm.end_ip,expression:"ipFilterForm.end_ip"}],staticClass:"form-control",attrs:{type:"text",name:"end_ip",placeholder:t.trans("utility.end_ip")},domProps:{value:t.ipFilterForm.end_ip},on:{input:function(i){i.target.composing||t.$set(t.ipFilterForm,"end_ip",i.target.value)}}}),t._v(" "),i("show-error",{attrs:{"form-name":t.ipFilterForm,"prop-name":"end_ip"}})],1)]),t._v(" "),i("div",{staticClass:"col-12 col-sm-6"},[i("div",{staticClass:"form-group"},[i("label",{attrs:{for:""}},[t._v(t._s(t.trans("utility.ip_filter_description")))]),t._v(" "),i("textarea",{directives:[{name:"model",rawName:"v-model",value:t.ipFilterForm.description,expression:"ipFilterForm.description"}],staticClass:"form-control",attrs:{type:"text",rows:"1",name:"description",placeholder:t.trans("utility.ip_filter_description")},domProps:{value:t.ipFilterForm.description},on:{input:function(i){i.target.composing||t.$set(t.ipFilterForm,"description",i.target.value)}}}),t._v(" "),i("show-error",{attrs:{"form-name":t.ipFilterForm,"prop-name":"description"}})],1)])]),t._v(" "),i("div",{staticClass:"card-footer text-right"},[i("router-link",{directives:[{name:"show",rawName:"v-show",value:t.id,expression:"id"}],staticClass:"btn btn-danger waves-effect waves-light",attrs:{to:"/utility/ip-filter"}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),t.id?t._e():i("button",{staticClass:"btn btn-danger waves-effect waves-light",attrs:{type:"button"},on:{click:function(i){return t.$emit("cancel")}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),i("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[t.id?i("span",[t._v(t._s(t.trans("general.update")))]):i("span",[t._v(t._s(t.trans("general.save")))])])],1)])}),[],!1,null,null,null).exports},93464:(t,i,e)=>{e.r(i),e.d(i,{default:()=>n});const s={components:{ipFilterForm:e(62350).Z},data:function(){return{ip_filters:{total:0,data:[]},filter:{page_length:helper.getConfig("page_length")},showCreatePanel:!1,help_topic:""}},mounted:function(){helper.hasPermission("access-configuration")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),helper.featureAvailable("ip_filter")||(helper.featureNotAvailableMsg(),this.$router.push("/dashboard")),this.getIpFilters()},methods:{getIpFilters:function(t){var i=this,e=this.$loading.show();"number"!=typeof t&&(t=1);var s=helper.getFilterURL(this.filter);axios.get("/api/ip-filter?page="+t+s).then((function(t){i.ip_filters=t,e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},editIpFilter:function(t){this.$router.push("/utility/ip-filter/"+t.id+"/edit")},confirmDelete:function(t){var i=this;return function(e){return i.deleteIpFilter(t)}},deleteIpFilter:function(t){var i=this,e=this.$loading.show();axios.delete("/api/ip-filter/"+t.id).then((function(t){toastr.success(t.message),i.getIpFilters(),e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))}}},r=s;var a=(0,e(51900).Z)(r,(function(){var t=this,i=t._self._c;return i("div",[i("div",{staticClass:"page-titles"},[i("div",{staticClass:"row"},[i("div",{staticClass:"col-12 col-sm-6"},[i("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("utility.ip_filter"))+"\n                    "),t.ip_filters.total?i("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.total_result_found",{count:t.ip_filters.total,from:t.ip_filters.from,to:t.ip_filters.to})))]):i("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.no_result_found")))])])]),t._v(" "),i("div",{staticClass:"col-12 col-sm-6"},[i("div",{staticClass:"action-buttons pull-right"},[i("button",{staticClass:"btn btn-info btn-sm",on:{click:function(i){t.showCreatePanel=!t.showCreatePanel}}},[i("i",{staticClass:"fas fa-plus"}),t._v(" "),i("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("utility.add_new_ip_filter")))])]),t._v(" "),i("help-button",{on:{clicked:function(i){t.help_topic="utility.ip-filter"}}})],1)])])]),t._v(" "),i("div",{staticClass:"container-fluid"},[i("transition",{attrs:{name:"fade"}},[t.showCreatePanel?i("div",{staticClass:"card card-form"},[i("div",{staticClass:"card-body"},[i("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("utility.add_new_ip_filter")))]),t._v(" "),i("show-tip",{attrs:{module:"utility",tip:"tip_ip_filter"}}),t._v(" "),i("ip-filter-form",{on:{completed:t.getIpFilters,cancel:function(i){t.showCreatePanel=!t.showCreatePanel}}})],1)]):t._e()]),t._v(" "),i("div",{staticClass:"card"},[i("div",{staticClass:"card-body"},[t.ip_filters.total?i("div",{staticClass:"table-responsive"},[i("table",{staticClass:"table table-sm"},[i("thead",[i("tr",[i("th",[t._v(t._s(t.trans("utility.start_ip")))]),t._v(" "),i("th",[t._v(t._s(t.trans("utility.end_ip")))]),t._v(" "),i("th",[t._v(t._s(t.trans("utility.ip_filter_description")))]),t._v(" "),i("th",{staticClass:"table-option"},[t._v(t._s(t.trans("general.action")))])])]),t._v(" "),i("tbody",t._l(t.ip_filters.data,(function(e){return i("tr",[i("td",{domProps:{textContent:t._s(e.start_ip)}}),t._v(" "),i("td",{domProps:{textContent:t._s(e.end_ip)}}),t._v(" "),i("td",{domProps:{textContent:t._s(e.description)}}),t._v(" "),i("td",{staticClass:"table-option"},[i("div",{staticClass:"btn-group"},[i("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("utility.edit_ip_filter"),expression:"trans('utility.edit_ip_filter')"}],staticClass:"btn btn-info btn-sm",on:{click:function(i){return i.preventDefault(),t.editIpFilter(e)}}},[i("i",{staticClass:"fas fa-edit"})]),t._v(" "),i("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:t.confirmDelete(e)},expression:"{ok: confirmDelete(ip_filter)}"},{name:"tooltip",rawName:"v-tooltip",value:t.trans("utility.delete_ip_filter"),expression:"trans('utility.delete_ip_filter')"}],key:e.id,staticClass:"btn btn-danger btn-sm"},[i("i",{staticClass:"fas fa-trash"})])])])])})),0)])]):t._e(),t._v(" "),t.ip_filters.total?t._e():i("module-info",{attrs:{module:"utility",title:"ip_filter_module_title",description:"ip_filter_module_description",icon:"list"}}),t._v(" "),i("pagination-record",{attrs:{"page-length":t.filter.page_length,records:t.ip_filters},on:{"update:pageLength":function(i){return t.$set(t.filter,"page_length",i)},"update:page-length":function(i){return t.$set(t.filter,"page_length",i)},updateRecords:t.getIpFilters},nativeOn:{change:function(i){return t.getIpFilters.apply(null,arguments)}}})],1)])],1),t._v(" "),i("right-panel",{attrs:{topic:t.help_topic}})],1)}),[],!1,null,null,null);const n=a.exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/utility/ipFilter/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/form.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/form.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      ipFilterForm: new Form({
+        start_ip: '',
+        end_ip: '',
+        description: ''
+      })
+    };
+  },
+  props: ['id'],
+  mounted: function mounted() {
+    if (this.id) this.getIpFilter();
+  },
+  methods: {
+    proceed: function proceed() {
+      if (this.id) this.updateIpFilter();else this.storeIpFilter();
+    },
+    storeIpFilter: function storeIpFilter() {
+      var _this = this;
+      var loader = this.$loading.show();
+      this.ipFilterForm.post('/api/ip-filter').then(function (response) {
+        toastr.success(response.message);
+        _this.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getIpFilter: function getIpFilter() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/ip-filter/' + this.id).then(function (response) {
+        _this2.ipFilterForm.start_ip = response.start_ip;
+        _this2.ipFilterForm.end_ip = response.end_ip;
+        _this2.ipFilterForm.description = response.description;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this2.$router.push('/utility/ip-filter');
+      });
+    },
+    updateIpFilter: function updateIpFilter() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      this.ipFilterForm.patch('/api/ip-filter/' + this.id).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this3.$router.push('/utility/ip-filter');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/index.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/index.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/utility/ip-filter/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    ipFilterForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      ip_filters: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        page_length: helper.getConfig('page_length')
+      },
+      showCreatePanel: false,
+      help_topic: ''
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('access-configuration')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    if (!helper.featureAvailable('ip_filter')) {
+      helper.featureNotAvailableMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getIpFilters();
+  },
+  methods: {
+    getIpFilters: function getIpFilters(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/ip-filter?page=' + page + url).then(function (response) {
+        _this.ip_filters = response;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    editIpFilter: function editIpFilter(ip_filter) {
+      this.$router.push('/utility/ip-filter/' + ip_filter.id + '/edit');
+    },
+    confirmDelete: function confirmDelete(ip_filter) {
+      var _this2 = this;
+      return function (dialog) {
+        return _this2.deleteIpFilter(ip_filter);
+      };
+    },
+    deleteIpFilter: function deleteIpFilter(ip_filter) {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios["delete"]('/api/ip-filter/' + ip_filter.id).then(function (response) {
+        toastr.success(response.message);
+        _this3.getIpFilters();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/form.vue?vue&type=template&id=c98a6fd2&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/form.vue?vue&type=template&id=c98a6fd2& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.ipFilterForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("utility.start_ip")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.ipFilterForm.start_ip,
+      expression: "ipFilterForm.start_ip"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "start_ip",
+      placeholder: _vm.trans("utility.start_ip")
+    },
+    domProps: {
+      value: _vm.ipFilterForm.start_ip
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.ipFilterForm, "start_ip", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.ipFilterForm,
+      "prop-name": "start_ip"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("utility.end_ip")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.ipFilterForm.end_ip,
+      expression: "ipFilterForm.end_ip"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "end_ip",
+      placeholder: _vm.trans("utility.end_ip")
+    },
+    domProps: {
+      value: _vm.ipFilterForm.end_ip
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.ipFilterForm, "end_ip", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.ipFilterForm,
+      "prop-name": "end_ip"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("utility.ip_filter_description")))]), _vm._v(" "), _c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.ipFilterForm.description,
+      expression: "ipFilterForm.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      rows: "1",
+      name: "description",
+      placeholder: _vm.trans("utility.ip_filter_description")
+    },
+    domProps: {
+      value: _vm.ipFilterForm.description
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.ipFilterForm, "description", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.ipFilterForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.id,
+      expression: "id"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/utility/ip-filter"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.id ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.id ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/index.vue?vue&type=template&id=32be6f0f&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/index.vue?vue&type=template&id=32be6f0f& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("utility.ip_filter")) + "\n                    "), _vm.ip_filters.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.ip_filters.total,
+    from: _vm.ip_filters.from,
+    to: _vm.ip_filters.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("utility.add_new_ip_filter")))])]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "utility.ip-filter";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showCreatePanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("utility.add_new_ip_filter")))]), _vm._v(" "), _c("show-tip", {
+    attrs: {
+      module: "utility",
+      tip: "tip_ip_filter"
+    }
+  }), _vm._v(" "), _c("ip-filter-form", {
+    on: {
+      completed: _vm.getIpFilters,
+      cancel: function cancel($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  })], 1)]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.ip_filters.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("utility.start_ip")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("utility.end_ip")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("utility.ip_filter_description")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.ip_filters.data, function (ip_filter) {
+    return _c("tr", [_c("td", {
+      domProps: {
+        textContent: _vm._s(ip_filter.start_ip)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(ip_filter.end_ip)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(ip_filter.description)
+      }
+    }), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [_c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("utility.edit_ip_filter"),
+        expression: "trans('utility.edit_ip_filter')"
+      }],
+      staticClass: "btn btn-info btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.editIpFilter(ip_filter);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-edit"
+    })]), _vm._v(" "), _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(ip_filter)
+        },
+        expression: "{ok: confirmDelete(ip_filter)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("utility.delete_ip_filter"),
+        expression: "trans('utility.delete_ip_filter')"
+      }],
+      key: ip_filter.id,
+      staticClass: "btn btn-danger btn-sm"
+    }, [_c("i", {
+      staticClass: "fas fa-trash"
+    })])])])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.ip_filters.total ? _c("module-info", {
+    attrs: {
+      module: "utility",
+      title: "ip_filter_module_title",
+      description: "ip_filter_module_description",
+      icon: "list"
+    }
+  }) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.ip_filters
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getIpFilters
+    },
+    nativeOn: {
+      change: function change($event) {
+        return _vm.getIpFilters.apply(null, arguments);
+      }
+    }
+  })], 1)])], 1), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/ip-filter/form.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/views/utility/ip-filter/form.vue ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_c98a6fd2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=c98a6fd2& */ "./resources/js/views/utility/ip-filter/form.vue?vue&type=template&id=c98a6fd2&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/utility/ip-filter/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_c98a6fd2___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_c98a6fd2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/utility/ip-filter/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/ip-filter/index.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/views/utility/ip-filter/index.vue ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_32be6f0f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=32be6f0f& */ "./resources/js/views/utility/ip-filter/index.vue?vue&type=template&id=32be6f0f&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/utility/ip-filter/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_32be6f0f___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_32be6f0f___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/utility/ip-filter/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/ip-filter/form.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/views/utility/ip-filter/form.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/ip-filter/index.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/views/utility/ip-filter/index.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/ip-filter/form.vue?vue&type=template&id=c98a6fd2&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/views/utility/ip-filter/form.vue?vue&type=template&id=c98a6fd2& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_c98a6fd2___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_c98a6fd2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_c98a6fd2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=c98a6fd2& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/form.vue?vue&type=template&id=c98a6fd2&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/ip-filter/index.vue?vue&type=template&id=32be6f0f&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/views/utility/ip-filter/index.vue?vue&type=template&id=32be6f0f& ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_32be6f0f___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_32be6f0f___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_32be6f0f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=32be6f0f& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/ip-filter/index.vue?vue&type=template&id=32be6f0f&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=1abf428e650dd86b

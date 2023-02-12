@@ -1,1 +1,621 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[5384],{81375:(e,t,a)=>{a.r(t),a.d(t,{default:()=>l});const r={components:{salaryStructureForm:a(84710).Z},data:function(){return{uuid:this.$route.params.uuid}},mounted:function(){helper.hasPermission("define-employee-salary")||(helper.notAccessibleMsg(),this.$router.push("/dashboard"))}};const l=(0,a(51900).Z)(r,(function(){var e=this,t=e._self._c;return t("div",[t("div",{staticClass:"page-titles"},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-6"},[t("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("employee.edit_salary_structure")))])]),e._v(" "),t("div",{staticClass:"col-12 col-sm-6"},[t("div",{staticClass:"action-buttons pull-right"},[t("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){return e.$router.push("/employee/payroll/salary")}}},[t("i",{staticClass:"fas fa-list"}),e._v(" "),t("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("employee.salary_structure")))])])])])])]),e._v(" "),t("div",{staticClass:"container-fluid"},[t("div",{staticClass:"card card-form"},[t("div",{staticClass:"card-body p-t-20"},[t("salary-structure-form",{attrs:{uuid:e.uuid}})],1)])])])}),[],!1,null,null,null).exports},84710:(e,t,a)=>{a.d(t,{Z:()=>l});const r={components:{},props:["uuid"],data:function(){return{salaryStructureForm:new Form({employee_id:"",date_effective:"",payroll_template_id:"",description:"",payroll_template_details:[]}),employees:[],payroll_templates:[],selected_employee:null,selected_payroll_template:null,payroll_template_with_details:[],default_currency:helper.getConfig("default_currency")}},mounted:function(){this.getPreRequisite()},methods:{getAmountName:function(e){return"amount_"+e},getPreRequisite:function(){var e=this,t=this.$loading.show();axios.get("/api/employee/payroll/salary/pre-requisite").then((function(a){t.hide(),e.employees=a.employees,e.payroll_templates=a.payroll_templates,e.payroll_template_with_details=a.payroll_template_with_details,e.uuid&&e.get()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onEmployeeSelect:function(e){this.salaryStructureForm.employee_id=e.id},onPayrollTemplateSelect:function(e){var t=this;this.salaryStructureForm.payroll_template_id=e.id,this.salaryStructureForm.payroll_template_details=[],this.payroll_template_with_details.find((function(t){return t.id==e.id})).payroll_template_details.filter((function(e){return"attendance"==e.category||"flat_rate"==e.category||"production"==e.category})).forEach((function(e){t.salaryStructureForm.payroll_template_details.push({id:e.id,name:e.pay_head.name,alias:e.pay_head.alias,type:e.pay_head.type,category:e.category,unit:e.attendance_type?e.attendance_type.unit:null,amount:""})}))},proceed:function(){this.uuid?this.update():this.store()},store:function(){var e=this,t=this.$loading.show();this.salaryStructureForm.post("/api/employee/payroll/salary").then((function(a){toastr.success(a.message),t.hide(),e.salaryStructureForm.payroll_template_details=[],e.selected_employee=null,e.selected_payroll_template=null,e.$emit("completed")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},get:function(){var e=this,t=this.$loading.show();axios.get("/api/employee/payroll/salary/"+this.uuid).then((function(a){var r=a.salary;e.salaryStructureForm.employee_id=r.employee_id,e.salaryStructureForm.payroll_template_id=r.payroll_template_id,e.salaryStructureForm.date_effective=r.date_effective,e.salaryStructureForm.description=r.description,e.selected_payroll_template=r.payroll_template_id?{id:r.payroll_template_id,name:r.payroll_template.name}:null,e.onPayrollTemplateSelect(e.selected_payroll_template),r.salary_details.forEach((function(t){var a=e.salaryStructureForm.payroll_template_details.find((function(e){return e.id==t.payroll_template_detail_id}));void 0!==a&&(a.amount=t.amount)})),e.selected_employee=a.selected_employee,t.hide()})).catch((function(a){t.hide(),helper.showErrorMsg(a),e.$router.push("/employee/payroll/salary")}))},update:function(){var e=this,t=this.$loading.show();this.salaryStructureForm.patch("/api/employee/payroll/salary/"+this.uuid).then((function(a){toastr.success(a.message),t.hide(),e.$router.push("/employee/payroll/salary")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))}}};const l=(0,a(51900).Z)(r,(function(){var e=this,t=e._self._c;return t("div",[t("form",{on:{submit:function(t){return t.preventDefault(),e.proceed.apply(null,arguments)},keydown:function(t){return e.salaryStructureForm.errors.clear(t.target.name)}}},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-4"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.employee")))]),e._v(" "),t("v-select",{attrs:{label:"name",name:"employee_id",id:"employee_id",options:e.employees,placeholder:e.trans("employee.select_employee")},on:{select:e.onEmployeeSelect,close:function(t){return e.salaryStructureForm.errors.clear("employee_id")},remove:function(t){e.salaryStructureForm.employee_id=""}},model:{value:e.selected_employee,callback:function(t){e.selected_employee=t},expression:"selected_employee"}},[e.employees.length?e._e():t("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                            "+e._s(e.trans("general.no_option_found"))+"\n                        ")])]),e._v(" "),t("show-error",{attrs:{"form-name":e.salaryStructureForm,"prop-name":"employee_id"}})],1)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-4"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.payroll_template")))]),e._v(" "),t("v-select",{attrs:{label:"name",name:"payroll_template_id",id:"payroll_template_id",options:e.payroll_templates,placeholder:e.trans("employee.select_payroll_template")},on:{select:e.onPayrollTemplateSelect,close:function(t){return e.salaryStructureForm.errors.clear("payroll_template_id")},remove:function(t){e.salaryStructureForm.payroll_template_id=""}},model:{value:e.selected_payroll_template,callback:function(t){e.selected_payroll_template=t},expression:"selected_payroll_template"}},[e.payroll_templates.length?e._e():t("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                            "+e._s(e.trans("general.no_option_found"))+"\n                        ")])]),e._v(" "),t("show-error",{attrs:{"form-name":e.salaryStructureForm,"prop-name":"payroll_template_id"}})],1)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-4"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.salary_structure_date_effective")))]),e._v(" "),t("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("employee.salary_structure_date_effective")},on:{selected:function(t){return e.salaryStructureForm.errors.clear("date_effective")}},model:{value:e.salaryStructureForm.date_effective,callback:function(t){e.$set(e.salaryStructureForm,"date_effective",t)},expression:"salaryStructureForm.date_effective"}}),e._v(" "),t("show-error",{attrs:{"form-name":e.salaryStructureForm,"prop-name":"date_effective"}})],1)])]),e._v(" "),e._l(e.salaryStructureForm.payroll_template_details,(function(a,r){return t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-4"},[t("span",{class:["earning"==a.type?"text-success":"text-danger"]},[e._v(e._s(a.name)+" ("+e._s(a.alias)+")")]),e._v(" "),t("br"),e._v(" "),t("span",{staticClass:"font-80pc"},[e._v(e._s(e.trans("employee.pay_head_category_"+a.category)))]),e._v(" "),"production"!=a.category?t("span",{staticClass:"font-80pc"},[e._v("\n                    ("+e._s(e.trans("employee.salary_structure_per_month"))+")\n                ")]):t("span",{staticClass:"font-80pc"},[e._v("\n                    ("+e._s(e.trans("employee.salary_structure_per_unit",{unit:a.unit}))+")\n                ")])]),e._v(" "),t("div",{staticClass:"col-12 col-sm-4"},[t("div",{staticClass:"form-group"},[t("currency-input",{attrs:{position:e.default_currency.position,symbol:e.default_currency.symbol,name:e.getAmountName(r),placeholder:e.trans("employee.salary_structure_amount")},nativeOn:{input:function(t){e.salaryStructureForm.errors.clear(e.getAmountName(r))}},model:{value:a.amount,callback:function(t){e.$set(a,"amount",t)},expression:"payroll_template_detail.amount"}}),e._v(" "),t("show-error",{attrs:{"form-name":e.salaryStructureForm,"prop-name":e.getAmountName(r)}})],1)])])})),e._v(" "),t("div",{staticClass:"row"},[t("div",{staticClass:"col-12"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.salary_structure_description")))]),e._v(" "),t("input",{directives:[{name:"model",rawName:"v-model",value:e.salaryStructureForm.description,expression:"salaryStructureForm.description"}],staticClass:"form-control",attrs:{type:"text",name:"description",placeholder:e.trans("employee.salary_structure_description")},domProps:{value:e.salaryStructureForm.description},on:{input:function(t){t.target.composing||e.$set(e.salaryStructureForm,"description",t.target.value)}}}),e._v(" "),t("show-error",{attrs:{"form-name":e.salaryStructureForm,"prop-name":"description"}})],1)])]),e._v(" "),t("div",{staticClass:"form-group"},[t("div",{staticClass:"text-right"},[t("router-link",{directives:[{name:"show",rawName:"v-show",value:e.uuid,expression:"uuid"}],staticClass:"btn btn-danger waves-effect waves-light",attrs:{to:"/employee/payroll/salary"}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),t("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[e._v(e._s(e.trans("general.save")))])],1)])],2)])}),[],!1,null,null,null).exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/employee/payroll/salary/edit"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/edit.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/edit.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/employee/payroll/salary/form.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    salaryStructureForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      uuid: this.$route.params.uuid
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('define-employee-salary')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/form.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/form.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  props: ['uuid'],
+  data: function data() {
+    return {
+      salaryStructureForm: new Form({
+        employee_id: '',
+        date_effective: '',
+        payroll_template_id: '',
+        description: '',
+        payroll_template_details: []
+      }),
+      employees: [],
+      payroll_templates: [],
+      selected_employee: null,
+      selected_payroll_template: null,
+      payroll_template_with_details: [],
+      default_currency: helper.getConfig('default_currency')
+    };
+  },
+  mounted: function mounted() {
+    this.getPreRequisite();
+  },
+  methods: {
+    getAmountName: function getAmountName(index) {
+      return 'amount_' + index;
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/employee/payroll/salary/pre-requisite').then(function (response) {
+        loader.hide();
+        _this.employees = response.employees;
+        _this.payroll_templates = response.payroll_templates;
+        _this.payroll_template_with_details = response.payroll_template_with_details;
+        if (_this.uuid) _this.get();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onEmployeeSelect: function onEmployeeSelect(selectedOption) {
+      this.salaryStructureForm.employee_id = selectedOption.id;
+    },
+    onPayrollTemplateSelect: function onPayrollTemplateSelect(selectedOption) {
+      var _this2 = this;
+      this.salaryStructureForm.payroll_template_id = selectedOption.id;
+      this.salaryStructureForm.payroll_template_details = [];
+      var payroll_template_with_detail = this.payroll_template_with_details.find(function (o) {
+        return o.id == selectedOption.id;
+      });
+      var payroll_details = payroll_template_with_detail.payroll_template_details.filter(function (o) {
+        return o.category == 'attendance' || o.category == 'flat_rate' || o.category == 'production';
+      });
+      payroll_details.forEach(function (payroll_detail) {
+        _this2.salaryStructureForm.payroll_template_details.push({
+          id: payroll_detail.id,
+          name: payroll_detail.pay_head.name,
+          alias: payroll_detail.pay_head.alias,
+          type: payroll_detail.pay_head.type,
+          category: payroll_detail.category,
+          unit: payroll_detail.attendance_type ? payroll_detail.attendance_type.unit : null,
+          amount: ''
+        });
+      });
+    },
+    proceed: function proceed() {
+      if (this.uuid) this.update();else this.store();
+    },
+    store: function store() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      this.salaryStructureForm.post('/api/employee/payroll/salary').then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this3.salaryStructureForm.payroll_template_details = [];
+        _this3.selected_employee = null;
+        _this3.selected_payroll_template = null;
+        _this3.$emit('completed');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/employee/payroll/salary/' + this.uuid).then(function (response) {
+        var salary = response.salary;
+        _this4.salaryStructureForm.employee_id = salary.employee_id;
+        _this4.salaryStructureForm.payroll_template_id = salary.payroll_template_id;
+        _this4.salaryStructureForm.date_effective = salary.date_effective;
+        _this4.salaryStructureForm.description = salary.description;
+        _this4.selected_payroll_template = salary.payroll_template_id ? {
+          id: salary.payroll_template_id,
+          name: salary.payroll_template.name
+        } : null;
+        _this4.onPayrollTemplateSelect(_this4.selected_payroll_template);
+        salary.salary_details.forEach(function (salary_detail) {
+          var detail = _this4.salaryStructureForm.payroll_template_details.find(function (o) {
+            return o.id == salary_detail.payroll_template_detail_id;
+          });
+          if (typeof detail != 'undefined') {
+            detail.amount = salary_detail.amount;
+          }
+        });
+        _this4.selected_employee = response.selected_employee;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this4.$router.push('/employee/payroll/salary');
+      });
+    },
+    update: function update() {
+      var _this5 = this;
+      var loader = this.$loading.show();
+      this.salaryStructureForm.patch('/api/employee/payroll/salary/' + this.uuid).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this5.$router.push('/employee/payroll/salary');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/edit.vue?vue&type=template&id=1dcb30e3&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/edit.vue?vue&type=template&id=1dcb30e3& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("employee.edit_salary_structure")))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/employee/payroll/salary");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("employee.salary_structure")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body p-t-20"
+  }, [_c("salary-structure-form", {
+    attrs: {
+      uuid: _vm.uuid
+    }
+  })], 1)])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/form.vue?vue&type=template&id=4aec3ac6&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/form.vue?vue&type=template&id=4aec3ac6& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.salaryStructureForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "employee_id",
+      id: "employee_id",
+      options: _vm.employees,
+      placeholder: _vm.trans("employee.select_employee")
+    },
+    on: {
+      select: _vm.onEmployeeSelect,
+      close: function close($event) {
+        return _vm.salaryStructureForm.errors.clear("employee_id");
+      },
+      remove: function remove($event) {
+        _vm.salaryStructureForm.employee_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_employee,
+      callback: function callback($$v) {
+        _vm.selected_employee = $$v;
+      },
+      expression: "selected_employee"
+    }
+  }, [!_vm.employees.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                            " + _vm._s(_vm.trans("general.no_option_found")) + "\n                        ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.salaryStructureForm,
+      "prop-name": "employee_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.payroll_template")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "payroll_template_id",
+      id: "payroll_template_id",
+      options: _vm.payroll_templates,
+      placeholder: _vm.trans("employee.select_payroll_template")
+    },
+    on: {
+      select: _vm.onPayrollTemplateSelect,
+      close: function close($event) {
+        return _vm.salaryStructureForm.errors.clear("payroll_template_id");
+      },
+      remove: function remove($event) {
+        _vm.salaryStructureForm.payroll_template_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_payroll_template,
+      callback: function callback($$v) {
+        _vm.selected_payroll_template = $$v;
+      },
+      expression: "selected_payroll_template"
+    }
+  }, [!_vm.payroll_templates.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                            " + _vm._s(_vm.trans("general.no_option_found")) + "\n                        ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.salaryStructureForm,
+      "prop-name": "payroll_template_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.salary_structure_date_effective")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("employee.salary_structure_date_effective")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.salaryStructureForm.errors.clear("date_effective");
+      }
+    },
+    model: {
+      value: _vm.salaryStructureForm.date_effective,
+      callback: function callback($$v) {
+        _vm.$set(_vm.salaryStructureForm, "date_effective", $$v);
+      },
+      expression: "salaryStructureForm.date_effective"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.salaryStructureForm,
+      "prop-name": "date_effective"
+    }
+  })], 1)])]), _vm._v(" "), _vm._l(_vm.salaryStructureForm.payroll_template_details, function (payroll_template_detail, index) {
+    return _c("div", {
+      staticClass: "row"
+    }, [_c("div", {
+      staticClass: "col-12 col-sm-4"
+    }, [_c("span", {
+      "class": [payroll_template_detail.type == "earning" ? "text-success" : "text-danger"]
+    }, [_vm._v(_vm._s(payroll_template_detail.name) + " (" + _vm._s(payroll_template_detail.alias) + ")")]), _vm._v(" "), _c("br"), _vm._v(" "), _c("span", {
+      staticClass: "font-80pc"
+    }, [_vm._v(_vm._s(_vm.trans("employee.pay_head_category_" + payroll_template_detail.category)))]), _vm._v(" "), payroll_template_detail.category != "production" ? _c("span", {
+      staticClass: "font-80pc"
+    }, [_vm._v("\n                    (" + _vm._s(_vm.trans("employee.salary_structure_per_month")) + ")\n                ")]) : _c("span", {
+      staticClass: "font-80pc"
+    }, [_vm._v("\n                    (" + _vm._s(_vm.trans("employee.salary_structure_per_unit", {
+      unit: payroll_template_detail.unit
+    })) + ")\n                ")])]), _vm._v(" "), _c("div", {
+      staticClass: "col-12 col-sm-4"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("currency-input", {
+      attrs: {
+        position: _vm.default_currency.position,
+        symbol: _vm.default_currency.symbol,
+        name: _vm.getAmountName(index),
+        placeholder: _vm.trans("employee.salary_structure_amount")
+      },
+      nativeOn: {
+        input: function input($event) {
+          _vm.salaryStructureForm.errors.clear(_vm.getAmountName(index));
+        }
+      },
+      model: {
+        value: payroll_template_detail.amount,
+        callback: function callback($$v) {
+          _vm.$set(payroll_template_detail, "amount", $$v);
+        },
+        expression: "payroll_template_detail.amount"
+      }
+    }), _vm._v(" "), _c("show-error", {
+      attrs: {
+        "form-name": _vm.salaryStructureForm,
+        "prop-name": _vm.getAmountName(index)
+      }
+    })], 1)])]);
+  }), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.salary_structure_description")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.salaryStructureForm.description,
+      expression: "salaryStructureForm.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "description",
+      placeholder: _vm.trans("employee.salary_structure_description")
+    },
+    domProps: {
+      value: _vm.salaryStructureForm.description
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.salaryStructureForm, "description", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.salaryStructureForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.uuid,
+      expression: "uuid"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/employee/payroll/salary"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.save")))])], 1)])], 2)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/payroll/salary/edit.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/views/employee/payroll/salary/edit.vue ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _edit_vue_vue_type_template_id_1dcb30e3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit.vue?vue&type=template&id=1dcb30e3& */ "./resources/js/views/employee/payroll/salary/edit.vue?vue&type=template&id=1dcb30e3&");
+/* harmony import */ var _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue?vue&type=script&lang=js& */ "./resources/js/views/employee/payroll/salary/edit.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _edit_vue_vue_type_template_id_1dcb30e3___WEBPACK_IMPORTED_MODULE_0__.render,
+  _edit_vue_vue_type_template_id_1dcb30e3___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/employee/payroll/salary/edit.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/payroll/salary/form.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/views/employee/payroll/salary/form.vue ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_4aec3ac6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=4aec3ac6& */ "./resources/js/views/employee/payroll/salary/form.vue?vue&type=template&id=4aec3ac6&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/employee/payroll/salary/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_4aec3ac6___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_4aec3ac6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/employee/payroll/salary/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/payroll/salary/edit.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/views/employee/payroll/salary/edit.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/edit.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/payroll/salary/form.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/views/employee/payroll/salary/form.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/payroll/salary/edit.vue?vue&type=template&id=1dcb30e3&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/views/employee/payroll/salary/edit.vue?vue&type=template&id=1dcb30e3& ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_1dcb30e3___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_1dcb30e3___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_1dcb30e3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./edit.vue?vue&type=template&id=1dcb30e3& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/edit.vue?vue&type=template&id=1dcb30e3&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/payroll/salary/form.vue?vue&type=template&id=4aec3ac6&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/views/employee/payroll/salary/form.vue?vue&type=template&id=4aec3ac6& ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_4aec3ac6___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_4aec3ac6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_4aec3ac6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=4aec3ac6& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/payroll/salary/form.vue?vue&type=template&id=4aec3ac6&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=edit.js.map?id=a665bb32f7553133

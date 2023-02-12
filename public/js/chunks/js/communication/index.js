@@ -1,1 +1,896 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[901],{56543:(t,e,s)=>{s.r(e),s.d(e,{default:()=>o});const n={components:{communicationDetail:s(626).Z},data:function(){return{communications:{total:0,data:[]},filter:{sort_by:"created_at",order:"desc",subject:"",type:"",course_id:[],batch_id:[],department_id:[],employee_category_id:[],start_date:"",end_date:"",page_length:helper.getConfig("page_length")},orderByOptions:[{value:"created_at",translation:i18n.general.created_at},{value:"subject",translation:i18n.communication.subject}],types:[],courses:[],selected_courses:null,batches:[],selected_batches:null,departments:[],selected_departments:null,employee_categories:[],selected_employee_categories:null,showFilterPanel:!1,help_topic:"",communication:{},showModal:!1}},mounted:function(){helper.hasAnyPermission(["send-sms","send-email"])||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getCommunications(),helper.showDemoNotification(["communication"])},methods:{hasPermission:function(t){return helper.hasPermission(t)},hasAnyPermission:function(t){return helper.hasAnyPermission(t)},showAction:function(t){this.communication=t,this.showModal=!0},getEmployeeName:function(t){return helper.getEmployeeName(t)},getEmployeeDesignationOnDate:function(t,e){return helper.getEmployeeDesignationOnDate(t,e)},getCommunications:function(t){var e=this,s=this.$loading.show();"number"!=typeof t&&(t=1),this.filter.start_date=helper.toDate(this.filter.start_date),this.filter.end_date=helper.toDate(this.filter.end_date);var n=helper.getFilterURL(this.filter);axios.get("/api/communication?page="+t+n).then((function(t){e.communications=t.communications,e.courses=t.filters.courses,e.batches=t.filters.batches,e.departments=t.filters.departments,e.employee_categories=t.filters.employee_categories,e.types=t.filters.types,s.hide()})).catch((function(t){s.hide(),helper.showErrorMsg(t)}))},confirmDelete:function(t){var e=this;return function(s){return e.deleteCommunication(t)}},deleteCommunication:function(t){var e=this,s=this.$loading.show();axios.delete("/api/communication/"+t.uuid).then((function(t){toastr.success(t.message),e.getCommunications(),s.hide()})).catch((function(t){s.hide(),helper.showErrorMsg(t)}))},getConfig:function(t){return helper.getConfig(t)},print:function(){var t=this.$loading.show();axios.post("/api/communication/print",{filter:this.filter}).then((function(e){var s=window.open("/print");t.hide(),s.document.write(e)})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},pdf:function(){var t=this,e=this.$loading.show();axios.post("/api/communication/pdf",{filter:this.filter}).then((function(s){e.hide(),window.open("/download/report/"+s+"?token="+t.authToken)})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},onCourseSelect:function(t){this.filter.course_id.push(t.id)},onCourseRemove:function(t){this.filter.course_id.splice(this.filter.course_id.indexOf(t.id),1)},onBatchSelect:function(t){this.filter.batch_id.push(t.id)},onBatchRemove:function(t){this.filter.batch_id.splice(this.filter.batch_id.indexOf(t.id),1)},onDepartmentSelect:function(t){this.filter.department_id.push(t.id)},onDepartmentRemove:function(t){this.filter.department_id.splice(this.filter.department_id.indexOf(t.id),1)},onEmployeeCategorySelect:function(t){this.filter.employee_category_id.push(t.id)},onEmployeeCategoryRemove:function(t){this.filter.employee_category_id.splice(this.filter.employee_category_id.indexOf(t.id),1)}},filters:{moment:function(t){return helper.formatDate(t)},momentDateTime:function(t){return helper.formatDateTime(t)},momentTime:function(t){return helper.formatTime(t)}},watch:{"filter.sort_by":function(t){this.getCommunications()},"filter.order":function(t){this.getCommunications()},"filter.page_length":function(t){this.getCommunications()}},computed:{authToken:function(){return helper.getAuthToken()}}},i=n;var a=(0,s(51900).Z)(i,(function(){var t=this,e=t._self._c;return e("div",[e("div",{staticClass:"page-titles"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[e("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("communication.communication_history"))+" \n                    "),t.communications.total?e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.total_result_found",{count:t.communications.total,from:t.communications.from,to:t.communications.to})))]):e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.no_result_found")))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("div",{staticClass:"action-buttons pull-right"},[t.showFilterPanel?t._e():e("button",{staticClass:"btn btn-info btn-sm",on:{click:function(e){t.showFilterPanel=!t.showFilterPanel}}},[e("i",{staticClass:"fas fa-filter"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("general.filter")))])]),t._v(" "),e("sort-by",{attrs:{"order-by-options":t.orderByOptions,"sort-by":t.filter.sort_by,order:t.filter.order},on:{updateSortBy:function(e){t.filter.sort_by=e},updateOrder:function(e){t.filter.order=e}}}),t._v(" "),e("div",{staticClass:"btn-group"},[e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.more_option"),expression:"trans('general.more_option')"}],staticClass:"btn btn-info btn-sm dropdown-toggle no-caret",attrs:{type:"button",role:"menu",id:"moreOption","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[e("i",{staticClass:"fas fa-ellipsis-h"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"})]),t._v(" "),e("div",{class:["dropdown-menu","ltr"==t.getConfig("direction")?"dropdown-menu-right":""],attrs:{"aria-labelledby":"moreOption"}},[e("button",{staticClass:"dropdown-item custom-dropdown",on:{click:t.print}},[e("i",{staticClass:"fas fa-print"}),t._v(" "+t._s(t.trans("general.print")))]),t._v(" "),e("button",{staticClass:"dropdown-item custom-dropdown",on:{click:t.pdf}},[e("i",{staticClass:"fas fa-file-pdf"}),t._v(" "+t._s(t.trans("general.generate_pdf")))])])]),t._v(" "),e("help-button",{on:{clicked:function(e){t.help_topic="communication"}}})],1)])])]),t._v(" "),e("div",{staticClass:"container-fluid"},[e("transition",{attrs:{name:"fade"}},[t.showFilterPanel?e("div",{staticClass:"card card-form"},[e("div",{staticClass:"card-body"},[e("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("general.filter"))+"\n                    ")]),t._v(" "),e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("communication.type")))]),t._v(" "),e("select",{directives:[{name:"model",rawName:"v-model",value:t.filter.type,expression:"filter.type"}],staticClass:"custom-select col-12",on:{change:function(e){var s=Array.prototype.filter.call(e.target.options,(function(t){return t.selected})).map((function(t){return"_value"in t?t._value:t.value}));t.$set(t.filter,"type",e.target.multiple?s:s[0])}}},[e("option",{attrs:{value:"",selected:""}},[t._v(t._s(t.trans("general.select_one")))]),t._v(" "),t._l(t.types,(function(s){return e("option",{domProps:{value:s.value}},[t._v("\n                                    "+t._s(s.text)+"\n                                  ")])}))],2)])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.course")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id","group-values":"courses","group-label":"course_group","group-select":!1,name:"course_id",id:"course_id",options:t.courses,placeholder:t.trans("academic.select_course"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_courses},on:{select:t.onCourseSelect,remove:t.onCourseRemove},model:{value:t.selected_courses,callback:function(e){t.selected_courses=e},expression:"selected_courses"}},[t.courses.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.batch")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id","group-values":"batches","group-label":"course_group","group-select":!1,name:"batch_id",id:"batch_id",options:t.batches,placeholder:t.trans("academic.select_batch"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_batches},on:{select:t.onBatchSelect,remove:t.onBatchRemove},model:{value:t.selected_batches,callback:function(e){t.selected_batches=e},expression:"selected_batches"}},[t.batches.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("employee.department")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id",name:"department_id",id:"department_id",options:t.departments,placeholder:t.trans("employee.select_department"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_departments},on:{select:t.onDepartmentSelect,remove:t.onDepartmentRemove},model:{value:t.selected_departments,callback:function(e){t.selected_departments=e},expression:"selected_departments"}},[t.departments.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("employee.category")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id",name:"employee_category_id",id:"employee_category_id",options:t.employee_categories,placeholder:t.trans("employee.select_category"),multiple:!0,"close-on-select":!1,"clear-on-select":!1,"hide-selected":!0,selected:t.selected_employee_categories},on:{select:t.onEmployeeCategorySelect,remove:t.onEmployeeCategoryRemove},model:{value:t.selected_employee_categories,callback:function(e){t.selected_employee_categories=e},expression:"selected_employee_categories"}},[t.employee_categories.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("communication.subject")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.filter.subject,expression:"filter.subject"}],staticClass:"form-control",attrs:{name:"subject"},domProps:{value:t.filter.subject},on:{input:function(e){e.target.composing||t.$set(t.filter,"subject",e.target.value)}}})])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("date-range-picker",{attrs:{"start-date":t.filter.start_date,"end-date":t.filter.end_date,label:t.trans("general.date_between")},on:{"update:startDate":function(e){return t.$set(t.filter,"start_date",e)},"update:start-date":function(e){return t.$set(t.filter,"start_date",e)},"update:endDate":function(e){return t.$set(t.filter,"end_date",e)},"update:end-date":function(e){return t.$set(t.filter,"end_date",e)}}})],1)]),t._v(" "),e("div",{staticClass:"card-footer text-right"},[e("button",{staticClass:"btn btn-danger",attrs:{type:"button"},on:{click:function(e){t.showFilterPanel=!1}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),e("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"button"},on:{click:t.getCommunications}},[t._v(t._s(t.trans("general.filter")))])])])]):t._e()]),t._v(" "),e("div",{staticClass:"card"},[e("div",{staticClass:"card-body"},[t.communications.total?e("div",{staticClass:"table-responsive"},[e("table",{staticClass:"table table-sm"},[e("thead",[e("tr",[e("th",[t._v(t._s(t.trans("communication.type")))]),t._v(" "),e("th",[t._v(t._s(t.trans("communication.subject")))]),t._v(" "),e("th",[t._v(t._s(t.trans("communication.audience")))]),t._v(" "),e("th",[t._v(t._s(t.trans("communication.recipient_count")))]),t._v(" "),e("th",[t._v(t._s(t.trans("communication.sent_by")))]),t._v(" "),e("th",[t._v(t._s(t.trans("general.created_at")))]),t._v(" "),e("th",{staticClass:"table-option"},[t._v(t._s(t.trans("general.action")))])])]),t._v(" "),e("tbody",t._l(t.communications.data,(function(s){return e("tr",[e("td",[t._v(t._s(t.trans("communication."+s.type)))]),t._v(" "),e("td",{domProps:{textContent:t._s(s.subject)}}),t._v(" "),e("td",["everyone"==s.audience?e("span",[t._v(t._s(t.trans("communication.communication_for_everyone")))]):t._e(),t._v(" "),"selected_course"==s.audience?[t._v("\n                                        "+t._s(t.trans("academic.course"))+" "),e("br"),t._v(" "),e("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},t._l(s.courses,(function(s){return e("li",[t._v(t._s(s.name+"("+s.course_group.name+")"))])})),0)]:"selected_batch"==s.audience?[t._v("\n                                        "+t._s(t.trans("academic.batch"))+" "),e("br"),t._v(" "),e("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},t._l(s.batches,(function(s){return e("li",[t._v(t._s(s.name+"("+s.course.name+")"))])})),0)]:"selected_department"==s.audience?[t._v("\n                                        "+t._s(t.trans("employee.department"))+" "),e("br"),t._v(" "),e("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},t._l(s.departments,(function(s){return e("li",[t._v(t._s(s.name))])})),0)]:"selected_employee_category"==s.audience?[t._v("\n                                        "+t._s(t.trans("employee.category"))+" "),e("br"),t._v(" "),e("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},t._l(s.employee_categorys,(function(s){return e("li",[t._v(t._s(s.name))])})),0)]:t._e(),t._v(" "),s.options.individual_students&&s.options.individual_students.length?[e("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},[e("li",[t._v(t._s(t.trans("communication.count_individual_students",{attribute:s.options.individual_students.length})))])])]:t._e(),t._v(" "),s.options.individual_employees&&s.options.individual_employees.length?[e("ul",{staticStyle:{"list-style":"none",padding:"0",margin:"0"}},[e("li",[t._v(t._s(t.trans("communication.count_individual_employees",{attribute:s.options.individual_employees.length})))])])]:t._e()],2),t._v(" "),e("td",[t._v(t._s(s.recipient_count))]),t._v(" "),e("td",[t._v(t._s(t.getEmployeeName(s.user.employee))+" "),e("br"),t._v(" "+t._s(t.getEmployeeDesignationOnDate(s.user.employee,s.start_date)))]),t._v(" "),e("td",[t._v(t._s(t._f("momentDateTime")(s.created_at)))]),t._v(" "),e("td",{staticClass:"table-option"},[e("div",{staticClass:"btn-group"},[e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.view_detail"),expression:"trans('general.view_detail')"}],staticClass:"btn btn-success btn-sm",on:{click:function(e){return e.preventDefault(),t.showAction(s)}}},[e("i",{staticClass:"fas fa-arrow-circle-right"})]),t._v(" "),t.hasPermission("delete-communication-history")?e("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:t.confirmDelete(s)},expression:"{ok: confirmDelete(communication)}"},{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.delete"),expression:"trans('general.delete')"}],key:s.id,staticClass:"btn btn-danger btn-sm"},[e("i",{staticClass:"fas fa-trash"})]):t._e()])])])})),0)])]):t._e(),t._v(" "),t.communications.total?t._e():e("module-info",{attrs:{module:"communication",title:"communication_module_title",description:"communication_module_description",icon:"list"}},[e("div",{attrs:{slot:"btn"},slot:"btn"},[t.hasPermission("send-sms")?e("button",{staticClass:"btn btn-info btn-md",on:{click:function(e){return t.$router.push("/communication/sms")}}},[e("i",{staticClass:"fas fa-paper-plan"}),t._v(" "+t._s(t.trans("communication.send_sms")))]):t._e(),t._v(" "),t.hasPermission("send-email")?e("button",{staticClass:"btn btn-info btn-md",on:{click:function(e){return t.$router.push("/communication/email")}}},[e("i",{staticClass:"fas fa-envelop"}),t._v(" "+t._s(t.trans("communication.send_email")))]):t._e()])]),t._v(" "),e("pagination-record",{attrs:{"page-length":t.filter.page_length,records:t.communications},on:{"update:pageLength":function(e){return t.$set(t.filter,"page_length",e)},"update:page-length":function(e){return t.$set(t.filter,"page_length",e)},updateRecords:t.getCommunications}})],1)])],1),t._v(" "),t.showModal?e("transition",{attrs:{name:"modal"}},[e("div",{staticClass:"modal-mask"},[e("div",{staticClass:"modal-wrapper"},[e("div",{staticClass:"modal-container modal-lg"},[e("div",{staticClass:"modal-header"},[t._t("header",(function(){return[t._v("\n                            "+t._s(t.communication.subject)+"\n                            "),e("span",{staticClass:"float-right pointer",on:{click:function(e){t.showModal=!1}}},[t._v("x")])]}))],2),t._v(" "),e("div",{staticClass:"modal-body"},[t._t("body",(function(){return[e("div",{staticClass:"m-t-20",domProps:{innerHTML:t._s(t.communication.body)}}),t._v(" "),e("hr"),t._v(" "),e("p",[e("i",{staticClass:"far fa-clock"}),t._v(" "),e("small",[t._v(t._s(t.trans("general.created_at"))+" "+t._s(t._f("momentDateTime")(t.communication.created_at)))])]),t._v(" "),e("div",{staticClass:"clearfix"})]}))],2)])])])]):t._e(),t._v(" "),e("right-panel",{attrs:{topic:t.help_topic}})],1)}),[],!1,null,null,null);const o=a.exports},626:(t,e,s)=>{s.d(e,{Z:()=>n});const n=(0,s(51900).Z)({},undefined,undefined,!1,null,null,null).exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/communication/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/index.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/index.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _show__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./show */ "./resources/js/views/communication/show.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    communicationDetail: _show__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      communications: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        sort_by: 'created_at',
+        order: 'desc',
+        subject: '',
+        type: '',
+        course_id: [],
+        batch_id: [],
+        department_id: [],
+        employee_category_id: [],
+        start_date: '',
+        end_date: '',
+        page_length: helper.getConfig('page_length')
+      },
+      orderByOptions: [{
+        value: 'created_at',
+        translation: i18n.general.created_at
+      }, {
+        value: 'subject',
+        translation: i18n.communication.subject
+      }],
+      types: [],
+      courses: [],
+      selected_courses: null,
+      batches: [],
+      selected_batches: null,
+      departments: [],
+      selected_departments: null,
+      employee_categories: [],
+      selected_employee_categories: null,
+      showFilterPanel: false,
+      help_topic: '',
+      communication: {},
+      showModal: false
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasAnyPermission(['send-sms', 'send-email'])) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getCommunications();
+    helper.showDemoNotification(['communication']);
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    hasAnyPermission: function hasAnyPermission(permissions) {
+      return helper.hasAnyPermission(permissions);
+    },
+    showAction: function showAction(communication) {
+      this.communication = communication;
+      this.showModal = true;
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getEmployeeDesignationOnDate: function getEmployeeDesignationOnDate(employee, date) {
+      return helper.getEmployeeDesignationOnDate(employee, date);
+    },
+    getCommunications: function getCommunications(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      this.filter.start_date = helper.toDate(this.filter.start_date);
+      this.filter.end_date = helper.toDate(this.filter.end_date);
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/communication?page=' + page + url).then(function (response) {
+        _this.communications = response.communications;
+        _this.courses = response.filters.courses;
+        _this.batches = response.filters.batches;
+        _this.departments = response.filters.departments;
+        _this.employee_categories = response.filters.employee_categories;
+        _this.types = response.filters.types;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    confirmDelete: function confirmDelete(communication) {
+      var _this2 = this;
+      return function (dialog) {
+        return _this2.deleteCommunication(communication);
+      };
+    },
+    deleteCommunication: function deleteCommunication(communication) {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios["delete"]('/api/communication/' + communication.uuid).then(function (response) {
+        toastr.success(response.message);
+        _this3.getCommunications();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    print: function print() {
+      var loader = this.$loading.show();
+      axios.post('/api/communication/print', {
+        filter: this.filter
+      }).then(function (response) {
+        var print = window.open("/print");
+        loader.hide();
+        print.document.write(response);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    pdf: function pdf() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      axios.post('/api/communication/pdf', {
+        filter: this.filter
+      }).then(function (response) {
+        loader.hide();
+        window.open('/download/report/' + response + '?token=' + _this4.authToken);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onCourseSelect: function onCourseSelect(selectedOption) {
+      this.filter.course_id.push(selectedOption.id);
+    },
+    onCourseRemove: function onCourseRemove(removedOption) {
+      this.filter.course_id.splice(this.filter.course_id.indexOf(removedOption.id), 1);
+    },
+    onBatchSelect: function onBatchSelect(selectedOption) {
+      this.filter.batch_id.push(selectedOption.id);
+    },
+    onBatchRemove: function onBatchRemove(removedOption) {
+      this.filter.batch_id.splice(this.filter.batch_id.indexOf(removedOption.id), 1);
+    },
+    onDepartmentSelect: function onDepartmentSelect(selectedOption) {
+      this.filter.department_id.push(selectedOption.id);
+    },
+    onDepartmentRemove: function onDepartmentRemove(removedOption) {
+      this.filter.department_id.splice(this.filter.department_id.indexOf(removedOption.id), 1);
+    },
+    onEmployeeCategorySelect: function onEmployeeCategorySelect(selectedOption) {
+      this.filter.employee_category_id.push(selectedOption.id);
+    },
+    onEmployeeCategoryRemove: function onEmployeeCategoryRemove(removedOption) {
+      this.filter.employee_category_id.splice(this.filter.employee_category_id.indexOf(removedOption.id), 1);
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    },
+    momentTime: function momentTime(time) {
+      return helper.formatTime(time);
+    }
+  },
+  watch: {
+    'filter.sort_by': function filterSort_by(val) {
+      this.getCommunications();
+    },
+    'filter.order': function filterOrder(val) {
+      this.getCommunications();
+    },
+    'filter.page_length': function filterPage_length(val) {
+      this.getCommunications();
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/index.vue?vue&type=template&id=539460ac&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/index.vue?vue&type=template&id=539460ac& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("communication.communication_history")) + " \n                    "), _vm.communications.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.communications.total,
+    from: _vm.communications.from,
+    to: _vm.communications.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [!_vm.showFilterPanel ? _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = !_vm.showFilterPanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-filter"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])]) : _vm._e(), _vm._v(" "), _c("sort-by", {
+    attrs: {
+      "order-by-options": _vm.orderByOptions,
+      "sort-by": _vm.filter.sort_by,
+      order: _vm.filter.order
+    },
+    on: {
+      updateSortBy: function updateSortBy(value) {
+        _vm.filter.sort_by = value;
+      },
+      updateOrder: function updateOrder(value) {
+        _vm.filter.order = value;
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "btn-group"
+  }, [_c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.more_option"),
+      expression: "trans('general.more_option')"
+    }],
+    staticClass: "btn btn-info btn-sm dropdown-toggle no-caret",
+    attrs: {
+      type: "button",
+      role: "menu",
+      id: "moreOption",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-ellipsis-h"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  })]), _vm._v(" "), _c("div", {
+    "class": ["dropdown-menu", _vm.getConfig("direction") == "ltr" ? "dropdown-menu-right" : ""],
+    attrs: {
+      "aria-labelledby": "moreOption"
+    }
+  }, [_c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.print
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-print"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.print")))]), _vm._v(" "), _c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.pdf
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-file-pdf"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.generate_pdf")))])])]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "communication";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showFilterPanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")) + "\n                    ")]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.type")))]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.type,
+      expression: "filter.type"
+    }],
+    staticClass: "custom-select col-12",
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.filter, "type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      selected: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _vm._l(_vm.types, function (type) {
+    return _c("option", {
+      domProps: {
+        value: type.value
+      }
+    }, [_vm._v("\n                                    " + _vm._s(type.text) + "\n                                  ")]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.course")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      "group-values": "courses",
+      "group-label": "course_group",
+      "group-select": false,
+      name: "course_id",
+      id: "course_id",
+      options: _vm.courses,
+      placeholder: _vm.trans("academic.select_course"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_courses
+    },
+    on: {
+      select: _vm.onCourseSelect,
+      remove: _vm.onCourseRemove
+    },
+    model: {
+      value: _vm.selected_courses,
+      callback: function callback($$v) {
+        _vm.selected_courses = $$v;
+      },
+      expression: "selected_courses"
+    }
+  }, [!_vm.courses.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      "group-values": "batches",
+      "group-label": "course_group",
+      "group-select": false,
+      name: "batch_id",
+      id: "batch_id",
+      options: _vm.batches,
+      placeholder: _vm.trans("academic.select_batch"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_batches
+    },
+    on: {
+      select: _vm.onBatchSelect,
+      remove: _vm.onBatchRemove
+    },
+    model: {
+      value: _vm.selected_batches,
+      callback: function callback($$v) {
+        _vm.selected_batches = $$v;
+      },
+      expression: "selected_batches"
+    }
+  }, [!_vm.batches.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.department")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "department_id",
+      id: "department_id",
+      options: _vm.departments,
+      placeholder: _vm.trans("employee.select_department"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_departments
+    },
+    on: {
+      select: _vm.onDepartmentSelect,
+      remove: _vm.onDepartmentRemove
+    },
+    model: {
+      value: _vm.selected_departments,
+      callback: function callback($$v) {
+        _vm.selected_departments = $$v;
+      },
+      expression: "selected_departments"
+    }
+  }, [!_vm.departments.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.category")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "employee_category_id",
+      id: "employee_category_id",
+      options: _vm.employee_categories,
+      placeholder: _vm.trans("employee.select_category"),
+      multiple: true,
+      "close-on-select": false,
+      "clear-on-select": false,
+      "hide-selected": true,
+      selected: _vm.selected_employee_categories
+    },
+    on: {
+      select: _vm.onEmployeeCategorySelect,
+      remove: _vm.onEmployeeCategoryRemove
+    },
+    model: {
+      value: _vm.selected_employee_categories,
+      callback: function callback($$v) {
+        _vm.selected_employee_categories = $$v;
+      },
+      expression: "selected_employee_categories"
+    }
+  }, [!_vm.employee_categories.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.subject")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.subject,
+      expression: "filter.subject"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "subject"
+    },
+    domProps: {
+      value: _vm.filter.subject
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.filter, "subject", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("date-range-picker", {
+    attrs: {
+      "start-date": _vm.filter.start_date,
+      "end-date": _vm.filter.end_date,
+      label: _vm.trans("general.date_between")
+    },
+    on: {
+      "update:startDate": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "start_date", $event);
+      },
+      "update:start-date": function updateStartDate($event) {
+        return _vm.$set(_vm.filter, "start_date", $event);
+      },
+      "update:endDate": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "end_date", $event);
+      },
+      "update:end-date": function updateEndDate($event) {
+        return _vm.$set(_vm.filter, "end_date", $event);
+      }
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("button", {
+    staticClass: "btn btn-danger",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = false;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.getCommunications
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])])])]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.communications.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("communication.type")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("communication.subject")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("communication.audience")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("communication.recipient_count")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("communication.sent_by")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("general.created_at")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.communications.data, function (communication) {
+    return _c("tr", [_c("td", [_vm._v(_vm._s(_vm.trans("communication." + communication.type)))]), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(communication.subject)
+      }
+    }), _vm._v(" "), _c("td", [communication.audience == "everyone" ? _c("span", [_vm._v(_vm._s(_vm.trans("communication.communication_for_everyone")))]) : _vm._e(), _vm._v(" "), communication.audience == "selected_course" ? [_vm._v("\n                                        " + _vm._s(_vm.trans("academic.course")) + " "), _c("br"), _vm._v(" "), _c("ul", {
+      staticStyle: {
+        "list-style": "none",
+        padding: "0",
+        margin: "0"
+      }
+    }, _vm._l(communication.courses, function (course) {
+      return _c("li", [_vm._v(_vm._s(course.name + "(" + course.course_group.name + ")"))]);
+    }), 0)] : communication.audience == "selected_batch" ? [_vm._v("\n                                        " + _vm._s(_vm.trans("academic.batch")) + " "), _c("br"), _vm._v(" "), _c("ul", {
+      staticStyle: {
+        "list-style": "none",
+        padding: "0",
+        margin: "0"
+      }
+    }, _vm._l(communication.batches, function (batch) {
+      return _c("li", [_vm._v(_vm._s(batch.name + "(" + batch.course.name + ")"))]);
+    }), 0)] : communication.audience == "selected_department" ? [_vm._v("\n                                        " + _vm._s(_vm.trans("employee.department")) + " "), _c("br"), _vm._v(" "), _c("ul", {
+      staticStyle: {
+        "list-style": "none",
+        padding: "0",
+        margin: "0"
+      }
+    }, _vm._l(communication.departments, function (department) {
+      return _c("li", [_vm._v(_vm._s(department.name))]);
+    }), 0)] : communication.audience == "selected_employee_category" ? [_vm._v("\n                                        " + _vm._s(_vm.trans("employee.category")) + " "), _c("br"), _vm._v(" "), _c("ul", {
+      staticStyle: {
+        "list-style": "none",
+        padding: "0",
+        margin: "0"
+      }
+    }, _vm._l(communication.employee_categorys, function (employee_category) {
+      return _c("li", [_vm._v(_vm._s(employee_category.name))]);
+    }), 0)] : _vm._e(), _vm._v(" "), communication.options.individual_students && communication.options.individual_students.length ? [_c("ul", {
+      staticStyle: {
+        "list-style": "none",
+        padding: "0",
+        margin: "0"
+      }
+    }, [_c("li", [_vm._v(_vm._s(_vm.trans("communication.count_individual_students", {
+      attribute: communication.options.individual_students.length
+    })))])])] : _vm._e(), _vm._v(" "), communication.options.individual_employees && communication.options.individual_employees.length ? [_c("ul", {
+      staticStyle: {
+        "list-style": "none",
+        padding: "0",
+        margin: "0"
+      }
+    }, [_c("li", [_vm._v(_vm._s(_vm.trans("communication.count_individual_employees", {
+      attribute: communication.options.individual_employees.length
+    })))])])] : _vm._e()], 2), _vm._v(" "), _c("td", [_vm._v(_vm._s(communication.recipient_count))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getEmployeeName(communication.user.employee)) + " "), _c("br"), _vm._v(" " + _vm._s(_vm.getEmployeeDesignationOnDate(communication.user.employee, communication.start_date)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("momentDateTime")(communication.created_at)))]), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [_c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("general.view_detail"),
+        expression: "trans('general.view_detail')"
+      }],
+      staticClass: "btn btn-success btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.showAction(communication);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-arrow-circle-right"
+    })]), _vm._v(" "), _vm.hasPermission("delete-communication-history") ? _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(communication)
+        },
+        expression: "{ok: confirmDelete(communication)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("general.delete"),
+        expression: "trans('general.delete')"
+      }],
+      key: communication.id,
+      staticClass: "btn btn-danger btn-sm"
+    }, [_c("i", {
+      staticClass: "fas fa-trash"
+    })]) : _vm._e()])])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.communications.total ? _c("module-info", {
+    attrs: {
+      module: "communication",
+      title: "communication_module_title",
+      description: "communication_module_description",
+      icon: "list"
+    }
+  }, [_c("div", {
+    attrs: {
+      slot: "btn"
+    },
+    slot: "btn"
+  }, [_vm.hasPermission("send-sms") ? _c("button", {
+    staticClass: "btn btn-info btn-md",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/communication/sms");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-paper-plan"
+  }), _vm._v(" " + _vm._s(_vm.trans("communication.send_sms")))]) : _vm._e(), _vm._v(" "), _vm.hasPermission("send-email") ? _c("button", {
+    staticClass: "btn btn-info btn-md",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/communication/email");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-envelop"
+  }), _vm._v(" " + _vm._s(_vm.trans("communication.send_email")))]) : _vm._e()])]) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.communications
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getCommunications
+    }
+  })], 1)])], 1), _vm._v(" "), _vm.showModal ? _c("transition", {
+    attrs: {
+      name: "modal"
+    }
+  }, [_c("div", {
+    staticClass: "modal-mask"
+  }, [_c("div", {
+    staticClass: "modal-wrapper"
+  }, [_c("div", {
+    staticClass: "modal-container modal-lg"
+  }, [_c("div", {
+    staticClass: "modal-header"
+  }, [_vm._t("header", function () {
+    return [_vm._v("\n                            " + _vm._s(_vm.communication.subject) + "\n                            "), _c("span", {
+      staticClass: "float-right pointer",
+      on: {
+        click: function click($event) {
+          _vm.showModal = false;
+        }
+      }
+    }, [_vm._v("x")])];
+  })], 2), _vm._v(" "), _c("div", {
+    staticClass: "modal-body"
+  }, [_vm._t("body", function () {
+    return [_c("div", {
+      staticClass: "m-t-20",
+      domProps: {
+        innerHTML: _vm._s(_vm.communication.body)
+      }
+    }), _vm._v(" "), _c("hr"), _vm._v(" "), _c("p", [_c("i", {
+      staticClass: "far fa-clock"
+    }), _vm._v(" "), _c("small", [_vm._v(_vm._s(_vm.trans("general.created_at")) + " " + _vm._s(_vm._f("momentDateTime")(_vm.communication.created_at)))])]), _vm._v(" "), _c("div", {
+      staticClass: "clearfix"
+    })];
+  })], 2)])])])]) : _vm._e(), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/index.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/views/communication/index.vue ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_539460ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=539460ac& */ "./resources/js/views/communication/index.vue?vue&type=template&id=539460ac&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/communication/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_539460ac___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_539460ac___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/communication/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/show.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/views/communication/show.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
+  script,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+component.options.__file = "resources/js/views/communication/show.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/index.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/views/communication/index.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/index.vue?vue&type=template&id=539460ac&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/views/communication/index.vue?vue&type=template&id=539460ac& ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_539460ac___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_539460ac___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_539460ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=539460ac& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/index.vue?vue&type=template&id=539460ac&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=b6010acace6efd50

@@ -1,1 +1,276 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[8371],{66898:(t,e,r)=>{r.r(e),r.d(e,{default:()=>i});const s={data:function(){return{student_record:{},uuid:this.$route.params.uuid,record_id:this.$route.params.record_id,transfer_certificate_formats:[],transfer_certificate:{},transferCertificateForm:new Form({transfer_certificate_format:"",date_of_application:"",date_of_issue:"",number:"",book_number:"",prefix:"",variables:[],memo:""},!1)}},mounted:function(){helper.hasPermission("terminate-student")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getPreRequisite()},methods:{getPreRequisite:function(){var t=this,e=this.$loading.show();axios.get("/api/student/"+this.uuid+"/transfer-certificate/"+this.record_id).then((function(r){if(t.student_record=r.student_record,t.transfer_certificate_formats=r.transfer_certificate_formats,t.transferCertificateForm.prefix=helper.getConfig("transfer_certificate_prefix"),t.transfer_certificate=r.student_record.transfer_certificate,t.transfer_certificate){t.transferCertificateForm.date_of_application=t.transfer_certificate.date_of_application,t.transferCertificateForm.date_of_issue=t.transfer_certificate.date_of_issue,t.transferCertificateForm.prefix=t.transfer_certificate.prefix,t.transferCertificateForm.number=t.transfer_certificate.number,t.transferCertificateForm.book_number=t.transfer_certificate.options.hasOwnProperty("book_number")?t.transfer_certificate.options.book_number:"",t.transferCertificateForm.transfer_certificate_format=t.transfer_certificate.format;var s=t.transfer_certificate.format,i=t.transfer_certificate_formats.find((function(t){return t.id==s}));t.selected_transfer_certificate_format=i||null,t.transferCertificateForm.variables=[],t.transferCertificateForm.variables=t.transfer_certificate.options.transfer_certificate}e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},getStudentName:function(t){return helper.getStudentName(t)},getAdmissionNumber:function(t){return helper.getAdmissionNumber(t.admission)},print:function(){var t=this.$loading.show();axios.post("/api/student/"+this.uuid+"/transfer-certificate/"+this.record_id+"/print").then((function(e){var r=window.open("/print");t.hide(),r.document.write(e)})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))}},computed:{getTransferCertificateNumber:function(){return helper.getTransferCertificateNumber(this.transfer_certificate)},getTransferCertificateBookNumber:function(){return this.transferCertificateForm.book_number}},filters:{moment:function(t){return helper.formatDate(t)},momentDateTime:function(t){return helper.formatDateTime(t)}}};const i=(0,r(51900).Z)(s,(function(){var t=this,e=t._self._c;return e("div",[e("div",{staticClass:"page-titles"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[e("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("student.view_transfer_certificate"))+"\n                        "),e("button",{staticClass:"btn btn-info btn-sm",on:{click:function(e){return t.$router.push("/student/termination")}}},[e("i",{staticClass:"fas fa-list"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("student.termination")))])])])])])]),t._v(" "),e("div",{staticClass:"container-fluid"},[e("div",{staticClass:"card"},[e("div",{staticClass:"card-body p-20"},[t.student_record.id?e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-3"},[e("p",[t._v(t._s(t.trans("student.name"))+": "),e("strong",[t._v(t._s(t.getStudentName(t.student_record.student)))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("p",[t._v(t._s(t.trans("student.admission_number"))+": "),e("strong",[t._v(t._s(t.getAdmissionNumber(t.student_record)))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("p",[t._v(t._s(t.trans("academic.batch"))+": "),e("strong",[t._v(t._s(t.student_record.batch.course.name+" "+t.student_record.batch.name))])])])]):t._e(),t._v(" "),t.transfer_certificate?[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-3"},[e("p",[t._v(t._s(t.trans("academic.transfer_certificate_format"))+": "),e("strong",[t._v(t._s(t.transferCertificateForm.transfer_certificate_format))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("p",[t._v(t._s(t.trans("student.transfer_certificate_number"))+": "),e("strong",[t._v(t._s(t.getTransferCertificateNumber))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("p",[t._v(t._s(t.trans("student.transfer_certificate_book_number"))+": "),e("strong",[t._v(t._s(t.getTransferCertificateBookNumber))])])])]),t._v(" "),e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-3"},[e("p",[t._v(t._s(t.trans("student.date_of_application"))+": "),e("strong",[t._v(t._s(t._f("moment")(t.transferCertificateForm.date_of_application)))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("p",[t._v(t._s(t.trans("student.date_of_issue"))+": "),e("strong",[t._v(t._s(t._f("moment")(t.transferCertificateForm.date_of_issue)))])])])]),t._v(" "),e("div",{staticClass:"row"},[t._l(t.transferCertificateForm.variables,(function(r){return e("div",{key:r.name,staticClass:"col-12"},[e("p",[t._v(t._s(t.trans("student.tc_props."+r.name))+": "),e("strong",[t._v(t._s(r.value))])])])})),t._v(" "),e("div",{staticClass:"col-12"},[e("p",[t._v(t._s(t.trans("student.transfer_certificate_memo"))+": "),e("strong",[t._v(t._s(t.transferCertificateForm.memo))])])])],2)]:[e("p",{staticClass:"alert alert-danger"},[t._v(t._s(t.trans("student.no_tc_prepared")))])],t._v(" "),e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 text-right"},[e("router-link",{staticClass:"btn btn-info waves-effect waves-light",attrs:{to:"/student/termination/".concat(t.uuid,"/").concat(t.record_id,"/edit")}},[t._v(t._s(t.trans("general.edit")))]),t._v(" "),e("button",{staticClass:"btn btn-success waves-effect waves-light",attrs:{type:"button"},on:{click:t.print}},[t._v(t._s(t.trans("general.print")))])],1)])],2)])])])}),[],!1,null,null,null).exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/student/termination/view"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/termination/view.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/termination/view.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      student_record: {},
+      uuid: this.$route.params.uuid,
+      record_id: this.$route.params.record_id,
+      transfer_certificate_formats: [],
+      transfer_certificate: {},
+      transferCertificateForm: new Form({
+        transfer_certificate_format: '',
+        date_of_application: '',
+        date_of_issue: '',
+        number: '',
+        book_number: '',
+        prefix: '',
+        variables: [],
+        memo: ''
+      }, false)
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('terminate-student')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getPreRequisite();
+  },
+  methods: {
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/student/' + this.uuid + '/transfer-certificate/' + this.record_id).then(function (response) {
+        _this.student_record = response.student_record;
+        _this.transfer_certificate_formats = response.transfer_certificate_formats;
+        _this.transferCertificateForm.prefix = helper.getConfig('transfer_certificate_prefix');
+        _this.transfer_certificate = response.student_record.transfer_certificate;
+        if (_this.transfer_certificate) {
+          _this.transferCertificateForm.date_of_application = _this.transfer_certificate.date_of_application;
+          _this.transferCertificateForm.date_of_issue = _this.transfer_certificate.date_of_issue;
+          _this.transferCertificateForm.prefix = _this.transfer_certificate.prefix;
+          _this.transferCertificateForm.number = _this.transfer_certificate.number;
+          _this.transferCertificateForm.book_number = _this.transfer_certificate.options.hasOwnProperty("book_number") ? _this.transfer_certificate.options.book_number : '';
+          _this.transferCertificateForm.transfer_certificate_format = _this.transfer_certificate.format;
+          var transfer_certificate_format_id = _this.transfer_certificate.format;
+          var transfer_certificate_format = _this.transfer_certificate_formats.find(function (o) {
+            return o.id == transfer_certificate_format_id;
+          });
+          _this.selected_transfer_certificate_format = transfer_certificate_format || null;
+          _this.transferCertificateForm.variables = [];
+          _this.transferCertificateForm.variables = _this.transfer_certificate.options.transfer_certificate;
+        }
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getStudentName: function getStudentName(student) {
+      return helper.getStudentName(student);
+    },
+    getAdmissionNumber: function getAdmissionNumber(student_record) {
+      return helper.getAdmissionNumber(student_record.admission);
+    },
+    print: function print() {
+      var loader = this.$loading.show();
+      axios.post('/api/student/' + this.uuid + '/transfer-certificate/' + this.record_id + '/print').then(function (response) {
+        var print = window.open("/print");
+        loader.hide();
+        print.document.write(response);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    }
+  },
+  computed: {
+    getTransferCertificateNumber: function getTransferCertificateNumber() {
+      return helper.getTransferCertificateNumber(this.transfer_certificate);
+    },
+    getTransferCertificateBookNumber: function getTransferCertificateBookNumber() {
+      return this.transferCertificateForm.book_number;
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/termination/view.vue?vue&type=template&id=63417423&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/termination/view.vue?vue&type=template&id=63417423& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("student.view_transfer_certificate")) + "\n                        "), _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/student/termination");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("student.termination")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body p-20"
+  }, [_vm.student_record.id ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("p", [_vm._v(_vm._s(_vm.trans("student.name")) + ": "), _c("strong", [_vm._v(_vm._s(_vm.getStudentName(_vm.student_record.student)))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("p", [_vm._v(_vm._s(_vm.trans("student.admission_number")) + ": "), _c("strong", [_vm._v(_vm._s(_vm.getAdmissionNumber(_vm.student_record)))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("p", [_vm._v(_vm._s(_vm.trans("academic.batch")) + ": "), _c("strong", [_vm._v(_vm._s(_vm.student_record.batch.course.name + " " + _vm.student_record.batch.name))])])])]) : _vm._e(), _vm._v(" "), _vm.transfer_certificate ? [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("p", [_vm._v(_vm._s(_vm.trans("academic.transfer_certificate_format")) + ": "), _c("strong", [_vm._v(_vm._s(_vm.transferCertificateForm.transfer_certificate_format))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("p", [_vm._v(_vm._s(_vm.trans("student.transfer_certificate_number")) + ": "), _c("strong", [_vm._v(_vm._s(_vm.getTransferCertificateNumber))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("p", [_vm._v(_vm._s(_vm.trans("student.transfer_certificate_book_number")) + ": "), _c("strong", [_vm._v(_vm._s(_vm.getTransferCertificateBookNumber))])])])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("p", [_vm._v(_vm._s(_vm.trans("student.date_of_application")) + ": "), _c("strong", [_vm._v(_vm._s(_vm._f("moment")(_vm.transferCertificateForm.date_of_application)))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("p", [_vm._v(_vm._s(_vm.trans("student.date_of_issue")) + ": "), _c("strong", [_vm._v(_vm._s(_vm._f("moment")(_vm.transferCertificateForm.date_of_issue)))])])])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_vm._l(_vm.transferCertificateForm.variables, function (variable) {
+    return _c("div", {
+      key: variable.name,
+      staticClass: "col-12"
+    }, [_c("p", [_vm._v(_vm._s(_vm.trans("student.tc_props." + variable.name)) + ": "), _c("strong", [_vm._v(_vm._s(variable.value))])])]);
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-12"
+  }, [_c("p", [_vm._v(_vm._s(_vm.trans("student.transfer_certificate_memo")) + ": "), _c("strong", [_vm._v(_vm._s(_vm.transferCertificateForm.memo))])])])], 2)] : [_c("p", {
+    staticClass: "alert alert-danger"
+  }, [_vm._v(_vm._s(_vm.trans("student.no_tc_prepared")))])], _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 text-right"
+  }, [_c("router-link", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      to: "/student/termination/".concat(_vm.uuid, "/").concat(_vm.record_id, "/edit")
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.edit")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-success waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.print
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.print")))])], 1)])], 2)])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/student/termination/view.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/views/student/termination/view.vue ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _view_vue_vue_type_template_id_63417423___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view.vue?vue&type=template&id=63417423& */ "./resources/js/views/student/termination/view.vue?vue&type=template&id=63417423&");
+/* harmony import */ var _view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view.vue?vue&type=script&lang=js& */ "./resources/js/views/student/termination/view.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _view_vue_vue_type_template_id_63417423___WEBPACK_IMPORTED_MODULE_0__.render,
+  _view_vue_vue_type_template_id_63417423___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/student/termination/view.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/student/termination/view.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/views/student/termination/view.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./view.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/termination/view.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/student/termination/view.vue?vue&type=template&id=63417423&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/views/student/termination/view.vue?vue&type=template&id=63417423& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_view_vue_vue_type_template_id_63417423___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_view_vue_vue_type_template_id_63417423___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_view_vue_vue_type_template_id_63417423___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./view.vue?vue&type=template&id=63417423& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/termination/view.vue?vue&type=template&id=63417423&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=view.js.map?id=7a5c86d1f2033869

@@ -1,1 +1,916 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[6889],{84333:(t,e,s)=>{s.r(e),s.d(e,{default:()=>n});const a={components:{},data:function(){return{student_records:{total:0,data:[]},selectAll:!1,smsForm:new Form({sms:"",ids:[],filter:{}}),filter:{sort_by:"created_at",order:"asc",date:helper.today(),batch_id:"",subject_id:"",attendance_method:"",session:"",first_name:"",last_name:"",father_name:"",mother_name:"",page_length:helper.getConfig("page_length")},orderByOptions:[{value:"created_at",translation:i18n.general.created_at}],batches:[],subjects:[],batch_with_subjects:[],attendance_methods:[],attendance_method_more_than_once_types:[],selected_batch:null,showFilterPanel:!0}},mounted:function(){helper.hasPermission("list-student-attendance")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),helper.showDemoNotification(["student"]),this.getStudentRecords()},methods:{hasPermission:function(t){return helper.hasPermission(t)},getConfig:function(t){return helper.getConfig(t)},getStudentRecords:function(t){var e=this,s=this.$loading.show();"number"!=typeof t&&(t=1),this.selectAll=!1,this.filter.date=helper.toDate(this.filter.date);var a=helper.getFilterURL(this.filter);axios.get("/api/student/attendance/absentee?page="+t+a).then((function(t){e.batches=t.filters.batches,e.attendance_method_more_than_once_types=t.filters.attendance_method_more_than_once_types,e.attendance_methods=t.filters.attendance_methods,e.batch_with_subjects=t.filters.batch_with_subjects,e.student_records=t.student_records;var a=[];e.student_records.data.forEach((function(t){a.push(t.id)})),e.selectAll=a.every((function(t){return e.smsForm.ids.indexOf(t)>-1}))?1:0,s.hide()})).catch((function(t){s.hide(),helper.showErrorMsg(t)}))},toggleSelectAll:function(){var t=this;this.selectAll?this.student_records.data.forEach((function(e){t.smsForm.ids.indexOf(e.id)<0&&t.smsForm.ids.push(e.id)})):this.student_records.data.forEach((function(e){var s=t.smsForm.ids.indexOf(e.id);s>=0&&t.smsForm.ids.splice(s,1)}))},getStudentName:function(t){return helper.getStudentName(t)},print:function(){var t=this.$loading.show();axios.post("/api/student/attendance/absentee/print",{filter:this.filter}).then((function(e){window.open("/print").document.write(e),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},pdf:function(){var t=this,e=this.$loading.show();axios.post("/api/student/attendance/absentee/pdf",{filter:this.filter}).then((function(s){e.hide(),window.open("/download/report/"+s+"?token="+t.authToken)})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},onBatchSelect:function(t){var e=this;this.filter.batch_id=t.id;var s=this.batch_with_subjects.find((function(t){return t.id==e.filter.batch_id}));void 0!==s&&(this.filter.subject_id="",this.subjects=[],s.subjects.forEach((function(t){e.subjects.push({id:t.id,name:t.name+" ("+t.code+")"})})))},onBatchRemove:function(t){this.filter.batch_id.splice(this.filter.batch_id.indexOf(t.id),1)},submit:function(){},confirmSMS:function(){var t=this;return function(e){return t.sendSMS()}},sendSMS:function(){var t=this,e=this.$loading.show();this.smsForm.filter=this.filter,this.smsForm.post("/api/student/attendance/absentee").then((function(s){toastr.success(s.message),t.getStudentRecords(),t.smsForm.ids=[],e.hide()})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))},getAdmissionNumber:function(t){return helper.getAdmissionNumber(t)}},filters:{moment:function(t){return helper.formatDate(t)},momentDateTime:function(t){return helper.formatDateTime(t)}},watch:{"filter.sort_by":function(t){this.getStudentRecords()},"filter.order":function(t){this.getStudentRecords()},"filter.page_length":function(t){this.getStudentRecords()}},computed:{authToken:function(){return helper.getAuthToken()},sampleMessage:function(){var t=this.student_records.data[0];return this.smsForm.sms.replace("#NAME#",this.getStudentName(t.student)).replace("#BATCH#",t.batch.course.name+" "+t.batch.name).replace("#FATHER_NAME#",t.student.parent.father_name).replace("#DATE#",helper.formatDate(this.filter.date))},characterCount:function(){return this.smsForm.sms.length}}};const n=(0,s(51900).Z)(a,(function(){var t=this,e=t._self._c;return e("div",[e("div",{staticClass:"page-titles"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[e("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("student.absentee"))+" \n                    "),t.student_records.total?e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.total_result_found",{count:t.student_records.total,from:t.student_records.from,to:t.student_records.to})))]):e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.no_result_found")))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("div",{staticClass:"action-buttons pull-right"},[e("button",{staticClass:"btn btn-info btn-sm",on:{click:function(e){return t.$router.push("/student/attendance")}}},[e("i",{staticClass:"fas fa-list"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("student.attendance")))])]),t._v(" "),t.showFilterPanel?t._e():e("button",{staticClass:"btn btn-info btn-sm",on:{click:function(e){t.showFilterPanel=!t.showFilterPanel}}},[e("i",{staticClass:"fas fa-filter"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"},[t._v(t._s(t.trans("general.filter")))])]),t._v(" "),e("sort-by",{attrs:{"order-by-options":t.orderByOptions,"sort-by":t.filter.sort_by,order:t.filter.order},on:{updateSortBy:function(e){t.filter.sort_by=e},updateOrder:function(e){t.filter.order=e}}}),t._v(" "),e("div",{staticClass:"btn-group"},[e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.more_option"),expression:"trans('general.more_option')"}],staticClass:"btn btn-info btn-sm dropdown-toggle no-caret",attrs:{type:"button",role:"menu",id:"moreOption","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[e("i",{staticClass:"fas fa-ellipsis-h"}),t._v(" "),e("span",{staticClass:"d-none d-sm-inline"})]),t._v(" "),e("div",{class:["dropdown-menu","ltr"==t.getConfig("direction")?"dropdown-menu-right":""],attrs:{"aria-labelledby":"moreOption"}},[e("button",{staticClass:"dropdown-item custom-dropdown",on:{click:t.print}},[e("i",{staticClass:"fas fa-print"}),t._v(" "+t._s(t.trans("general.print")))]),t._v(" "),e("button",{staticClass:"dropdown-item custom-dropdown",on:{click:t.pdf}},[e("i",{staticClass:"fas fa-file-pdf"}),t._v(" "+t._s(t.trans("general.generate_pdf")))])])]),t._v(" "),e("help-button",{on:{clicked:function(e){t.help_topic="student-absentee"}}})],1)])])]),t._v(" "),e("div",{staticClass:"container-fluid"},[e("transition",{attrs:{name:"fade"}},[t.showFilterPanel?e("div",{staticClass:"card card-form"},[e("div",{staticClass:"card-body"},[e("h4",{staticClass:"card-title"},[t._v(t._s(t.trans("general.filter"))+"\n                    ")]),t._v(" "),e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.first_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.filter.first_name,expression:"filter.first_name"}],staticClass:"form-control",attrs:{name:"first_name"},domProps:{value:t.filter.first_name},on:{input:function(e){e.target.composing||t.$set(t.filter,"first_name",e.target.value)}}})])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.last_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.filter.last_name,expression:"filter.last_name"}],staticClass:"form-control",attrs:{name:"last_name"},domProps:{value:t.filter.last_name},on:{input:function(e){e.target.composing||t.$set(t.filter,"last_name",e.target.value)}}})])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.father_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.filter.father_name,expression:"filter.father_name"}],staticClass:"form-control",attrs:{name:"father_name"},domProps:{value:t.filter.father_name},on:{input:function(e){e.target.composing||t.$set(t.filter,"father_name",e.target.value)}}})])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-2"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.mother_name")))]),t._v(" "),e("input",{directives:[{name:"model",rawName:"v-model",value:t.filter.mother_name,expression:"filter.mother_name"}],staticClass:"form-control",attrs:{name:"mother_name"},domProps:{value:t.filter.mother_name},on:{input:function(e){e.target.composing||t.$set(t.filter,"mother_name",e.target.value)}}})])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-4"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.date_of_attendance")))]),t._v(" "),e("datepicker",{attrs:{bootstrapStyling:!0,placeholder:t.trans("student.date_of_attendance")},model:{value:t.filter.date,callback:function(e){t.$set(t.filter,"date",e)},expression:"filter.date"}})],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.batch")))]),t._v(" "),e("v-select",{attrs:{label:"name","track-by":"id","group-values":"batches","group-label":"course_group","group-select":!1,name:"batch_id",id:"batch_id",options:t.batches,placeholder:t.trans("academic.select_batch")},on:{select:t.onBatchSelect,remove:function(e){t.filter.batch_id=""}},model:{value:t.selected_batch,callback:function(e){t.selected_batch=e},expression:"selected_batch"}},[t.batches.length?t._e():e("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[t._v("\n                                        "+t._s(t.trans("general.no_option_found"))+"\n                                    ")])])],1)]),t._v(" "),t.filter.batch_id?e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("academic.subject"))+" ")]),t._v(" "),e("select",{directives:[{name:"model",rawName:"v-model",value:t.filter.subject_id,expression:"filter.subject_id"}],staticClass:"custom-select col-12",attrs:{name:"subject_id"},on:{change:function(e){var s=Array.prototype.filter.call(e.target.options,(function(t){return t.selected})).map((function(t){return"_value"in t?t._value:t.value}));t.$set(t.filter,"subject_id",e.target.multiple?s:s[0])}}},[e("option",{attrs:{value:"",selected:""}},[t._v(t._s(t.trans("general.select_one")))]),t._v(" "),t._l(t.subjects,(function(s){return e("option",{domProps:{value:s.id}},[t._v("\n                                    "+t._s(s.name)+"\n                                  ")])}))],2)])]):t._e(),t._v(" "),e("div",{staticClass:"col-12 col-sm-3"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("student.attendance_session")))]),t._v(" "),e("select",{directives:[{name:"model",rawName:"v-model",value:t.filter.session,expression:"filter.session"}],staticClass:"custom-select col-12",attrs:{name:"session"},on:{change:function(e){var s=Array.prototype.filter.call(e.target.options,(function(t){return t.selected})).map((function(t){return"_value"in t?t._value:t.value}));t.$set(t.filter,"session",e.target.multiple?s:s[0])}}},[e("option",{attrs:{value:"",selected:""}},[t._v(t._s(t.trans("general.select_one")))]),t._v(" "),t._l(t.attendance_method_more_than_once_types,(function(s){return e("option",{domProps:{value:s.value}},[t._v("\n                                    "+t._s(s.text)+"\n                                  ")])}))],2)])])]),t._v(" "),e("div",{staticClass:"card-footer text-right"},[e("button",{staticClass:"btn btn-danger",attrs:{type:"button"},on:{click:function(e){t.showFilterPanel=!1}}},[t._v(t._s(t.trans("general.cancel")))]),t._v(" "),e("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"button"},on:{click:t.getStudentRecords}},[t._v(t._s(t.trans("general.filter")))])])])]):t._e()]),t._v(" "),e("div",{staticClass:"card"},[e("div",{staticClass:"card-body"},[t.student_records.total?e("div",{staticClass:"table-responsive"},[e("table",{staticClass:"table table-sm"},[e("thead",[e("tr",[e("th",{staticClass:"select-all"},[e("label",{staticClass:"custom-control custom-checkbox"},[e("input",{directives:[{name:"model",rawName:"v-model",value:t.selectAll,expression:"selectAll"}],staticClass:"custom-control-input",attrs:{type:"checkbox",value:"1"},domProps:{checked:Array.isArray(t.selectAll)?t._i(t.selectAll,"1")>-1:t.selectAll},on:{change:[function(e){var s=t.selectAll,a=e.target,n=!!a.checked;if(Array.isArray(s)){var r=t._i(s,"1");a.checked?r<0&&(t.selectAll=s.concat(["1"])):r>-1&&(t.selectAll=s.slice(0,r).concat(s.slice(r+1)))}else t.selectAll=n},t.toggleSelectAll]}}),t._v(" "),e("span",{staticClass:"custom-control-label"})])]),t._v(" "),e("th",[t._v(t._s(t.trans("student.admission_number_short")))]),t._v(" "),e("th",[t._v(t._s(t.trans("student.name")))]),t._v(" "),e("th",[t._v(t._s(t.trans("student.father_name")))]),t._v(" "),e("th",[t._v(t._s(t.trans("student.mother_name")))]),t._v(" "),e("th",[t._v(t._s(t.trans("student.date_of_admission")))]),t._v(" "),e("th",[t._v(t._s(t.trans("academic.batch")))])])]),t._v(" "),e("tbody",t._l(t.student_records.data,(function(s){return e("tr",[e("td",{staticClass:"select-all"},[e("label",{staticClass:"custom-control custom-checkbox"},[e("input",{directives:[{name:"model",rawName:"v-model",value:t.smsForm.ids,expression:"smsForm.ids"}],staticClass:"custom-control-input",attrs:{type:"checkbox"},domProps:{value:s.id,checked:Array.isArray(t.smsForm.ids)?t._i(t.smsForm.ids,s.id)>-1:t.smsForm.ids},on:{change:function(e){var a=t.smsForm.ids,n=e.target,r=!!n.checked;if(Array.isArray(a)){var o=s.id,i=t._i(a,o);n.checked?i<0&&t.$set(t.smsForm,"ids",a.concat([o])):i>-1&&t.$set(t.smsForm,"ids",a.slice(0,i).concat(a.slice(i+1)))}else t.$set(t.smsForm,"ids",r)}}}),t._v(" "),e("span",{staticClass:"custom-control-label"})])]),t._v(" "),e("td",{domProps:{textContent:t._s(t.getAdmissionNumber(s.admission))}}),t._v(" "),e("td",{domProps:{textContent:t._s(t.getStudentName(s.student))}}),t._v(" "),e("td",{domProps:{textContent:t._s(s.student.parent.father_name)}}),t._v(" "),e("td",{domProps:{textContent:t._s(s.student.parent.mother_name)}}),t._v(" "),e("td",[t._v(t._s(t._f("moment")(s.admission.date_of_admission)))]),t._v(" "),e("td",{domProps:{textContent:t._s(s.batch.course.name+" "+s.batch.name)}})])})),0)])]):t._e(),t._v(" "),t.student_records.total?t._e():e("module-info",{attrs:{module:"student",title:"absentee_module_title",description:"absentee_module_description",icon:"list"}}),t._v(" "),e("pagination-record",{attrs:{"page-length":t.filter.page_length,records:t.student_records},on:{"update:pageLength":function(e){return t.$set(t.filter,"page_length",e)},"update:page-length":function(e){return t.$set(t.filter,"page_length",e)},updateRecords:t.getStudentRecords}})],1),t._v(" "),t.smsForm.ids.length?e("div",{staticClass:"m-t-10 card-body border-top p-4"},[e("h4",[t._v(t._s(t.trans("student.send_sms_to_absentee"))+"\n                    "),e("span",{staticClass:"card-subtitle"},[t._v(t._s(t.trans("student.no_of_student_selected",{no:t.smsForm.ids.length})))])]),t._v(" "),e("form",{on:{submit:function(e){return e.preventDefault(),t.submit.apply(null,arguments)},keydown:function(e){return t.smsForm.errors.clear(e.target.name)}}},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("communication.sms"))+" "+t._s(t.trans("communication.character_count",{count:t.characterCount}))+" ")]),t._v(" "),e("textarea",{directives:[{name:"model",rawName:"v-model",value:t.smsForm.sms,expression:"smsForm.sms"}],staticClass:"form-control",attrs:{rows:"2",name:"sms",placeholder:t.trans("communication.sms")},domProps:{value:t.smsForm.sms},on:{input:function(e){e.target.composing||t.$set(t.smsForm,"sms",e.target.value)}}}),t._v(" "),e("p",{staticClass:"help-block font-80pc"},[t._v(t._s(t.trans("communication.template_variable_tip")))]),t._v(" "),e("p",{staticClass:"help-block font-90pc"},[t._v(t._s(t.trans("communication.available_variables"))+": NAME, BATCH, FATHER_NAME, DATE")]),t._v(" "),e("show-error",{attrs:{"form-name":t.smsForm,"prop-name":"sms"}})],1)]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("div",{staticClass:"form-group"},[e("label",{attrs:{for:""}},[t._v(t._s(t.trans("communication.sample_sms")))]),t._v(" "),e("p",[t._v(t._s(t.sampleMessage))])])])]),t._v(" "),e("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:t.confirmSMS()},expression:"{ok: confirmSMS()}"}],key:"send-sms",staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"button"}},[t._v(t._s(t.trans("general.send")))])])]):t._e()])],1)])}),[],!1,null,null,null).exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/student/attendance/absentee"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/attendance/absentee.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/attendance/absentee.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      student_records: {
+        total: 0,
+        data: []
+      },
+      selectAll: false,
+      smsForm: new Form({
+        sms: '',
+        ids: [],
+        filter: {}
+      }),
+      filter: {
+        sort_by: 'created_at',
+        order: 'asc',
+        date: helper.today(),
+        batch_id: '',
+        subject_id: '',
+        attendance_method: '',
+        session: '',
+        first_name: '',
+        last_name: '',
+        father_name: '',
+        mother_name: '',
+        page_length: helper.getConfig('page_length')
+      },
+      orderByOptions: [{
+        value: 'created_at',
+        translation: i18n.general.created_at
+      }],
+      batches: [],
+      subjects: [],
+      batch_with_subjects: [],
+      attendance_methods: [],
+      attendance_method_more_than_once_types: [],
+      selected_batch: null,
+      showFilterPanel: true
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('list-student-attendance')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    helper.showDemoNotification(['student']);
+    this.getStudentRecords();
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    getStudentRecords: function getStudentRecords(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      this.selectAll = false;
+      this.filter.date = helper.toDate(this.filter.date);
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/student/attendance/absentee?page=' + page + url).then(function (response) {
+        _this.batches = response.filters.batches;
+        _this.attendance_method_more_than_once_types = response.filters.attendance_method_more_than_once_types;
+        _this.attendance_methods = response.filters.attendance_methods;
+        _this.batch_with_subjects = response.filters.batch_with_subjects;
+        _this.student_records = response.student_records;
+        var ids = [];
+        _this.student_records.data.forEach(function (student_record) {
+          ids.push(student_record.id);
+        });
+        _this.selectAll = ids.every(function (elem) {
+          return _this.smsForm.ids.indexOf(elem) > -1;
+        }) ? 1 : 0;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    toggleSelectAll: function toggleSelectAll() {
+      var _this2 = this;
+      if (this.selectAll) {
+        this.student_records.data.forEach(function (student_record) {
+          if (_this2.smsForm.ids.indexOf(student_record.id) < 0) _this2.smsForm.ids.push(student_record.id);
+        });
+      } else {
+        this.student_records.data.forEach(function (student_record) {
+          var index = _this2.smsForm.ids.indexOf(student_record.id);
+          if (index >= 0) {
+            _this2.smsForm.ids.splice(index, 1);
+          }
+        });
+      }
+    },
+    getStudentName: function getStudentName(student) {
+      return helper.getStudentName(student);
+    },
+    print: function print() {
+      var loader = this.$loading.show();
+      axios.post('/api/student/attendance/absentee/print', {
+        filter: this.filter
+      }).then(function (response) {
+        var print = window.open("/print");
+        print.document.write(response);
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    pdf: function pdf() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.post('/api/student/attendance/absentee/pdf', {
+        filter: this.filter
+      }).then(function (response) {
+        loader.hide();
+        window.open('/download/report/' + response + '?token=' + _this3.authToken);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onBatchSelect: function onBatchSelect(selectedOption) {
+      var _this4 = this;
+      this.filter.batch_id = selectedOption.id;
+      var batch = this.batch_with_subjects.find(function (o) {
+        return o.id == _this4.filter.batch_id;
+      });
+      if (typeof batch == 'undefined') {
+        return;
+      }
+      this.filter.subject_id = '';
+      this.subjects = [];
+      batch.subjects.forEach(function (subject) {
+        _this4.subjects.push({
+          id: subject.id,
+          name: subject.name + ' (' + subject.code + ')'
+        });
+      });
+    },
+    onBatchRemove: function onBatchRemove(removedOption) {
+      this.filter.batch_id.splice(this.filter.batch_id.indexOf(removedOption.id), 1);
+    },
+    submit: function submit() {},
+    confirmSMS: function confirmSMS() {
+      var _this5 = this;
+      return function (dialog) {
+        return _this5.sendSMS();
+      };
+    },
+    sendSMS: function sendSMS() {
+      var _this6 = this;
+      var loader = this.$loading.show();
+      this.smsForm.filter = this.filter;
+      this.smsForm.post('/api/student/attendance/absentee').then(function (response) {
+        toastr.success(response.message);
+        _this6.getStudentRecords();
+        _this6.smsForm.ids = [];
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getAdmissionNumber: function getAdmissionNumber(admission) {
+      return helper.getAdmissionNumber(admission);
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  },
+  watch: {
+    'filter.sort_by': function filterSort_by(val) {
+      this.getStudentRecords();
+    },
+    'filter.order': function filterOrder(val) {
+      this.getStudentRecords();
+    },
+    'filter.page_length': function filterPage_length(val) {
+      this.getStudentRecords();
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    },
+    sampleMessage: function sampleMessage() {
+      var item = this.student_records.data[0];
+      var sms = this.smsForm.sms;
+      return sms.replace("#NAME#", this.getStudentName(item.student)).replace("#BATCH#", item.batch.course.name + ' ' + item.batch.name).replace("#FATHER_NAME#", item.student.parent.father_name).replace("#DATE#", helper.formatDate(this.filter.date));
+    },
+    characterCount: function characterCount() {
+      return this.smsForm.sms.length;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/attendance/absentee.vue?vue&type=template&id=431ef47c&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/attendance/absentee.vue?vue&type=template&id=431ef47c& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("student.absentee")) + " \n                    "), _vm.student_records.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.student_records.total,
+    from: _vm.student_records.from,
+    to: _vm.student_records.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/student/attendance");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("student.attendance")))])]), _vm._v(" "), !_vm.showFilterPanel ? _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = !_vm.showFilterPanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-filter"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])]) : _vm._e(), _vm._v(" "), _c("sort-by", {
+    attrs: {
+      "order-by-options": _vm.orderByOptions,
+      "sort-by": _vm.filter.sort_by,
+      order: _vm.filter.order
+    },
+    on: {
+      updateSortBy: function updateSortBy(value) {
+        _vm.filter.sort_by = value;
+      },
+      updateOrder: function updateOrder(value) {
+        _vm.filter.order = value;
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "btn-group"
+  }, [_c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.more_option"),
+      expression: "trans('general.more_option')"
+    }],
+    staticClass: "btn btn-info btn-sm dropdown-toggle no-caret",
+    attrs: {
+      type: "button",
+      role: "menu",
+      id: "moreOption",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-ellipsis-h"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  })]), _vm._v(" "), _c("div", {
+    "class": ["dropdown-menu", _vm.getConfig("direction") == "ltr" ? "dropdown-menu-right" : ""],
+    attrs: {
+      "aria-labelledby": "moreOption"
+    }
+  }, [_c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.print
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-print"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.print")))]), _vm._v(" "), _c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.pdf
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-file-pdf"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.generate_pdf")))])])]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "student-absentee";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showFilterPanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")) + "\n                    ")]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.first_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.first_name,
+      expression: "filter.first_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "first_name"
+    },
+    domProps: {
+      value: _vm.filter.first_name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.filter, "first_name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.last_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.last_name,
+      expression: "filter.last_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "last_name"
+    },
+    domProps: {
+      value: _vm.filter.last_name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.filter, "last_name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.father_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.father_name,
+      expression: "filter.father_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "father_name"
+    },
+    domProps: {
+      value: _vm.filter.father_name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.filter, "father_name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.mother_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.mother_name,
+      expression: "filter.mother_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "mother_name"
+    },
+    domProps: {
+      value: _vm.filter.mother_name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.filter, "mother_name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.date_of_attendance")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("student.date_of_attendance")
+    },
+    model: {
+      value: _vm.filter.date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.filter, "date", $$v);
+      },
+      expression: "filter.date"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      "group-values": "batches",
+      "group-label": "course_group",
+      "group-select": false,
+      name: "batch_id",
+      id: "batch_id",
+      options: _vm.batches,
+      placeholder: _vm.trans("academic.select_batch")
+    },
+    on: {
+      select: _vm.onBatchSelect,
+      remove: function remove($event) {
+        _vm.filter.batch_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_batch,
+      callback: function callback($$v) {
+        _vm.selected_batch = $$v;
+      },
+      expression: "selected_batch"
+    }
+  }, [!_vm.batches.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()])], 1)]), _vm._v(" "), _vm.filter.batch_id ? _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("academic.subject")) + " ")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.subject_id,
+      expression: "filter.subject_id"
+    }],
+    staticClass: "custom-select col-12",
+    attrs: {
+      name: "subject_id"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.filter, "subject_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      selected: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _vm._l(_vm.subjects, function (option) {
+    return _c("option", {
+      domProps: {
+        value: option.id
+      }
+    }, [_vm._v("\n                                    " + _vm._s(option.name) + "\n                                  ")]);
+  })], 2)])]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.attendance_session")))]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter.session,
+      expression: "filter.session"
+    }],
+    staticClass: "custom-select col-12",
+    attrs: {
+      name: "session"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.filter, "session", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      selected: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _vm._l(_vm.attendance_method_more_than_once_types, function (option) {
+    return _c("option", {
+      domProps: {
+        value: option.value
+      }
+    }, [_vm._v("\n                                    " + _vm._s(option.text) + "\n                                  ")]);
+  })], 2)])])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("button", {
+    staticClass: "btn btn-danger",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        _vm.showFilterPanel = false;
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.getStudentRecords
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.filter")))])])])]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.student_records.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", {
+    staticClass: "select-all"
+  }, [_c("label", {
+    staticClass: "custom-control custom-checkbox"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.selectAll,
+      expression: "selectAll"
+    }],
+    staticClass: "custom-control-input",
+    attrs: {
+      type: "checkbox",
+      value: "1"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.selectAll) ? _vm._i(_vm.selectAll, "1") > -1 : _vm.selectAll
+    },
+    on: {
+      change: [function ($event) {
+        var $$a = _vm.selectAll,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.selectAll = $$a.concat([$$v]));
+          } else {
+            $$i > -1 && (_vm.selectAll = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.selectAll = $$c;
+        }
+      }, _vm.toggleSelectAll]
+    }
+  }), _vm._v(" "), _c("span", {
+    staticClass: "custom-control-label"
+  })])]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("student.admission_number_short")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("student.name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("student.father_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("student.mother_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("student.date_of_admission")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.batch")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.student_records.data, function (student_record) {
+    return _c("tr", [_c("td", {
+      staticClass: "select-all"
+    }, [_c("label", {
+      staticClass: "custom-control custom-checkbox"
+    }, [_c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: _vm.smsForm.ids,
+        expression: "smsForm.ids"
+      }],
+      staticClass: "custom-control-input",
+      attrs: {
+        type: "checkbox"
+      },
+      domProps: {
+        value: student_record.id,
+        checked: Array.isArray(_vm.smsForm.ids) ? _vm._i(_vm.smsForm.ids, student_record.id) > -1 : _vm.smsForm.ids
+      },
+      on: {
+        change: function change($event) {
+          var $$a = _vm.smsForm.ids,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+          if (Array.isArray($$a)) {
+            var $$v = student_record.id,
+              $$i = _vm._i($$a, $$v);
+            if ($$el.checked) {
+              $$i < 0 && _vm.$set(_vm.smsForm, "ids", $$a.concat([$$v]));
+            } else {
+              $$i > -1 && _vm.$set(_vm.smsForm, "ids", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+            }
+          } else {
+            _vm.$set(_vm.smsForm, "ids", $$c);
+          }
+        }
+      }
+    }), _vm._v(" "), _c("span", {
+      staticClass: "custom-control-label"
+    })])]), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(_vm.getAdmissionNumber(student_record.admission))
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(_vm.getStudentName(student_record.student))
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(student_record.student.parent.father_name)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(student_record.student.parent.mother_name)
+      }
+    }), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("moment")(student_record.admission.date_of_admission)))]), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(student_record.batch.course.name + " " + student_record.batch.name)
+      }
+    })]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.student_records.total ? _c("module-info", {
+    attrs: {
+      module: "student",
+      title: "absentee_module_title",
+      description: "absentee_module_description",
+      icon: "list"
+    }
+  }) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.student_records
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getStudentRecords
+    }
+  })], 1), _vm._v(" "), _vm.smsForm.ids.length ? _c("div", {
+    staticClass: "m-t-10 card-body border-top p-4"
+  }, [_c("h4", [_vm._v(_vm._s(_vm.trans("student.send_sms_to_absentee")) + "\n                    "), _c("span", {
+    staticClass: "card-subtitle"
+  }, [_vm._v(_vm._s(_vm.trans("student.no_of_student_selected", {
+    no: _vm.smsForm.ids.length
+  })))])]), _vm._v(" "), _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submit.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.smsForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.sms")) + " " + _vm._s(_vm.trans("communication.character_count", {
+    count: _vm.characterCount
+  })) + " ")]), _vm._v(" "), _c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.smsForm.sms,
+      expression: "smsForm.sms"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      rows: "2",
+      name: "sms",
+      placeholder: _vm.trans("communication.sms")
+    },
+    domProps: {
+      value: _vm.smsForm.sms
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.smsForm, "sms", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("p", {
+    staticClass: "help-block font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("communication.template_variable_tip")))]), _vm._v(" "), _c("p", {
+    staticClass: "help-block font-90pc"
+  }, [_vm._v(_vm._s(_vm.trans("communication.available_variables")) + ": NAME, BATCH, FATHER_NAME, DATE")]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.smsForm,
+      "prop-name": "sms"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("communication.sample_sms")))]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.sampleMessage))])])])]), _vm._v(" "), _c("button", {
+    directives: [{
+      name: "confirm",
+      rawName: "v-confirm",
+      value: {
+        ok: _vm.confirmSMS()
+      },
+      expression: "{ok: confirmSMS()}"
+    }],
+    key: "send-sms",
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "button"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.send")))])])]) : _vm._e()])], 1)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/student/attendance/absentee.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/views/student/attendance/absentee.vue ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _absentee_vue_vue_type_template_id_431ef47c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./absentee.vue?vue&type=template&id=431ef47c& */ "./resources/js/views/student/attendance/absentee.vue?vue&type=template&id=431ef47c&");
+/* harmony import */ var _absentee_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./absentee.vue?vue&type=script&lang=js& */ "./resources/js/views/student/attendance/absentee.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _absentee_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _absentee_vue_vue_type_template_id_431ef47c___WEBPACK_IMPORTED_MODULE_0__.render,
+  _absentee_vue_vue_type_template_id_431ef47c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/student/attendance/absentee.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/student/attendance/absentee.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/views/student/attendance/absentee.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_absentee_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./absentee.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/attendance/absentee.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_absentee_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/student/attendance/absentee.vue?vue&type=template&id=431ef47c&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/views/student/attendance/absentee.vue?vue&type=template&id=431ef47c& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_absentee_vue_vue_type_template_id_431ef47c___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_absentee_vue_vue_type_template_id_431ef47c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_absentee_vue_vue_type_template_id_431ef47c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./absentee.vue?vue&type=template&id=431ef47c& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/student/attendance/absentee.vue?vue&type=template&id=431ef47c&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=absentee.js.map?id=222c14488debe272

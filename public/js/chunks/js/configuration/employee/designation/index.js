@@ -1,1 +1,872 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[8431],{3864:(e,t,n)=>{n.d(t,{Z:()=>o});const i={components:{},data:function(){return{designationForm:new Form({name:"",description:"",employee_category_id:"",top_designation_id:"",is_teaching_employee:!1}),employee_categories:[],top_designations:[],selected_employee_category:null,selected_top_designation:null}},props:["id"],mounted:function(){this.id&&this.get(),this.getPreRequisite()},methods:{proceed:function(){this.id?this.update():this.store()},getPreRequisite:function(){var e=this,t=this.$loading.show();axios.get("/api/employee/designation/pre-requisite").then((function(n){e.employee_categories=n.employee_categories,e.top_designations=n.top_designations,t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},store:function(){var e=this,t=this.$loading.show();this.designationForm.post("/api/employee/designation").then((function(n){toastr.success(n.message),e.selected_employee_category=null,e.selected_top_designation=null,e.top_designations.push(n.new_designation),e.$emit("completed"),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},get:function(){var e=this,t=this.$loading.show();axios.get("/api/employee/designation/"+this.id).then((function(n){n.designation.name==helper.getConfig("system_admin_designation")&&(toastr.error(i18n.user.permission_denied),t.hide(),e.$router.push("/configuration/employee/designation")),e.designationForm.name=n.designation.name,e.designationForm.description=n.designation.description,e.designationForm.is_teaching_employee=n.designation.is_teaching_employee,e.designationForm.employee_category_id=n.designation.employee_category_id,e.designationForm.top_designation_id=n.designation.top_designation_id,e.selected_employee_category=n.selected_employee_category,e.selected_top_designation=n.selected_top_designation,t.hide()})).catch((function(n){t.hide(),helper.showErrorMsg(n),e.$router.push("/configuration/employee/designation")}))},update:function(){var e=this,t=this.$loading.show();this.designationForm.patch("/api/employee/designation/"+this.id).then((function(n){toastr.success(n.message),t.hide(),e.$router.push("/configuration/employee/designation")})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onEmployeeCategorySelect:function(e){this.designationForm.employee_category_id=e.id},onTopDesignationSelect:function(e){this.designationForm.top_designation_id=e.id}}};const o=(0,n(51900).Z)(i,(function(){var e=this,t=e._self._c;return t("form",{on:{submit:function(t){return t.preventDefault(),e.proceed.apply(null,arguments)},keydown:function(t){return e.designationForm.errors.clear(t.target.name)}}},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.designation_name")))]),e._v(" "),t("input",{directives:[{name:"model",rawName:"v-model",value:e.designationForm.name,expression:"designationForm.name"}],staticClass:"form-control",attrs:{type:"text",name:"name",placeholder:e.trans("employee.designation_name")},domProps:{value:e.designationForm.name},on:{input:function(t){t.target.composing||e.$set(e.designationForm,"name",t.target.value)}}}),e._v(" "),t("show-error",{attrs:{"form-name":e.designationForm,"prop-name":"name"}})],1)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("div",[e._v(e._s(e.trans("employee.is_teaching_employee")))]),e._v(" "),t("switches",{staticClass:"m-t-20",attrs:{theme:"bootstrap",color:"success"},model:{value:e.designationForm.is_teaching_employee,callback:function(t){e.$set(e.designationForm,"is_teaching_employee",t)},expression:"designationForm.is_teaching_employee"}})],1)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.category")))]),e._v(" "),t("v-select",{attrs:{label:"name",name:"employee_category_id",id:"employee_category_id",options:e.employee_categories,placeholder:e.trans("employee.select_employee_category")},on:{select:e.onEmployeeCategorySelect,close:function(t){return e.designationForm.errors.clear("employee_category_id")},remove:function(t){e.designationForm.employee_category_id=""}},model:{value:e.selected_employee_category,callback:function(t){e.selected_employee_category=t},expression:"selected_employee_category"}},[e.employee_categories.length?e._e():t("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                        "+e._s(e.trans("general.no_option_found"))+"\n                    ")])]),e._v(" "),t("show-error",{attrs:{"form-name":e.designationForm,"prop-name":"employee_category_id"}})],1)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.top_designation")))]),e._v(" "),t("v-select",{attrs:{label:"name",name:"top_designation_id",id:"top_designation_id",options:e.top_designations,placeholder:e.trans("employee.select_top_designation")},on:{select:e.onTopDesignationSelect,close:function(t){return e.designationForm.errors.clear("top_designation_id")},remove:function(t){e.designationForm.top_designation_id=""}},model:{value:e.selected_top_designation,callback:function(t){e.selected_top_designation=t},expression:"selected_top_designation"}},[e.top_designations.length?e._e():t("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                        "+e._s(e.trans("general.no_option_found"))+"\n                    ")])]),e._v(" "),t("show-error",{attrs:{"form-name":e.designationForm,"prop-name":"top_designation_id"}})],1)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.designation_description")))]),e._v(" "),t("input",{directives:[{name:"model",rawName:"v-model",value:e.designationForm.description,expression:"designationForm.description"}],staticClass:"form-control",attrs:{type:"text",name:"description",placeholder:e.trans("employee.designation_description")},domProps:{value:e.designationForm.description},on:{input:function(t){t.target.composing||e.$set(e.designationForm,"description",t.target.value)}}}),e._v(" "),t("show-error",{attrs:{"form-name":e.designationForm,"prop-name":"description"}})],1)])]),e._v(" "),t("div",{staticClass:"card-footer text-right"},[t("router-link",{directives:[{name:"show",rawName:"v-show",value:e.id,expression:"id"}],staticClass:"btn btn-danger waves-effect waves-light",attrs:{to:"/configuration/employee/designation"}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),e.id?e._e():t("button",{staticClass:"btn btn-danger waves-effect waves-light",attrs:{type:"button"},on:{click:function(t){return e.$emit("cancel")}}},[e._v(e._s(e.trans("general.cancel")))]),e._v(" "),t("button",{staticClass:"btn btn-info waves-effect waves-light",attrs:{type:"submit"}},[e.id?t("span",[e._v(e._s(e.trans("general.update")))]):t("span",[e._v(e._s(e.trans("general.save")))])])],1)])}),[],!1,null,null,null).exports},19534:(e,t,n)=>{n.r(t),n.d(t,{default:()=>d});var i;function o(e){return o="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},o(e)}function s(e,t,n){return(t=function(e){var t=function(e,t){if("object"!==o(e)||null===e)return e;var n=e[Symbol.toPrimitive];if(void 0!==n){var i=n.call(e,t||"default");if("object"!==o(i))return i;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"===o(t)?t:String(t)}(t))in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}const a={components:{designationForm:n(3864).Z},data:function(){return{designations:{total:0,data:[]},filter:{sort_by:"name",order:"asc",page_length:helper.getConfig("page_length")},orderByOptions:[{value:"name",translation:i18n.employee.designation_name}],showCreatePanel:!1,help_topic:""}},mounted:function(){helper.hasPermission("access-configuration")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getDesignations()},methods:(i={getConfig:function(e){return helper.getConfig(e)},getDesignations:function(e){var t=this,n=this.$loading.show();"number"!=typeof e&&(e=1);var i=helper.getFilterURL(this.filter);axios.get("/api/employee/designation?page="+e+i).then((function(e){t.designations=e,n.hide()})).catch((function(e){n.hide(),helper.showErrorMsg(e)}))},editDesignation:function(e){this.$router.push("/configuration/employee/designation/"+e.id+"/edit")},confirmDelete:function(e){var t=this;return function(n){return t.deleteDesignation(e)}},deleteDesignation:function(e){var t=this,n=this.$loading.show();axios.delete("/api/employee/designation/"+e.id).then((function(e){toastr.success(e.message),t.getDesignations(),n.hide()})).catch((function(e){n.hide(),helper.showErrorMsg(e)}))},isDefault:function(e){return e.name==this.getConfig("system_admin_designation")}},s(i,"getConfig",(function(e){return helper.getConfig(e)})),s(i,"isTeachingEmpmloyee",(function(e){return!!e.is_teaching_employee})),s(i,"print",(function(){var e=this.$loading.show();axios.post("/api/employee/designation/print",{filter:this.filter}).then((function(t){var n=window.open("/print");e.hide(),n.document.write(t)})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))})),s(i,"pdf",(function(){var e=this,t=this.$loading.show();axios.post("/api/employee/designation/pdf",{filter:this.filter}).then((function(n){t.hide(),window.open("/download/report/"+n+"?token="+e.authToken)})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))})),i),filters:{momentDateTime:function(e){return helper.formatDateTime(e)}},watch:{"filter.sort_by":function(e){this.getDesignations()},"filter.order":function(e){this.getDesignations()},"filter.page_length":function(e){this.getDesignations()}},computed:{authToken:function(){return helper.getAuthToken()}}},r=a;var l=(0,n(51900).Z)(r,(function(){var e=this,t=e._self._c;return t("div",[t("div",{staticClass:"page-titles"},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-6"},[t("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("employee.designation"))+" \n                    "),e.designations.total?t("span",{staticClass:"card-subtitle d-none d-sm-inline"},[e._v(e._s(e.trans("general.total_result_found",{count:e.designations.total,from:e.designations.from,to:e.designations.to})))]):t("span",{staticClass:"card-subtitle d-none d-sm-inline"},[e._v(e._s(e.trans("general.no_result_found")))])])]),e._v(" "),t("div",{staticClass:"col-12 col-sm-6"},[t("div",{staticClass:"action-buttons pull-right"},[e.designations.total&&!e.showCreatePanel?t("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.add_new"),expression:"trans('general.add_new')"}],staticClass:"btn btn-info btn-sm",on:{click:function(t){e.showCreatePanel=!e.showCreatePanel}}},[t("i",{staticClass:"fas fa-plus"}),e._v(" "),t("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("employee.add_new_designation")))])]):e._e(),e._v(" "),t("sort-by",{attrs:{"order-by-options":e.orderByOptions,"sort-by":e.filter.sort_by,order:e.filter.order},on:{updateSortBy:function(t){e.filter.sort_by=t},updateOrder:function(t){e.filter.order=t}}}),e._v(" "),t("div",{staticClass:"btn-group"},[t("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("general.more_option"),expression:"trans('general.more_option')"}],staticClass:"btn btn-info btn-sm dropdown-toggle no-caret",attrs:{type:"button",role:"menu",id:"moreOption","data-toggle":"dropdown","aria-haspopup":"true","aria-expanded":"false"}},[t("i",{staticClass:"fas fa-ellipsis-h"}),e._v(" "),t("span",{staticClass:"d-none d-sm-inline"})]),e._v(" "),t("div",{class:["dropdown-menu","ltr"==e.getConfig("direction")?"dropdown-menu-right":""],attrs:{"aria-labelledby":"moreOption"}},[t("button",{staticClass:"dropdown-item custom-dropdown",on:{click:e.print}},[t("i",{staticClass:"fas fa-print"}),e._v(" "+e._s(e.trans("general.print")))]),e._v(" "),t("button",{staticClass:"dropdown-item custom-dropdown",on:{click:e.pdf}},[t("i",{staticClass:"fas fa-file-pdf"}),e._v(" "+e._s(e.trans("general.generate_pdf")))])])]),e._v(" "),t("help-button",{on:{clicked:function(t){e.help_topic="configuration.employee.designation"}}})],1)])])]),e._v(" "),t("div",{staticClass:"container-fluid"},[t("transition",{attrs:{name:"fade"}},[e.showCreatePanel?t("div",{staticClass:"card card-form"},[t("div",{staticClass:"card-body"},[t("h4",{staticClass:"card-title"},[e._v(e._s(e.trans("employee.add_new_designation")))]),e._v(" "),t("designation-form",{on:{completed:e.getDesignations,cancel:function(t){e.showCreatePanel=!e.showCreatePanel}}})],1)]):e._e()]),e._v(" "),t("div",{staticClass:"card"},[t("div",{staticClass:"card-body"},[e.designations.total?t("div",{staticClass:"table-responsive"},[t("table",{staticClass:"table table-sm"},[t("thead",[t("tr",[t("th",[e._v(e._s(e.trans("employee.designation_name")))]),e._v(" "),t("th",[e._v(e._s(e.trans("employee.category")))]),e._v(" "),t("th",[e._v(e._s(e.trans("employee.top_designation")))]),e._v(" "),t("th",[e._v(e._s(e.trans("employee.designation_description")))]),e._v(" "),t("th",{staticClass:"table-option"},[e._v(e._s(e.trans("general.action")))])])]),e._v(" "),t("tbody",e._l(e.designations.data,(function(n){return t("tr",[t("td",[e._v("\n                                    "+e._s(n.name)+"\n                                    "),e.isDefault(n)?t("span",{staticClass:"label label-info"},[e._v(e._s(e.trans("employee.default_designation")))]):e._e(),e._v(" "),e.isTeachingEmpmloyee(n)?t("span",{staticClass:"label label-info"},[e._v(e._s(e.trans("employee.teaching_employee")))]):e._e()]),e._v(" "),t("td",[e._v(e._s(n.employee_category?n.employee_category.name:"-"))]),e._v(" "),t("td",[e._v(e._s(n.top_designation?n.top_designation.name:"-"))]),e._v(" "),t("td",{domProps:{textContent:e._s(n.description)}}),e._v(" "),t("td",{staticClass:"table-option"},[t("div",{staticClass:"btn-group"},[e.isDefault(n)?e._e():t("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:e.trans("employee.edit_designation"),expression:"trans('employee.edit_designation')"}],staticClass:"btn btn-info btn-sm",on:{click:function(t){return t.preventDefault(),e.editDesignation(n)}}},[t("i",{staticClass:"fas fa-edit"})]),e._v(" "),e.isDefault(n)?e._e():t("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:e.confirmDelete(n)},expression:"{ok: confirmDelete(designation)}"},{name:"tooltip",rawName:"v-tooltip",value:e.trans("employee.delete_designation"),expression:"trans('employee.delete_designation')"}],key:n.id,staticClass:"btn btn-danger btn-sm"},[t("i",{staticClass:"fas fa-trash"})])])])])})),0)])]):e._e(),e._v(" "),e.designations.total?e._e():t("module-info",{attrs:{module:"employee",title:"designation_module_title",description:"designation_module_description",icon:"list"}},[t("div",{attrs:{slot:"btn"},slot:"btn"},[e.showCreatePanel?e._e():t("button",{staticClass:"btn btn-info btn-md",on:{click:function(t){e.showCreatePanel=!e.showCreatePanel}}},[t("i",{staticClass:"fas fa-plus"}),e._v(" "+e._s(e.trans("general.add_new")))])])]),e._v(" "),t("pagination-record",{attrs:{"page-length":e.filter.page_length,records:e.designations},on:{"update:pageLength":function(t){return e.$set(e.filter,"page_length",t)},"update:page-length":function(t){return e.$set(e.filter,"page_length",t)},updateRecords:e.getDesignations},nativeOn:{change:function(t){return e.getDesignations.apply(null,arguments)}}})],1)])],1),e._v(" "),t("right-panel",{attrs:{topic:e.help_topic}})],1)}),[],!1,null,null,null);const d=l.exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/configuration/employee/designation/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/form.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/form.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      designationForm: new Form({
+        name: '',
+        description: '',
+        employee_category_id: '',
+        top_designation_id: '',
+        is_teaching_employee: false
+      }),
+      employee_categories: [],
+      top_designations: [],
+      selected_employee_category: null,
+      selected_top_designation: null
+    };
+  },
+  props: ['id'],
+  mounted: function mounted() {
+    if (this.id) this.get();
+    this.getPreRequisite();
+  },
+  methods: {
+    proceed: function proceed() {
+      if (this.id) this.update();else this.store();
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/employee/designation/pre-requisite').then(function (response) {
+        _this.employee_categories = response.employee_categories;
+        _this.top_designations = response.top_designations;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    store: function store() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      this.designationForm.post('/api/employee/designation').then(function (response) {
+        toastr.success(response.message);
+        _this2.selected_employee_category = null;
+        _this2.selected_top_designation = null;
+        _this2.top_designations.push(response.new_designation);
+        _this2.$emit('completed');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    get: function get() {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/employee/designation/' + this.id).then(function (response) {
+        if (response.designation.name == helper.getConfig('system_admin_designation')) {
+          toastr.error(i18n.user.permission_denied);
+          loader.hide();
+          _this3.$router.push('/configuration/employee/designation');
+        }
+        _this3.designationForm.name = response.designation.name;
+        _this3.designationForm.description = response.designation.description;
+        _this3.designationForm.is_teaching_employee = response.designation.is_teaching_employee;
+        _this3.designationForm.employee_category_id = response.designation.employee_category_id;
+        _this3.designationForm.top_designation_id = response.designation.top_designation_id;
+        _this3.selected_employee_category = response.selected_employee_category;
+        _this3.selected_top_designation = response.selected_top_designation;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this3.$router.push('/configuration/employee/designation');
+      });
+    },
+    update: function update() {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      this.designationForm.patch('/api/employee/designation/' + this.id).then(function (response) {
+        toastr.success(response.message);
+        loader.hide();
+        _this4.$router.push('/configuration/employee/designation');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onEmployeeCategorySelect: function onEmployeeCategorySelect(selectedOption) {
+      this.designationForm.employee_category_id = selectedOption.id;
+    },
+    onTopDesignationSelect: function onTopDesignationSelect(selectedOption) {
+      this.designationForm.top_designation_id = selectedOption.id;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/index.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/index.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./resources/js/views/configuration/employee/designation/form.vue");
+var _methods;
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    designationForm: _form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      designations: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        sort_by: 'name',
+        order: 'asc',
+        page_length: helper.getConfig('page_length')
+      },
+      orderByOptions: [{
+        value: 'name',
+        translation: i18n.employee.designation_name
+      }],
+      showCreatePanel: false,
+      help_topic: ''
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('access-configuration')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getDesignations();
+  },
+  methods: (_methods = {
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    getDesignations: function getDesignations(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/employee/designation?page=' + page + url).then(function (response) {
+        _this.designations = response;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    editDesignation: function editDesignation(designation) {
+      this.$router.push('/configuration/employee/designation/' + designation.id + '/edit');
+    },
+    confirmDelete: function confirmDelete(designation) {
+      var _this2 = this;
+      return function (dialog) {
+        return _this2.deleteDesignation(designation);
+      };
+    },
+    deleteDesignation: function deleteDesignation(designation) {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      axios["delete"]('/api/employee/designation/' + designation.id).then(function (response) {
+        toastr.success(response.message);
+        _this3.getDesignations();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    isDefault: function isDefault(designation) {
+      return designation.name == this.getConfig('system_admin_designation') ? true : false;
+    }
+  }, _defineProperty(_methods, "getConfig", function getConfig(config) {
+    return helper.getConfig(config);
+  }), _defineProperty(_methods, "isTeachingEmpmloyee", function isTeachingEmpmloyee(designation) {
+    return designation.is_teaching_employee ? true : false;
+  }), _defineProperty(_methods, "print", function print() {
+    var loader = this.$loading.show();
+    axios.post('/api/employee/designation/print', {
+      filter: this.filter
+    }).then(function (response) {
+      var print = window.open("/print");
+      loader.hide();
+      print.document.write(response);
+    })["catch"](function (error) {
+      loader.hide();
+      helper.showErrorMsg(error);
+    });
+  }), _defineProperty(_methods, "pdf", function pdf() {
+    var _this4 = this;
+    var loader = this.$loading.show();
+    axios.post('/api/employee/designation/pdf', {
+      filter: this.filter
+    }).then(function (response) {
+      loader.hide();
+      window.open('/download/report/' + response + '?token=' + _this4.authToken);
+    })["catch"](function (error) {
+      loader.hide();
+      helper.showErrorMsg(error);
+    });
+  }), _methods),
+  filters: {
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  },
+  watch: {
+    'filter.sort_by': function filterSort_by(val) {
+      this.getDesignations();
+    },
+    'filter.order': function filterOrder(val) {
+      this.getDesignations();
+    },
+    'filter.page_length': function filterPage_length(val) {
+      this.getDesignations();
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/form.vue?vue&type=template&id=2a8ef8d6&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/form.vue?vue&type=template&id=2a8ef8d6& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.proceed.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.designationForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.designation_name")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.designationForm.name,
+      expression: "designationForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "name",
+      placeholder: _vm.trans("employee.designation_name")
+    },
+    domProps: {
+      value: _vm.designationForm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.designationForm, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.designationForm,
+      "prop-name": "name"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("div", [_vm._v(_vm._s(_vm.trans("employee.is_teaching_employee")))]), _vm._v(" "), _c("switches", {
+    staticClass: "m-t-20",
+    attrs: {
+      theme: "bootstrap",
+      color: "success"
+    },
+    model: {
+      value: _vm.designationForm.is_teaching_employee,
+      callback: function callback($$v) {
+        _vm.$set(_vm.designationForm, "is_teaching_employee", $$v);
+      },
+      expression: "designationForm.is_teaching_employee"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.category")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "employee_category_id",
+      id: "employee_category_id",
+      options: _vm.employee_categories,
+      placeholder: _vm.trans("employee.select_employee_category")
+    },
+    on: {
+      select: _vm.onEmployeeCategorySelect,
+      close: function close($event) {
+        return _vm.designationForm.errors.clear("employee_category_id");
+      },
+      remove: function remove($event) {
+        _vm.designationForm.employee_category_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_employee_category,
+      callback: function callback($$v) {
+        _vm.selected_employee_category = $$v;
+      },
+      expression: "selected_employee_category"
+    }
+  }, [!_vm.employee_categories.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                    ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.designationForm,
+      "prop-name": "employee_category_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.top_designation")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      name: "top_designation_id",
+      id: "top_designation_id",
+      options: _vm.top_designations,
+      placeholder: _vm.trans("employee.select_top_designation")
+    },
+    on: {
+      select: _vm.onTopDesignationSelect,
+      close: function close($event) {
+        return _vm.designationForm.errors.clear("top_designation_id");
+      },
+      remove: function remove($event) {
+        _vm.designationForm.top_designation_id = "";
+      }
+    },
+    model: {
+      value: _vm.selected_top_designation,
+      callback: function callback($$v) {
+        _vm.selected_top_designation = $$v;
+      },
+      expression: "selected_top_designation"
+    }
+  }, [!_vm.top_designations.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                    ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.designationForm,
+      "prop-name": "top_designation_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.designation_description")))]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.designationForm.description,
+      expression: "designationForm.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "description",
+      placeholder: _vm.trans("employee.designation_description")
+    },
+    domProps: {
+      value: _vm.designationForm.description
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.designationForm, "description", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.designationForm,
+      "prop-name": "description"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
+    staticClass: "card-footer text-right"
+  }, [_c("router-link", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.id,
+      expression: "id"
+    }],
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      to: "/configuration/employee/designation"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]), _vm._v(" "), !_vm.id ? _c("button", {
+    staticClass: "btn btn-danger waves-effect waves-light",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("cancel");
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.cancel")))]) : _vm._e(), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm.id ? _c("span", [_vm._v(_vm._s(_vm.trans("general.update")))]) : _c("span", [_vm._v(_vm._s(_vm.trans("general.save")))])])], 1)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/index.vue?vue&type=template&id=5a0fb95e&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/index.vue?vue&type=template&id=5a0fb95e& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("employee.designation")) + " \n                    "), _vm.designations.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.designations.total,
+    from: _vm.designations.from,
+    to: _vm.designations.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_vm.designations.total && !_vm.showCreatePanel ? _c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.add_new"),
+      expression: "trans('general.add_new')"
+    }],
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("employee.add_new_designation")))])]) : _vm._e(), _vm._v(" "), _c("sort-by", {
+    attrs: {
+      "order-by-options": _vm.orderByOptions,
+      "sort-by": _vm.filter.sort_by,
+      order: _vm.filter.order
+    },
+    on: {
+      updateSortBy: function updateSortBy(value) {
+        _vm.filter.sort_by = value;
+      },
+      updateOrder: function updateOrder(value) {
+        _vm.filter.order = value;
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "btn-group"
+  }, [_c("button", {
+    directives: [{
+      name: "tooltip",
+      rawName: "v-tooltip",
+      value: _vm.trans("general.more_option"),
+      expression: "trans('general.more_option')"
+    }],
+    staticClass: "btn btn-info btn-sm dropdown-toggle no-caret",
+    attrs: {
+      type: "button",
+      role: "menu",
+      id: "moreOption",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-ellipsis-h"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  })]), _vm._v(" "), _c("div", {
+    "class": ["dropdown-menu", _vm.getConfig("direction") == "ltr" ? "dropdown-menu-right" : ""],
+    attrs: {
+      "aria-labelledby": "moreOption"
+    }
+  }, [_c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.print
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-print"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.print")))]), _vm._v(" "), _c("button", {
+    staticClass: "dropdown-item custom-dropdown",
+    on: {
+      click: _vm.pdf
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-file-pdf"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.generate_pdf")))])])]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "configuration.employee.designation";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("transition", {
+    attrs: {
+      name: "fade"
+    }
+  }, [_vm.showCreatePanel ? _c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("employee.add_new_designation")))]), _vm._v(" "), _c("designation-form", {
+    on: {
+      completed: _vm.getDesignations,
+      cancel: function cancel($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  })], 1)]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.designations.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("employee.designation_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.category")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.top_designation")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.designation_description")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.designations.data, function (designation) {
+    return _c("tr", [_c("td", [_vm._v("\n                                    " + _vm._s(designation.name) + "\n                                    "), _vm.isDefault(designation) ? _c("span", {
+      staticClass: "label label-info"
+    }, [_vm._v(_vm._s(_vm.trans("employee.default_designation")))]) : _vm._e(), _vm._v(" "), _vm.isTeachingEmpmloyee(designation) ? _c("span", {
+      staticClass: "label label-info"
+    }, [_vm._v(_vm._s(_vm.trans("employee.teaching_employee")))]) : _vm._e()]), _vm._v(" "), _c("td", [_vm._v(_vm._s(designation.employee_category ? designation.employee_category.name : "-"))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(designation.top_designation ? designation.top_designation.name : "-"))]), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(designation.description)
+      }
+    }), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [!_vm.isDefault(designation) ? _c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("employee.edit_designation"),
+        expression: "trans('employee.edit_designation')"
+      }],
+      staticClass: "btn btn-info btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.editDesignation(designation);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-edit"
+    })]) : _vm._e(), _vm._v(" "), !_vm.isDefault(designation) ? _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(designation)
+        },
+        expression: "{ok: confirmDelete(designation)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("employee.delete_designation"),
+        expression: "trans('employee.delete_designation')"
+      }],
+      key: designation.id,
+      staticClass: "btn btn-danger btn-sm"
+    }, [_c("i", {
+      staticClass: "fas fa-trash"
+    })]) : _vm._e()])])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.designations.total ? _c("module-info", {
+    attrs: {
+      module: "employee",
+      title: "designation_module_title",
+      description: "designation_module_description",
+      icon: "list"
+    }
+  }, [_c("div", {
+    attrs: {
+      slot: "btn"
+    },
+    slot: "btn"
+  }, [!_vm.showCreatePanel ? _c("button", {
+    staticClass: "btn btn-info btn-md",
+    on: {
+      click: function click($event) {
+        _vm.showCreatePanel = !_vm.showCreatePanel;
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.add_new")))]) : _vm._e()])]) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.designations
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getDesignations
+    },
+    nativeOn: {
+      change: function change($event) {
+        return _vm.getDesignations.apply(null, arguments);
+      }
+    }
+  })], 1)])], 1), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/employee/designation/form.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/views/configuration/employee/designation/form.vue ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _form_vue_vue_type_template_id_2a8ef8d6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=2a8ef8d6& */ "./resources/js/views/configuration/employee/designation/form.vue?vue&type=template&id=2a8ef8d6&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/views/configuration/employee/designation/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_2a8ef8d6___WEBPACK_IMPORTED_MODULE_0__.render,
+  _form_vue_vue_type_template_id_2a8ef8d6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/configuration/employee/designation/form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/employee/designation/index.vue":
+/*!*************************************************************************!*\
+  !*** ./resources/js/views/configuration/employee/designation/index.vue ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_5a0fb95e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=5a0fb95e& */ "./resources/js/views/configuration/employee/designation/index.vue?vue&type=template&id=5a0fb95e&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/configuration/employee/designation/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_5a0fb95e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_5a0fb95e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/configuration/employee/designation/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/employee/designation/form.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/views/configuration/employee/designation/form.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/employee/designation/index.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/views/configuration/employee/designation/index.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/employee/designation/form.vue?vue&type=template&id=2a8ef8d6&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/views/configuration/employee/designation/form.vue?vue&type=template&id=2a8ef8d6& ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_2a8ef8d6___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_2a8ef8d6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_2a8ef8d6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./form.vue?vue&type=template&id=2a8ef8d6& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/form.vue?vue&type=template&id=2a8ef8d6&");
+
+
+/***/ }),
+
+/***/ "./resources/js/views/configuration/employee/designation/index.vue?vue&type=template&id=5a0fb95e&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/views/configuration/employee/designation/index.vue?vue&type=template&id=5a0fb95e& ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_5a0fb95e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_5a0fb95e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_5a0fb95e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=5a0fb95e& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/configuration/employee/designation/index.vue?vue&type=template&id=5a0fb95e&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=0c723844fcf841b3

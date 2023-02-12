@@ -1,1 +1,386 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[1947],{87285:(e,t,a)=>{a.r(t),a.d(t,{default:()=>s});const n={components:{},data:function(){return{attendanceForm:new Form({employee_id:"",date_of_attendance:"",attendances:[],category:"production"},!1),disabled:{dates:[]},is_payroll_generated:!1,attendance:{},employees:[],selected_employee:null,attendance_types:[]}},mounted:function(){helper.hasPermission("mark-employee-attendance")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.attendanceForm.date_of_attendance=helper.today(),this.getPreRequisite()},methods:{getValueName:function(e){return"value_"+e},getPreRequisite:function(){var e=this,t=this.$loading.show();axios.get("/api/employee/attendance/production/pre-requisite").then((function(a){e.employees=a.employees,e.attendance_types=a.attendance_types,t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))},onEmployeeSelect:function(e){this.attendanceForm.employee_id=e.id,this.fetch()},fetch:function(){var e=this;if(this.attendanceForm.employee_id){var t=this.$loading.show();axios.post("/api/employee/attendance/production/fetch",{employee_id:this.attendanceForm.employee_id,date:this.attendanceForm.date_of_attendance}).then((function(a){e.attendance=a.attendance,e.attendanceForm.attendances=[],e.is_payroll_generated=a.is_payroll_generated,e.attendance_types.forEach((function(t){var a=e.attendance.attendance_details.find((function(e){return e.employee_attendance_type_id==t.id}));e.attendanceForm.attendances.push({id:t.id,name:t.name,alias:t.alias,unit:t.unit,value:void 0!==a?a.value:0,remarks:void 0!==a?a.remarks:""})})),t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))}},submit:function(){var e=this.$loading.show();this.attendanceForm.post("/api/employee/attendance/production").then((function(t){e.hide(),toastr.success(t.message)})).catch((function(t){e.hide(),helper.showErrorMsg(t)}))}},watch:{"attendanceForm.date_of_attendance":function(e){this.fetch()}}};const s=(0,a(51900).Z)(n,(function(){var e=this,t=e._self._c;return t("div",[t("div",{staticClass:"page-titles"},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-6"},[t("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("employee.mark_production_attendance")))])]),e._v(" "),t("div",{staticClass:"col-12 col-sm-6"},[t("div",{staticClass:"action-buttons pull-right"},[t("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){return e.$router.push("/employee/attendance")}}},[t("i",{staticClass:"fas fa-list"}),e._v(" "),t("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("employee.list_attendance")))])]),e._v(" "),t("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){return e.$router.push("/employee/attendance/regular")}}},[t("i",{staticClass:"fas fa-check"}),e._v(" "),t("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("employee.mark_regular_attendance")))])])])])])]),e._v(" "),t("div",{staticClass:"container-fluid"},[t("div",{staticClass:"card"},[t("div",{staticClass:"card-body p-4"},[t("form",{on:{submit:function(t){return t.preventDefault(),e.submit.apply(null,arguments)},keydown:function(t){return e.attendanceForm.errors.clear(t.target.name)}}},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.employee")))]),e._v(" "),t("v-select",{attrs:{label:"name","track-by":"id",name:"employee_id",id:"employee_id",options:e.employees,placeholder:e.trans("employee.select_employee")},on:{select:e.onEmployeeSelect},model:{value:e.selected_employee,callback:function(t){e.selected_employee=t},expression:"selected_employee"}},[e.employees.length?e._e():t("div",{staticClass:"multiselect__option",attrs:{slot:"afterList"},slot:"afterList"},[e._v("\n                                        "+e._s(e.trans("general.no_option_found"))+"\n                                    ")])]),e._v(" "),e.is_payroll_generated?t("span",{staticClass:"help-block text-danger font-80pc"},[e._v(e._s(e.trans("employee.payroll_is_generated")))]):e._e()],1)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("employee.date_of_attendance")))]),e._v(" "),t("datepicker",{attrs:{bootstrapStyling:!0,disabledDates:e.disabled,placeholder:e.trans("employee.date_of_attendance")},model:{value:e.attendanceForm.date_of_attendance,callback:function(t){e.$set(e.attendanceForm,"date_of_attendance",t)},expression:"attendanceForm.date_of_attendance"}}),e._v(" "),t("show-error",{attrs:{"form-name":e.attendanceForm,"prop-name":"date_of_attendance"}})],1)])]),e._v(" "),e._l(e.attendanceForm.attendances,(function(a,n){return t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-3"},[e._v("\n                            "+e._s(a.name)+" ("+e._s(a.alias)+")\n                        ")]),e._v(" "),t("div",{staticClass:"col-12 col-sm-3"},[t("div",{staticClass:"form-group"},[t("div",{staticClass:"input-group"},[t("input",{directives:[{name:"model",rawName:"v-model",value:a.value,expression:"attendance.value"}],staticClass:"form-control",attrs:{type:"number",name:e.getValueName(n),placeholder:e.trans("employee.production_attendance_value"),disabled:!!e.is_payroll_generated},domProps:{value:a.value},on:{input:function(t){t.target.composing||e.$set(a,"value",t.target.value)}}}),e._v(" "),t("div",{staticClass:"input-group-append"},[t("span",{staticClass:"input-group-text"},[e._v(e._s(a.unit))])])]),e._v(" "),t("show-error",{attrs:{"form-name":e.attendanceForm,"prop-name":e.getValueName(n)}})],1)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-6"},[t("div",{staticClass:"form-group"},[t("autosize-textarea",{attrs:{rows:"1",name:"",placeholder:e.trans("employee.attendance_remarks")},model:{value:a.remarks,callback:function(t){e.$set(a,"remarks",t)},expression:"attendance.remarks"}})],1)])])})),e._v(" "),e.attendanceForm.attendances.length&&e.attendance_types.length?t("div",{staticClass:"form-group"},[t("button",{staticClass:"btn btn-info pull-right",attrs:{type:"submit",disabled:!!e.is_payroll_generated}},[e._v(e._s(e.trans("general.save")))])]):e._e()],2)])])])])}),[],!1,null,null,null).exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/employee/attendance/production"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/attendance/production.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/attendance/production.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      attendanceForm: new Form({
+        employee_id: '',
+        date_of_attendance: '',
+        attendances: [],
+        category: 'production'
+      }, false),
+      disabled: {
+        dates: []
+      },
+      is_payroll_generated: false,
+      attendance: {},
+      employees: [],
+      selected_employee: null,
+      attendance_types: []
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('mark-employee-attendance')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.attendanceForm.date_of_attendance = helper.today();
+    this.getPreRequisite();
+  },
+  methods: {
+    getValueName: function getValueName(index) {
+      return 'value_' + index;
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this = this;
+      var loader = this.$loading.show();
+      axios.get('/api/employee/attendance/production/pre-requisite').then(function (response) {
+        _this.employees = response.employees;
+        _this.attendance_types = response.attendance_types;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    onEmployeeSelect: function onEmployeeSelect(selectedOption) {
+      this.attendanceForm.employee_id = selectedOption.id;
+      this.fetch();
+    },
+    fetch: function fetch() {
+      var _this2 = this;
+      if (!this.attendanceForm.employee_id) return;
+      var loader = this.$loading.show();
+      axios.post('/api/employee/attendance/production/fetch', {
+        employee_id: this.attendanceForm.employee_id,
+        date: this.attendanceForm.date_of_attendance
+      }).then(function (response) {
+        _this2.attendance = response.attendance;
+        _this2.attendanceForm.attendances = [];
+        _this2.is_payroll_generated = response.is_payroll_generated;
+        _this2.attendance_types.forEach(function (attendance_type) {
+          var employee_attendance = _this2.attendance.attendance_details.find(function (o) {
+            return o.employee_attendance_type_id == attendance_type.id;
+          });
+          _this2.attendanceForm.attendances.push({
+            id: attendance_type.id,
+            name: attendance_type.name,
+            alias: attendance_type.alias,
+            unit: attendance_type.unit,
+            value: typeof employee_attendance != 'undefined' ? employee_attendance.value : 0,
+            remarks: typeof employee_attendance != 'undefined' ? employee_attendance.remarks : ''
+          });
+        });
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    submit: function submit() {
+      var loader = this.$loading.show();
+      this.attendanceForm.post('/api/employee/attendance/production').then(function (response) {
+        loader.hide();
+        toastr.success(response.message);
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    }
+  },
+  watch: {
+    'attendanceForm.date_of_attendance': function attendanceFormDate_of_attendance(val) {
+      this.fetch();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/attendance/production.vue?vue&type=template&id=2d183e86&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/attendance/production.vue?vue&type=template&id=2d183e86& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("employee.mark_production_attendance")))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/employee/attendance");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("employee.list_attendance")))])]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/employee/attendance/regular");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-check"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("employee.mark_regular_attendance")))])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body p-4"
+  }, [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submit.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.attendanceForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee")))]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      label: "name",
+      "track-by": "id",
+      name: "employee_id",
+      id: "employee_id",
+      options: _vm.employees,
+      placeholder: _vm.trans("employee.select_employee")
+    },
+    on: {
+      select: _vm.onEmployeeSelect
+    },
+    model: {
+      value: _vm.selected_employee,
+      callback: function callback($$v) {
+        _vm.selected_employee = $$v;
+      },
+      expression: "selected_employee"
+    }
+  }, [!_vm.employees.length ? _c("div", {
+    staticClass: "multiselect__option",
+    attrs: {
+      slot: "afterList"
+    },
+    slot: "afterList"
+  }, [_vm._v("\n                                        " + _vm._s(_vm.trans("general.no_option_found")) + "\n                                    ")]) : _vm._e()]), _vm._v(" "), _vm.is_payroll_generated ? _c("span", {
+    staticClass: "help-block text-danger font-80pc"
+  }, [_vm._v(_vm._s(_vm.trans("employee.payroll_is_generated")))]) : _vm._e()], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.date_of_attendance")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      disabledDates: _vm.disabled,
+      placeholder: _vm.trans("employee.date_of_attendance")
+    },
+    model: {
+      value: _vm.attendanceForm.date_of_attendance,
+      callback: function callback($$v) {
+        _vm.$set(_vm.attendanceForm, "date_of_attendance", $$v);
+      },
+      expression: "attendanceForm.date_of_attendance"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.attendanceForm,
+      "prop-name": "date_of_attendance"
+    }
+  })], 1)])]), _vm._v(" "), _vm._l(_vm.attendanceForm.attendances, function (attendance, index) {
+    return _c("div", {
+      staticClass: "row"
+    }, [_c("div", {
+      staticClass: "col-12 col-sm-3"
+    }, [_vm._v("\n                            " + _vm._s(attendance.name) + " (" + _vm._s(attendance.alias) + ")\n                        ")]), _vm._v(" "), _c("div", {
+      staticClass: "col-12 col-sm-3"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("div", {
+      staticClass: "input-group"
+    }, [_c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: attendance.value,
+        expression: "attendance.value"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "number",
+        name: _vm.getValueName(index),
+        placeholder: _vm.trans("employee.production_attendance_value"),
+        disabled: _vm.is_payroll_generated ? true : false
+      },
+      domProps: {
+        value: attendance.value
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(attendance, "value", $event.target.value);
+        }
+      }
+    }), _vm._v(" "), _c("div", {
+      staticClass: "input-group-append"
+    }, [_c("span", {
+      staticClass: "input-group-text"
+    }, [_vm._v(_vm._s(attendance.unit))])])]), _vm._v(" "), _c("show-error", {
+      attrs: {
+        "form-name": _vm.attendanceForm,
+        "prop-name": _vm.getValueName(index)
+      }
+    })], 1)]), _vm._v(" "), _c("div", {
+      staticClass: "col-12 col-sm-6"
+    }, [_c("div", {
+      staticClass: "form-group"
+    }, [_c("autosize-textarea", {
+      attrs: {
+        rows: "1",
+        name: "",
+        placeholder: _vm.trans("employee.attendance_remarks")
+      },
+      model: {
+        value: attendance.remarks,
+        callback: function callback($$v) {
+          _vm.$set(attendance, "remarks", $$v);
+        },
+        expression: "attendance.remarks"
+      }
+    })], 1)])]);
+  }), _vm._v(" "), _vm.attendanceForm.attendances.length && _vm.attendance_types.length ? _c("div", {
+    staticClass: "form-group"
+  }, [_c("button", {
+    staticClass: "btn btn-info pull-right",
+    attrs: {
+      type: "submit",
+      disabled: _vm.is_payroll_generated ? true : false
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.save")))])]) : _vm._e()], 2)])])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/attendance/production.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/views/employee/attendance/production.vue ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _production_vue_vue_type_template_id_2d183e86___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./production.vue?vue&type=template&id=2d183e86& */ "./resources/js/views/employee/attendance/production.vue?vue&type=template&id=2d183e86&");
+/* harmony import */ var _production_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./production.vue?vue&type=script&lang=js& */ "./resources/js/views/employee/attendance/production.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _production_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _production_vue_vue_type_template_id_2d183e86___WEBPACK_IMPORTED_MODULE_0__.render,
+  _production_vue_vue_type_template_id_2d183e86___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/employee/attendance/production.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/attendance/production.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/views/employee/attendance/production.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_production_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./production.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/attendance/production.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_production_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/employee/attendance/production.vue?vue&type=template&id=2d183e86&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/views/employee/attendance/production.vue?vue&type=template&id=2d183e86& ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_production_vue_vue_type_template_id_2d183e86___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_production_vue_vue_type_template_id_2d183e86___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_production_vue_vue_type_template_id_2d183e86___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./production.vue?vue&type=template&id=2d183e86& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/employee/attendance/production.vue?vue&type=template&id=2d183e86&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=production.js.map?id=d8e529b44ab295e0

@@ -1,1 +1,357 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[994],{4149:(t,e,a)=>{a.r(e),a.d(e,{default:()=>o});const i={components:{},data:function(){return{email_logs:{total:0,data:[]},filter:{page_length:helper.getConfig("page_length"),sort_by:"created_at",order:"desc"},email_log:{},orderByOptions:[{value:"created_at",translation:i18n.general.created_at}],showDetailModal:!1}},mounted:function(){helper.featureAvailable("email_log")||(helper.featureNotAvailableMsg(),this.$router.push("/dashboard")),helper.hasPermission("access-configuration")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getEmailLogs()},methods:{getEmailLogs:function(t){var e=this,a=this.$loading.show();"number"!=typeof t&&(t=1);var i=helper.getFilterURL(this.filter);axios.get("/api/email-log?page="+t+i).then((function(t){e.email_logs=t,a.hide()})).catch((function(t){a.hide(),helper.showErrorMsg(t)}))},showDetailAction:function(t){var e=this;this.showDetailModal=!0;var a=this.$loading.show();axios.get("/api/email-log/"+t.id).then((function(t){e.email_log=t,a.hide()})).catch((function(t){a.hide(),helper.showErrorMsg(t)}))},confirmDelete:function(t){var e=this;return function(a){return e.deleteEmailLog(t)}},deleteEmailLog:function(t){var e=this,a=this.$loading.show();axios.delete("/api/email-log/"+t.id).then((function(t){toastr.success(t.message),e.getEmailLogs(),a.hide()})).catch((function(t){a.hide(),helper.showErrorMsg(t)}))}},filters:{moment:function(t){return helper.formatDateTime(t)}},watch:{filter:{handler:function(t){this.getEmailLogs()},deep:!0}}},s=i;var l=(0,a(51900).Z)(s,(function(){var t=this,e=t._self._c;return e("div",[e("div",{staticClass:"page-titles"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[e("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("utility.email_log"))+"\n                    "),t.email_logs.total?e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.total_result_found",{count:t.email_logs.total,from:t.email_logs.from,to:t.email_logs.to})))]):e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.no_result_found")))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"},[e("div",{staticClass:"action-buttons pull-right"},[e("sort-by",{attrs:{"order-by-options":t.orderByOptions,"sort-by":t.filter.sort_by,order:t.filter.order},on:{updateSortBy:function(e){t.filter.sort_by=e},updateOrder:function(e){t.filter.order=e}}})],1)])])]),t._v(" "),e("div",{staticClass:"container-fluid"},[e("div",{staticClass:"card"},[e("div",{staticClass:"card-body"},[t.email_logs.total?e("div",{staticClass:"table-responsive"},[e("table",{staticClass:"table table-hover"},[e("thead",[e("tr",[e("th",[t._v(t._s(t.trans("utility.email_receiver")))]),t._v(" "),e("th",[t._v(t._s(t.trans("utility.email_subject")))]),t._v(" "),e("th",[t._v(t._s(t.trans("utility.sent_at")))]),t._v(" "),e("th",{staticClass:"table-option"},[t._v(t._s(t.trans("general.action")))])])]),t._v(" "),e("tbody",t._l(t.email_logs.data,(function(a){return e("tr",[e("td",{domProps:{textContent:t._s(a.to_address)}}),t._v(" "),e("td",{domProps:{textContent:t._s(a.subject)}}),t._v(" "),e("td",[t._v(t._s(t._f("moment")(a.created_at)))]),t._v(" "),e("td",{staticClass:"table-option"},[e("div",{staticClass:"btn-group"},[e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("utility.view_email"),expression:"trans('utility.view_email')"}],staticClass:"btn btn-info btn-sm",attrs:{type:"button"},on:{click:function(e){return t.showDetailAction(a)}}},[e("i",{staticClass:"fas fa-arrow-circle-right"})]),t._v(" "),e("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:t.confirmDelete(a)},expression:"{ok: confirmDelete(email_log)}"},{name:"tooltip",rawName:"v-tooltip",value:t.trans("utility.delete_email_log"),expression:"trans('utility.delete_email_log')"}],key:a.id,staticClass:"btn btn-danger btn-sm"},[e("i",{staticClass:"fas fa-trash"})])])])])})),0)])]):t._e(),t._v(" "),t.email_logs.total?t._e():e("module-info",{attrs:{module:"utility",title:"email_log_module_title",description:"email_log_module_description",icon:"list"}}),t._v(" "),e("pagination-record",{attrs:{"page-length":t.filter.page_length,records:t.email_logs},on:{"update:pageLength":function(e){return t.$set(t.filter,"page_length",e)},"update:page-length":function(e){return t.$set(t.filter,"page_length",e)},updateRecords:t.getEmailLogs},nativeOn:{change:function(e){return t.getEmailLogs.apply(null,arguments)}}})],1)]),t._v(" "),t.showDetailModal?e("transition",{attrs:{name:"modal"}},[e("div",{staticClass:"modal-mask"},[e("div",{staticClass:"modal-wrapper"},[e("div",{staticClass:"modal-container modal-lg"},[e("div",{staticClass:"modal-header"},[t._t("header",(function(){return[t._v("\n                                "+t._s(t.trans("utility.email_log"))+"\n                                "),e("span",{staticClass:"float-right pointer",on:{click:function(e){t.showDetailModal=!1}}},[t._v("x")])]}))],2),t._v(" "),e("div",{staticClass:"modal-body"},[t._t("body",(function(){return[e("h4",[t._v(t._s(t.utility.email_subject)+"\n                                    "),e("span",{staticClass:"pull-right"},[t._v(t._s(t._f("moment")(t.email_log.created_at)))])]),t._v(" "),e("p",[t._v(t._s(t.trans("utility.email_sender")+": "+t.email_log.from_address))]),t._v(" "),e("p",[t._v(t._s(t.trans("utility.email_receiver")+": "+t.email_log.to_address))]),t._v(" "),e("div",{domProps:{innerHTML:t._s(t.email_log.body)}}),t._v(" "),e("div",{staticClass:"clearfix"})]}))],2)])])])]):t._e()],1)])}),[],!1,null,null,null);const o=l.exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/utility/emailLog/index"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-log/index.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-log/index.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      email_logs: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        page_length: helper.getConfig('page_length'),
+        sort_by: 'created_at',
+        order: 'desc'
+      },
+      email_log: {},
+      orderByOptions: [{
+        value: 'created_at',
+        translation: i18n.general.created_at
+      }],
+      showDetailModal: false
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.featureAvailable('email_log')) {
+      helper.featureNotAvailableMsg();
+      this.$router.push('/dashboard');
+    }
+    if (!helper.hasPermission('access-configuration')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getEmailLogs();
+  },
+  methods: {
+    getEmailLogs: function getEmailLogs(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/email-log?page=' + page + url).then(function (response) {
+        _this.email_logs = response;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    showDetailAction: function showDetailAction(email_log) {
+      var _this2 = this;
+      this.showDetailModal = true;
+      var loader = this.$loading.show();
+      axios.get('/api/email-log/' + email_log.id).then(function (response) {
+        _this2.email_log = response;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    confirmDelete: function confirmDelete(email_log) {
+      var _this3 = this;
+      return function (dialog) {
+        return _this3.deleteEmailLog(email_log);
+      };
+    },
+    deleteEmailLog: function deleteEmailLog(email_log) {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      axios["delete"]('/api/email-log/' + email_log.id).then(function (response) {
+        toastr.success(response.message);
+        _this4.getEmailLogs();
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDateTime(date);
+    }
+  },
+  watch: {
+    filter: {
+      handler: function handler(val) {
+        this.getEmailLogs();
+      },
+      deep: true
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-log/index.vue?vue&type=template&id=becfb0f8&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-log/index.vue?vue&type=template&id=becfb0f8& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("utility.email_log")) + "\n                    "), _vm.email_logs.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.email_logs.total,
+    from: _vm.email_logs.from,
+    to: _vm.email_logs.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("sort-by", {
+    attrs: {
+      "order-by-options": _vm.orderByOptions,
+      "sort-by": _vm.filter.sort_by,
+      order: _vm.filter.order
+    },
+    on: {
+      updateSortBy: function updateSortBy(value) {
+        _vm.filter.sort_by = value;
+      },
+      updateOrder: function updateOrder(value) {
+        _vm.filter.order = value;
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.email_logs.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-hover"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("utility.email_receiver")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("utility.email_subject")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("utility.sent_at")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.email_logs.data, function (email_log) {
+    return _c("tr", [_c("td", {
+      domProps: {
+        textContent: _vm._s(email_log.to_address)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(email_log.subject)
+      }
+    }), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("moment")(email_log.created_at)))]), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [_c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("utility.view_email"),
+        expression: "trans('utility.view_email')"
+      }],
+      staticClass: "btn btn-info btn-sm",
+      attrs: {
+        type: "button"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.showDetailAction(email_log);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-arrow-circle-right"
+    })]), _vm._v(" "), _c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(email_log)
+        },
+        expression: "{ok: confirmDelete(email_log)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("utility.delete_email_log"),
+        expression: "trans('utility.delete_email_log')"
+      }],
+      key: email_log.id,
+      staticClass: "btn btn-danger btn-sm"
+    }, [_c("i", {
+      staticClass: "fas fa-trash"
+    })])])])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.email_logs.total ? _c("module-info", {
+    attrs: {
+      module: "utility",
+      title: "email_log_module_title",
+      description: "email_log_module_description",
+      icon: "list"
+    }
+  }) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.email_logs
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getEmailLogs
+    },
+    nativeOn: {
+      change: function change($event) {
+        return _vm.getEmailLogs.apply(null, arguments);
+      }
+    }
+  })], 1)]), _vm._v(" "), _vm.showDetailModal ? _c("transition", {
+    attrs: {
+      name: "modal"
+    }
+  }, [_c("div", {
+    staticClass: "modal-mask"
+  }, [_c("div", {
+    staticClass: "modal-wrapper"
+  }, [_c("div", {
+    staticClass: "modal-container modal-lg"
+  }, [_c("div", {
+    staticClass: "modal-header"
+  }, [_vm._t("header", function () {
+    return [_vm._v("\n                                " + _vm._s(_vm.trans("utility.email_log")) + "\n                                "), _c("span", {
+      staticClass: "float-right pointer",
+      on: {
+        click: function click($event) {
+          _vm.showDetailModal = false;
+        }
+      }
+    }, [_vm._v("x")])];
+  })], 2), _vm._v(" "), _c("div", {
+    staticClass: "modal-body"
+  }, [_vm._t("body", function () {
+    return [_c("h4", [_vm._v(_vm._s(_vm.utility.email_subject) + "\n                                    "), _c("span", {
+      staticClass: "pull-right"
+    }, [_vm._v(_vm._s(_vm._f("moment")(_vm.email_log.created_at)))])]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.trans("utility.email_sender") + ": " + _vm.email_log.from_address))]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.trans("utility.email_receiver") + ": " + _vm.email_log.to_address))]), _vm._v(" "), _c("div", {
+      domProps: {
+        innerHTML: _vm._s(_vm.email_log.body)
+      }
+    }), _vm._v(" "), _c("div", {
+      staticClass: "clearfix"
+    })];
+  })], 2)])])])]) : _vm._e()], 1)]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/email-log/index.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/views/utility/email-log/index.vue ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _index_vue_vue_type_template_id_becfb0f8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=becfb0f8& */ "./resources/js/views/utility/email-log/index.vue?vue&type=template&id=becfb0f8&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/views/utility/email-log/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_becfb0f8___WEBPACK_IMPORTED_MODULE_0__.render,
+  _index_vue_vue_type_template_id_becfb0f8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/utility/email-log/index.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/email-log/index.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/views/utility/email-log/index.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-log/index.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/utility/email-log/index.vue?vue&type=template&id=becfb0f8&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/views/utility/email-log/index.vue?vue&type=template&id=becfb0f8& ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_becfb0f8___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_becfb0f8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_becfb0f8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=template&id=becfb0f8& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/utility/email-log/index.vue?vue&type=template&id=becfb0f8&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=index.js.map?id=18b09e1fd1509d3d

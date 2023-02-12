@@ -1,1 +1,284 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[7291],{44130:(t,e,n)=>{n.r(e),n.d(e,{default:()=>s});const i={components:{},data:function(){return{meetings:{total:0,data:[]},filter:{sort_by:"date",order:"desc",page_length:helper.getConfig("page_length")},orderByOptions:[{value:"created_at",translation:i18n.general.created_at},{value:"date",translation:i18n.communication.meeting_date},{value:"title",translation:i18n.communication.meeting_title}],help_topic:""}},mounted:function(){helper.hasPermission("list-meeting")||(helper.notAccessibleMsg(),this.$router.push("/dashboard")),this.getMeetings(),helper.showDemoNotification(["communication"])},methods:{hasPermission:function(t){return helper.hasPermission(t)},getEmployeeName:function(t){return helper.getEmployeeName(t)},getEmployeeDesignationOnDate:function(t,e){return helper.getEmployeeDesignationOnDate(t,e)},getMeetings:function(t){var e=this,n=this.$loading.show();"number"!=typeof t&&(t=1);var i=helper.getFilterURL(this.filter);axios.get("/api/my-meeting?page="+t+i).then((function(t){e.meetings=t,n.hide()})).catch((function(t){n.hide(),helper.showErrorMsg(t)}))},showMeeting:function(t){this.$router.push("/communication/meeting/"+t.uuid)},getConfig:function(t){return helper.getConfig(t)}},filters:{moment:function(t){return helper.formatDate(t)},momentDateTime:function(t){return helper.formatDateTime(t)},momentTime:function(t){return helper.formatTime(t)}},watch:{"filter.sort_by":function(t){this.getMeetings()},"filter.order":function(t){this.getMeetings()},"filter.page_length":function(t){this.getMeetings()}},computed:{authToken:function(){return helper.getAuthToken()}}};const s=(0,n(51900).Z)(i,(function(){var t=this,e=t._self._c;return e("div",[e("div",{staticClass:"page-titles"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-12 col-sm-6"},[e("h3",{staticClass:"text-themecolor"},[t._v(t._s(t.trans("communication.meeting"))+" \n                    "),t.meetings.total?e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.total_result_found",{count:t.meetings.total,from:t.meetings.from,to:t.meetings.to})))]):e("span",{staticClass:"card-subtitle d-none d-sm-inline"},[t._v(t._s(t.trans("general.no_result_found")))])])]),t._v(" "),e("div",{staticClass:"col-12 col-sm-6"})])]),t._v(" "),e("div",{staticClass:"container-fluid"},[e("div",{staticClass:"card"},[e("div",{staticClass:"card-body"},[t.meetings.total?e("div",{staticClass:"table-responsive"},[e("table",{staticClass:"table table-sm"},[e("thead",[e("tr",[e("th",[t._v(t._s(t.trans("communication.meeting_title")))]),t._v(" "),e("th",[t._v(t._s(t.trans("communication.meeting_duration")))]),t._v(" "),e("th",[t._v(t._s(t.trans("communication.meeting_created_by")))]),t._v(" "),e("th",[t._v(t._s(t.trans("general.created_at")))]),t._v(" "),e("th",{staticClass:"table-option"},[t._v(t._s(t.trans("general.action")))])])]),t._v(" "),e("tbody",t._l(t.meetings.data,(function(n){return e("tr",[e("td",[t._v("\n                                    "+t._s(n.title)+"\n                                    "),n.is_live?e("span",{staticClass:"badge badge-success"},[t._v(t._s(t.trans("communication.live")))]):t._e(),t._v(" "),n.is_expired?e("span",{staticClass:"badge badge-danger"},[t._v(t._s(t.trans("communication.expired")))]):t._e()]),t._v(" "),e("td",[t._v("\n                                    "+t._s(t._f("moment")(n.date))+" "),n.start_time?e("span",[t._v(t._s(t._f("momentTime")(n.start_time)))]):t._e(),t._v(" "),n.end_time?e("span",[t._v(" "+t._s(t.trans("general.to"))+" \n                                    "+t._s(t._f("momentTime")(n.end_time)))]):t._e()]),t._v(" "),e("td",[t._v(t._s(t.getEmployeeName(n.user.employee))+" "),e("br"),t._v(" "+t._s(t.getEmployeeDesignationOnDate(n.user.employee,n.date)))]),t._v(" "),e("td",[t._v(t._s(t._f("momentDateTime")(n.created_at)))]),t._v(" "),e("td",{staticClass:"table-option"},[e("div",{staticClass:"btn-group"},[e("button",{directives:[{name:"tooltip",rawName:"v-tooltip",value:t.trans("general.view_detail"),expression:"trans('general.view_detail')"}],staticClass:"btn btn-success btn-sm",on:{click:function(e){return e.preventDefault(),t.showMeeting(n)}}},[e("i",{staticClass:"fas fa-arrow-circle-right"})])])])])})),0)])]):t._e(),t._v(" "),t.meetings.total?t._e():e("module-info",{attrs:{module:"communication",title:"my_meeting_not_found_title",description:"my_meeting_not_found_description",icon:"list"}}),t._v(" "),e("pagination-record",{attrs:{"page-length":t.filter.page_length,records:t.meetings},on:{"update:pageLength":function(e){return t.$set(t.filter,"page_length",e)},"update:page-length":function(e){return t.$set(t.filter,"page_length",e)},updateRecords:t.getMeetings}})],1)])]),t._v(" "),e("right-panel",{attrs:{topic:t.help_topic}})],1)}),[],!1,null,null,null).exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/communication/meeting/my-meeting"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/my-meeting.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/my-meeting.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      meetings: {
+        total: 0,
+        data: []
+      },
+      filter: {
+        sort_by: 'date',
+        order: 'desc',
+        page_length: helper.getConfig('page_length')
+      },
+      orderByOptions: [{
+        value: 'created_at',
+        translation: i18n.general.created_at
+      }, {
+        value: 'date',
+        translation: i18n.communication.meeting_date
+      }, {
+        value: 'title',
+        translation: i18n.communication.meeting_title
+      }],
+      help_topic: ''
+    };
+  },
+  mounted: function mounted() {
+    if (!helper.hasPermission('list-meeting')) {
+      helper.notAccessibleMsg();
+      this.$router.push('/dashboard');
+    }
+    this.getMeetings();
+    helper.showDemoNotification(['communication']);
+  },
+  methods: {
+    hasPermission: function hasPermission(permission) {
+      return helper.hasPermission(permission);
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getEmployeeDesignationOnDate: function getEmployeeDesignationOnDate(employee, date) {
+      return helper.getEmployeeDesignationOnDate(employee, date);
+    },
+    getMeetings: function getMeetings(page) {
+      var _this = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      var url = helper.getFilterURL(this.filter);
+      axios.get('/api/my-meeting?page=' + page + url).then(function (response) {
+        _this.meetings = response;
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    showMeeting: function showMeeting(meeting) {
+      this.$router.push('/communication/meeting/' + meeting.uuid);
+    },
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    },
+    momentTime: function momentTime(time) {
+      return helper.formatTime(time);
+    }
+  },
+  watch: {
+    'filter.sort_by': function filterSort_by(val) {
+      this.getMeetings();
+    },
+    'filter.order': function filterOrder(val) {
+      this.getMeetings();
+    },
+    'filter.page_length': function filterPage_length(val) {
+      this.getMeetings();
+    }
+  },
+  computed: {
+    authToken: function authToken() {
+      return helper.getAuthToken();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/my-meeting.vue?vue&type=template&id=654c59c6&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/my-meeting.vue?vue&type=template&id=654c59c6& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("communication.meeting")) + " \n                    "), _vm.meetings.total ? _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.total_result_found", {
+    count: _vm.meetings.total,
+    from: _vm.meetings.from,
+    to: _vm.meetings.to
+  })))]) : _c("span", {
+    staticClass: "card-subtitle d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("general.no_result_found")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_vm.meetings.total ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("communication.meeting_title")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("communication.meeting_duration")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("communication.meeting_created_by")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("general.created_at")))]), _vm._v(" "), _c("th", {
+    staticClass: "table-option"
+  }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.meetings.data, function (meeting) {
+    return _c("tr", [_c("td", [_vm._v("\n                                    " + _vm._s(meeting.title) + "\n                                    "), meeting.is_live ? _c("span", {
+      staticClass: "badge badge-success"
+    }, [_vm._v(_vm._s(_vm.trans("communication.live")))]) : _vm._e(), _vm._v(" "), meeting.is_expired ? _c("span", {
+      staticClass: "badge badge-danger"
+    }, [_vm._v(_vm._s(_vm.trans("communication.expired")))]) : _vm._e()]), _vm._v(" "), _c("td", [_vm._v("\n                                    " + _vm._s(_vm._f("moment")(meeting.date)) + " "), meeting.start_time ? _c("span", [_vm._v(_vm._s(_vm._f("momentTime")(meeting.start_time)))]) : _vm._e(), _vm._v(" "), meeting.end_time ? _c("span", [_vm._v(" " + _vm._s(_vm.trans("general.to")) + " \n                                    " + _vm._s(_vm._f("momentTime")(meeting.end_time)))]) : _vm._e()]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getEmployeeName(meeting.user.employee)) + " "), _c("br"), _vm._v(" " + _vm._s(_vm.getEmployeeDesignationOnDate(meeting.user.employee, meeting.date)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("momentDateTime")(meeting.created_at)))]), _vm._v(" "), _c("td", {
+      staticClass: "table-option"
+    }, [_c("div", {
+      staticClass: "btn-group"
+    }, [_c("button", {
+      directives: [{
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("general.view_detail"),
+        expression: "trans('general.view_detail')"
+      }],
+      staticClass: "btn btn-success btn-sm",
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.showMeeting(meeting);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-arrow-circle-right"
+    })])])])]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), !_vm.meetings.total ? _c("module-info", {
+    attrs: {
+      module: "communication",
+      title: "my_meeting_not_found_title",
+      description: "my_meeting_not_found_description",
+      icon: "list"
+    }
+  }) : _vm._e(), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.filter.page_length,
+      records: _vm.meetings
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.filter, "page_length", $event);
+      },
+      updateRecords: _vm.getMeetings
+    }
+  })], 1)])]), _vm._v(" "), _c("right-panel", {
+    attrs: {
+      topic: _vm.help_topic
+    }
+  })], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/my-meeting.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/my-meeting.vue ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _my_meeting_vue_vue_type_template_id_654c59c6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./my-meeting.vue?vue&type=template&id=654c59c6& */ "./resources/js/views/communication/meeting/my-meeting.vue?vue&type=template&id=654c59c6&");
+/* harmony import */ var _my_meeting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./my-meeting.vue?vue&type=script&lang=js& */ "./resources/js/views/communication/meeting/my-meeting.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _my_meeting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _my_meeting_vue_vue_type_template_id_654c59c6___WEBPACK_IMPORTED_MODULE_0__.render,
+  _my_meeting_vue_vue_type_template_id_654c59c6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/communication/meeting/my-meeting.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/my-meeting.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/my-meeting.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_my_meeting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./my-meeting.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/my-meeting.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_my_meeting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/communication/meeting/my-meeting.vue?vue&type=template&id=654c59c6&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/views/communication/meeting/my-meeting.vue?vue&type=template&id=654c59c6& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_my_meeting_vue_vue_type_template_id_654c59c6___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_my_meeting_vue_vue_type_template_id_654c59c6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_my_meeting_vue_vue_type_template_id_654c59c6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./my-meeting.vue?vue&type=template&id=654c59c6& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/communication/meeting/my-meeting.vue?vue&type=template&id=654c59c6&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=my-meeting.js.map?id=3b699ab9ca7b7c47

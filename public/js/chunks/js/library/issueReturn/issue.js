@@ -1,1 +1,767 @@
-"use strict";(self.webpackChunkInstiKit=self.webpackChunkInstiKit||[]).push([[1337],{69024:(e,t,s)=>{function o(e){return o="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},o(e)}function r(e,t,s){return(t=function(e){var t=function(e,t){if("object"!==o(e)||null===e)return e;var s=e[Symbol.toPrimitive];if(void 0!==s){var r=s.call(e,t||"default");if("object"!==o(r))return r;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"===o(t)?t:String(t)}(t))in e?Object.defineProperty(e,t,{value:s,enumerable:!0,configurable:!0,writable:!0}):e[t]=s,e}s.r(t),s.d(t,{default:()=>n});const a={components:{},data:function(){return{issueForm:new Form({type:"student",student_id:"",employee_id:"",date_of_issue:"",issue_remarks:"",books:[]}),book_details:[],book_number:"",selected_student:null,selected_student_record:null,selected_employee:null,studentFilter:{name:"",page_length:helper.getConfig("page_length")},employeeFilter:{name:"",page_length:helper.getConfig("page_length")},students:{data:[],total:0},employees:{data:[],total:0},unreturned_books:[]}},mounted:function(){helper.showDemoNotification(["library"]),this.issueForm.date_of_issue=moment().format("YYYY-MM-DD")},methods:{getStudentName:function(e){return helper.getStudentName(e)},getStudentFatherName:function(e){return e.parent.first_guardian_name},getEmployeeName:function(e){return helper.getEmployeeName(e)},getEmployeeCode:function(e){return helper.getEmployeeCode(e)},searchBook:function(){var e=this,t=this.$loading.show(),s=this.issueForm.date_of_issue;return s?this.issueForm.books.indexOf(parseInt(this.book_number))>=0?(t.hide(),toastr.error(i18n.library.book_already_added_in_issue_list)):void axios.post("/api/book/search/number",{number:this.book_number,date:s}).then((function(s){e.issueForm.books.push(s.number),e.book_details.push(s),e.book_number="",t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)})):(t.hide(),toastr.error(i18n.library.choose_date_before_adding_book))},searchStudent:function(e){var t=this,s=this.$loading.show();"number"!=typeof e&&(e=1);var o=helper.getFilterURL(this.studentFilter);axios.get("/api/student/search/name?page="+e+o).then((function(e){if(t.students=e,!e.total)return s.hide(),toastr.error(i18n.general.no_search_result_found);s.hide()})).catch((function(e){s.hide(),helper.showErrorMsg(e)}))},selectStudentRecord:function(e,t){this.issueForm.student_id=e.id,this.selected_student=e,this.selected_student_record=t,this.students=[],this.studentFilter.name="",this.getUnreturnedBooks(this.issueForm.type,t.id)},searchEmployee:function(e){var t=this,s=this.$loading.show();"number"!=typeof e&&(e=1);var o=helper.getFilterURL(this.employeeFilter);axios.get("/api/employee/search/name?page="+e+o).then((function(e){if(t.employees=e,!e.total)return s.hide(),toastr.error(i18n.general.no_search_result_found);s.hide()})).catch((function(e){s.hide(),helper.showErrorMsg(e)}))},selectEmployee:function(e){this.issueForm.employee_id=e.id,this.selected_employee=e,this.employees=[],this.employeeFilter.name="",this.getUnreturnedBooks(this.issueForm.type,e.id)},getUnreturnedBooks:function(e,t){var s=this,o=this.$loading.show();axios.post("/api/book/log/unreturned",{id:t,type:e}).then((function(e){s.unreturned_books=e,o.hide()})).catch((function(e){loading.hide(),helper.showErrorMsg(e)}))},confirmDelete:function(e){var t=this;return function(s){return t.deleteBook(e)}},deleteBook:function(e){var t=this.book_details.findIndex((function(t){return t.number==e}));this.book_details.splice(t,1),t=this.issueForm.books.indexOf(e),this.issueForm.books.splice(t,1)},submit:function(){var e=this,t=this.$loading.show();this.issueForm.post("/api/book/log").then((function(s){toastr.success(s.message),e.selected_employee=null,e.selected_student=null,e.selected_student_record=null,e.studentFilter.name="",e.employeeFilter.name="",e.students.data=[],e.students.total=0,e.employees.data=[],e.employees.total=0,e.book_details=[],e.unreturned_books=[],e.issueForm.type="student",e.issueForm.books=[],t.hide()})).catch((function(e){t.hide(),helper.showErrorMsg(e)}))}},watch:{"studentFilter.page_length":function(e){this.searchStudent()}},filters:{moment:function(e){return helper.formatDate(e)},momentDateTime:function(e){return helper.formatDateTime(e)}}};const n=(0,s(51900).Z)(a,(function(){var e=this,t=e._self._c;return t("div",[t("div",{staticClass:"page-titles"},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-6"},[t("h3",{staticClass:"text-themecolor"},[e._v(e._s(e.trans("library.issue_book")))])]),e._v(" "),t("div",{staticClass:"col-12 col-sm-6"},[t("div",{staticClass:"action-buttons pull-right"},[t("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){return e.$router.push("/library/issue/list")}}},[t("i",{staticClass:"fas fa-book"}),e._v(" "),t("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("library.issue_list")))])]),e._v(" "),t("button",{staticClass:"btn btn-info btn-sm",on:{click:function(t){return e.$router.push("/library/book")}}},[t("i",{staticClass:"fas fa-list"}),e._v(" "),t("span",{staticClass:"d-none d-sm-inline"},[e._v(e._s(e.trans("library.book")))])]),e._v(" "),t("help-button",{on:{clicked:function(t){e.help_topic="book-issue"}}})],1)])])]),e._v(" "),t("div",{staticClass:"container-fluid"},[t("div",{staticClass:"card card-form"},[t("div",{staticClass:"card-body p-t-20"},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-6"},[t("form",{on:{submit:function(t){return t.preventDefault(),e.submit.apply(null,arguments)},keydown:function(t){return e.issueForm.errors.clear(t.target.name)}}},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-12 col-sm-6"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("library.date_of_issue")))]),e._v(" "),t("datepicker",{attrs:{bootstrapStyling:!0,placeholder:e.trans("library.date_of_issue")},on:{selected:function(t){return e.issueForm.errors.clear("date_of_issue")}},model:{value:e.issueForm.date_of_issue,callback:function(t){e.$set(e.issueForm,"date_of_issue",t)},expression:"issueForm.date_of_issue"}}),e._v(" "),t("show-error",{attrs:{"form-name":e.issueForm,"prop-name":"date_of_issue"}})],1)]),e._v(" "),t("div",{staticClass:"col-12 col-md-6"},[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("library.issue_to")))]),e._v(" "),t("div",{staticClass:"row"},[t("div",{staticClass:"col-6"},[t("div",{staticClass:"radio radio-success"},[t("input",{directives:[{name:"model",rawName:"v-model",value:e.issueForm.type,expression:"issueForm.type"}],attrs:{type:"radio",value:"student",id:"type_student",name:"type"},domProps:r({checked:"student"==e.issueForm.type},"checked",e._q(e.issueForm.type,"student")),on:{click:function(t){return e.issueForm.errors.clear("type")},change:function(t){return e.$set(e.issueForm,"type","student")}}}),e._v(" "),t("label",{attrs:{for:"type_student"}},[e._v(e._s(e.trans("student.student")))])])]),e._v(" "),t("div",{staticClass:"col-6"},[t("div",{staticClass:"radio radio-success"},[t("input",{directives:[{name:"model",rawName:"v-model",value:e.issueForm.type,expression:"issueForm.type"}],attrs:{type:"radio",value:"employee",id:"type_employee",name:"type"},domProps:r({checked:"employee"==e.issueForm.type},"checked",e._q(e.issueForm.type,"employee")),on:{click:function(t){return e.issueForm.errors.clear("type")},change:function(t){return e.$set(e.issueForm,"type","employee")}}}),e._v(" "),t("label",{attrs:{for:"type_employee"}},[e._v(e._s(e.trans("employee.employee")))])])])]),e._v(" "),t("show-error",{attrs:{"form-name":e.issueForm,"prop-name":"type"}})],1)]),e._v(" "),t("div",{staticClass:"col-12"},["student"==e.issueForm.type&&e.selected_student?t("div",{staticClass:"m-b-20"},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-6"},[e._v(e._s(e.trans("student.name")+": "+e.getStudentName(e.selected_student)))]),e._v(" "),t("div",{staticClass:"col-6"},[e._v(e._s(e.trans("student.first_guardian_name")+": "+e.getStudentFatherName(e.selected_student))+" "),t("br")]),e._v(" "),t("div",{staticClass:"col-6"},[e._v(e._s(e.trans("academic.batch")+": "+e.selected_student_record.batch.course.name+" "+e.selected_student_record.batch.name))]),e._v(" "),t("div",{staticClass:"col-6"},[e._v(e._s(e.trans("student.contact_number")+": "+e.selected_student.contact_number))])])]):e._e(),e._v(" "),"employee"==e.issueForm.type&&e.selected_employee?t("div",{staticClass:"m-b-20"},[t("div",{staticClass:"row"},[t("div",{staticClass:"col-6"},[e._v(e._s(e.trans("employee.code")+": "+e.getEmployeeCode(e.selected_employee)))]),e._v(" "),t("div",{staticClass:"col-6"},[e._v(e._s(e.trans("employee.name")+": "+e.getEmployeeName(e.selected_employee)))]),e._v(" "),t("div",{staticClass:"col-6"},[e._v(e._s(e.trans("employee.father_name")+": "+e.selected_employee.father_name)+" "),t("br")]),e._v(" "),t("div",{staticClass:"col-6"},[e._v(e._s(e.trans("employee.contact_number")+": "+e.selected_employee.contact_number))])])]):e._e(),e._v(" "),t("div",{staticClass:"form-group"},[t("div",{staticClass:"input-group mb-3"},[t("input",{directives:[{name:"model",rawName:"v-model",value:e.book_number,expression:"book_number"}],staticClass:"form-control",attrs:{type:"text",name:"book_number",placeholder:e.trans("library.book_search_by_number")},domProps:{value:e.book_number},on:{keypress:function(t){return t.type.indexOf("key")||13===t.keyCode?(t.preventDefault(),e.searchBook.apply(null,arguments)):null},input:function(t){t.target.composing||(e.book_number=t.target.value)}}}),e._v(" "),t("div",{staticClass:"input-group-append"},[t("button",{staticClass:"btn btn-info pull-right",attrs:{type:"button"},on:{click:e.searchBook}},[t("i",{staticClass:"fas fa-search"}),e._v(" "+e._s(e.trans("general.search")))])])])]),e._v(" "),e.book_details.length?t("div",{staticClass:"table-responsive"},[t("table",{staticClass:"table table-sm"},[t("thead",[t("tr",[t("th",[e._v(e._s(e.trans("library.book_number")))]),e._v(" "),t("th",[e._v(e._s(e.trans("library.book_title")))]),e._v(" "),t("th",[e._v(e._s(e.trans("library.book_author")))]),e._v(" "),t("th",[e._v(e._s(e.trans("library.book_condition")))]),e._v(" "),t("th")])]),e._v(" "),t("tbody",e._l(e.book_details,(function(s){return t("tr",[t("td",[e._v(e._s(s.number))]),e._v(" "),t("td",[e._v(e._s(s.book_post.book.title))]),e._v(" "),t("td",[e._v(e._s(s.book_post.book.book_author.name))]),e._v(" "),t("td",[e._v(e._s(s.book_condition_id?s.book_condition.name:"-"))]),e._v(" "),t("td",[t("button",{directives:[{name:"confirm",rawName:"v-confirm",value:{ok:e.confirmDelete(s.number)},expression:"{ok: confirmDelete(book_post_detail.number)}"},{name:"tooltip",rawName:"v-tooltip",value:e.trans("library.delete_book"),expression:"trans('library.delete_book')"}],key:s.id,staticClass:"btn btn-danger btn-sm",attrs:{type:"button"}},[t("i",{staticClass:"fas fa-trash"})])])])})),0)])]):e._e()])]),e._v(" "),e.book_details.length?[t("div",{staticClass:"form-group"},[t("label",{attrs:{for:""}},[e._v(e._s(e.trans("library.issue_remarks")))]),e._v(" "),t("autosize-textarea",{attrs:{rows:"1",name:"issue_remarks",placeholder:e.trans("library.issue_remarks")},model:{value:e.issueForm.issue_remarks,callback:function(t){e.$set(e.issueForm,"issue_remarks",t)},expression:"issueForm.issue_remarks"}}),e._v(" "),t("show-error",{attrs:{"form-name":e.issueForm,"prop-name":"issue_remarks"}})],1),e._v(" "),t("div",{staticClass:"form-group"},[t("button",{staticClass:"btn btn-info pull-right",attrs:{type:"submit"}},[e._v(e._s(e.trans("general.save")))])])]:e._e()],2)]),e._v(" "),t("div",{staticClass:"col-12 col-sm-6"},[t("div",{staticClass:"row"},["student"==e.issueForm.type?t("div",{staticClass:"col-12"},[t("div",{staticClass:"form-group"},[t("div",{staticClass:"input-group mb-3"},[t("input",{directives:[{name:"model",rawName:"v-model",value:e.studentFilter.name,expression:"studentFilter.name"}],staticClass:"form-control",attrs:{type:"text",name:"student_name",placeholder:e.trans("student.student_search_by_name")},domProps:{value:e.studentFilter.name},on:{input:function(t){t.target.composing||e.$set(e.studentFilter,"name",t.target.value)}}}),e._v(" "),t("div",{staticClass:"input-group-append"},[t("button",{staticClass:"btn btn-info pull-right",attrs:{type:"button"},on:{click:e.searchStudent}},[t("i",{staticClass:"fas fa-search"}),e._v(" "+e._s(e.trans("general.search")))])])])]),e._v(" "),e.students.total?[t("div",{staticClass:"table-responsive"},[t("table",{staticClass:"table table-sm"},[t("thead",[t("tr",[t("th",[e._v(e._s(e.trans("student.name")))]),e._v(" "),t("th",[e._v(e._s(e.trans("academic.batch")))]),e._v(" "),t("th",[e._v(e._s(e.trans("student.first_guardian_name")))]),e._v(" "),t("th",[e._v(e._s(e.trans("student.contact_number")))]),e._v(" "),t("th")])]),e._v(" "),t("tbody",[e._l(e.students.data,(function(s){return e._l(s.student_records,(function(o){return t("tr",[t("td",[e._v(e._s(e.getStudentName(s)))]),e._v(" "),t("td",[e._v(e._s(o.batch.course.name+" "+o.batch.name))]),e._v(" "),t("td",[e._v(e._s(e.getStudentFatherName(s)))]),e._v(" "),t("td",[e._v(e._s(s.contact_number))]),e._v(" "),t("td",[t("button",{staticClass:"btn btn-sm btn-info",attrs:{type:"button"},on:{click:function(t){return e.selectStudentRecord(s,o)}}},[e._v(e._s(e.trans("student.select_student")))])])])}))}))],2)])]),e._v(" "),t("pagination-record",{attrs:{"page-length":e.studentFilter.page_length,records:e.students},on:{"update:pageLength":function(t){return e.$set(e.studentFilter,"page_length",t)},"update:page-length":function(t){return e.$set(e.studentFilter,"page_length",t)},updateRecords:e.searchStudent}})]:e._e()],2):e._e(),e._v(" "),"employee"==e.issueForm.type?t("div",{staticClass:"col-12"},[t("div",{staticClass:"form-group"},[t("div",{staticClass:"input-group mb-3"},[t("input",{directives:[{name:"model",rawName:"v-model",value:e.employeeFilter.name,expression:"employeeFilter.name"}],staticClass:"form-control",attrs:{type:"text",name:"employee_name",placeholder:e.trans("employee.employee_search_by_name")},domProps:{value:e.employeeFilter.name},on:{input:function(t){t.target.composing||e.$set(e.employeeFilter,"name",t.target.value)}}}),e._v(" "),t("div",{staticClass:"input-group-append"},[t("button",{staticClass:"btn btn-info pull-right",attrs:{type:"button"},on:{click:e.searchEmployee}},[t("i",{staticClass:"fas fa-search"}),e._v(" "+e._s(e.trans("general.search")))])])])]),e._v(" "),e.employees.total?[t("div",{staticClass:"table-responsive"},[t("table",{staticClass:"table table-sm"},[t("thead",[t("tr",[t("th",[e._v(e._s(e.trans("employee.code")))]),e._v(" "),t("th",[e._v(e._s(e.trans("employee.name")))]),e._v(" "),t("th",[e._v(e._s(e.trans("employee.father_name")))]),e._v(" "),t("th",[e._v(e._s(e.trans("employee.contact_number")))]),e._v(" "),t("th")])]),e._v(" "),t("tbody",e._l(e.employees.data,(function(s){return t("tr",[t("td",[e._v(e._s(e.getEmployeeCode(s)))]),e._v(" "),t("td",[e._v(e._s(e.getEmployeeName(s)))]),e._v(" "),t("td",[e._v(e._s(s.father_name))]),e._v(" "),t("td",[e._v(e._s(s.contact_number))]),e._v(" "),t("td",[t("button",{staticClass:"btn btn-sm btn-info",attrs:{type:"button"},on:{click:function(t){return e.selectEmployee(s)}}},[e._v(e._s(e.trans("employee.select_employee")))])])])})),0)])]),e._v(" "),t("pagination-record",{attrs:{"page-length":e.employeeFilter.page_length,records:e.employees},on:{"update:pageLength":function(t){return e.$set(e.employeeFilter,"page_length",t)},"update:page-length":function(t){return e.$set(e.employeeFilter,"page_length",t)},updateRecords:e.searchEmployee}})]:e._e()],2):e._e(),e._v(" "),e.unreturned_books.length?t("div",{staticClass:"col-12 m-b-10"},[t("h4",{staticClass:"card-title"},[e._v(e._s(e.trans("library.unreturned_books")))]),e._v(" "),t("div",{staticClass:"table-responsive"},[t("table",{staticClass:"table table-sm"},[t("thead",[t("tr",[t("th",[e._v(e._s(e.trans("library.book_number")))]),e._v(" "),t("th",[e._v(e._s(e.trans("library.book_title")))]),e._v(" "),t("th",[e._v(e._s(e.trans("library.book_author")))]),e._v(" "),t("th",[e._v(e._s(e.trans("library.date_of_issue")))]),e._v(" "),t("th",[e._v(e._s(e.trans("library.due_date")))])])]),e._v(" "),t("tbody",[e._l(e.unreturned_books,(function(s){return e._l(s.book_log_details,(function(o){return t("tr",[t("td",[e._v(e._s(o.book_post_detail.number))]),e._v(" "),t("td",[e._v(e._s(o.book_post_detail.book_post.book.title))]),e._v(" "),t("td",[e._v(e._s(o.book_post_detail.book_post.book.book_author.name))]),e._v(" "),t("td",[e._v(e._s(e._f("moment")(s.date_of_issue)))]),e._v(" "),t("td",[e._v(e._s(e._f("moment")(s.due_date)))])])}))}))],2)])])]):e._e()])])])])])])])}),[],!1,null,null,null).exports}}]);
+"use strict";
+(self["webpackChunkInstiKit"] = self["webpackChunkInstiKit"] || []).push([["js/library/issueReturn/issue"],{
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/library/issue-return/issue.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/library/issue-return/issue.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {},
+  data: function data() {
+    return {
+      issueForm: new Form({
+        type: 'student',
+        student_id: '',
+        employee_id: '',
+        date_of_issue: '',
+        issue_remarks: '',
+        books: []
+      }),
+      book_details: [],
+      book_number: '',
+      selected_student: null,
+      selected_student_record: null,
+      selected_employee: null,
+      studentFilter: {
+        name: '',
+        page_length: helper.getConfig('page_length')
+      },
+      employeeFilter: {
+        name: '',
+        page_length: helper.getConfig('page_length')
+      },
+      students: {
+        data: [],
+        total: 0
+      },
+      employees: {
+        data: [],
+        total: 0
+      },
+      unreturned_books: []
+    };
+  },
+  mounted: function mounted() {
+    helper.showDemoNotification(['library']);
+    this.issueForm.date_of_issue = moment().format('YYYY-MM-DD');
+  },
+  methods: {
+    getStudentName: function getStudentName(student) {
+      return helper.getStudentName(student);
+    },
+    getStudentFatherName: function getStudentFatherName(student) {
+      return student.parent.first_guardian_name;
+    },
+    getEmployeeName: function getEmployeeName(employee) {
+      return helper.getEmployeeName(employee);
+    },
+    getEmployeeCode: function getEmployeeCode(employee) {
+      return helper.getEmployeeCode(employee);
+    },
+    searchBook: function searchBook() {
+      var _this = this;
+      var loader = this.$loading.show();
+      var date = this.issueForm.date_of_issue;
+      if (!date) {
+        loader.hide();
+        return toastr.error(i18n.library.choose_date_before_adding_book);
+      }
+      if (this.issueForm.books.indexOf(parseInt(this.book_number)) >= 0) {
+        loader.hide();
+        return toastr.error(i18n.library.book_already_added_in_issue_list);
+      }
+      axios.post('/api/book/search/number', {
+        number: this.book_number,
+        date: date
+      }).then(function (response) {
+        _this.issueForm.books.push(response.number);
+        _this.book_details.push(response);
+        _this.book_number = '';
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    searchStudent: function searchStudent(page) {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      var url = helper.getFilterURL(this.studentFilter);
+      axios.get('/api/student/search/name?page=' + page + url).then(function (response) {
+        _this2.students = response;
+        if (!response.total) {
+          loader.hide();
+          return toastr.error(i18n.general.no_search_result_found);
+        }
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    selectStudentRecord: function selectStudentRecord(student, student_record) {
+      this.issueForm.student_id = student.id;
+      this.selected_student = student;
+      this.selected_student_record = student_record;
+      this.students = [];
+      this.studentFilter.name = '';
+      this.getUnreturnedBooks(this.issueForm.type, student_record.id);
+    },
+    searchEmployee: function searchEmployee(page) {
+      var _this3 = this;
+      var loader = this.$loading.show();
+      if (typeof page !== 'number') {
+        page = 1;
+      }
+      var url = helper.getFilterURL(this.employeeFilter);
+      axios.get('/api/employee/search/name?page=' + page + url).then(function (response) {
+        _this3.employees = response;
+        if (!response.total) {
+          loader.hide();
+          return toastr.error(i18n.general.no_search_result_found);
+        }
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    selectEmployee: function selectEmployee(employee) {
+      this.issueForm.employee_id = employee.id;
+      this.selected_employee = employee;
+      this.employees = [];
+      this.employeeFilter.name = '';
+      this.getUnreturnedBooks(this.issueForm.type, employee.id);
+    },
+    getUnreturnedBooks: function getUnreturnedBooks(type, id) {
+      var _this4 = this;
+      var loader = this.$loading.show();
+      axios.post('/api/book/log/unreturned', {
+        id: id,
+        type: type
+      }).then(function (response) {
+        _this4.unreturned_books = response;
+        loader.hide();
+      })["catch"](function (error) {
+        loading.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    confirmDelete: function confirmDelete(number) {
+      var _this5 = this;
+      return function (dialog) {
+        return _this5.deleteBook(number);
+      };
+    },
+    deleteBook: function deleteBook(number) {
+      var idx = this.book_details.findIndex(function (o) {
+        return o.number == number;
+      });
+      this.book_details.splice(idx, 1);
+      idx = this.issueForm.books.indexOf(number);
+      this.issueForm.books.splice(idx, 1);
+    },
+    submit: function submit() {
+      var _this6 = this;
+      var loader = this.$loading.show();
+      this.issueForm.post('/api/book/log').then(function (response) {
+        toastr.success(response.message);
+        _this6.selected_employee = null;
+        _this6.selected_student = null;
+        _this6.selected_student_record = null;
+        _this6.studentFilter.name = '';
+        _this6.employeeFilter.name = '';
+        _this6.students.data = [];
+        _this6.students.total = 0;
+        _this6.employees.data = [];
+        _this6.employees.total = 0;
+        _this6.book_details = [];
+        _this6.unreturned_books = [];
+        _this6.issueForm.type = 'student';
+        _this6.issueForm.books = [];
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    }
+  },
+  watch: {
+    'studentFilter.page_length': function studentFilterPage_length(val) {
+      this.searchStudent();
+    }
+  },
+  filters: {
+    moment: function moment(date) {
+      return helper.formatDate(date);
+    },
+    momentDateTime: function momentDateTime(date) {
+      return helper.formatDateTime(date);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/library/issue-return/issue.vue?vue&type=template&id=0df584c1&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/library/issue-return/issue.vue?vue&type=template&id=0df584c1& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "page-titles"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("h3", {
+    staticClass: "text-themecolor"
+  }, [_vm._v(_vm._s(_vm.trans("library.issue_book")))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "action-buttons pull-right"
+  }, [_c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/library/issue/list");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-book"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("library.issue_list")))])]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-info btn-sm",
+    on: {
+      click: function click($event) {
+        return _vm.$router.push("/library/book");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-list"
+  }), _vm._v(" "), _c("span", {
+    staticClass: "d-none d-sm-inline"
+  }, [_vm._v(_vm._s(_vm.trans("library.book")))])]), _vm._v(" "), _c("help-button", {
+    on: {
+      clicked: function clicked($event) {
+        _vm.help_topic = "book-issue";
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("div", {
+    staticClass: "card card-form"
+  }, [_c("div", {
+    staticClass: "card-body p-t-20"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submit.apply(null, arguments);
+      },
+      keydown: function keydown($event) {
+        return _vm.issueForm.errors.clear($event.target.name);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("library.date_of_issue")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("library.date_of_issue")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.issueForm.errors.clear("date_of_issue");
+      }
+    },
+    model: {
+      value: _vm.issueForm.date_of_issue,
+      callback: function callback($$v) {
+        _vm.$set(_vm.issueForm, "date_of_issue", $$v);
+      },
+      expression: "issueForm.date_of_issue"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.issueForm,
+      "prop-name": "date_of_issue"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-md-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("library.issue_to")))]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-6"
+  }, [_c("div", {
+    staticClass: "radio radio-success"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.issueForm.type,
+      expression: "issueForm.type"
+    }],
+    attrs: {
+      type: "radio",
+      value: "student",
+      id: "type_student",
+      name: "type"
+    },
+    domProps: _defineProperty({
+      checked: _vm.issueForm.type == "student"
+    }, "checked", _vm._q(_vm.issueForm.type, "student")),
+    on: {
+      click: function click($event) {
+        return _vm.issueForm.errors.clear("type");
+      },
+      change: function change($event) {
+        return _vm.$set(_vm.issueForm, "type", "student");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "type_student"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("student.student")))])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_c("div", {
+    staticClass: "radio radio-success"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.issueForm.type,
+      expression: "issueForm.type"
+    }],
+    attrs: {
+      type: "radio",
+      value: "employee",
+      id: "type_employee",
+      name: "type"
+    },
+    domProps: _defineProperty({
+      checked: _vm.issueForm.type == "employee"
+    }, "checked", _vm._q(_vm.issueForm.type, "employee")),
+    on: {
+      click: function click($event) {
+        return _vm.issueForm.errors.clear("type");
+      },
+      change: function change($event) {
+        return _vm.$set(_vm.issueForm, "type", "employee");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "type_employee"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("employee.employee")))])])])]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.issueForm,
+      "prop-name": "type"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12"
+  }, [_vm.issueForm.type == "student" && _vm.selected_student ? _c("div", {
+    staticClass: "m-b-20"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-6"
+  }, [_vm._v(_vm._s(_vm.trans("student.name") + ": " + _vm.getStudentName(_vm.selected_student)))]), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_vm._v(_vm._s(_vm.trans("student.first_guardian_name") + ": " + _vm.getStudentFatherName(_vm.selected_student)) + " "), _c("br")]), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_vm._v(_vm._s(_vm.trans("academic.batch") + ": " + _vm.selected_student_record.batch.course.name + " " + _vm.selected_student_record.batch.name))]), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_vm._v(_vm._s(_vm.trans("student.contact_number") + ": " + _vm.selected_student.contact_number))])])]) : _vm._e(), _vm._v(" "), _vm.issueForm.type == "employee" && _vm.selected_employee ? _c("div", {
+    staticClass: "m-b-20"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-6"
+  }, [_vm._v(_vm._s(_vm.trans("employee.code") + ": " + _vm.getEmployeeCode(_vm.selected_employee)))]), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_vm._v(_vm._s(_vm.trans("employee.name") + ": " + _vm.getEmployeeName(_vm.selected_employee)))]), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_vm._v(_vm._s(_vm.trans("employee.father_name") + ": " + _vm.selected_employee.father_name) + " "), _c("br")]), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_vm._v(_vm._s(_vm.trans("employee.contact_number") + ": " + _vm.selected_employee.contact_number))])])]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "input-group mb-3"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.book_number,
+      expression: "book_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "book_number",
+      placeholder: _vm.trans("library.book_search_by_number")
+    },
+    domProps: {
+      value: _vm.book_number
+    },
+    on: {
+      keypress: function keypress($event) {
+        if (!$event.type.indexOf("key") && $event.keyCode !== 13) return null;
+        $event.preventDefault();
+        return _vm.searchBook.apply(null, arguments);
+      },
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.book_number = $event.target.value;
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "input-group-append"
+  }, [_c("button", {
+    staticClass: "btn btn-info pull-right",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.searchBook
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-search"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.search")))])])])]), _vm._v(" "), _vm.book_details.length ? _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("library.book_number")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("library.book_title")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("library.book_author")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("library.book_condition")))]), _vm._v(" "), _c("th")])]), _vm._v(" "), _c("tbody", _vm._l(_vm.book_details, function (book_post_detail) {
+    return _c("tr", [_c("td", [_vm._v(_vm._s(book_post_detail.number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(book_post_detail.book_post.book.title))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(book_post_detail.book_post.book.book_author.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(book_post_detail.book_condition_id ? book_post_detail.book_condition.name : "-"))]), _vm._v(" "), _c("td", [_c("button", {
+      directives: [{
+        name: "confirm",
+        rawName: "v-confirm",
+        value: {
+          ok: _vm.confirmDelete(book_post_detail.number)
+        },
+        expression: "{ok: confirmDelete(book_post_detail.number)}"
+      }, {
+        name: "tooltip",
+        rawName: "v-tooltip",
+        value: _vm.trans("library.delete_book"),
+        expression: "trans('library.delete_book')"
+      }],
+      key: book_post_detail.id,
+      staticClass: "btn btn-danger btn-sm",
+      attrs: {
+        type: "button"
+      }
+    }, [_c("i", {
+      staticClass: "fas fa-trash"
+    })])])]);
+  }), 0)])]) : _vm._e()])]), _vm._v(" "), _vm.book_details.length ? [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("library.issue_remarks")))]), _vm._v(" "), _c("autosize-textarea", {
+    attrs: {
+      rows: "1",
+      name: "issue_remarks",
+      placeholder: _vm.trans("library.issue_remarks")
+    },
+    model: {
+      value: _vm.issueForm.issue_remarks,
+      callback: function callback($$v) {
+        _vm.$set(_vm.issueForm, "issue_remarks", $$v);
+      },
+      expression: "issueForm.issue_remarks"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.issueForm,
+      "prop-name": "issue_remarks"
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("button", {
+    staticClass: "btn btn-info pull-right",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.save")))])])] : _vm._e()], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_vm.issueForm.type == "student" ? _c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "input-group mb-3"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.studentFilter.name,
+      expression: "studentFilter.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "student_name",
+      placeholder: _vm.trans("student.student_search_by_name")
+    },
+    domProps: {
+      value: _vm.studentFilter.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.studentFilter, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "input-group-append"
+  }, [_c("button", {
+    staticClass: "btn btn-info pull-right",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.searchStudent
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-search"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.search")))])])])]), _vm._v(" "), _vm.students.total ? [_c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("student.name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("academic.batch")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("student.first_guardian_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("student.contact_number")))]), _vm._v(" "), _c("th")])]), _vm._v(" "), _c("tbody", [_vm._l(_vm.students.data, function (student) {
+    return _vm._l(student.student_records, function (student_record) {
+      return _c("tr", [_c("td", [_vm._v(_vm._s(_vm.getStudentName(student)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(student_record.batch.course.name + " " + student_record.batch.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getStudentFatherName(student)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(student.contact_number))]), _vm._v(" "), _c("td", [_c("button", {
+        staticClass: "btn btn-sm btn-info",
+        attrs: {
+          type: "button"
+        },
+        on: {
+          click: function click($event) {
+            return _vm.selectStudentRecord(student, student_record);
+          }
+        }
+      }, [_vm._v(_vm._s(_vm.trans("student.select_student")))])])]);
+    });
+  })], 2)])]), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.studentFilter.page_length,
+      records: _vm.students
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.studentFilter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.studentFilter, "page_length", $event);
+      },
+      updateRecords: _vm.searchStudent
+    }
+  })] : _vm._e()], 2) : _vm._e(), _vm._v(" "), _vm.issueForm.type == "employee" ? _c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "input-group mb-3"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.employeeFilter.name,
+      expression: "employeeFilter.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "employee_name",
+      placeholder: _vm.trans("employee.employee_search_by_name")
+    },
+    domProps: {
+      value: _vm.employeeFilter.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.employeeFilter, "name", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "input-group-append"
+  }, [_c("button", {
+    staticClass: "btn btn-info pull-right",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.searchEmployee
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-search"
+  }), _vm._v(" " + _vm._s(_vm.trans("general.search")))])])])]), _vm._v(" "), _vm.employees.total ? [_c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("employee.code")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.father_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("employee.contact_number")))]), _vm._v(" "), _c("th")])]), _vm._v(" "), _c("tbody", _vm._l(_vm.employees.data, function (employee) {
+    return _c("tr", [_c("td", [_vm._v(_vm._s(_vm.getEmployeeCode(employee)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.getEmployeeName(employee)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(employee.father_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(employee.contact_number))]), _vm._v(" "), _c("td", [_c("button", {
+      staticClass: "btn btn-sm btn-info",
+      attrs: {
+        type: "button"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.selectEmployee(employee);
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.trans("employee.select_employee")))])])]);
+  }), 0)])]), _vm._v(" "), _c("pagination-record", {
+    attrs: {
+      "page-length": _vm.employeeFilter.page_length,
+      records: _vm.employees
+    },
+    on: {
+      "update:pageLength": function updatePageLength($event) {
+        return _vm.$set(_vm.employeeFilter, "page_length", $event);
+      },
+      "update:page-length": function updatePageLength($event) {
+        return _vm.$set(_vm.employeeFilter, "page_length", $event);
+      },
+      updateRecords: _vm.searchEmployee
+    }
+  })] : _vm._e()], 2) : _vm._e(), _vm._v(" "), _vm.unreturned_books.length ? _c("div", {
+    staticClass: "col-12 m-b-10"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("library.unreturned_books")))]), _vm._v(" "), _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("library.book_number")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("library.book_title")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("library.book_author")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("library.date_of_issue")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("library.due_date")))])])]), _vm._v(" "), _c("tbody", [_vm._l(_vm.unreturned_books, function (book_log) {
+    return _vm._l(book_log.book_log_details, function (book_log_detail) {
+      return _c("tr", [_c("td", [_vm._v(_vm._s(book_log_detail.book_post_detail.number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(book_log_detail.book_post_detail.book_post.book.title))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(book_log_detail.book_post_detail.book_post.book.book_author.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("moment")(book_log.date_of_issue)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("moment")(book_log.due_date)))])]);
+    });
+  })], 2)])])]) : _vm._e()])])])])])])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/views/library/issue-return/issue.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/views/library/issue-return/issue.vue ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _issue_vue_vue_type_template_id_0df584c1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./issue.vue?vue&type=template&id=0df584c1& */ "./resources/js/views/library/issue-return/issue.vue?vue&type=template&id=0df584c1&");
+/* harmony import */ var _issue_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./issue.vue?vue&type=script&lang=js& */ "./resources/js/views/library/issue-return/issue.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _issue_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _issue_vue_vue_type_template_id_0df584c1___WEBPACK_IMPORTED_MODULE_0__.render,
+  _issue_vue_vue_type_template_id_0df584c1___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/library/issue-return/issue.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/library/issue-return/issue.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/views/library/issue-return/issue.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_issue_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./issue.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/library/issue-return/issue.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_issue_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/library/issue-return/issue.vue?vue&type=template&id=0df584c1&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/views/library/issue-return/issue.vue?vue&type=template&id=0df584c1& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_issue_vue_vue_type_template_id_0df584c1___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_issue_vue_vue_type_template_id_0df584c1___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_issue_vue_vue_type_template_id_0df584c1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./issue.vue?vue&type=template&id=0df584c1& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/library/issue-return/issue.vue?vue&type=template&id=0df584c1&");
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=issue.js.map?id=8d08f2570a656222
