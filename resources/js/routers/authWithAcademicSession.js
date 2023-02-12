@@ -88,6 +88,10 @@ export default [
         component: () => import(/* webpackChunkName: "js/student/registration/card-view" */ '@views/student/registration/card-view')
     },
     {
+        path: '/student/room/card-view',
+        component: () => import(/* webpackChunkName: "js/student/registration/card-view" */ '@views/student/room/card-view')
+    },
+    {
         path: '/student/registration/:id',
         component: () => import(/* webpackChunkName: "js/student/registration/show" */ '@views/student/registration/show')
     },

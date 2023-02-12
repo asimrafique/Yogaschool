@@ -77,6 +77,14 @@ class StudentFeePaymentController extends Controller
 
         return $this->success(['message' => trans('finance.fee_paid')]);
 	}
+    public function stripePaymentRegister()
+    {
+
+       $this->authorize('makePaymentAsParent', StudentRecord::class);
+         $this->repo->stripePaymentRegister($this->request->all());
+
+        return $this->success(['message' => trans('finance.fee_paid')]);
+    }
 
     /**
      * Process paypal payment
