@@ -1963,7 +1963,13 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-angle-double-right"
-  }), _vm._v(" " + _vm._s(_vm.trans("student.registration")))])], 1) : _vm._e(), _vm._v(" "), (_vm.hasPermission("list-student") || _vm.hasPermission("list-class-teacher-wise-student")) && _vm.showMenu("student_list") ? _c("li", [_c("router-link", {
+  }), _vm._v(" " + _vm._s(_vm.trans("student.registration")))])], 1) : _vm._e(), _vm._v(" "), _vm.hasPermission("list-registration") && _vm.showMenu("registration") ? _c("li", [_c("router-link", {
+    attrs: {
+      to: "/student/room/card-view"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-angle-double-right"
+  }), _vm._v(" Accomodation ")])], 1) : _vm._e(), _vm._v(" "), (_vm.hasPermission("list-student") || _vm.hasPermission("list-class-teacher-wise-student")) && _vm.showMenu("student_list") ? _c("li", [_c("router-link", {
     attrs: {
       to: "/student/card-view"
     }
@@ -3234,4 +3240,4 @@ module.exports = JSON.parse('[{"module":"institute","translation":"institute.ins
 /***/ })
 
 }]);
-//# sourceMappingURL=defaultPage.js.map?id=f9309e73a415d093
+//# sourceMappingURL=defaultPage.js.map?id=e6f43ffd5806b38c

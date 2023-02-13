@@ -1303,7 +1303,7 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("Nabeel easy way ")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("First Guardian Name")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -4405,4 +4405,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=onlineRegistration.js.map?id=af3b753921d91600
+//# sourceMappingURL=onlineRegistration.js.map?id=5285d15195cc8d42

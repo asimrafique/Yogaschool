@@ -50,7 +50,9 @@ __webpack_require__.r(__webpack_exports__);
         floor_number: '',
         building_id: '',
         description: '',
-        type: ''
+        types: '',
+        gender_allotted: '',
+        room_no: ''
       }),
       buildings: [],
       selected_building: null
@@ -98,7 +100,9 @@ __webpack_require__.r(__webpack_exports__);
         _this3.roomForm.building_id = response.room.building_id;
         _this3.selected_building = response.selected_building;
         _this3.roomForm.description = response.room.description;
-        _this3.roomForm.type = response.room.type;
+        _this3.roomForm.types = response.room.types;
+        _this3.roomForm.gender_allotted = response.room.gender_allotted;
+        _this3.roomForm.room_no = response.room.room_no;
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -328,18 +332,53 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("Type")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("Room No")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.roomForm.type,
-      expression: "roomForm.type"
+      value: _vm.roomForm.room_no,
+      expression: "roomForm.room_no"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "room_no",
+      placeholder: "Room No"
+    },
+    domProps: {
+      value: _vm.roomForm.room_no
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.roomForm, "room_no", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.roomForm,
+      "prop-name": "room_no"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("Room Gender")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.roomForm.gender_allotted,
+      expression: "roomForm.gender_allotted"
     }],
     staticClass: "custom-select col-12",
     attrs: {
       required: "",
-      name: "type",
-      id: "type"
+      name: "gender_allotted",
+      id: "gender_allotted"
     },
     on: {
       change: [function ($event) {
@@ -349,9 +388,9 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.$set(_vm.roomForm, "type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.roomForm, "gender_allotted", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }, function ($event) {
-        return _vm.roomForm.errors.clear("type");
+        return _vm.roomForm.errors.clear("gender_allotted");
       }]
     }
   }, [_c("option", {
@@ -360,20 +399,71 @@ var render = function render() {
     }
   }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _c("option", {
     attrs: {
-      value: "Single_room"
+      value: "male"
+    }
+  }, [_vm._v("Male Room")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "female"
+    }
+  }, [_vm._v("Female Room")])]), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.roomForm,
+      "prop-name": "gender_allotted"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("Type")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.roomForm.types,
+      expression: "roomForm.types"
+    }],
+    staticClass: "custom-select col-12",
+    attrs: {
+      required: "",
+      name: "types",
+      id: "types"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.roomForm, "types", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.roomForm.errors.clear("types");
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "single"
     }
   }, [_vm._v("Single room")]), _vm._v(" "), _c("option", {
     attrs: {
-      value: "Double_shared_room"
+      value: "double_shared_room"
     }
   }, [_vm._v("Double shared room")]), _vm._v(" "), _c("option", {
     attrs: {
-      value: "Dormitory"
+      value: "dormitory"
     }
   }, [_vm._v("Dormitory")])]), _vm._v(" "), _c("show-error", {
     attrs: {
       "form-name": _vm.roomForm,
-      "prop-name": "type"
+      "prop-name": "types"
     }
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "col-12 col-sm-8"
@@ -585,4 +675,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=edit.js.map?id=7bdc4d5bc397e4d8
+//# sourceMappingURL=edit.js.map?id=07ea6e11f5b6310c

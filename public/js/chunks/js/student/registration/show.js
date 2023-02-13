@@ -16,6 +16,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['registration'],
   data: function data() {
     return {
+      showPendingForm: true,
       actionForm: new Form({
         status: '',
         room_id: '',
@@ -43,24 +44,56 @@ __webpack_require__.r(__webpack_exports__);
       }],
       transport_circles: [],
       fee_concessions: [],
-      batches: []
+      batches: [],
+      accommodations: []
     };
   },
   mounted: function mounted() {
     this.actionForm.status = this.registration.status;
     this.actionForm.date_of_admission = moment().format();
     this.getPreRequisite();
+    if (helper.hasRole('admin')) {
+      this.showPendingForm = true;
+    } else {
+      this.showPendingForm = false;
+    }
   },
   methods: {
-    getPreRequisite: function getPreRequisite() {
+    getAvailableRoom: function getAvailableRoom(event) {
       var _this = this;
       var loader = this.$loading.show();
-      axios.get('/api/registration/status/pre-requisite').then(function (response) {
+      // axios.get("/api/registration/getAvailableRoom", {
+      //             accommodation: this.registration.student.accommodation,
+      //           })
+      //           .then((resp) => {
+      //           //	loader.hide();
+
+      //           });
+      //
+      //,{
+      //   accommodation: this.registration.student.accommodation,
+      // }
+      axios.post("/api/registration/get-available-room", {
+        accommodation: event.target.value,
+        gender: this.registration.student.gender
+      }).then(function (response) {
         _this.rooms = response.rooms;
-        _this.transport_circles = response.transport_circles;
-        _this.fee_concessions = response.fee_concessions;
-        _this.admission_numbers = response.admission_numbers;
-        _this.actionForm.admission_number_prefix = helper.getConfig('admission_number_prefix');
+        loader.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this2 = this;
+      var loader = this.$loading.show();
+      axios.get('/api/registration/status/pre-requisite').then(function (response) {
+        _this2.rooms = response.rooms;
+        _this2.transport_circles = response.transport_circles;
+        _this2.fee_concessions = response.fee_concessions;
+        _this2.admission_numbers = response.admission_numbers;
+        _this2.accommodations = response.accommodations;
+        _this2.actionForm.admission_number_prefix = helper.getConfig('admission_number_prefix');
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -71,11 +104,12 @@ __webpack_require__.r(__webpack_exports__);
       this.actionForm.room_id = selectedOption.id;
     },
     submit: function submit() {
-      var _this2 = this;
+      var _this3 = this;
       var loader = this.$loading.show();
+      this.actionForm.gender = this.registration.student.gender;
       this.actionForm.post('/api/registration/' + this.registration.id + '/update/status').then(function (response) {
         toastr.success(response.message);
-        _this2.$emit('completed');
+        _this3.$emit('completed');
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -83,7 +117,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     fetchStrength: function fetchStrength() {
-      var _this3 = this;
+      var _this4 = this;
       var loader = this.$loading.show();
       if (!this.actionForm.batch_id) {
         this.batch_current_strength = 0;
@@ -92,7 +126,7 @@ __webpack_require__.r(__webpack_exports__);
       }
       this.actionForm.errors.clear('batch_id');
       axios.post('/api/batch/' + this.actionForm.batch_id + '/strength').then(function (response) {
-        _this3.batch_current_strength = response;
+        _this4.batch_current_strength = response;
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -241,6 +275,8 @@ __webpack_require__.r(__webpack_exports__);
   props: ['registration'],
   data: function data() {
     return {
+      feeSubmissionForRole: true,
+      payment_gateway: '',
       registrationFeeForm: new Form({
         account_id: '',
         payment_method_id: '',
@@ -252,6 +288,13 @@ __webpack_require__.r(__webpack_exports__);
         reference_number: '',
         remarks: ''
       }),
+      stripe: {
+        card_number: '',
+        month: '',
+        year: '',
+        cvc: ''
+      },
+      stripeButton: true,
       selected_account: null,
       accounts: [],
       payment_methods: [],
@@ -261,16 +304,80 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    if (helper.hasRole('admin')) {
+      this.feeSubmissionForRole = true;
+    } else {
+      this.feeSubmissionForRole = false;
+    }
     this.getPreRequisite();
   },
   methods: {
-    getPreRequisite: function getPreRequisite() {
+    getConfig: function getConfig(config) {
+      return helper.getConfig(config);
+    },
+    setPaymentGateway: function setPaymentGateway(gateway) {
+      this.payment_gateway = gateway;
+    },
+    stripeCheckout: function stripeCheckout() {
+      var loader = this.$loading.show();
+      this.stripeButton = false;
+      Stripe.setPublishableKey(this.getConfig('stripe_publishable_key'));
+      Stripe.card.createToken({
+        number: this.stripe.card_number,
+        cvc: this.stripe.cvc,
+        exp_month: this.stripe.month,
+        exp_year: this.stripe.year
+      }, this.stripeResponseHandler);
+      loader.hide();
+    },
+    stripeCheckout1: function stripeCheckout1(gateway) {
       var _this = this;
+      this.registrationFeeForm.account_id = 1;
+      this.registrationFeeForm.instrument_bank_detail = '';
+      this.registrationFeeForm.instrument_clearing_date = '';
+      this.registrationFeeForm.instrument_date = '';
+      this.registrationFeeForm.instrument_number = '';
+      this.registrationFeeForm.payment_method_id = 1;
+      this.registrationFeeForm.reference_number = '';
+      this.registrationFeeForm.remarks = '';
+      this.registrationFeeForm.post('/api/registration/' + this.registration.id + '/fee/payment').then(function (response) {
+        toastr.success(response.message);
+        _this.selected_account = null;
+        _this.$emit('completed');
+        _this.stripeButton = true;
+        _this.$loading.hide();
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+      });
+    },
+    stripeResponseHandler: function stripeResponseHandler(status, response) {
+      var _this2 = this;
+      if (status == 200) {
+        var _loader = this.$loading.show();
+        axios.get('/registration/fee/stripe', {
+          stripeToken: response.id,
+          amount: this.registration.registration_fee * 100,
+          fee: this.registration.registration_fee * 100
+        }).then(function (response) {
+          _this2.stripeCheckout1('stripe');
+        })["catch"](function (error) {
+          _loader.hide();
+          helper.showErrorMsg(error);
+          _this2.stripeButton = true;
+        });
+      } else {
+        toastr.error(response.error.message);
+        this.stripeButton = true;
+      }
+    },
+    getPreRequisite: function getPreRequisite() {
+      var _this3 = this;
       var loader = this.$loading.show();
       axios.get('/api/registration/fee/pre-requisite').then(function (response) {
-        _this.accounts = response.accounts;
-        _this.payment_methods = response.payment_methods;
-        _this.payment_method_details = response.payment_method_details;
+        _this3.accounts = response.accounts;
+        _this3.payment_methods = response.payment_methods;
+        _this3.payment_method_details = response.payment_method_details;
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -297,12 +404,12 @@ __webpack_require__.r(__webpack_exports__);
       return helper.formatCurrency(amount);
     },
     submit: function submit() {
-      var _this2 = this;
+      var _this4 = this;
       var loader = this.$loading.show();
       this.registrationFeeForm.post('/api/registration/' + this.registration.id + '/fee/payment').then(function (response) {
         toastr.success(response.message);
-        _this2.selected_account = null;
-        _this2.$emit('completed');
+        _this4.selected_account = null;
+        _this4.$emit('completed');
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -473,7 +580,21 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "card card-form"
-  }, [_c("div", {
+  }, [_vm.showPendingForm == false && _vm.registration.status == "pending" ? _c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v("Waiting for admin approval")])]) : _vm._e(), _vm._v(" "), _vm.showPendingForm == false && _vm.registration.status == "allotted" ? _c("div", {
+    staticClass: "card-body"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v("Registration Approved")])]) : _vm._e(), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.showPendingForm,
+      expression: "showPendingForm"
+    }],
     staticClass: "card-body"
   }, [_c("h4", {
     staticClass: "card-title"
@@ -838,37 +959,86 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v(_vm._s(_vm.trans("asset.room")))]), _vm._v(" "), _c("v-select", {
+  }, [_vm._v("Accommodation choice")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.actionForm.accommodation,
+      expression: "actionForm.accommodation"
+    }],
+    staticClass: "custom-select col-12",
     attrs: {
-      label: "name",
-      name: "room_id",
-      id: "room_id",
-      options: _vm.rooms,
-      placeholder: _vm.trans("inventory.select_room")
+      name: "accommodation"
     },
     on: {
-      select: _vm.onRoomSelect,
-      close: function close($event) {
-        return _vm.actionForm.errors.clear("room_id");
-      },
-      remove: function remove($event) {
-        _vm.actionForm.room_id = "";
-      }
-    },
-    model: {
-      value: _vm.actionForm.room_id,
-      callback: function callback($$v) {
-        _vm.$set(_vm.actionForm, "room_id", $$v);
-      },
-      expression: "actionForm.room_id"
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.actionForm, "accommodation", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.getAvailableRoom($event);
+      }]
     }
-  }, [!_vm.rooms.length ? _c("div", {
-    staticClass: "multiselect__option",
+  }, [_c("option", {
     attrs: {
-      slot: "afterList"
+      value: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _vm._l(_vm.accommodations, function (accommodation) {
+    return _c("option", {
+      domProps: {
+        value: accommodation.types
+      }
+    }, [_vm._v("\n                      " + _vm._s(accommodation.type_name) + "\n                    ")]);
+  })], 2), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.actionForm,
+      "prop-name": "accommodation"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("asset.room")))]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.actionForm.room_id,
+      expression: "actionForm.room_id"
+    }],
+    staticClass: "custom-select col-12",
+    attrs: {
+      name: "accommodation"
     },
-    slot: "afterList"
-  }, [_vm._v("\n                              " + _vm._s(_vm.trans("general.no_option_found")) + "\n                            ")]) : _vm._e()]), _vm._v(" "), _c("show-error", {
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.actionForm, "room_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _vm._l(_vm.rooms, function (room) {
+    return _c("option", {
+      domProps: {
+        value: room.id
+      }
+    }, [_vm._v("\n                      " + _vm._s(room.name) + "\n                    ")]);
+  })], 2), _vm._v(" "), _c("show-error", {
     attrs: {
       "form-name": _vm.actionForm,
       "prop-name": "room_id"
@@ -1138,7 +1308,317 @@ var render = function render() {
     staticClass: "card-body"
   }, [_c("h4", {
     staticClass: "card-title"
-  }, [_vm._v(_vm._s(_vm.trans("student.pay_registration_fee")) + " " + _vm._s(_vm.formatCurrency(_vm.registration.registration_fee)))]), _vm._v(" "), _c("form", {
+  }, [_vm._v(_vm._s(_vm.trans("student.pay_registration_fee")) + " " + _vm._s(_vm.formatCurrency(_vm.registration.registration_fee)))]), _vm._v(" "), _vm.feeSubmissionForRole == false ? _c("form", {
+    staticStyle: {
+      padding: "1%"
+    },
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submit.apply(null, arguments);
+      },
+      keydown: function keydown($event) {}
+    }
+  }, [_c("div", {
+    staticClass: "table-responsive p-2"
+  }, [_c("table", {
+    staticClass: "table table-bordered"
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("finance.fee_installment")))]), _vm._v(" "), _c("th", {
+    staticClass: "text-right"
+  }, [_vm._v(_vm._s(_vm.trans("finance.installment_total")))]), _vm._v(" "), _c("th", {
+    staticClass: "text-right"
+  }, [_vm._v(_vm._s(_vm.trans("finance.late_fee")))]), _vm._v(" "), _c("th", {
+    staticClass: "text-right"
+  }, [_vm._v(_vm._s(_vm.trans("general.total")))])])]), _vm._v(" "), _c("tbody", [_c("tr", [_c("td", {}, [_vm._v("Course Registration Fee")]), _vm._v(" "), _c("td", {
+    staticClass: "text-right"
+  }, [_vm._v(_vm._s(_vm.formatCurrency(_vm.registration.registration_fee)))]), _vm._v(" "), _c("td", {
+    staticClass: "text-right"
+  }, [_vm._v("\n                                                        0\n                                                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-right",
+    domProps: {
+      textContent: _vm._s(_vm.formatCurrency(_vm.registration.registration_fee))
+    }
+  })])]), _vm._v(" "), _c("tfoot", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("general.total")))]), _vm._v(" "), _c("th", {
+    attrs: {
+      colspan: "2"
+    }
+  }), _vm._v(" "), _c("th", {
+    staticClass: "text-right"
+  }, [_vm._v(_vm._s(_vm.formatCurrency(_vm.registration.registration_fee)))])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v(_vm._s(_vm.trans("finance.date_of_payment")))]), _vm._v(" "), _c("datepicker", {
+    attrs: {
+      bootstrapStyling: true,
+      placeholder: _vm.trans("student.date_of_payment")
+    },
+    on: {
+      selected: function selected($event) {
+        return _vm.registrationFeeForm.errors.clear("date");
+      }
+    },
+    model: {
+      value: _vm.registrationFeeForm.date,
+      callback: function callback($$v) {
+        _vm.$set(_vm.registrationFeeForm, "date", $$v);
+      },
+      expression: "registrationFeeForm.date"
+    }
+  }), _vm._v(" "), _c("show-error", {
+    attrs: {
+      "form-name": _vm.registrationFeeForm,
+      "prop-name": "date"
+    }
+  })], 1)]), _vm._v(" "), _c("div", [_c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.trans("finance.choose_payment_gateway")))]), _vm._v(" "), _vm.getConfig("razorpay") && _vm.razorpay_loaded ? _c("div", {
+    staticClass: "radio radio-success"
+  }, [_c("input", {
+    attrs: {
+      type: "radio",
+      name: "payment_gateway",
+      id: "razorpay",
+      value: "razorpay"
+    },
+    on: {
+      change: function change($event) {
+        return _vm.setPaymentGateway("razorpay");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "razorpay"
+    }
+  }, [_vm._v(" \n                                                Razorpay \n                                            ")])]) : _vm._e(), _vm._v(" "), _vm.getConfig("billdesk") ? _c("div", {
+    staticClass: "radio radio-success"
+  }, [_c("input", {
+    attrs: {
+      type: "radio",
+      name: "payment_gateway",
+      id: "billdesk",
+      value: "billdesk"
+    },
+    on: {
+      change: function change($event) {
+        return _vm.setPaymentGateway("billdesk");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "billdesk"
+    }
+  }, [_vm._v(" Billdesk ")])]) : _vm._e(), _vm._v(" "), _vm.getConfig("stripe") ? _c("div", {
+    staticClass: "radio radio-success"
+  }, [_c("input", {
+    attrs: {
+      type: "radio",
+      name: "payment_gateway",
+      id: "stripe",
+      value: "stripe"
+    },
+    on: {
+      change: function change($event) {
+        return _vm.setPaymentGateway("stripe");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "stripe"
+    }
+  }, [_vm._v(" Stripe ")])]) : _vm._e(), _vm._v(" "), _vm.getConfig("paystack") ? _c("div", {
+    staticClass: "radio radio-success"
+  }, [_c("input", {
+    attrs: {
+      type: "radio",
+      name: "payment_gateway",
+      id: "paystack",
+      value: "paystack"
+    },
+    on: {
+      change: function change($event) {
+        return _vm.setPaymentGateway("paystack");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "paystack"
+    }
+  }, [_vm._v(" Paystack ")])]) : _vm._e(), _vm._v(" "), _vm.getConfig("paypal") ? _c("div", {
+    staticClass: "radio radio-success"
+  }, [_c("input", {
+    attrs: {
+      type: "radio",
+      name: "payment_gateway",
+      id: "paypal",
+      value: "paypal"
+    },
+    on: {
+      change: function change($event) {
+        return _vm.setPaymentGateway("paypal");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "paypal"
+    }
+  }, [_vm._v(" Paypal ")])]) : _vm._e(), _vm._v(" "), _vm.payment_gateway == "billdesk" ? [_c("button", {
+    staticClass: "btn btn-info",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.callBillDesk
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.proceed")))])] : _vm._e(), _vm._v(" "), _vm.payment_gateway == "razorpay" ? [_c("button", {
+    staticClass: "btn btn-info",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.callRazorpay
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.proceed")))])] : _vm._e(), _vm._v(" "), _vm.payment_gateway == "paystack" ? [_c("button", {
+    staticClass: "btn btn-info",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.payWithPaystack
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.proceed")))])] : _vm._e(), _vm._v(" "), _vm.payment_gateway == "paypal" ? [_vm.paypalButton ? _c("button", {
+    staticClass: "btn btn-info",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.callPaypal
+    }
+  }, [_vm._v(_vm._s(_vm.trans("general.proceed")))]) : _vm._e()] : _vm._e(), _vm._v(" "), _vm.payment_gateway == "stripe" ? [_c("div", {
+    staticClass: "row m-t-40"
+  }, [_c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.stripe.card_number,
+      expression: "stripe.card_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "number",
+      maxlength: "16",
+      value: "",
+      placeholder: _vm.trans("finance.card_number")
+    },
+    domProps: {
+      value: _vm.stripe.card_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.stripe, "card_number", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-3"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.stripe.month,
+      expression: "stripe.month"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "number",
+      value: "",
+      placeholder: _vm.trans("finance.card_expiry_month")
+    },
+    domProps: {
+      value: _vm.stripe.month
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.stripe, "month", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.stripe.year,
+      expression: "stripe.year"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "number",
+      value: "",
+      placeholder: _vm.trans("finance.card_expiry_year")
+    },
+    domProps: {
+      value: _vm.stripe.year
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.stripe, "year", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-1"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.stripe.cvc,
+      expression: "stripe.cvc"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "number",
+      value: "",
+      placeholder: _vm.trans("finance.card_cvc")
+    },
+    domProps: {
+      value: _vm.stripe.cvc
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.stripe, "cvc", $event.target.value);
+      }
+    }
+  })])])]), _vm._v(" "), _vm.stripeButton ? _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light pull-right",
+    staticStyle: {
+      "margin-right": "2%"
+    },
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.stripeCheckout
+    }
+  }, [_c("span", [_vm._v(_vm._s(_vm.trans("general.proceed")))])]) : _vm._e()] : _vm._e()], 2)]) : _vm._e(), _vm._v(" "), _vm.feeSubmissionForRole == true ? _c("form", {
     on: {
       submit: function submit($event) {
         $event.preventDefault();
@@ -1462,7 +1942,7 @@ var render = function render() {
     attrs: {
       type: "submit"
     }
-  }, [_vm._v(_vm._s(_vm.trans("general.save")))])])])])]);
+  }, [_vm._v(_vm._s(_vm.trans("general.save")))])])]) : _vm._e()])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -2134,4 +2614,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=show.js.map?id=8be768cf2b5ec1a6
+//# sourceMappingURL=show.js.map?id=ea58ccd691dcefc0
