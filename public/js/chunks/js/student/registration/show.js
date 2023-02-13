@@ -2614,4 +2614,8 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
+<<<<<<< HEAD
 //# sourceMappingURL=show.js.map?id=ea58ccd691dcefc0
+=======
+//# sourceMappingURL=show.js.map?id=0b214de4cebc7ed7
+>>>>>>> master

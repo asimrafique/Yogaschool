@@ -50,7 +50,11 @@ __webpack_require__.r(__webpack_exports__);
         floor_number: '',
         building_id: '',
         description: '',
+<<<<<<< HEAD
         types: '',
+=======
+        type: '',
+>>>>>>> master
         gender_allotted: '',
         room_no: ''
       }),
@@ -675,4 +679,8 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
+<<<<<<< HEAD
 //# sourceMappingURL=edit.js.map?id=07ea6e11f5b6310c
+=======
+//# sourceMappingURL=edit.js.map?id=dae796b3bd429a34
+>>>>>>> master
