@@ -49,14 +49,14 @@
             <div class="col-12 col-sm-4">
                 <div class="form-group">
                   <label for="">Type</label>
-                  <select class="custom-select col-12" required name="type" id="type" v-model="roomForm.type"
-                          @change="roomForm.errors.clear('type')">
+                  <select class="custom-select col-12" required name="types" id="types" v-model="roomForm.types"
+                          @change="roomForm.errors.clear('types')">
                     <option value="">{{ trans('general.select_one') }}</option>
                     <option value="single">Single room</option>
                     <option value="double_shared_room">Double shared room</option>
                     <option value="dormitory">Dormitory</option>
                   </select>
-                  <show-error :form-name="roomForm" prop-name="type"></show-error>
+                  <show-error :form-name="roomForm" prop-name="types"></show-error>
                 </div>
             </div>
 
@@ -89,7 +89,7 @@
                     floor_number: '',
                     building_id: '',
                     description : '',
-                    type : '',
+                    types : '',
                     gender_allotted:'',
                     room_no:''
                 }),
@@ -146,7 +146,9 @@
                         this.roomForm.building_id = response.room.building_id;
                         this.selected_building = response.selected_building;
                         this.roomForm.description = response.room.description;
-                        this.roomForm.type = response.room.type;
+                        this.roomForm.types = response.room.types;
+                         this.roomForm.gender_allotted = response.room.gender_allotted;
+                          this.roomForm.room_no = response.room.room_no;
                         loader.hide();
                     })
                     .catch(error => {

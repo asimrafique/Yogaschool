@@ -262,30 +262,48 @@ class RoomRepository
         $building = $this->building->findOrFail(gv($params, 'building_id'));
 
         $count;
-        if (gv($params, 'type')=='single') {
+        if (gv($params, 'types')=='single') {
             $count=1;
         }
-        if (gv($params, 'type')=='dormitory') {
+        if (gv($params, 'types')=='dormitory') {
             $count=4;
         }
-        if (gv($params, 'type')=='double_shared_room') {
+        if (gv($params, 'types')=='double_shared_room') {
             $count=2;
         }
 
-        $type_name= ucwords(str_replace('_', ' ', gv($params, 'type')));
+        $type_name= ucwords(str_replace('_', ' ', gv($params, 'types')));
       //dd($accommodation);
+        if ($room_id) {
 
-        $formatted = [
+             $formatted = [
+            'name'        => gv($params, 'name'),
+            'description' => gv($params, 'description'),
+            
+            'floor_number' => gv($params, 'floor_number'),
+           
+           
+           
+            'room_no'=> gv($params, 'room_no'),
+            
+        ];
+        }
+        else
+        {
+            $formatted = [
             'name'        => gv($params, 'name'),
             'description' => gv($params, 'description'),
             'building_id' => gv($params, 'building_id'),
             'floor_number' => gv($params, 'floor_number'),
-            'types' => gv($params, 'type'),
+            'types' => gv($params, 'types'),
             'type_name'=>$type_name,
             'reserved_count'=>$count,
             'room_no'=> gv($params, 'room_no'),
             'gender_allotted' => gv($params, 'gender_allotted'),
         ];
+        }
+
+        
         
         $formatted['options'] = [];
 
