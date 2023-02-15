@@ -36,6 +36,7 @@ Route::get('/frontend/calendar/event', 'Frontend\FrontendController@getCalendarE
 Route::get('/frontend/online-registration/pre-requisite', 'Frontend\FrontendController@getOnlineRegistrationPreRequisite');
 Route::get('/frontend/online-registration/getlocationforbatch/{id}', 'Frontend\FrontendController@getLocationForBatch');
 Route::post('/frontend/online-registration', 'Student\RegistrationController@onlineRegistration');
+Route::get('/frontend/online-registration-stripe', 'Student\RegistrationController@stripePaymentRegisterOnline');
 
 
 Route::group(['middleware' => ['auth:api']], function () {

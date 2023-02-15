@@ -443,6 +443,46 @@
             </div>
 
 
+          
+                
+
+
+
+
+                  <div v-show="section7" style="padding: 3%;">
+                                        <h4 class="card-title">{{trans('finance.choose_payment_gateway')}}</h4>
+
+
+                                            <div class="row m-t-40">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="number" maxlength="16" value="" v-model="stripe.card_number" :placeholder="trans('finance.card_number')">
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="number" value="" v-model="stripe.month" :placeholder="trans('finance.card_expiry_month')">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="number" value="" v-model="stripe.year" :placeholder="trans('finance.card_expiry_year')">
+                                                    </div>
+                                                </div>
+                                                <div class="col-1">
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="number" value="" v-model="stripe.cvc" :placeholder="trans('finance.card_cvc')">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           <!--  <button type="button" @click="stripeCheckout" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button> -->
+                                        
+                                    </div>
+            
+
+
 
 
         <div class="form-group">
@@ -452,7 +492,7 @@
           <button v-show="nextBtn" type="button"  @click="nextClick()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
            Next
           </button>
-          <button v-show="submitBtn" type="submit" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
+          <button v-show="submitBtn" type="button"  @click="stripeCheckout()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
             {{ trans('general.submit') }}
           </button>
         </div>
@@ -477,6 +517,7 @@ export default {
       data_to_show: [],
       batches: [],
       checked:false,
+      payment_gateway: '',
       registrationForm: new Form({
         course_id: '',
         batch_id: '',
@@ -536,6 +577,22 @@ export default {
 
 
 
+       stripe: {
+                    card_number: '',
+                    month: '',
+                    year: '',
+                    cvc: ''
+                },
+                stripeButton: true,
+                selected_account: null,
+                accounts: [],
+                payment_methods: [],
+                selected_payment_method: null,
+                payment_method_details: [],
+                payment_method_detail: {},
+
+
+
 
 
      section1:true,
@@ -544,6 +601,7 @@ export default {
      section4:false,
      section5:false,
      section6:false,
+      section7:false,
 
 
      nextBtn:true,
@@ -571,7 +629,7 @@ export default {
   mounted() {
 
      var e1 = document.getElementById("progress-bar");
-    e1.style.width = this.currentIndex*16.6+ "%";
+    e1.style.width = this.currentIndex*14.285+ "%";
     if (!this.getConfig('online_registration')) {
       this.$router.push('/dashboard');
     }
@@ -603,10 +661,50 @@ export default {
 
   },
   methods: {
+    getConfig(config){
+                return helper.getConfig(config);
+            },
+    stripeCheckout(){
+               
+                this.stripeButton = false;
+                Stripe.setPublishableKey("pk_test_UnU1Coi1p5qFGwtpjZMRMgJM");
+                Stripe.card.createToken({
+                    number: this.stripe.card_number,
+                    cvc: this.stripe.cvc,
+                    exp_month: this.stripe.month,
+                    exp_year: this.stripe.year
+                }, this.stripeResponseHandler);
+               
+            },
+            stripeResponseHandler(status, response) {
+                if(status == 200){
+                   
+                    axios.get('/frontend/online-registration-stripe',{
+                            stripeToken: response.id,
+                            amount: 100,
+                            fee: 122,
+                            course_id:this.registrationForm.course_id
+
+                           
+                        })
+                        .then(response => {
+                            this.submit();
+                            
+                        })
+                        .catch(error => {
+                            loader.hide();
+                            helper.showErrorMsg(error);
+                            this.stripeButton = true;
+                        })
+                } else {
+                    toastr.error(response.error.message);
+                    this.stripeButton = true;
+                }
+            },
     progressBarIncDecre(type){
         if (type='next') {
              var e1 = document.getElementById("progress-bar");
-    e1.style.width = this.currentIndex*16.6+ "%";
+    e1.style.width = this.currentIndex*14.285+ "%";
 
         }
         if (type='next') {
@@ -622,7 +720,7 @@ export default {
 
           
 
-         if (this.currentIndex<6 ) {
+         if (this.currentIndex<7 ) {
             if(this.currentIndex==1) 
             {
 
@@ -638,7 +736,7 @@ export default {
             
 
          }
-         if (this.currentIndex==6) {
+         if (this.currentIndex==7) {
             this.endForm=true;
             this.nextBtn=false;
             this.submitBtn=true;
@@ -680,7 +778,7 @@ export default {
         var index;
         var newTrue;
         var skip;
-        for (var i = 1; i < 7; i++) {
+        for (var i = 1; i < 8; i++) {
              var sec='section'+i;
             check= this[sec];
            
@@ -745,7 +843,7 @@ export default {
             loader.hide();
           })
           .catch(error => {
-            loader.hide();
+           loader.hide();
             this.customFieldFormErrors = error;
             console.log('error',error);
             helper.showErrorMsg(error);

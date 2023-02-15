@@ -99,6 +99,15 @@ class RegistrationController extends Controller
 
         return $this->success(['message' => trans('finance.fee_paid')]);
     }
+    public function stripePaymentRegisterOnline()
+    {
+
+       //$this->authorize('list', Registration::class);
+         $this->repo->stripePaymentRegisterOnline($this->request->all());
+
+        return $this->success(['message' => trans('finance.fee_paid')]);
+    }
+    
     public function indexRoom()
     {
         $this->authorize('list', Registration::class);

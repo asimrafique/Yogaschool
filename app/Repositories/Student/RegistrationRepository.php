@@ -260,7 +260,7 @@ class RegistrationRepository
     }
     public function stripePaymentRegister($pharam)
     {
-        dd($params);
+       // dd($params);
         $stripeToken        = gv($params, 'stripeToken');
         
        
@@ -273,6 +273,60 @@ class RegistrationRepository
         try {
             $charge = \Stripe\Charge::create([
                 'amount'   => $amount,
+                'currency' => $currency,
+                'source'   => $stripeToken
+            ]);
+        } catch (Card $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (StripeApi $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (InvalidRequest $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (RateLimit $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (ApiConnection $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+        catch (Authentication $e) {
+            throw ValidationException::withMessages(['message' => $e->getMessage()]);
+        }
+
+        return true;
+    }
+    public function stripePaymentRegisterOnline($pharam)
+    {
+       
+        $stripeToken        = gv($params, 'stripeToken');
+        
+       
+        $amount             = gv($params, 'amount', 0);
+
+        $fee                = gv($params, 'fee');
+        
+        $currency           = getDefaultCurrency()['name'];
+
+
+        $academic_session = $this->academic_session->whereIsDefault(1)->first();
+        $course = $this->course->findOrFailBySessionId($course_id, optional($academic_session)->id, 'course_id');
+
+        $course_options = $course->options;
+
+         $enable_registration = (isset($course_options['enable_registration'])) ? $course_options['enable_registration'] : config('config.enable_registration');
+        $enable_registration_fee = (isset($course_options['enable_registration_fee']) && $course_options['enable_registration_fee']) ? 1 : 0;
+
+
+        $params['registration_fee'] = ($course_options && $enable_registration_fee) ? (gv($course_options, 'registration_fee')) : 0;
+
+
+        \Stripe\Stripe::setApiKey(config('config.stripe_private_key'));
+        dd( $params['registration_fee']);
+        try {
+            $charge = \Stripe\Charge::create([
+                'amount'   => $params['registration_fee'] ,
                 'currency' => $currency,
                 'source'   => $stripeToken
             ]);
