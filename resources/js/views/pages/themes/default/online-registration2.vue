@@ -331,7 +331,7 @@
            <div v-show="section6" style="padding: 3%;">
                 <h2>Other Details</h2>
                 <div class="row" v-show="section6" v-bind:id="'progress-'+6" >
-                  <div class="col-4 ">
+                  <div class="col-6 ">
                     <label for="">How long have you been practicing Yoga?</label>
                     <select v-model="registrationForm.how_long_yoga"
                             name="how_long_yoga"
@@ -345,7 +345,7 @@
 
                     </select>
                   </div>
-                  <div class="col-4">
+                  <div class="col-6">
                     <div class="form-group">
 
 
@@ -363,7 +363,7 @@
                       <show-error :form-name="registrationForm" prop-name="teaching_experience"></show-error>
                     </div>
                   </div>
-                  <div class=" col-4">
+                  <div class=" col-12">
                     <div class="form-group">
                       <label for="">What is your primary reason to join the course? </label>
                       <input type="text"
@@ -373,7 +373,7 @@
                       <show-error :form-name="registrationForm" prop-name="joining_reason"></show-error>
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-12">
                     <div class="form-group ">
                       <label for="">What is important to you in life?</label>
                       <input class="form-control " type="text"
@@ -383,14 +383,14 @@
                     </div>
 
                   </div>
-                  <div class="col-4">
+                  <div class="col-12">
                     <div class="form-group">
                       <label for="">Why did you choose Arhanta Yoga?</label>
                       <input type="text" name="why_choose_us" class="form-control" v-model="registrationForm.why_choose_us">
                       <show-error :form-name="registrationForm" prop-name="why_choose_us"></show-error>
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-12">
                     <div class="form-group">
                       <label for="">How did you hear about us?</label>
                       <input type="text" class="form-control" name="how_hear_about_us"
@@ -426,7 +426,7 @@
 
                     </div>
                   </div>
-                  <div class="col-6" >
+                  <div class="col-12" >
                     <div class="form-group">
                       <label for="">Please list substance and frequency of use</label>
                       <textarea v-model="registrationForm.substance_frequency_of_use" class="form-control" placeholder="add multiple lines"></textarea>
