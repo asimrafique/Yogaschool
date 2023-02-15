@@ -11,421 +11,434 @@
     </div>
 
     <div class="fix-width fix-width-mobile">
+        
       <div class="row" style="background-color: ghostwhite;">
+
         <div class="col-12">
+            <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="progress-bar"></div>
+                    </div> <br>
           <form @submit.prevent="submit" @keydown="registrationForm.errors.clear($event.target.name)">
-            <h2>{{ trans('student.registration_field_info', {name: trans('academic.course')}) }}</h2>
-            <div class="row" v-show="section1" v-bind:id="'progress-'+1" >
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="">{{ trans('academic.course') }}</label>
-                  <v-select label="name" v-model="selected_course" group-values="courses" group-label="course_group"
-                            :group-select="false" name="course_id" id="course_id" :options="courses"
-                            :placeholder="trans('academic.select_course')" @select="onCourseSelect"
-                            @close="registrationForm.errors.clear('course_id')"
-                            @remove="registrationForm.course_id = ''">
-                    <div class="multiselect__option" slot="afterList" v-if="!courses.length">
-                      {{ trans('general.no_option_found') }}
-                    </div>
-                  </v-select>
-                  <span class="help-block"
-                        v-if="registrationForm.course_id && enable_registration_fee && registration_fee >= 0">{{
-                      trans('student.registration_fee')
-                    }} {{ formatCurrency(registration_fee) }}</span>
-                  <show-error :form-name="registrationForm" prop-name="course_id"></show-error>
+            <div v-show="section1" style="padding: 3%;">
+              <h2>{{ trans('student.registration_field_info', {name: trans('academic.course')}) }}</h2>
+              <div class="row" v-show="section1" id="progress-1" >
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="">{{ trans('academic.course') }}</label>
+                    <v-select label="name" v-model="selected_course" group-values="courses" group-label="course_group"
+                              :group-select="false" name="course_id" id="course_id" :options="courses"
+                              :placeholder="trans('academic.select_course')" @select="onCourseSelect"
+                              @close="registrationForm.errors.clear('course_id')"
+                              @remove="registrationForm.course_id = ''">
+                      <div class="multiselect__option" slot="afterList" v-if="!courses.length">
+                        {{ trans('general.no_option_found') }}
+                      </div>
+                    </v-select>
+                    <span class="help-block"
+                          v-if="registrationForm.course_id && enable_registration_fee && registration_fee >= 0">{{
+                        trans('student.registration_fee')
+                      }} {{ formatCurrency(registration_fee) }}</span>
+                    <show-error :form-name="registrationForm" prop-name="course_id"></show-error>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="">Select Course Batches</label>
-                  <select v-model="registrationForm.batch_id" class="custom-select col-12" name="batch_id"
-                          @change="onBatchSelect"  >
-                    <option value="">{{ trans('general.select_one') }}</option>
-                    <option v-for="Batch in batches" v-bind:value="Batch.id">
-                      {{ Batch.name }}
-                    </option>
-                  </select>
-                  <show-error :form-name="registrationForm" prop-name="batch_id"></show-error>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="">Select Course Batches</label>
+                    <select v-model="registrationForm.batch_id" class="custom-select col-12" name="batch_id"
+                            @change="onBatchSelect"  >
+                      <option value="">{{ trans('general.select_one') }}</option>
+                      <option v-for="Batch in batches" v-bind:value="Batch.id">
+                        {{ Batch.name }}
+                      </option>
+                    </select>
+                    <show-error :form-name="registrationForm" prop-name="batch_id"></show-error>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="">Select Course Location</label>
-                  <select v-model="registrationForm.course_location" class="custom-select col-12" name="course_location"
-                          @change="registrationForm.errors.clear('course_location')">
-                    <option value="">{{ trans('general.select_one') }}</option>
-                    <option v-for="course_location in course_locations" v-bind:value="course_location.id">
-                      {{ course_location.name }}
-                    </option>
-                  </select>
-                  <show-error :form-name="registrationForm" prop-name="course_location"></show-error>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="">Select Course Location</label>
+                    <select v-model="registrationForm.course_location" class="custom-select col-12" name="course_location"
+                            @change="registrationForm.errors.clear('course_location')">
+                      <option value="">{{ trans('general.select_one') }}</option>
+                      <option v-for="course_location in course_locations" v-bind:value="course_location.id">
+                        {{ course_location.name }}
+                      </option>
+                    </select>
+                    <show-error :form-name="registrationForm" prop-name="course_location"></show-error>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="">Accommodation choice</label>
-                  <select v-model="registrationForm.accommodation" class="custom-select col-12" name="accommodation"
-                          @change="registrationForm.errors.clear('accommodation')">
-                    <option value="">{{ trans('general.select_one') }}</option>
-                    <option v-for="accommodation in accommodations" v-bind:value="accommodation.id">
-                      {{ accommodation.name }}
-                    </option>
-                  </select>
-                  <show-error :form-name="registrationForm" prop-name="accommodation"></show-error>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="">Accommodation choice</label>
+                    <select v-model="registrationForm.accommodation" class="custom-select col-12" name="accommodation"
+                            @change="registrationForm.errors.clear('accommodation')">
+                      <option value="">{{ trans('general.select_one') }}</option>
+                      <option v-for="accommodation in accommodations" v-bind:value="accommodation.id">
+                        {{ accommodation.name }}
+                      </option>
+                    </select>
+                    <show-error :form-name="registrationForm" prop-name="accommodation"></show-error>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <h2>About You</h2>
-            <div class="row" v-show="section2" v-bind:id="'progress-'+2" >
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.first_name') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.first_name" name="first_name"
-                         :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="first_name"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.middle_name') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.middle_name" name="middle_name"
-                         :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="middle_name"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.last_name') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.last_name" name="last_name"
-                         :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="last_name"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.date_of_birth') }}</label>
-                  <datepicker v-model="registrationForm.date_of_birth" :bootstrapStyling="true"
-                              @selected="registrationForm.errors.clear('date_of_birth')"
-                              :placeholder="trans('student.date_of_birth')"></datepicker>
-                  <show-error :form-name="registrationForm" prop-name="date_of_birth"></show-error>
-                </div>
-              </div>
-
-
-              <div class="col-4 col-4">
-                <div class="form-group">
-                  <label for="">Nationality</label>
-                  <input class="form-control" type="text" v-model="registrationForm.nationality"
-                         name="nationality" placeholder="Your Nationality">
-                  <show-error :form-name="registrationForm" prop-name="nationality"></show-error>
-                </div>
-              </div>
-              <div class="col-4 col-4">
-                <div class="form-group">
-                  <label for="">Your occupation</label>
-                  <input class="form-control" type="text" v-model="registrationForm.occupation"
-                         name="occupation" placeholder="Your Occupation">
-                  <show-error :form-name="registrationForm" prop-name="occupation"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.gender') }}</label>
-                  <div class="radio radio-info p-l-0">
-                    <div class="form-check form-check-inline " v-for="gender in genders">
-                      <input class="form-check-input" type="radio" :value="gender.id" :id="gender.id"
-                             v-model="registrationForm.gender" :checked="registrationForm.gender == gender.id"
-                             name="gender" @click="registrationForm.errors.clear('gender')">
-                      <label class="form-check-label" :for="gender.id">{{ trans('list.' + gender.id) }}</label>
+             <div v-show="section2" style="padding: 3%;">
+                <h2>About You</h2>
+                <div class="row" v-show="section2" id="progress-2" >
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.first_name') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.first_name" name="first_name"
+                             :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="first_name"></show-error>
                     </div>
                   </div>
-                  <show-error :form-name="registrationForm" prop-name="gender"></show-error>
-                </div>
-              </div>
-
-            </div>
-             <h2>Customer Information</h2>
-            <input type="checkbox" id="checkbox" v-model="checked" />
-<label for="checkbox">Already Have an account? (login)</label><br>
-        <!--      <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-  <label for="vehicle1">Already Have an account (please checked)</label> --><br>
-  <div class="row" v-show="section3" v-bind:id="'progress-'+3" >
-    <div class="col-12 col-sm-12">
-                <div class="form-group">
-                  <label for="">Email</label>
-                  <input class="form-control" type="email" v-model="registrationForm.email"
-                         name="email" :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="email"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-12">
-                <div class="form-group">
-                  <label for="">Password </label>
-                  <input class="form-control" type="password" v-model="registrationForm.password"
-                         name="password" :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="password"></show-error>
-                </div>
-              </div>
-               <div class="col-12 col-sm-12" v-show="!checked">
-                <div class="form-group">
-                  <label for="">confirm Password </label>
-                  <input class="form-control" type="password" v-model="registrationForm.password_confirmation"
-                         name="confirm_password" :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="confirm_password"></show-error>
-                </div>
-              </div>
-  </div>
-
-            <h2>{{ trans('student.registration_field_info', {name: trans('student.guardian')}) }}</h2>
-            <div class="row" v-show="section4" v-bind:id="'progress-'+4" >
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">First Guardian Name</label>
-                  <input class="form-control" type="text" v-model="registrationForm.first_guardian_name"
-                         name="first_guardian_name" :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="first_guardian_name"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('general.relation') }}</label>
-                  <select v-model="registrationForm.first_guardian_relation" class="custom-select col-12"
-                          name="first_guardian_relation"
-                          @change="registrationForm.errors.clear('first_guardian_relation')">
-                    <option value="">{{ trans('general.select_one') }}</option>
-                    <option v-for="relation in guardian_relations" v-bind:value="relation.id">
-                      {{ relation.name }}
-                    </option>
-                  </select>
-                  <show-error :form-name="registrationForm" prop-name="first_guardian_relation"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.first_guardian_email') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.first_guardian_email"
-                         name="first_guardian_email" :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="first_guardian_email"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.first_guardian_contact_number') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.first_guardian_contact_number_1"
-                         name="first_guardian_contact_number_1" :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="first_guardian_contact_number_1"></show-error>
-                </div>
-              </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.middle_name') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.middle_name" name="middle_name"
+                             :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="middle_name"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.last_name') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.last_name" name="last_name"
+                             :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="last_name"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.date_of_birth') }}</label>
+                      <datepicker v-model="registrationForm.date_of_birth" :bootstrapStyling="true"
+                                  @selected="registrationForm.errors.clear('date_of_birth')"
+                                  :placeholder="trans('student.date_of_birth')"></datepicker>
+                      <show-error :form-name="registrationForm" prop-name="date_of_birth"></show-error>
+                    </div>
+                  </div>
 
 
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.second_guardian_name') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.second_guardian_name"
-                         name="second_guardian_name" :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="second_guardian_name"></show-error>
+                  <div class="col-4 col-4">
+                    <div class="form-group">
+                      <label for="">Nationality</label>
+                      <input class="form-control" type="text" v-model="registrationForm.nationality"
+                             name="nationality" placeholder="Your Nationality">
+                      <show-error :form-name="registrationForm" prop-name="nationality"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-4 col-4">
+                    <div class="form-group">
+                      <label for="">Your occupation</label>
+                      <input class="form-control" type="text" v-model="registrationForm.occupation"
+                             name="occupation" placeholder="Your Occupation">
+                      <show-error :form-name="registrationForm" prop-name="occupation"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.gender') }}</label>
+                      <div class="radio radio-info p-l-0">
+                        <div class="form-check form-check-inline " v-for="gender in genders">
+                          <input class="form-check-input" type="radio" :value="gender.id" :id="gender.id"
+                                 v-model="registrationForm.gender" :checked="registrationForm.gender == gender.id"
+                                 name="gender" @click="registrationForm.errors.clear('gender')">
+                          <label class="form-check-label" :for="gender.id">{{ trans('list.' + gender.id) }}</label>
+                        </div>
+                      </div>
+                      <show-error :form-name="registrationForm" prop-name="gender"></show-error>
+                    </div>
+                  </div>
+
                 </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.second_guardian_relation') }}</label>
-                  <select v-model="registrationForm.second_guardian_relation" class="custom-select col-12"
-                          name="second_guardian_relation"
-                          @change="registrationForm.errors.clear('second_guardian_relation')">
-                    <option value="">{{ trans('general.select_one') }}</option>
-                    <option v-for="relation in guardian_relations" v-bind:value="relation.id">
-                      {{ relation.name }}
-                    </option>
-                  </select>
-                  <show-error :form-name="registrationForm" prop-name="second_guardian_relation"></show-error>
-                </div>
-              </div>
             </div>
 
+            <div v-show="section3" style="padding: 3%;">
+                <h2>Customer Information</h2>
+                <input type="checkbox" id="checkbox" v-model="checked" />
+                <label for="checkbox">Already Have an account? (login)</label><br><br>
+              <div class="row" v-show="section3" id="progress-3" >
+                <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                              <label for="">Email</label>
+                              <input class="form-control" type="email" v-model="registrationForm.email"
+                                     name="email" :placeholder="trans('student.contact_name')">
+                              <show-error :form-name="registrationForm" prop-name="email"></show-error>
+                            </div>
+                          </div>
+                          <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                              <label for="">Password </label>
+                              <input class="form-control" type="password" v-model="registrationForm.password"
+                                     name="password" :placeholder="trans('student.contact_name')">
+                              <show-error :form-name="registrationForm" prop-name="password"></show-error>
+                            </div>
+                          </div>
+                           <div class="col-12 col-sm-12" v-show="!checked">
+                            <div class="form-group">
+                              <label for="">confirm Password </label>
+                              <input class="form-control" type="password" v-model="registrationForm.password_confirmation"
+                                     name="confirm_password" :placeholder="trans('student.contact_name')">
+                              <show-error :form-name="registrationForm" prop-name="confirm_password"></show-error>
+                            </div>
+                          </div>
+              </div>
+            </div>
+            <div v-show="section4" style="padding: 3%;">
+                <h2>{{ trans('student.registration_field_info', {name: trans('student.guardian')}) }}</h2>
+                <div class="row" v-show="section4" id="progress-4" >
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">First Guardian Name</label>
+                      <input class="form-control" type="text" v-model="registrationForm.first_guardian_name"
+                             name="first_guardian_name" :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="first_guardian_name"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('general.relation') }}</label>
+                      <select v-model="registrationForm.first_guardian_relation" class="custom-select col-12"
+                              name="first_guardian_relation"
+                              @change="registrationForm.errors.clear('first_guardian_relation')">
+                        <option value="">{{ trans('general.select_one') }}</option>
+                        <option v-for="relation in guardian_relations" v-bind:value="relation.id">
+                          {{ relation.name }}
+                        </option>
+                      </select>
+                      <show-error :form-name="registrationForm" prop-name="first_guardian_relation"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.first_guardian_email') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.first_guardian_email"
+                             name="first_guardian_email" :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="first_guardian_email"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.first_guardian_contact_number') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.first_guardian_contact_number_1"
+                             name="first_guardian_contact_number_1" :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="first_guardian_contact_number_1"></show-error>
+                    </div>
+                  </div>
 
 
-            <h2>{{ trans('student.registration_field_info', {name: trans('student.contact')}) }}</h2>
-            <div class="row" v-show="section5" v-bind:id="'progress-'+5" >
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">Email</label>
-                  <input class="form-control" type="text" v-model="registrationForm.email"
-                         name="email" placeholder="Your Email Address">
-                  <show-error :form-name="registrationForm" prop-name="email"></show-error>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.second_guardian_name') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.second_guardian_name"
+                             name="second_guardian_name" :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="second_guardian_name"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.second_guardian_relation') }}</label>
+                      <select v-model="registrationForm.second_guardian_relation" class="custom-select col-12"
+                              name="second_guardian_relation"
+                              @change="registrationForm.errors.clear('second_guardian_relation')">
+                        <option value="">{{ trans('general.select_one') }}</option>
+                        <option v-for="relation in guardian_relations" v-bind:value="relation.id">
+                          {{ relation.name }}
+                        </option>
+                      </select>
+                      <show-error :form-name="registrationForm" prop-name="second_guardian_relation"></show-error>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.contact_number') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.contact_number"
-                         name="contact_number" :placeholder="trans('student.contact_number')">
-                  <show-error :form-name="registrationForm" prop-name="contact_number"></show-error>
-                </div>
-              </div>
+            </div>
 
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.address_line_1') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.address_line_1"
-                         name="address_line_1" :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="address_line_1"></show-error>
-                </div>
-              </div>
 
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.address_line_2') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.address_line_2"
-                         name="address_line_2" :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="address_line_2"></show-error>
+           <div v-show="section5" style="padding: 3%;">
+                <h2>{{ trans('student.registration_field_info', {name: trans('student.contact')}) }}</h2>
+                <div class="row" v-show="section5" v-bind:id="'progress-'+5" >
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">Email</label>
+                      <input class="form-control" type="text" v-model="registrationForm.email"
+                             name="email" placeholder="Your Email Address">
+                      <show-error :form-name="registrationForm" prop-name="email"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.contact_number') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.contact_number"
+                             name="contact_number" :placeholder="trans('student.contact_number')">
+                      <show-error :form-name="registrationForm" prop-name="contact_number"></show-error>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.address_line_1') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.address_line_1"
+                             name="address_line_1" :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="address_line_1"></show-error>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.address_line_2') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.address_line_2"
+                             name="address_line_2" :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="address_line_2"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.city') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.city" name="city"
+                             :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="city"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.state') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.state" name="state"
+                             :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="state"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.zipcode') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.zipcode" name="zipcode"
+                             :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="zipcode"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                      <label for="">{{ trans('student.country') }}</label>
+                      <input class="form-control" type="text" v-model="registrationForm.country" name="country"
+                             :placeholder="trans('student.contact_name')">
+                      <show-error :form-name="registrationForm" prop-name="country"></show-error>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.city') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.city" name="city"
-                         :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="city"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.state') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.state" name="state"
-                         :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="state"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.zipcode') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.zipcode" name="zipcode"
-                         :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="zipcode"></show-error>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="form-group">
-                  <label for="">{{ trans('student.country') }}</label>
-                  <input class="form-control" type="text" v-model="registrationForm.country" name="country"
-                         :placeholder="trans('student.contact_name')">
-                  <show-error :form-name="registrationForm" prop-name="country"></show-error>
-                </div>
-              </div>
             </div>
             <custom-field :fields="custom_fields" :customValues="custom_values" :clear="clearCustomField"
                           :formErrors="customFieldFormErrors" @updateCustomValues="updateCustomValues"></custom-field>
 
+           <div v-show="section6" style="padding: 3%;">
+                <h2>Other Details</h2>
+                <div class="row" v-show="section6" v-bind:id="'progress-'+6" >
+                  <div class="col-4 ">
+                    <label for="">How long have you been practicing Yoga?</label>
+                    <select v-model="registrationForm.how_long_yoga"
+                            name="how_long_yoga"
+                            placeholder="Select one"
+                            class="custom-select col-12"
+                            @change="registrationForm.errors.clear('how_long_yoga')">
+                      <option value="">{{ trans('general.select_one') }}</option>
+                      <option v-for="how_log_option in how_long_yoga_options" v-bind:value="how_log_option.id">
+                        {{ how_log_option.name }}
+                      </option>
 
-            <h2>Other Details</h2>
-            <div class="row" v-show="section6" v-bind:id="'progress-'+6" >
-              <div class="col-4 ">
-                <label for="">How long have you been practicing Yoga?</label>
-                <select v-model="registrationForm.how_long_yoga"
-                        name="how_long_yoga"
-                        placeholder="Select one"
-                        class="custom-select col-12"
-                        @change="registrationForm.errors.clear('how_long_yoga')">
-                  <option value="">{{ trans('general.select_one') }}</option>
-                  <option v-for="how_log_option in how_long_yoga_options" v-bind:value="how_log_option.id">
-                    {{ how_log_option.name }}
-                  </option>
-
-                </select>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
 
 
-                  <label for="">Do you have any experience teaching yoga?</label>
-                  <select v-model="registrationForm.teaching_experience"
-                          name="teaching_experience"
-                          class="custom-select col-12"
-                          @change="registrationForm.errors.clear('teaching_experience')">
-                    <option value="">{{ trans('general.select_one') }}</option>
-                    <option v-for="teaching_experience_option in teaching_experience_options"
-                            v-bind:value="teaching_experience_option.id">
-                      {{ teaching_experience_option.name }}
-                    </option>
-                  </select>
-                  <show-error :form-name="registrationForm" prop-name="teaching_experience"></show-error>
+                      <label for="">Do you have any experience teaching yoga?</label>
+                      <select v-model="registrationForm.teaching_experience"
+                              name="teaching_experience"
+                              class="custom-select col-12"
+                              @change="registrationForm.errors.clear('teaching_experience')">
+                        <option value="">{{ trans('general.select_one') }}</option>
+                        <option v-for="teaching_experience_option in teaching_experience_options"
+                                v-bind:value="teaching_experience_option.id">
+                          {{ teaching_experience_option.name }}
+                        </option>
+                      </select>
+                      <show-error :form-name="registrationForm" prop-name="teaching_experience"></show-error>
+                    </div>
+                  </div>
+                  <div class=" col-4">
+                    <div class="form-group">
+                      <label for="">What is your primary reason to join the course? </label>
+                      <input type="text"
+                             class="form-control"
+                             v-model="registrationForm.joining_reason"
+                             name="joining_reason">
+                      <show-error :form-name="registrationForm" prop-name="joining_reason"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group ">
+                      <label for="">What is important to you in life?</label>
+                      <input class="form-control " type="text"
+                             name="important_to_life"
+                             v-model="registrationForm.important_to_life">
+                      <show-error :form-name="registrationForm" prop-name="important_to_life"></show-error>
+                    </div>
+
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="">Why did you choose Arhanta Yoga?</label>
+                      <input type="text" name="why_choose_us" class="form-control" v-model="registrationForm.why_choose_us">
+                      <show-error :form-name="registrationForm" prop-name="why_choose_us"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="">How did you hear about us?</label>
+                      <input type="text" class="form-control" name="how_hear_about_us"
+                             v-model="registrationForm.how_hear_about_us">
+                      <show-error :form-name="registrationForm" prop-name="how_hear_about_us"></show-error>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class=" col-4">
-                <div class="form-group">
-                  <label for="">What is your primary reason to join the course? </label>
-                  <input type="text"
-                         class="form-control"
-                         v-model="registrationForm.joining_reason"
-                         name="joining_reason">
-                  <show-error :form-name="registrationForm" prop-name="joining_reason"></show-error>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group ">
-                  <label for="">What is important to you in life?</label>
-                  <input class="form-control " type="text"
-                         name="important_to_life"
-                         v-model="registrationForm.important_to_life">
-                  <show-error :form-name="registrationForm" prop-name="important_to_life"></show-error>
-                </div>
+                <div class="row" v-show="section6" v-bind:id="'progress-'+6" >
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="">Please mention in case you have any allergies or special dietary needs:</label>
+                      <br>
+                      <input type="text" name="allergies_dietary_needs" v-model="registrationForm.allergies_dietary_needs"
+                             class="form-control mt-3">
 
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="">Why did you choose Arhanta Yoga?</label>
-                  <input type="text" name="why_choose_us" class="form-control" v-model="registrationForm.why_choose_us">
-                  <show-error :form-name="registrationForm" prop-name="why_choose_us"></show-error>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="">How did you hear about us?</label>
-                  <input type="text" class="form-control" name="how_hear_about_us"
-                         v-model="registrationForm.how_hear_about_us">
-                  <show-error :form-name="registrationForm" prop-name="how_hear_about_us"></show-error>
-                </div>
-              </div>
-            </div>
-            <div class="row" v-show="section6" v-bind:id="'progress-'+6" >
-              <div class="col-12">
-                <div class="form-group">
-                  <label for="">Please mention in case you have any allergies or special dietary needs:</label>
-                  <br>
-                  <input type="text" name="allergies_dietary_needs" v-model="registrationForm.allergies_dietary_needs"
-                         class="form-control mt-3">
+                      <show-error :form-name="registrationForm" prop-name="allergies_dietary_needs"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="">Have you in the last 12 months used tobacco, alcohol, recreational drugs, or illicit
+                        substances?(Required)</label>
+                      <select name="use_drugs" v-model="registrationForm.use_drugs" class="custom-select col-12 "
+                              @change="registrationForm.errors.clear('use_drugs')">
+                        <option value="">{{ trans('general.select_one') }}</option>
+                        <option v-for="use_drugs_option in use_drugs_options" v-bind:value="use_drugs_option.id">
+                          {{ use_drugs_option.name }}
+                        </option>
+                      </select>
 
-                  <show-error :form-name="registrationForm" prop-name="allergies_dietary_needs"></show-error>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="form-group">
-                  <label for="">Have you in the last 12 months used tobacco, alcohol, recreational drugs, or illicit
-                    substances?(Required)</label>
-                  <select name="use_drugs" v-model="registrationForm.use_drugs" class="custom-select col-12 "
-                          @change="registrationForm.errors.clear('use_drugs')">
-                    <option value="">{{ trans('general.select_one') }}</option>
-                    <option v-for="use_drugs_option in use_drugs_options" v-bind:value="use_drugs_option.id">
-                      {{ use_drugs_option.name }}
-                    </option>
-                  </select>
+                      <show-error :form-name="registrationForm" prop-name="use_drugs"></show-error>
 
-                  <show-error :form-name="registrationForm" prop-name="use_drugs"></show-error>
+                    </div>
+                  </div>
+                  <div class="col-6" >
+                    <div class="form-group">
+                      <label for="">Please list substance and frequency of use</label>
+                      <textarea v-model="registrationForm.substance_frequency_of_use" class="form-control" placeholder="add multiple lines"></textarea>
+
+                      <show-error :form-name="registrationForm" prop-name="substance_frequency_of_use"></show-error>
+                      <span class="text-xs">Please note that for any residential courses conducted at the premises of the Arhanta Yoga Ashrams in India and the Netherlands, the use of tobacco, alcohol and any other drugs is strictly prohibited. Please consider carefully before applying that you will be able to discontinue the use of any such substances during the entire duration of your course.</span>
+
+                    </div>
+                  </div>
+
 
                 </div>
-              </div>
-              <div class="col-6" >
-                <div class="form-group">
-                  <label for="">Please list substance and frequency of use</label>
-                  <textarea v-model="registrationForm.substance_frequency_of_use" class="form-control" placeholder="add multiple lines"></textarea>
-
-                  <show-error :form-name="registrationForm" prop-name="substance_frequency_of_use"></show-error>
-                  <span class="text-xs">Please note that for any residential courses conducted at the premises of the Arhanta Yoga Ashrams in India and the Netherlands, the use of tobacco, alcohol and any other drugs is strictly prohibited. Please consider carefully before applying that you will be able to discontinue the use of any such substances during the entire duration of your course.</span>
-
-                </div>
-              </div>
-
 
             </div>
 
@@ -556,6 +569,9 @@ export default {
     }
   },
   mounted() {
+
+     var e1 = document.getElementById("progress-bar");
+    e1.style.width = this.currentIndex*16.6+ "%";
     if (!this.getConfig('online_registration')) {
       this.$router.push('/dashboard');
     }
@@ -587,56 +603,108 @@ export default {
 
   },
   methods: {
-    nextClick(){
-         
+    progressBarIncDecre(type){
+        if (type='next') {
+             var e1 = document.getElementById("progress-bar");
+    e1.style.width = this.currentIndex*16.6+ "%";
 
-         if (this.currentIndex<6) {
-            alert('ho')
-              document.getElementById("progress-"+this.currentIndex).style.display='none;';
+        }
+        if (type='next') {
+             var e1 = document.getElementById("progress-bar");
+    e1.style.width;
+    console.log(e1.style.width);
+
+        }
+       
+
+    },
+    nextClick(){
+
+          
+
+         if (this.currentIndex<6 ) {
+            if(this.currentIndex==1) 
+            {
+
+              this.prevBtn=true;
+            
+            }
+            
+            
             this.currentIndex++;
-            document.getElementById("progress-"+this.currentIndex).style.display='block;';
+            this.progressBarIncDecre('next');
+            this.setVisibility('next');
+           
             
 
          }
          if (this.currentIndex==6) {
             this.endForm=true;
+            this.nextBtn=false;
+            this.submitBtn=true;
 
          }
         if (!this.endForm) {
-      this.setVisibility('next');
+      
         }
 
     },
     previousClick(){
+ 
+
+  
+  
+  if (this.currentIndex>1) {
+    this.currentIndex--;
+    this.progressBarIncDecre('pre');
+    this.setVisibility('previous');
+    this.nextBtn=true;
+    this.submitBtn=false;
+    if(this.currentIndex==1) 
+    {
+
+            this.prevBtn=false;
+          
+    }
+
+  }
+  else
+  {
+    this.prevBtn=false;
+  }
 
     },
     setVisibility(callType)
     {   
         var check;
         var index;
-        // for (var i = 1; i < 7; i++) {
+        var newTrue;
+        var skip;
+        for (var i = 1; i < 7; i++) {
+             var sec='section'+i;
+            check= this[sec];
+           
+           if (check) {
+            this[sec]=false;
+            
+            
 
-        //     check= this.section+i;
-        //    if (check) {
-        //          this.section+i=true;
-        //         this.currentIndex=i;
-        //         if (this.currentIndex==6) {
-        //             this.endForm=true;
+             if (callType=='next') {
+              skip=i+1;
+             }
+             if (callType=='previous') {
+               skip=i-1;
+             }
+             newTrue='section'+skip;
+             this[newTrue]=true;
+             break;
 
-        //         }
-        //         else
-        //         {
-        //             this.currentIndex++;
-        //         }
             
             
-        //    }
-        //    else
-        //    {
-        //      this.section+i=false;
-        //    }
+           }
+           
             
-        // }
+        }
     },
     hideAllSection()
     {
@@ -749,5 +817,83 @@ export default {
   .comma:before {
     content: ", "
   }
+}
+
+
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: lightgrey
+}
+
+#progressbar .active {
+    color: #673AB7
+}
+
+#progressbar li {
+    list-style-type: none;
+    font-size: 15px;
+    width: 25%;
+    float: left;
+    position: relative;
+    font-weight: 400
+}
+
+#progressbar #account:before {
+    font-family: FontAwesome;
+    content: "\f13e"
+}
+
+#progressbar #personal:before {
+    font-family: FontAwesome;
+    content: "\f007"
+}
+
+#progressbar #payment:before {
+    font-family: FontAwesome;
+    content: "\f030"
+}
+
+#progressbar #confirm:before {
+    font-family: FontAwesome;
+    content: "\f00c"
+}
+
+#progressbar li:before {
+    width: 50px;
+    height: 50px;
+    line-height: 45px;
+    display: block;
+    font-size: 20px;
+    color: #ffffff;
+    background: lightgray;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    padding: 2px
+}
+
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: lightgray;
+    position: absolute;
+    left: 0;
+    top: 25px;
+    z-index: -1
+}
+
+#progressbar li.active:before,
+#progressbar li.active:after {
+    background: #673AB7
+}
+
+.progress {
+    height: 20px;
+    margin-top:1%;
+}
+
+.progress-bar {
+    background-color: #594281
 }
 </style>
