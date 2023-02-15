@@ -16,6 +16,10 @@ export default [
         component: () => import(/* webpackChunkName: "js/pages/themes/onlineRegistration" */ '@views/pages/themes/default/online-registration')
     },
     {
+        path: '/online-registration2',
+        component: () => import(/* webpackChunkName: "js/pages/themes/onlineRegistration" */ '@views/pages/themes/default/online-registration2')
+    },
+    {
         path: '/events',
         component: () => import(/* webpackChunkName: "js/pages/themes/events" */ '@views/pages/themes/default/events')
     },
