@@ -87,27 +87,27 @@ class RegistrationController extends Controller
         $registrations = $this->repo->paginate($this->request->all());
 
         $filters = $this->repo->getFilters();
-       
+
 
         return $this->success(compact('registrations', 'filters'));
     }
     public function stripePaymentRegister()
     {
 
-       $this->authorize('list', Registration::class);
-         $this->repo->stripePaymentRegister($this->request->all());
+        $this->authorize('list', Registration::class);
+        $this->repo->stripePaymentRegister($this->request->all());
 
         return $this->success(['message' => trans('finance.fee_paid')]);
     }
     public function stripePaymentRegisterOnline()
     {
 
-       //$this->authorize('list', Registration::class);
-         $this->repo->stripePaymentRegisterOnline($this->request->all());
+        //$this->authorize('list', Registration::class);
+        $this->repo->stripePaymentRegisterOnline($this->request->all());
 
         return $this->success(['message' => trans('finance.fee_paid')]);
     }
-    
+
     public function indexRoom()
     {
         $this->authorize('list', Registration::class);
@@ -115,8 +115,8 @@ class RegistrationController extends Controller
         $registrations = $this->repo->paginate($this->request->all());
 
         $filters = $this->repo->getFilters();
-       // dd($registrations[0]->student_id);
-       $room_alloted = $this->repo->getUserRoom($registrations[0]->student_id);
+        // dd($registrations[0]->student_id);
+        $room_alloted = $this->repo->getUserRoom($registrations[0]->student_id);
         // $room_alloted = null;
 
         return $this->success(compact('registrations', 'filters','room_alloted'));
@@ -165,7 +165,7 @@ class RegistrationController extends Controller
 
         $registration_custom_fields = $this->repo->getRegistrationCustomField();
         $online_registration_custom_fields = $this->repo->getOnlineRegistrationCustomField();
-        
+
         return $this->success(compact('registration','registration_custom_fields','online_registration_custom_fields'));
     }
 
@@ -314,33 +314,56 @@ class RegistrationController extends Controller
     }
 
     public function onlineRegistration(OnlineRegistrationRequest $request)
-    {    
-        
-        //dd($this->request->all());
+    {
+
+        dd($this->request->all());
+        if (request()->get('section_no')!='final') {
+
+            if (request()->get('check') && request()->get('section_no')==2) {
+
+                $credentials = $request->only(['email', 'password']);
+                if (Auth::attempt($credentials)) {
+
+                    return response()->json([
+                        'message' => 'Authentication was successful.',
+                        'user' => Auth::user(),
+                    ], 200);
+                } else {
+                    // Authentication was not successful.
+
+                    return response(['errors'=>['email' => ['The provided credentials are incorrect.']]], 422);
+                }
+
+            }
+            return response()->json([
+                'message' => 'Form '.request()->get('section_no').' is valid',
+
+            ], 200);
+        }
 
         $credentials = $request->only(['email', 'password']);
 //dd($credentials);
         if(request()->get('check'))
         {
             if (Auth::attempt($credentials)) {
-            // Authentication was successful.
+                // Authentication was successful.
                 // return response()->json([
                 //     'message' => 'Authentication was successful.',
                 //     'user' => Auth::user()
                 // ], 200);
             } else {
                 // Authentication was not successful.
-              
-                  return response(['errors'=>['email' => ['The provided credentials are incorrect.']]], 422);
+
+                return response(['errors'=>['email' => ['The provided credentials are incorrect.']]], 422);
             }
         }
 
 
-         //exit;
-         
-$this->repo->onlineRegistration($this->request->all());
+        //exit;
 
-         
+        $this->repo->onlineRegistration($this->request->all());
+
+
 
 
 
