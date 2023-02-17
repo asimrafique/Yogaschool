@@ -649,6 +649,7 @@ class RegistrationRepository
         $options = $registration->options;
         $options['custom_values'] = mergeByKey($registration->getOption('custom_values'), $custom_values);
         $registration->options = $options;
+         $registration->registration_fee_status = 'paid';
         $registration->save();
 
 
