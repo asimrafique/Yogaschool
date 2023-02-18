@@ -327,6 +327,7 @@ class RegistrationController extends Controller
                         return response()->json([
                             'message' => 'Authentication was successful.',
                             'user' => Auth::user(),
+                            'gender'=>Auth::user()->student->gender,
                         ], 200);
                     } else {
                         // Authentication was not successful.

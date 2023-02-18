@@ -28,7 +28,7 @@
                     <v-select label="name" v-model="selected_course" group-values="courses" group-label="course_group"
                               :group-select="false" name="course_id" id="course_id" :options="courses"
                               :placeholder="trans('academic.select_course')" @select="onCourseSelect"
-                              @close="registrationForm.errors.clear('course_id')"
+                              @close="errors.course_id = ''"
                               @remove="registrationForm.course_id = ''">
                       <div class="multiselect__option" slot="afterList" v-if="!courses.length">
                         {{ trans('general.no_option_found') }}
@@ -39,6 +39,7 @@
                         trans('student.registration_fee')
                       }} {{ formatCurrency(registration_fee) }}</span>
                     <show-error :form-name="registrationForm" prop-name="course_id"></show-error>
+                    <span class="help has-error" v-if="Object.keys(errors).includes('course_id')" v-text="errors['course_id'][0]"></span>
                   </div>
                 </div>
                 <div class="col-4">
@@ -93,6 +94,7 @@
                               <input class="form-control" type="email" v-model="registrationForm.email"
                                      name="email" :placeholder="trans('student.contact_name')">
                               <show-error :form-name="registrationForm" prop-name="email"></show-error>
+                              <span class="help has-error" v-if="Object.keys(errors).includes('email')" v-text="errors['email'][0]"></span>
                             </div>
                           </div>
                           <div class="col-12 col-sm-12">
@@ -101,6 +103,7 @@
                               <input class="form-control" type="password" v-model="registrationForm.password"
                                      name="password" :placeholder="trans('student.contact_name')">
                               <show-error :form-name="registrationForm" prop-name="password"></show-error>
+                              <span class="help has-error" v-if="Object.keys(errors).includes('password')" v-text="errors['password'][0]"></span>
                             </div>
                           </div>
                            <div class="col-12 col-sm-12" v-show="!checked">
@@ -124,6 +127,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.first_name" name="first_name"
                              :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="first_name"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('first_name')" v-text="errors['first_name'][0]"></span>
                     </div>
                   </div>
                   <div class="col-12 col-sm-4">
@@ -149,6 +153,7 @@
                                   @selected="registrationForm.errors.clear('date_of_birth')"
                                   :placeholder="trans('student.date_of_birth')"></datepicker>
                       <show-error :form-name="registrationForm" prop-name="date_of_birth"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('date_of_birth')" v-text="errors['date_of_birth'][0]"></span>
                     </div>
                   </div>
 
@@ -181,6 +186,7 @@
                         </div>
                       </div>
                       <show-error :form-name="registrationForm" prop-name="gender"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('gender')" v-text="errors['gender'][0]"></span>
                     </div>
                   </div>
 
@@ -204,6 +210,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.contact_number"
                              name="contact_number" :placeholder="trans('student.contact_number')">
                       <show-error :form-name="registrationForm" prop-name="contact_number"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('contact_number')" v-text="errors['contact_number'][0]"></span>
                     </div>
                   </div>
 
@@ -213,6 +220,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.address_line_1"
                              name="address_line_1" :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="address_line_1"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('address_line_1')" v-text="errors['address_line_1'][0]"></span>
                     </div>
                   </div>
 
@@ -230,6 +238,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.city" name="city"
                              :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="city"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('city')" v-text="errors['city'][0]"></span>
                     </div>
                   </div>
                   <div class="col-12 col-sm-4">
@@ -238,6 +247,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.state" name="state"
                              :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="state"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('state')" v-text="errors['state'][0]"></span>
                     </div>
                   </div>
                   <div class="col-12 col-sm-4">
@@ -246,6 +256,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.zipcode" name="zipcode"
                              :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="zipcode"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('zipcode')" v-text="errors['zipcode'][0]"></span>
                     </div>
                   </div>
                   <div class="col-12 col-sm-4">
@@ -254,6 +265,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.country" name="country"
                              :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="country"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('country')" v-text="errors['country'][0]"></span>
                     </div>
                   </div>
                 </div>
@@ -335,7 +347,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row" v-show="section6" v-bind:id="'progress-'+6" >
+                <div class="row" v-show="section5" v-bind:id="'progress-'+6" >
                   <div class="col-12">
                     <div class="form-group">
                       <label for="">Please mention in case you have any allergies or special dietary needs:</label>
@@ -445,8 +457,21 @@ import registration from "../../../student/registration";
 
 export default {
   components: {},
+  computed:{
+    regis(){
+
+        return this.registrationForm;
+    },
+    computed: {
+        hasName(name) {
+            return this.containsKey(this.errors, name);
+        }
+    }
+  },
+
   data() {
     return {
+
       courses: [],
       genders: [],
       course_details: [],
@@ -495,7 +520,8 @@ export default {
         email:'',
         password:'',
         password_confirmation:'',
-        check:false
+        check:false,
+        
 
       }),
       selected_course: null,
@@ -510,9 +536,10 @@ export default {
       how_long_yoga_options: [],
       teaching_experience_options: [],
       use_drugs_options: [],
+      errors:{},
 
 
-
+course_id:false,
        stripe: {
                     card_number: '',
                     month: '',
@@ -598,6 +625,9 @@ temp:[],
 
   },
   methods: {
+    containsKey(obj, key ) {
+            return Object.keys(obj).includes(key);
+        },
     getConfig(config){
                 return helper.getConfig(config);
             },
@@ -691,16 +721,25 @@ temp:[],
             
             if (response.hasOwnProperty('user')) {
                 console.log(response.user);
+                this.registrationForm.gender=response.gender;
             }
+            this.errors={};
          //   this.registrationForm=this.temp;
           })
           .catch(error => {
            //loader.hide();
-           console.log(error.response);
+           
             self.possible=false;
-           // this.registrationForm.errors=error.response.data.errors;
+         // this.registrationForm.errors.errors.errors=error.response.data.errors;
+         // this.registrationForm=this.regis;
+          this.errors=error.response.data.errors;
+          console.log(this.errors);
+          //this.errors.has('course_id');
+          //  this.registrationForm.errors.errors.message=error.response.data.message;
           // this.customFieldFormErrors.errors = error.response.data.errors;
-
+          // this.regis;
+          // this.course_id=this.registrationForm.errors.has('course_id');
+//console.log(this.errors['course_id'][0]);
 
            //this.registrationForm.errors.errors.errors=error.response.data.errors;
           // this.customFieldFormErrors = error;
@@ -844,7 +883,7 @@ temp:[],
         this.registrationForm.check=false;
        }
        
-      this.registrationForm.post('/api/frontend/online-registration')
+      this.registrationForm.post('/api/frontend/online-registration?section_no=final')
           .then(response => {
             toastr.success(response.message);
             this.selected_course = null;
