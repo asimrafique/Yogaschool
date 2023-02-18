@@ -160,7 +160,7 @@ class StudentParentRepository
      */
     public function create($params)
     {
-        $this->validateInput($params);
+        //$this->validateInput($params);
 
         return $this->student_parent->forceCreate($this->formatParams($params));
     }
@@ -200,13 +200,22 @@ class StudentParentRepository
      */
     private function formatParams($params)
     {
+        // $formatted = [
+        //     'first_guardian_name'             => gv($params, 'first_guardian_name'),
+        //     'first_guardian_relation'         => gv($params, 'first_guardian_relation'),
+        //     'second_guardian_name'            => gv($params, 'second_guardian_name'),
+        //     'second_guardian_relation'        => gv($params, 'second_guardian_relation'),
+        //     'first_guardian_contact_number_1' => gv($params, 'first_guardian_contact_number_1'),
+        //     'first_guardian_email'            => gv($params, 'first_guardian_email'),
+        //     'options'                         => array()
+        // ];
         $formatted = [
-            'first_guardian_name'             => gv($params, 'first_guardian_name'),
-            'first_guardian_relation'         => gv($params, 'first_guardian_relation'),
-            'second_guardian_name'            => gv($params, 'second_guardian_name'),
-            'second_guardian_relation'        => gv($params, 'second_guardian_relation'),
-            'first_guardian_contact_number_1' => gv($params, 'first_guardian_contact_number_1'),
-            'first_guardian_email'            => gv($params, 'first_guardian_email'),
+            'first_guardian_name'             => 'Nabeel',
+            'first_guardian_relation'         => 'father',
+            'second_guardian_name'            =>'aas',
+            'second_guardian_relation'        => 'mother',
+            'first_guardian_contact_number_1' => '003402340234',
+            'first_guardian_email'            => 'rav@gmail.com',
             'options'                         => array()
         ];
 

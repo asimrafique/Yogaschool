@@ -549,7 +549,7 @@ class RegistrationRepository
      */
     public function onlineRegistration($params = array())
     {
-
+//dd('hi');
         if (! config('config.online_registration')) {
             throw ValidationException::withMessages(['message' => trans('general.invalid_action')]);
         }
@@ -577,7 +577,7 @@ class RegistrationRepository
         $custom_values = $this->custom_field->validateCustomValues('student_online_registration', gv($params, 'custom_values', []));
 
         $params['registration_fee'] = ($course_options && $enable_registration_fee) ? (gv($course_options, 'registration_fee')) : 0;
-
+    // dd('hi');
         beginTransaction();
         
         $student_parent = $this->student_parent->getExistingParent($params);
@@ -599,11 +599,14 @@ class RegistrationRepository
 
 
 
-        if ($student_parent && $student && $student->student_parent_id != $student_parent->id) {
-            throw ValidationException::withMessages(['message' => trans('student.parent_detail_mismatch')]);
-        }
+        // if ($student_parent && $student && $student->student_parent_id != $student_parent->id) {
+        //     throw ValidationException::withMessages(['message' => trans('student.parent_detail_mismatch')]);
+        // }
 
-        if (! $student_parent) {
+        // if (! $student_parent) {
+        //     $student_parent = $this->student_parent->create($params);
+        // }
+        if (true) {
             $student_parent = $this->student_parent->create($params);
         }
 

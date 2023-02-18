@@ -93,8 +93,15 @@ return ['course_id'                       => 'required'];
                             
     	];
 }
+
+if (request()->get('section_no')=='final') {
+	return [
+                            
+    	];
+}
 			
 		}
+		dd(request()->get('section_no'));
 
         $relations = implode(',', gv(getVar('list'), 'relations', []));
         $passwordRule='required';
