@@ -28,7 +28,7 @@
                     <v-select label="name" v-model="selected_course" group-values="courses" group-label="course_group"
                               :group-select="false" name="course_id" id="course_id" :options="courses"
                               :placeholder="trans('academic.select_course')" @select="onCourseSelect"
-                              @close="registrationForm.errors.clear('course_id')"
+                              @close="errors.course_id = ''"
                               @remove="registrationForm.course_id = ''">
                       <div class="multiselect__option" slot="afterList" v-if="!courses.length">
                         {{ trans('general.no_option_found') }}
@@ -39,6 +39,7 @@
                         trans('student.registration_fee')
                       }} {{ formatCurrency(registration_fee) }}</span>
                     <show-error :form-name="registrationForm" prop-name="course_id"></show-error>
+                    <span class="help has-error" v-if="Object.keys(errors).includes('course_id')" v-text="errors['course_id'][0]"></span>
                   </div>
                 </div>
                 <div class="col-4">
@@ -83,14 +84,50 @@
               </div>
             </div>
              <div v-show="section2" style="padding: 3%;">
-                <h2>About You</h2>
-                <div class="row" v-show="section2" id="progress-2" >
+                <h2>Customer Information</h2>
+                <input type="checkbox" id="checkbox" v-model="checked" />
+                <label for="checkbox">Already Have an account? (login)</label><br><br>
+              <div class="row" v-show="section2" id="progress-3" >
+                <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                              <label for="">Email</label>
+                              <input class="form-control" type="email" v-model="registrationForm.email"
+                                     name="email" :placeholder="trans('student.contact_name')">
+                              <show-error :form-name="registrationForm" prop-name="email"></show-error>
+                              <span class="help has-error" v-if="Object.keys(errors).includes('email')" v-text="errors['email'][0]"></span>
+                            </div>
+                          </div>
+                          <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                              <label for="">Password </label>
+                              <input class="form-control" type="password" v-model="registrationForm.password"
+                                     name="password" :placeholder="trans('student.contact_name')">
+                              <show-error :form-name="registrationForm" prop-name="password"></show-error>
+                              <span class="help has-error" v-if="Object.keys(errors).includes('password')" v-text="errors['password'][0]"></span>
+                            </div>
+                          </div>
+                           <div class="col-12 col-sm-12" v-show="!checked">
+                            <div class="form-group">
+                              <label for="">confirm Password </label>
+                              <input class="form-control" type="password" v-model="registrationForm.password_confirmation"
+                                     name="confirm_password" :placeholder="trans('student.contact_name')">
+                              <show-error :form-name="registrationForm" prop-name="confirm_password"></show-error>
+                            </div>
+                          </div>
+              </div>
+            </div>
+
+            <div v-show="section3" style="padding: 3%;">
+
+                 <h2>About You</h2>
+                <div class="row" v-show="section3" id="progress-2" >
                   <div class="col-12 col-sm-4">
                     <div class="form-group">
                       <label for="">{{ trans('student.first_name') }}</label>
                       <input class="form-control" type="text" v-model="registrationForm.first_name" name="first_name"
                              :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="first_name"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('first_name')" v-text="errors['first_name'][0]"></span>
                     </div>
                   </div>
                   <div class="col-12 col-sm-4">
@@ -116,6 +153,7 @@
                                   @selected="registrationForm.errors.clear('date_of_birth')"
                                   :placeholder="trans('student.date_of_birth')"></datepicker>
                       <show-error :form-name="registrationForm" prop-name="date_of_birth"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('date_of_birth')" v-text="errors['date_of_birth'][0]"></span>
                     </div>
                   </div>
 
@@ -148,116 +186,17 @@
                         </div>
                       </div>
                       <show-error :form-name="registrationForm" prop-name="gender"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('gender')" v-text="errors['gender'][0]"></span>
                     </div>
                   </div>
 
                 </div>
-            </div>
-
-            <div v-show="section3" style="padding: 3%;">
-                <h2>Customer Information</h2>
-                <input type="checkbox" id="checkbox" v-model="checked" />
-                <label for="checkbox">Already Have an account? (login)</label><br><br>
-              <div class="row" v-show="section3" id="progress-3" >
-                <div class="col-12 col-sm-12">
-                            <div class="form-group">
-                              <label for="">Email</label>
-                              <input class="form-control" type="email" v-model="registrationForm.email"
-                                     name="email" :placeholder="trans('student.contact_name')">
-                              <show-error :form-name="registrationForm" prop-name="email"></show-error>
-                            </div>
-                          </div>
-                          <div class="col-12 col-sm-12">
-                            <div class="form-group">
-                              <label for="">Password </label>
-                              <input class="form-control" type="password" v-model="registrationForm.password"
-                                     name="password" :placeholder="trans('student.contact_name')">
-                              <show-error :form-name="registrationForm" prop-name="password"></show-error>
-                            </div>
-                          </div>
-                           <div class="col-12 col-sm-12" v-show="!checked">
-                            <div class="form-group">
-                              <label for="">confirm Password </label>
-                              <input class="form-control" type="password" v-model="registrationForm.password_confirmation"
-                                     name="confirm_password" :placeholder="trans('student.contact_name')">
-                              <show-error :form-name="registrationForm" prop-name="confirm_password"></show-error>
-                            </div>
-                          </div>
-              </div>
+               
             </div>
             <div v-show="section4" style="padding: 3%;">
-                <h2>{{ trans('student.registration_field_info', {name: trans('student.guardian')}) }}</h2>
-                <div class="row" v-show="section4" id="progress-4" >
-                  <div class="col-12 col-sm-4">
-                    <div class="form-group">
-                      <label for="">First Guardian Name</label>
-                      <input class="form-control" type="text" v-model="registrationForm.first_guardian_name"
-                             name="first_guardian_name" :placeholder="trans('student.contact_name')">
-                      <show-error :form-name="registrationForm" prop-name="first_guardian_name"></show-error>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-4">
-                    <div class="form-group">
-                      <label for="">{{ trans('general.relation') }}</label>
-                      <select v-model="registrationForm.first_guardian_relation" class="custom-select col-12"
-                              name="first_guardian_relation"
-                              @change="registrationForm.errors.clear('first_guardian_relation')">
-                        <option value="">{{ trans('general.select_one') }}</option>
-                        <option v-for="relation in guardian_relations" v-bind:value="relation.id">
-                          {{ relation.name }}
-                        </option>
-                      </select>
-                      <show-error :form-name="registrationForm" prop-name="first_guardian_relation"></show-error>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-4">
-                    <div class="form-group">
-                      <label for="">{{ trans('student.first_guardian_email') }}</label>
-                      <input class="form-control" type="text" v-model="registrationForm.first_guardian_email"
-                             name="first_guardian_email" :placeholder="trans('student.contact_name')">
-                      <show-error :form-name="registrationForm" prop-name="first_guardian_email"></show-error>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-4">
-                    <div class="form-group">
-                      <label for="">{{ trans('student.first_guardian_contact_number') }}</label>
-                      <input class="form-control" type="text" v-model="registrationForm.first_guardian_contact_number_1"
-                             name="first_guardian_contact_number_1" :placeholder="trans('student.contact_name')">
-                      <show-error :form-name="registrationForm" prop-name="first_guardian_contact_number_1"></show-error>
-                    </div>
-                  </div>
-
-
-                  <div class="col-12 col-sm-4">
-                    <div class="form-group">
-                      <label for="">{{ trans('student.second_guardian_name') }}</label>
-                      <input class="form-control" type="text" v-model="registrationForm.second_guardian_name"
-                             name="second_guardian_name" :placeholder="trans('student.contact_name')">
-                      <show-error :form-name="registrationForm" prop-name="second_guardian_name"></show-error>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-4">
-                    <div class="form-group">
-                      <label for="">{{ trans('student.second_guardian_relation') }}</label>
-                      <select v-model="registrationForm.second_guardian_relation" class="custom-select col-12"
-                              name="second_guardian_relation"
-                              @change="registrationForm.errors.clear('second_guardian_relation')">
-                        <option value="">{{ trans('general.select_one') }}</option>
-                        <option v-for="relation in guardian_relations" v-bind:value="relation.id">
-                          {{ relation.name }}
-                        </option>
-                      </select>
-                      <show-error :form-name="registrationForm" prop-name="second_guardian_relation"></show-error>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
-
-           <div v-show="section5" style="padding: 3%;">
-                <h2>{{ trans('student.registration_field_info', {name: trans('student.contact')}) }}</h2>
-                <div class="row" v-show="section5" v-bind:id="'progress-'+5" >
-                  <div class="col-12 col-sm-4">
+              <h2>{{ trans('student.registration_field_info', {name: trans('student.contact')}) }}</h2>
+                <div class="row" v-show="section4" v-bind:id="'progress-'+5" >
+                  <div class="col-12 col-sm-4" v-if="checked==false">
                     <div class="form-group">
                       <label for="">Email</label>
                       <input class="form-control" type="text" v-model="registrationForm.email"
@@ -271,6 +210,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.contact_number"
                              name="contact_number" :placeholder="trans('student.contact_number')">
                       <show-error :form-name="registrationForm" prop-name="contact_number"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('contact_number')" v-text="errors['contact_number'][0]"></span>
                     </div>
                   </div>
 
@@ -280,6 +220,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.address_line_1"
                              name="address_line_1" :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="address_line_1"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('address_line_1')" v-text="errors['address_line_1'][0]"></span>
                     </div>
                   </div>
 
@@ -297,6 +238,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.city" name="city"
                              :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="city"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('city')" v-text="errors['city'][0]"></span>
                     </div>
                   </div>
                   <div class="col-12 col-sm-4">
@@ -305,6 +247,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.state" name="state"
                              :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="state"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('state')" v-text="errors['state'][0]"></span>
                     </div>
                   </div>
                   <div class="col-12 col-sm-4">
@@ -313,6 +256,7 @@
                       <input class="form-control" type="text" v-model="registrationForm.zipcode" name="zipcode"
                              :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="zipcode"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('zipcode')" v-text="errors['zipcode'][0]"></span>
                     </div>
                   </div>
                   <div class="col-12 col-sm-4">
@@ -321,17 +265,21 @@
                       <input class="form-control" type="text" v-model="registrationForm.country" name="country"
                              :placeholder="trans('student.contact_name')">
                       <show-error :form-name="registrationForm" prop-name="country"></show-error>
+                      <span class="help has-error" v-if="Object.keys(errors).includes('country')" v-text="errors['country'][0]"></span>
                     </div>
                   </div>
                 </div>
             </div>
+
+
+           
             <custom-field :fields="custom_fields" :customValues="custom_values" :clear="clearCustomField"
                           :formErrors="customFieldFormErrors" @updateCustomValues="updateCustomValues"></custom-field>
 
-           <div v-show="section6" style="padding: 3%;">
+           <div v-show="section5" style="padding: 3%;">
                 <h2>Other Details</h2>
-                <div class="row" v-show="section6" v-bind:id="'progress-'+6" >
-                  <div class="col-6 ">
+                <div class="row" v-show="section5" v-bind:id="'progress-'+6" >
+                  <div class="col-4 ">
                     <label for="">How long have you been practicing Yoga?</label>
                     <select v-model="registrationForm.how_long_yoga"
                             name="how_long_yoga"
@@ -399,7 +347,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row" v-show="section6" v-bind:id="'progress-'+6" >
+                <div class="row" v-show="section5" v-bind:id="'progress-'+6" >
                   <div class="col-12">
                     <div class="form-group">
                       <label for="">Please mention in case you have any allergies or special dietary needs:</label>
@@ -449,7 +397,7 @@
 
 
 
-                  <div v-show="section7" style="padding: 3%;">
+                  <div v-show="section6" style="padding: 3%;">
                                         <h4 class="card-title">{{trans('finance.choose_payment_gateway')}}</h4>
 
 
@@ -489,9 +437,9 @@
             <button v-show="prevBtn" type="button" @click="previousClick()"class="btn btn-info btn-lg waves-effect waves-light m-t-10">
             Previous
           </button>
-          <button v-show="nextBtn" type="button"  @click="nextClick()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
+          <span v-show="nextBtn" type="button"  @click="nextClick()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
            Next
-          </button>
+          </span>
           <button v-show="submitBtn" type="button"  @click="stripeCheckout()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
             {{ trans('general.submit') }}
           </button>
@@ -509,8 +457,21 @@ import registration from "../../../student/registration";
 
 export default {
   components: {},
+  computed:{
+    regis(){
+
+        return this.registrationForm;
+    },
+    computed: {
+        hasName(name) {
+            return this.containsKey(this.errors, name);
+        }
+    }
+  },
+
   data() {
     return {
+
       courses: [],
       genders: [],
       course_details: [],
@@ -559,7 +520,8 @@ export default {
         email:'',
         password:'',
         password_confirmation:'',
-        check:false
+        check:false,
+        
 
       }),
       selected_course: null,
@@ -574,9 +536,10 @@ export default {
       how_long_yoga_options: [],
       teaching_experience_options: [],
       use_drugs_options: [],
+      errors:{},
 
 
-
+course_id:false,
        stripe: {
                     card_number: '',
                     month: '',
@@ -619,7 +582,8 @@ export default {
 
 
 
-
+possible:false,
+temp:[],
 
 
 
@@ -661,6 +625,9 @@ export default {
 
   },
   methods: {
+    containsKey(obj, key ) {
+            return Object.keys(obj).includes(key);
+        },
     getConfig(config){
                 return helper.getConfig(config);
             },
@@ -704,7 +671,7 @@ export default {
     progressBarIncDecre(type){
         if (type='next') {
              var e1 = document.getElementById("progress-bar");
-    e1.style.width = this.currentIndex*14.285+ "%";
+    e1.style.width = this.currentIndex*16.67+ "%";
 
         }
         if (type='next') {
@@ -716,11 +683,75 @@ export default {
        
 
     },
-    nextClick(){
+    checkValidForm(){
 
-          
 
-         if (this.currentIndex<7 ) {
+
+        this.registrationForm.post('/api/frontend/online-registration?section_no='+this.currentIndex)
+          .then(response => {
+            
+          })
+          .catch(error => {
+           //loader.hide();
+            this.customFieldFormErrors = error;
+            console.log('error',error);
+            helper.showErrorMsg(error);
+          });
+    },
+    async nextClick(){
+
+      
+     //possible= this.checkValidForm();
+     self=this;
+
+     if (this.checked) {
+        this.registrationForm.password_confirmation='';
+        this.registrationForm.check=this.checked;
+       }
+       else
+       {
+        this.registrationForm.check=false;
+       }
+       // this.temp=this.registrationForm;
+       // console.log(this.temp);
+     await  axios.post('/api/frontend/online-registration?section_no='+this.currentIndex,this.registrationForm)
+          .then(response => {
+           // alert(response.message);
+            self.possible=true;
+            
+            if (response.hasOwnProperty('user')) {
+                console.log(response.user);
+                this.registrationForm.gender=response.gender;
+            }
+            this.errors={};
+         //   this.registrationForm=this.temp;
+          })
+          .catch(error => {
+           //loader.hide();
+           
+            self.possible=false;
+         // this.registrationForm.errors.errors.errors=error.response.data.errors;
+         // this.registrationForm=this.regis;
+          this.errors=error.response.data.errors;
+          console.log(this.errors);
+          //this.errors.has('course_id');
+          //  this.registrationForm.errors.errors.message=error.response.data.message;
+          // this.customFieldFormErrors.errors = error.response.data.errors;
+          // this.regis;
+          // this.course_id=this.registrationForm.errors.has('course_id');
+//console.log(this.errors['course_id'][0]);
+
+           //this.registrationForm.errors.errors.errors=error.response.data.errors;
+          // this.customFieldFormErrors = error;
+           // console.log('error',error);
+            //helper.showErrorMsg1(error);
+            // this.registrationForm=this.temp;
+          });
+
+          console.log(this.possible);
+        if (this.possible) {
+
+            if (this.currentIndex<6 ) {
             if(this.currentIndex==1) 
             {
 
@@ -729,22 +760,27 @@ export default {
             }
             
             
-            this.currentIndex++;
+            // this.currentIndex++;
+            // if (this.checked) {
+            //   this.currentIndex++;
+            // }
+             this.setVisibility('next');
             this.progressBarIncDecre('next');
-            this.setVisibility('next');
+           
            
             
 
          }
-         if (this.currentIndex==7) {
+         if (this.currentIndex==6) {
             this.endForm=true;
             this.nextBtn=false;
             this.submitBtn=true;
 
          }
-        if (!this.endForm) {
-      
+
         }
+         
+        
 
     },
     previousClick(){
@@ -753,9 +789,10 @@ export default {
   
   
   if (this.currentIndex>1) {
-    this.currentIndex--;
-    this.progressBarIncDecre('pre');
+
     this.setVisibility('previous');
+    this.progressBarIncDecre('pre');
+   
     this.nextBtn=true;
     this.submitBtn=false;
     if(this.currentIndex==1) 
@@ -778,7 +815,7 @@ export default {
         var index;
         var newTrue;
         var skip;
-        for (var i = 1; i < 8; i++) {
+        for (var i = 1; i < 7; i++) {
              var sec='section'+i;
             check= this[sec];
            
@@ -789,9 +826,20 @@ export default {
 
              if (callType=='next') {
               skip=i+1;
+               this.currentIndex=skip;
+              if (this.checked && skip==3) {
+                skip=skip+1;
+                this.currentIndex=skip;
+              }
              }
              if (callType=='previous') {
                skip=i-1;
+                this.currentIndex=skip;
+                if (this.checked && skip==3) {
+                skip=skip-1;
+                this.currentIndex=skip;
+              }
+
              }
              newTrue='section'+skip;
              this[newTrue]=true;
@@ -835,7 +883,7 @@ export default {
         this.registrationForm.check=false;
        }
        
-      this.registrationForm.post('/api/frontend/online-registration')
+      this.registrationForm.post('/api/frontend/online-registration?section_no=final')
           .then(response => {
             toastr.success(response.message);
             this.selected_course = null;

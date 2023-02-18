@@ -316,7 +316,31 @@ class RegistrationController extends Controller
     public function onlineRegistration(OnlineRegistrationRequest $request)
     {    
         
-        //dd($this->request->all());
+      //  dd($this->request->all());
+        if (request()->get('section_no')!='final') {
+
+            if (request()->get('check') && request()->get('section_no')==2) {
+
+                $credentials = $request->only(['email', 'password']);
+                        if (Auth::attempt($credentials)) {
+                    
+                        return response()->json([
+                            'message' => 'Authentication was successful.',
+                            'user' => Auth::user(),
+                            'gender'=>Auth::user()->student->gender,
+                        ], 200);
+                    } else {
+                        // Authentication was not successful.
+                      
+                          return response(['errors'=>['email' => ['The provided credentials are incorrect.']]], 422);
+                    }
+
+            }
+              return response()->json([
+                    'message' => 'Form '.request()->get('section_no').' is valid',
+                   
+                ], 200);
+        }
 
         $credentials = $request->only(['email', 'password']);
 //dd($credentials);

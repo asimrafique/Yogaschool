@@ -21,6 +21,81 @@ class OnlineRegistrationRequest extends FormRequest {
 	 */
 	public function rules() {
 
+		
+		if (request()->get('section_no')) {
+          $favcolor=request()->get('section_no');
+          
+			switch ($favcolor) {
+  case 1:
+return ['course_id'                       => 'required'];
+ 
+    break;
+  case 2:
+
+  $passwordRule='required';
+        $emailRule='required';
+        if (request()->get('check')==false) {
+            $emailRule='required|email|unique:users,email|max:191';
+            // $phoneRule='required_without_all:email|unique:users,phone|max:191';
+            $passwordRule='required|min:8|max:191|confirmed';
+        }
+        else
+        {   
+        	$emailRule='required|exists:users,email';
+        }
+      return [  'email'                         => $emailRule,
+			'password'                         => $passwordRule];
+  
+    
+    break;
+  case 3:
+    
+
+    if (request()->get('check')==false) {
+    	return [
+             'first_name'                      => 'required|min:2',
+             'date_of_birth'                   => 'required|date',
+             'gender'                          => 'required',
+
+    	];
+    }
+    
+    break;
+    case 4:
+    
+
+   
+    	return [
+             'contact_number'                  => 'required',
+             'address_line_1'                  => 'required',
+            
+             'city'                            => 'required',
+             'state'                           => 'required',
+			'zipcode'                         => 'required',
+			'country'                         => 'required',
+
+    	];
+    
+    
+    break;
+     case 5:
+    
+
+   
+    	return [
+                            
+    	];
+    
+    
+    break;
+  default:
+   return [
+                            
+    	];
+}
+			
+		}
+
         $relations = implode(',', gv(getVar('list'), 'relations', []));
         $passwordRule='required';
         $emailRule='required';
@@ -69,7 +144,7 @@ class OnlineRegistrationRequest extends FormRequest {
 			'last_name'                       => trans('student.last_name'),
 			'date_of_birth'                   => trans('student.date_of_birth'),
 			'contact_number'                  => trans('student.contact_number'),
-			'gender'                          => trans('student.gender'),
+			
 			'first_guardian_name'             => trans('student.first_guardian_name'),
 			'second_guardian_name'            => trans('student.second_guardian_name'),
 			'first_guardian_email'            => trans('student.first_guardian_email'),
