@@ -542,6 +542,7 @@ class StudentRepository
     public function validateStudentForRegistration(Student $student, $params = array())
     {
         $course_id = gv($params, 'course_id');
+       // dd($params);
         $date_of_registration = toDate(gv($params, 'date_of_registration'));
 
         $existing_student = $this->student_record->filterBySession()->where('student_id', $student->id)->whereHas('batch', function($q) use($course_id) {
@@ -551,9 +552,10 @@ class StudentRepository
                 $q2->whereNotNull('date_of_exit')->where('date_of_exit', '>=', $date_of_registration);
             });
         })->first();
-
+       //  dd($course_id,$existing_student);
         if ($existing_student) {
-            throw ValidationException::withMessages(['message' => trans('student.could_not_find_for_registration')]);
+            //trans('student.could_not_find_for_registration')
+            throw ValidationException::withMessages(['message' => 'Student Already enrolled in same  course']);
         }
     }
 

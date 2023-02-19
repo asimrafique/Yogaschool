@@ -165,6 +165,14 @@ class RegistrationRepository
             throw ValidationException::withMessages([$field => trans('student.could_not_find_registration')]);
         }
 
+        $registration['batch'] = $this->batch->findBatch($registration->batch_id);
+        if ($registration['batch']!=null) {
+       //   $registration['batch_id']=$registration->batch_id;
+       //   $registration['batch']->name='';
+          # code...
+        }
+       // dd($registration['batch']);
+
         return $registration;
     }
 
@@ -843,6 +851,7 @@ class RegistrationRepository
             if (! dateLessThanSessionEnd($date_of_admission)) {
                 throw ValidationException::withMessages(['date_of_admission' => trans('academic.date_less_than_session_end')]);
             }
+           // dd('df');
 
             return $this->allotRegistration($params, $registration);
         }
@@ -898,8 +907,10 @@ class RegistrationRepository
 
         $student_id =$registration->Student->id;
         $bookedRoomChecked=$this->room->checkRoomBookedBySameUser($student_id);
-
-        if ($bookedRoomChecked) {
+         //dd(gv($params, 'room_id'));
+        $check_room=gv($params, 'room_id');
+        //dd($check_room);
+        if ($bookedRoomChecked &&  $check_room) {
             throw ValidationException::withMessages(['room_id' => 'User Already Booked Room']);
         }
 
@@ -953,6 +964,7 @@ class RegistrationRepository
         $this->student_fee_record->insert($installments);
 
         $registration->status = 'allotted';
+      $registration->batch_id = gv($params, 'batch_id');
         $registration->save();
 
         \DB::commit();

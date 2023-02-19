@@ -15,6 +15,7 @@ class Registration extends Model
                             'date_of_registration',
                             'registration_remarks',
                             'course_id',
+                            'batch_id',
                             'registration_fee_status',
                             'status',
                             'review_remarks',
