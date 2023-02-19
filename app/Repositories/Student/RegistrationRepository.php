@@ -843,6 +843,7 @@ class RegistrationRepository
             if (! dateLessThanSessionEnd($date_of_admission)) {
                 throw ValidationException::withMessages(['date_of_admission' => trans('academic.date_less_than_session_end')]);
             }
+           // dd('df');
 
             return $this->allotRegistration($params, $registration);
         }
@@ -898,8 +899,10 @@ class RegistrationRepository
 
         $student_id =$registration->Student->id;
         $bookedRoomChecked=$this->room->checkRoomBookedBySameUser($student_id);
-
-        if ($bookedRoomChecked) {
+         //dd(gv($params, 'room_id'));
+        $check_room=gv($params, 'room_id');
+        //dd($check_room);
+        if ($bookedRoomChecked &&  $check_room) {
             throw ValidationException::withMessages(['room_id' => 'User Already Booked Room']);
         }
 
