@@ -61,12 +61,11 @@
                                                 {{registration.course.name+' '+getSession}}
                                             </td>
                                         </tr>
-                                        <tr >
+                                        <tr v-show="batchStatus">
                                             <td>{{trans('academic.batch')}}</td>
-                                            <td  v-if="batchStatus==true">{{registration.batch.name}}
+                                            <td  >{{registration.batch.name}}
                                             </td>
-                                            <td  v-if="batchStatus==false">
-                                            </td>
+                                            
                                         </tr>
                                         <tr v-if="registration.status == 'allotted'">
                                             <td>{{trans('academic.batch')}}</td>
@@ -368,11 +367,10 @@
                         this.transaction = (response.registration.transactions.length) ? response.registration.transactions[0] : null;
                         if (response.registration.status=="pending") {
                             
-                            if (response.batch_id!=null) {
+                            if (this.registration.batch_id) {
                               this.batch_status=true;
                             }
-                            else
-                                {this.batch_status=false;}
+                            
                             
                         }
                         else
