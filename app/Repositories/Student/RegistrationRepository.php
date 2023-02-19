@@ -661,6 +661,7 @@ class RegistrationRepository
         $options['custom_values'] = mergeByKey($registration->getOption('custom_values'), $custom_values);
         $registration->options = $options;
          $registration->registration_fee_status = 'paid';
+         $registration->batch_id = gv($params, 'batch_id');
         $registration->save();
 
 
@@ -964,7 +965,7 @@ class RegistrationRepository
         $this->student_fee_record->insert($installments);
 
         $registration->status = 'allotted';
-      $registration->batch_id = gv($params, 'batch_id');
+     // $registration->batch_id = gv($params, 'batch_id');
         $registration->save();
 
         \DB::commit();
