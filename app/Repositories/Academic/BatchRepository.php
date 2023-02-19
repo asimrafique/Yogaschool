@@ -145,6 +145,13 @@ class BatchRepository
     {
         return $this->batch->with('course','grade','observation')->filterBySession()->filterById($id)->first();
     }
+    public function findBatch($id)
+    {   
+
+
+        //dd($this->batch->where('id',$id)->first());
+        return $this->batch->where('id',$id)->first();
+    }
 
     /**
      * Find batch with given id or throw an error.

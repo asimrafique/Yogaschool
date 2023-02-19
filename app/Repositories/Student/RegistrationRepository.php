@@ -165,6 +165,14 @@ class RegistrationRepository
             throw ValidationException::withMessages([$field => trans('student.could_not_find_registration')]);
         }
 
+        $registration['batch'] = $this->batch->findBatch($registration->batch_id);
+        if ($registration['batch']!=null) {
+       //   $registration['batch_id']=$registration->batch_id;
+       //   $registration['batch']->name='';
+          # code...
+        }
+       // dd($registration['batch']);
+
         return $registration;
     }
 
@@ -956,6 +964,7 @@ class RegistrationRepository
         $this->student_fee_record->insert($installments);
 
         $registration->status = 'allotted';
+      $registration->batch_id = gv($params, 'batch_id');
         $registration->save();
 
         \DB::commit();

@@ -61,6 +61,13 @@
                                                 {{registration.course.name+' '+getSession}}
                                             </td>
                                         </tr>
+                                        <tr >
+                                            <td>{{trans('academic.batch')}}</td>
+                                            <td  v-if="batchStatus==true">{{registration.batch.name}}
+                                            </td>
+                                            <td  v-if="batchStatus==false">
+                                            </td>
+                                        </tr>
                                         <tr v-if="registration.status == 'allotted'">
                                             <td>{{trans('academic.batch')}}</td>
                                             <td>{{registration.admission.batch.name}}
@@ -338,6 +345,7 @@
                 online_registration_custom_fields: [],
                 editModal: false,
                 showReceiptModal: false,
+                batch_status:false
 
             }
         },
@@ -358,6 +366,20 @@
                         this.online_registration_custom_fields = response.online_registration_custom_fields;
                         this.registration = response.registration;
                         this.transaction = (response.registration.transactions.length) ? response.registration.transactions[0] : null;
+                        if (response.registration.status=="pending") {
+                            
+                            if (response.batch_id!=null) {
+                              this.batch_status=true;
+                            }
+                            else
+                                {this.batch_status=false;}
+                            
+                        }
+                        else
+                        {
+                            this.batch_status=false;
+                        }
+                        
                         loader.hide();
         			})
         			.catch(error => {
@@ -432,7 +454,10 @@
         computed:{
         	getSession(){
         		return helper.getDefaultAcademicSession().name;
-        	}
+        	},
+            batchStatus(){
+                return this.batch_status;
+            }
         },
         filters: {
           moment(date) {
