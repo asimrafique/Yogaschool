@@ -273,9 +273,7 @@
 
 
            
-            <custom-field :fields="custom_fields" :customValues="custom_values" :clear="clearCustomField"
-                          :formErrors="customFieldFormErrors" @updateCustomValues="updateCustomValues"></custom-field>
-
+            
            <div v-show="section5" style="padding: 3%;">
                 <h2>Other Details</h2>
                 <div class="row" v-show="section5" v-bind:id="'progress-'+6" >
@@ -387,6 +385,9 @@
 
 
                 </div>
+                <custom-field :fields="custom_fields" :customValues="custom_values" :clear="clearCustomField"
+                          :formErrors="customFieldFormErrors" @updateCustomValues="updateCustomValues"></custom-field>
+
 
             </div>
 
@@ -425,6 +426,33 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                           <!--  <button type="button" @click="stripeCheckout" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button> -->
+                                        
+                                    </div>
+
+                                    <div v-show="section7" style="padding: 3%;">
+
+                                        
+                                        <div class="purchase-message">
+                                          <div class="container">
+                                            <div class="row">
+                                              <div class="col-lg-12">
+                                                <div class="purchase-success">
+                                                  <div class="icon text-success" style="margin-left: 50%;"><i class="far fa-check-circle"></i></div>
+                                                  <h2 style="margin-left: 42%;">Success</h2>
+                                                  
+                                                    <p style="margin-left: 38%;">Your transaction was successful.</p>
+                                                  
+
+                                                  <p style="margin-left: 34%;">We have sent you a mail with an invoice.</p>
+
+                                                
+                                                  <p class="mt-4" style="margin-left: 47%;">Thank You.</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
                                            <!--  <button type="button" @click="stripeCheckout" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button> -->
                                         
                                     </div>
@@ -889,6 +917,11 @@ temp:[],
             this.selected_course = null;
             this.clearCustomField = true;
             loader.hide();
+            this.section6=false;
+            this.section7=true;
+            this.prevBtn=false;
+            this.submitBtn=false;
+            this.nextBtn=false;
           })
           .catch(error => {
            loader.hide();
@@ -959,6 +992,39 @@ temp:[],
 </script>
 
 <style lang="scss">
+.purchase-message {
+    padding: 120px 0px;
+    max-width: 780px;
+    margin: 0 auto;
+}
+.purchase-success .icon {
+    display: block;
+    margin-bottom: 20px;
+}
+.text-success {
+    color: #28a745!important;
+}
+.purchase-success .icon i {
+    font-size: 60px;
+}
+
+.far {
+    font-weight: 400;
+}
+
+.purchase-success h2 {
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.purchase-success h2 {
+    color: #0F172B;
+    font-size: 36px;
+}
+
+.purchase-success p {
+    line-height: 26px;
+}
 .contact-info-box {
   .comma:before {
     content: ", "
