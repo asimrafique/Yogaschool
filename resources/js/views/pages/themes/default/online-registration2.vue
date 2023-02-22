@@ -586,19 +586,19 @@ course_id:false,
 
 
 
-     section1:true,
+     section1:false,
      section2:false,
      section3:false,
      section4:false,
      section5:false,
-     section6:false,
+     section6:true,
       section7:false,
 
 
      nextBtn:true,
      prevBtn:false,
 
-     submitBtn:false,
+     submitBtn:true,
 
      currentIndex:1,
 
