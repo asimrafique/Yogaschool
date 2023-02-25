@@ -212,9 +212,9 @@
                 </div>
                 <div class="col-12 col-sm-6 p-0">
                     <template v-if="registration.registration_fee">
-                        <fee-form v-if="registration.registration_fee_status == 'unpaid' && hasPermission('make-registration-fee-payment')" :registration="registration" @completed="getRegistration"></fee-form>
+                        <fee-form v-if="registration.status == 'pending' && hasPermission('make-registration-fee-payment')" :registration="registration" @completed="getRegistration"></fee-form>
                     </template>
-                    <template v-if="(!registration.registration_fee || (registration.registration_fee && registration.registration_fee_status == 'paid')) && registration.status != 'allotted' && hasPermission('change-registration-status')">
+                    <template v-if="(!registration.registration_fee || registration.status == 'partial') && registration.status != 'allotted' && hasPermission('change-registration-status')">
                         <action-form :registration="registration" @completed="getRegistration"></action-form>
                     </template>
                 </div>
@@ -365,7 +365,7 @@
                         this.online_registration_custom_fields = response.online_registration_custom_fields;
                         this.registration = response.registration;
                         this.transaction = (response.registration.transactions.length) ? response.registration.transactions[0] : null;
-                        if (response.registration.status=="pending") {
+                        if (response.registration.status=="pending" || response.registration.status=="partial") {
                             
                             if (this.registration.batch_id) {
                               this.batch_status=true;

@@ -35,17 +35,12 @@
             </div>
             <div class="col-12 col-sm-4">
                 <div class="form-group">
-                  <label for="">Room Gender</label>
-                  <select class="custom-select col-12" required name="gender_allotted" id="gender_allotted" v-model="roomForm.gender_allotted"
-                          @change="roomForm.errors.clear('gender_allotted')">
-                    <option value="">{{ trans('general.select_one') }}</option>
-                    <option value="male">Male Room</option>
-                    <option value="female">Female Room</option>
-                    
-                  </select>
-                  <show-error :form-name="roomForm" prop-name="gender_allotted"></show-error>
+                    <label for="">Fee Per Person</label>
+                    <input class="form-control" type="text" v-model="roomForm.per_person_fee" name="per_person_fee" placeholder="Enter Fee per person for this room">
+                    <show-error :form-name="roomForm" prop-name="per_person_fee"></show-error>
                 </div>
             </div>
+            
             <div class="col-12 col-sm-4">
                 <div class="form-group">
                   <label for="">Type</label>
@@ -90,7 +85,7 @@
                     building_id: '',
                     description : '',
                     types : '',
-                    gender_allotted:'',
+                    per_person_fee:'',
                     room_no:''
                 }),
                 buildings: [],
@@ -147,7 +142,7 @@
                         this.selected_building = response.selected_building;
                         this.roomForm.description = response.room.description;
                         this.roomForm.types = response.room.types;
-                         this.roomForm.gender_allotted = response.room.gender_allotted;
+                         this.roomForm.per_person_fee = response.room.per_person_fee;
                           this.roomForm.room_no = response.room.room_no;
                         loader.hide();
                     })

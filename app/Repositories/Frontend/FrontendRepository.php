@@ -14,6 +14,7 @@ use Illuminate\Validation\ValidationException;
 use App\Models\Configuration\Employee\Designation;
 use App\Repositories\Configuration\CustomFieldRepository;
 use App\Repositories\Configuration\Academic\CourseGroupRepository;
+use App\Repositories\Configuration\Asset\RoomRepository;
 
 class FrontendRepository {
 	protected $article_type;
@@ -28,6 +29,7 @@ class FrontendRepository {
 	protected $academic_session;
 	protected $course_group;
 	protected $custom_field;
+	protected $room;
 
 	/**
 	 * Instantiate a new instance.
@@ -45,7 +47,8 @@ class FrontendRepository {
 		Holiday $holiday,
 		AcademicSession $academic_session,
 		CourseGroupRepository $course_group,
-		CustomFieldRepository $custom_field
+		CustomFieldRepository $custom_field,
+		RoomRepository $room
 	) {
 		$this->article_type = $article_type;
 		$this->menu = $menu;
@@ -58,6 +61,7 @@ class FrontendRepository {
 		$this->academic_session = $academic_session;
 		$this->course_group = $course_group;
 		$this->custom_field = $custom_field;
+		$this->room = $room;
 	}
 
 	/**
@@ -289,8 +293,9 @@ class FrontendRepository {
 //        $batches = $this->course_group->getBatchOptionFront($academic_session->id);
 
         $custom_fields = $this->custom_field->listAllByForm('student_online_registration');
+        $accommodations= $this->room->getRoomTypesGroupByAnother();
 
-		return compact('courses', 'genders','custom_fields', 'guardian_relations','accommodations','how_long_yoga_options','teaching_experience_options','use_drugs_options');
+		return compact('courses', 'genders','custom_fields', 'guardian_relations','accommodations','how_long_yoga_options','teaching_experience_options','use_drugs_options','accommodations');
 	}
 
 

@@ -26,7 +26,7 @@ class RegistrationFeeRequest extends FormRequest
         return [
             'account_id'        => 'required',
             'payment_method_id' => 'required',
-            'date'              => 'required|date'
+            'date'              => 'nullable'
         ];
     }
 

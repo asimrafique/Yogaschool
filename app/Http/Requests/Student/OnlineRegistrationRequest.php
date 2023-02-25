@@ -27,7 +27,8 @@ class OnlineRegistrationRequest extends FormRequest {
           
 			switch ($favcolor) {
   case 1:
-return ['course_id'                       => 'required'];
+return ['course_id'                       => 'required',
+           'accommodations'=>'required'];
  
     break;
   case 2:

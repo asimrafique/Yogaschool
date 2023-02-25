@@ -16,7 +16,8 @@ class Course extends Model
                             'name',
                             'description',
                             'options',
-                            'academic_session_id'
+                            'academic_session_id',
+                            'course_fee'
                         ];
     protected $casts = ['options' => 'array'];
     protected $primaryKey = 'id';

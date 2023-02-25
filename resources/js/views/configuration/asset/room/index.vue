@@ -45,7 +45,7 @@
                                     <th>{{trans('asset.room_name')}}</th>
                                     <th>{{trans('asset.room_floor_number')}}</th>
                                     <th>Type</th>
-                                     <th>Gender Type</th>
+                                     <th> Per Person Fee</th>
                                     <th>{{trans('asset.room_description')}}</th>
                                     <th class="table-option">{{trans('general.action')}}</th>
                                 </tr>
@@ -56,7 +56,7 @@
                                     <td v-text="room.name"></td>
                                     <td v-text="room.floor_number"></td>
                                     <td v-text="room.type_name"></td>
-                                    <td v-text="room.gender_allotted"></td>
+                                    <td v-text="room.per_person_fee +' $'"></td>
                                     <td v-text="room.description"></td>
                                     <td class="table-option">
                                         <div class="btn-group">

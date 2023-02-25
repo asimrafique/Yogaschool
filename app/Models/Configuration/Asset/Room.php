@@ -21,7 +21,8 @@ class Room extends Model
                             'room_no',
                             'reserved_count',
                             'allowed',
-                            'gender_allotted'
+                            'gender_allotted',
+                            'per_person_fee'
                         ];
     protected $casts = ['options' => 'array'];
     protected $primaryKey = 'id';

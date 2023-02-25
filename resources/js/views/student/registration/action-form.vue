@@ -1,12 +1,12 @@
 <template>
     <div class="card card-form">
-    	<div class="card-body" v-if="showPendingForm==false && registration.status=='pending'">
-    			<h4 class="card-title">Waiting for admin approval</h4>
+    	<div class="card-body" v-if="showPendingForm==false && registration.status=='partial'">
+    			<h4 class="card-title">Waiting for admin approval For Remaining Amount</h4>
     	</div>
     	<div class="card-body" v-if="showPendingForm==false && registration.status=='allotted'">
     			<h4 class="card-title">Registration Approved</h4>
     	</div>
-        <div class="card-body" v-show="showPendingForm">
+        <div class="card-body" v-show="showPendingForm && registration.status=='partial'">
 
 			<h4 class="card-title">{{trans('student.registration_action')}}</h4>
             <form @submit.prevent="submit" @keydown="actionForm.errors.clear($event.target.name)">
@@ -159,7 +159,8 @@
 					rejection_remarks: '',
 					admission_remarks: '',
 					transport_circle_id: null,
-					fee_concession_id: null
+					fee_concession_id: null,
+					gender:''
 				}),
 				admission_numbers: [],
         rooms: [],
@@ -216,7 +217,8 @@
               // }
       axios.post("/api/registration/get-available-room",{
                 accommodation: event.target.value,
-                gender: this.registration.student.gender
+                gender: this.registration.student.gender,
+                location: this.registration.batch.options.location
               })
           .then(response => {
             this.rooms = response.rooms;

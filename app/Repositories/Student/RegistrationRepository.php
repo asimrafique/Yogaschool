@@ -24,6 +24,7 @@ use App\Repositories\Configuration\Academic\InstituteRepository;
 use App\Repositories\Configuration\Academic\CourseGroupRepository;
 use App\Repositories\Configuration\Finance\Transaction\PaymentMethodRepository;
 use App\User;
+use App\Models\Configuration\Asset\RoomBooking;
 use Auth;
 
 class RegistrationRepository
@@ -48,6 +49,7 @@ class RegistrationRepository
     protected $academic_session;
     protected $custom_field;
     protected $user;
+    protected $roomBooking;
 
     /**
      * Instantiate a new instance.
@@ -74,6 +76,8 @@ class RegistrationRepository
         InstituteRepository $institute,
         AcademicSession $academic_session,
         CustomFieldRepository $custom_field,
+         RoomBooking $roomBooking,
+
          User $user,
     ) {
         $this->registration = $registration;
@@ -95,6 +99,7 @@ class RegistrationRepository
         $this->institute = $institute;
         $this->academic_session = $academic_session;
         $this->custom_field = $custom_field;
+         $this->roomBooking=$roomBooking;
         $this->user = $user;
     }
 
@@ -148,6 +153,20 @@ class RegistrationRepository
     {
         return $this->registration->filterBySession()->filterById($id)->first();
     }
+    public function getRoomCourseFeesByRegId($reg_id)
+    {    
+
+        $student_id=$this->registration->filterById($reg_id)->first()->student_id;
+        $course_fee=$this->registration->filterById($reg_id)->first()->course->course_fee;
+
+
+        $room_id=$this->roomBooking->where('user_id',$student_id)->first()->room_id;
+        $room_fees=$this->room->getFee($room_id);
+
+        $remaining_fee=$room_fees+$course_fee;
+        return $remaining_fee;
+       // dd($remaining_fee);
+    }
 
     /**
      * Find registration with given id or throw an error.
@@ -172,6 +191,20 @@ class RegistrationRepository
           # code...
         }
        // dd($registration['batch']);
+
+        return $registration;
+    }
+    public function findOrFailAgain($id, $field = 'message')
+    {
+        $registration = $this->registration->with(['student','student.parent','course','course.batches','admission','admission.batch','transactions' => function ($q) {
+            $q->where('is_cancelled', 0);
+        },'transactions.account','transactions.paymentMethod','transactions.user','transactions.user.employee','previousInstitute'])->filterBySession()->filterById($id)->first();
+
+        if (! $registration) {
+            throw ValidationException::withMessages([$field => trans('student.could_not_find_registration')]);
+        }
+
+        
 
         return $registration;
     }
@@ -398,15 +431,24 @@ class RegistrationRepository
      *
      * @return Array
      */
-    public function getFeePreRequisite()
+    public function getFeePreRequisite($reg_id=0)
     {
         $accounts = $this->account->selectAllActive();
 
         $payment_method_details = $this->payment_method->getAll();
 
         $payment_methods = generateSelectOption($payment_method_details->pluck('name', 'id')->all());
+        
+        if ($reg_id) {
+             $room_course_feeses = $this->getRoomCourseFeesByRegId($reg_id);
+        }
+        else
+        {
+            $room_course_feeses=0;
+        }
+        
 
-        return compact('accounts', 'payment_method_details', 'payment_methods');
+        return compact('accounts', 'payment_method_details', 'payment_methods','room_course_feeses');
     }
 
     /**
@@ -661,6 +703,8 @@ class RegistrationRepository
         $options['custom_values'] = mergeByKey($registration->getOption('custom_values'), $custom_values);
         $registration->options = $options;
          $registration->registration_fee_status = 'paid';
+         $registration->status = 'partial';
+
          $registration->batch_id = gv($params, 'batch_id');
         $registration->save();
 
@@ -704,11 +748,11 @@ class RegistrationRepository
      */
     public function payment($params, $registration)
     {
-        if ($registration->registration_fee_status == 'paid' || ! $registration->registration_fee) {
+        if ($registration->status == 'alloted' || ! $registration->registration_fee) {
             throw ValidationException::withMessages(['message' => trans('general.invalid_action')]);
         }
 
-        $date              = toDate(gv($params, 'date'));
+        $date              =  toDate($registration->date_of_registration);
         $account_id        = gv($params, 'account_id');
         $payment_method_id = gv($params, 'payment_method_id');
         $remarks           = gv($params, 'remarks');
@@ -725,31 +769,46 @@ class RegistrationRepository
             throw ValidationException::withMessages(['date' => trans('academic.date_less_than_session_end')]);
         }
 
+
+
+        \DB::beginTransaction();
+
+        $admission = $this->admission->forceCreate([
+            'batch_id'          => $registration->batch_id,
+            'date_of_admission' => $registration->date_of_registration,
+            'prefix'            => 01,
+            'number'            => '',
+            'registration_id'   => $registration->id,
+            'admission_remarks' => ''
+        ]);
+
+         \DB::commit();
+
         $number = $this->transaction->filterByAccountId($account->id)->filterByType(1)->max('number');
         $amount = $registration->registration_fee;
 
-        $this->transaction->forceCreate([
-            'uuid'                     => Str::uuid(),
-            'type'                     => 1,
-            'prefix'                   => $account->prefix,
-            'number'                   => ($number) ? $number + 1 : 1,
-            'user_id'                  => \Auth::user()->id,
-            'amount'                   => $amount,
-            'account_id'               => $account_id,
-            'head'                     => 'registration_fee',
-            'registration_id'          => $registration->id,
-            'date'                     => toDate($date),
-            'remarks'                  => $remarks,
-            'upload_token'             => Str::uuid(),
-            'payment_method_id'        => $payment_method_id,
-            'instrument_number'        => ($payment_method->getOption('requires_instrument_number')) ? gv($params, 'instrument_number') : null,
-            'instrument_date'          => ($payment_method->getOption('requires_instrument_date')) ? toDate(gv($params, 'instrument_date')) : null,
-            'instrument_clearing_date' => ($payment_method->getOption('requires_instrument_clearing_date')) ? toDate(gv($params, 'instrument_clearing_date')) : null,
-            'instrument_bank_detail'   => ($payment_method->getOption('requires_instrument_bank_detail')) ? gv($params, 'instrument_bank_detail') : null,
-            'reference_number'         => ($payment_method->getOption('requires_reference_number')) ? gv($params, 'reference_number') : null,
-        ]);
+        // $this->transaction->forceCreate([
+        //     'uuid'                     => Str::uuid(),
+        //     'type'                     => 1,
+        //     'prefix'                   => $account->prefix,
+        //     'number'                   => ($number) ? $number + 1 : 1,
+        //     'user_id'                  => \Auth::user()->id,
+        //     'amount'                   => $amount,
+        //     'account_id'               => $account_id,
+        //     'head'                     => 'registration_fee',
+        //     'registration_id'          => $registration->id,
+        //     'date'                     => toDate($date),
+        //     'remarks'                  => $remarks,
+        //     'upload_token'             => Str::uuid(),
+        //     'payment_method_id'        => $payment_method_id,
+        //     'instrument_number'        => ($payment_method->getOption('requires_instrument_number')) ? gv($params, 'instrument_number') : null,
+        //     'instrument_date'          => ($payment_method->getOption('requires_instrument_date')) ? toDate(gv($params, 'instrument_date')) : null,
+        //     'instrument_clearing_date' => ($payment_method->getOption('requires_instrument_clearing_date')) ? toDate(gv($params, 'instrument_clearing_date')) : null,
+        //     'instrument_bank_detail'   => ($payment_method->getOption('requires_instrument_bank_detail')) ? gv($params, 'instrument_bank_detail') : null,
+        //     'reference_number'         => ($payment_method->getOption('requires_reference_number')) ? gv($params, 'reference_number') : null,
+        // ]);
 
-        $registration->registration_fee_status = 'paid';
+        $registration->status = 'alloted';
         $registration->save();
 
         $student = Student::where('id','=',$registration->student_id)->first();
@@ -884,6 +943,7 @@ class RegistrationRepository
     public function allotRegistration($params, $registration)
     {
         $batch = $this->batch->findOrFail(gv($params, 'batch_id'));
+        $gender = gv($params, 'gender');
 
         $fee_allocation = $this->fee_allocation->filterBySession()->where(function ($q) use ($batch) {
             $q->where('batch_id', $batch->id)->orWhere('course_id', $batch->course_id);
@@ -924,49 +984,52 @@ class RegistrationRepository
 
         \DB::beginTransaction();
 
-        $admission = $this->admission->forceCreate([
-            'batch_id'          => gv($params, 'batch_id'),
-            'date_of_admission' => toDate(gv($params, 'date_of_admission')),
-            'prefix'            => gv($params, 'admission_number_prefix'),
-            'number'            => gv($params, 'admission_number'),
-            'registration_id'   => $registration->id,
-            'admission_remarks' => gv($params, 'admission_remarks')
-        ]);
+        // $admission = $this->admission->forceCreate([
+        //     'batch_id'          => gv($params, 'batch_id'),
+        //     'date_of_admission' => toDate(gv($params, 'date_of_admission')),
+        //     'prefix'            => gv($params, 'admission_number_prefix'),
+        //     'number'            => gv($params, 'admission_number'),
+        //     'registration_id'   => $registration->id,
+        //     'admission_remarks' => gv($params, 'admission_remarks')
+        // ]);
         
         if ($room_id=gv($params, 'room_id')) {
-            $bookingRoom=$this->room->updateRoomCountAndCreateRoomBookedCustom($room_id,$registration->Student->id);
+            $batch_id=gv($params, 'batch_id');
+            $bookingRoom=$this->room->updateRoomCountAndCreateRoomBookedCustom($room_id,$registration->Student->id,gv($params, 'batch_id'),$gender);
 
             # code...
         }
 
-        $student_record = $this->student_record->forceCreate([
-            'admission_id'        => isset($admission) ? $admission->id : null,
-            'academic_session_id' => config('config.default_academic_session.id'),
-            'batch_id'            => gv($params, 'batch_id'),
-            'fee_allocation_id'   => $fee_allocation->id,
-            'date_of_entry'       => toDate(gv($params, 'date_of_admission')),
-            'student_id'          => $registration->Student->id,
-            'entry_remarks'       => gv($params, 'admission_remarks')
-        ]);
+        // $student_record = $this->student_record->forceCreate([
+        //     'admission_id'        => isset($admission) ? $admission->id : null,
+        //     'academic_session_id' => config('config.default_academic_session.id'),
+        //     'batch_id'            => gv($params, 'batch_id'),
+        //     'fee_allocation_id'   => $fee_allocation->id,
+        //     'date_of_entry'       => toDate(gv($params, 'date_of_admission')),
+        //     'student_id'          => $registration->Student->id,
+        //     'entry_remarks'       => gv($params, 'admission_remarks')
+        // ]);
 
-        $installments = array();
-        foreach ($fee_allocation->FeeAllocationGroups as $fee_allocation_group) {
-            foreach ($fee_allocation_group->FeeInstallments as $fee_installment) {
-                $installments[] = array(
-                    'student_record_id'  => $student_record->id,
-                    'fee_installment_id' => $fee_installment->id,
-                    'transport_circle_id' => $transport_circle_id ? : null,
-                    'fee_concession_id' => $fee_concession_id ? : null,
-                    'status' => 'unpaid'
-                );
-            }
-        }
+        // $installments = array();
+        // foreach ($fee_allocation->FeeAllocationGroups as $fee_allocation_group) {
+        //     foreach ($fee_allocation_group->FeeInstallments as $fee_installment) {
+        //         $installments[] = array(
+        //             'student_record_id'  => $student_record->id,
+        //             'fee_installment_id' => $fee_installment->id,
+        //             'transport_circle_id' => $transport_circle_id ? : null,
+        //             'fee_concession_id' => $fee_concession_id ? : null,
+        //             'status' => 'unpaid'
+        //         );
+        //     }
+        // }
 
-        $this->student_fee_record->insert($installments);
+       // $this->student_fee_record->insert($installments);
 
-        $registration->status = 'allotted';
-     // $registration->batch_id = gv($params, 'batch_id');
+        $registration->status = 'pending';
+      
+     
         $registration->save();
+         //dd('hi');
 
         \DB::commit();
 
