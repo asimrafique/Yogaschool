@@ -285,6 +285,7 @@ class RoomRepository
            
            
             'room_no'=> gv($params, 'room_no'),
+             'per_person_fee'=> gv($params, 'per_person_fee'),
             
         ];
         }
@@ -299,7 +300,7 @@ class RoomRepository
             'type_name'=>$type_name,
             'reserved_count'=>$count,
             'room_no'=> gv($params, 'room_no'),
-            'gender_allotted' => gv($params, 'gender_allotted'),
+            'per_person_fee' => gv($params, 'per_person_fee'),
         ];
         }
 
