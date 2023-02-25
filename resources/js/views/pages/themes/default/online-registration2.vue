@@ -71,14 +71,15 @@
                 <div class="col-4">
                   <div class="form-group">
                     <label for="">Accommodation choice</label>
-                    <select v-model="registrationForm.accommodation" class="custom-select col-12" name="accommodation"
-                            @change="registrationForm.errors.clear('accommodation')">
+                    <select v-model="registrationForm.accommodations" class="custom-select col-12" name="accommodations"
+                            @change="registrationForm.errors.clear('accommodations')">
                       <option value="">{{ trans('general.select_one') }}</option>
-                      <option v-for="accommodation in accommodations" v-bind:value="accommodation.id">
-                        {{ accommodation.name }}
+                      <option v-for="accommodation in accommodations" v-bind:value="accommodation.type_name">
+                        {{ accommodation.type_name }}
                       </option>
                     </select>
-                    <show-error :form-name="registrationForm" prop-name="accommodation"></show-error>
+                    <show-error :form-name="registrationForm" prop-name="accommodations"></show-error>
+                    <span class="help has-error" v-if="Object.keys(errors).includes('accommodations')" v-text="errors['accommodations'][0]"></span>
                   </div>
                 </div>
               </div>
@@ -586,19 +587,19 @@ course_id:false,
 
 
 
-     section1:false,
+     section1:true,
      section2:false,
      section3:false,
      section4:false,
      section5:false,
-     section6:true,
+     section6:false,
       section7:false,
 
 
      nextBtn:true,
      prevBtn:false,
 
-     submitBtn:true,
+     submitBtn:false,
 
      currentIndex:1,
 

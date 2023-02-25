@@ -67,9 +67,17 @@ class RoomRepository
     {
         return $this->room->get(['name', 'id']);
     }
+    public function getFee($room_id)
+    {
+        return $this->room->where('id',$room_id)->first()->per_person_fee;
+    }
     public function getRoomTypesGroupBy()
     {
        return $student_exist_query=  $this->room->where('building_id',1)->groupBy('types')->get();
+    }
+    public function getRoomTypesGroupByAnother()
+    {
+       return $student_exist_query=  $this->room->groupBy('types')->get();
     }
     public function selectRoomByType($type)
     {
@@ -81,16 +89,18 @@ class RoomRepository
 
         return $student_exist_query->get();
     }
-    public function updateRoomCountAndCreateRoomBookedCustom($room_id,$student_id)
+    public function updateRoomCountAndCreateRoomBookedCustom($room_id,$student_id,$batch_id,$gender='male')
     {   
 
 
           $this->room->where('id',$room_id)->increment('allowed', 1);
+          $this->room->where('id',$room_id)->update(['gender_allotted'=> $gender]);
         //  dd('hi');
         // dd($room_id,$student_id);
           $booking = new RoomBooking;
           $booking->room_id=$room_id;
           $booking->user_id=$student_id;
+          $booking->batch_id=$batch_id;
           $booking->save();
          //dd('hi again');
          return $booking;
@@ -119,7 +129,8 @@ class RoomRepository
     {
       //$accommodation= str_replace(' ', '_', $accommodation);
       //dd($accommodation);
-        $building_id=1;
+        $building_id= $this->building->getBuildingIdByLocation($req->get('location'));
+       // dd($building_id);
         $gender=$req->get('gender');
         $type=$req->get('accommodation');
         $count;
@@ -133,12 +144,23 @@ class RoomRepository
             $count=2;
         }
 
-        
+         
         $student_exist_query=  $this->room->where('types',  $type)->where('allowed','<',$count)->where('gender_allotted',$gender)->where('building_id',$building_id);
+       
+        if ($student_exist_query->exists()) {
+
+               $student_exist_query=  $this->room->where('types',  $type)->where('allowed','<',$count)->where('gender_allotted',$gender)->where('building_id',$building_id)->get();
+            //dd($student_exist_query);
+        }
+        if ($student_exist_query->exists()==false) {
+            // dd('sdf');
+              
+             $student_exist_query=  $this->room->where('types',  $type)->where('allowed','<',$count)->where('building_id',$building_id)->get();
+        }
 
         
 
-        return $student_exist_query->get();
+        return $student_exist_query;
     }
 
     /**

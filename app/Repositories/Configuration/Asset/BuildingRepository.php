@@ -224,4 +224,9 @@ class BuildingRepository
     {
         return $this->building->whereIn('id', $ids)->delete();
     }
+    public function getBuildingIdByLocation($location)
+    {   
+      // dd($this->building->where('location', $location)->pluck('id')->first());
+        return $this->building->where('location', $location)->pluck('id')->first();
+    }
 }

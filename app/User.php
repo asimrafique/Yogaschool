@@ -111,9 +111,10 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function getNameAttribute()
-    {
+    {    
+        return 'sdfsd  ' .'  far';
         $profile = $this->getProfile();
-
+dd($porifle);
         if ($profile->first_guardian_name) {
             return $profile->first_guardian_name;
         }

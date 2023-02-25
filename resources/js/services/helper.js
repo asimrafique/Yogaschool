@@ -255,6 +255,8 @@ export default {
 
         if(registration.status === 'pending' || !registration.status)
             status.push({'color': 'warning','label': i18n.student.registration_status_pending});
+        else if(registration.status === 'partial' || !registration.status)
+            status.push({'color': 'warning','label': 'Partial'});
         else if(registration.status === 'allotted')
             status.push({'color': 'success','label': i18n.student.registration_status_allotted});
         else if(registration.status === 'rejected')

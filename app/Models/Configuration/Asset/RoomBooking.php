@@ -13,6 +13,7 @@ class RoomBooking extends Model
     protected $fillable = [
                             'user_id',
                             'room_id',
+                            'batch_id',
                             'start_time',
                             'description',
                             'expired_at',

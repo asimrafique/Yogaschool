@@ -3,7 +3,7 @@
         <div class="card-body">
 			<h4 class="card-title">{{trans('student.pay_registration_fee')}} {{formatCurrency(registration.registration_fee)}}</h4>
 
-			<form @submit.prevent="submit" @keydown=""  v-if="feeSubmissionForRole==false" style="padding: 1%">
+			<form @submit.prevent="submit" @keydown=""  v-if="feeSubmissionForRole==false && registration.status=='pending'" style="padding: 1%">
                                     <div class="table-responsive p-2">
                                         <table class="table table-bordered">
                                             <thead>
@@ -16,19 +16,19 @@
                                             </thead>
                                             <tbody>
                                                 <tr >
-                                                    <td v-text="">Course Registration Fee</td>
-                                                    <td class="text-right" v-text="">{{formatCurrency(registration.registration_fee)}}</td>
+                                                    <td v-text="">Remaining fee Payable</td>
+                                                    <td class="text-right" v-text=""></td>
                                                     <td class="text-right">
                                                         0
                                                     </td>
-                                                    <td class="text-right" v-text="formatCurrency(registration.registration_fee)"></td>
+                                                    <td class="text-right" v-text="remaining_fee"></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
                                                 <tr>
                                                     <th>{{trans('general.total')}}</th>
                                                     <th colspan="2"></th>
-                                                    <th class="text-right">{{formatCurrency(registration.registration_fee)}}</th>
+                                                    <th class="text-right">{{remaining_fee}}</th>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -113,7 +113,7 @@
                                         </template>
                                     </div>
                                 </form>
-		    <form @submit.prevent="submit" @keydown="registrationFeeForm.errors.clear($event.target.name)"  v-if="feeSubmissionForRole==true">
+		    <form @submit.prevent="submit" @keydown="registrationFeeForm.errors.clear($event.target.name)"  v-if="feeSubmissionForRole==true && registration.status=='partial' ">
 		        <div class="row">
 		            <div class="col-12 col-sm-6">
 		                <div class="form-group">
@@ -226,7 +226,8 @@
                 payment_methods: [],
                 selected_payment_method: null,
                 payment_method_details: [],
-                payment_method_detail: {}
+                payment_method_detail: {},
+                remaining_fee:0
 			}
 		},
 		mounted() {
@@ -248,7 +249,7 @@
                 this.payment_gateway = gateway;
             },
             stripeCheckout(){
-                let loader = this.$loading.show();
+                //let loader = this.$loading.show();
                 this.stripeButton = false;
                 Stripe.setPublishableKey(this.getConfig('stripe_publishable_key'));
                 Stripe.card.createToken({
@@ -257,11 +258,11 @@
                     exp_month: this.stripe.month,
                     exp_year: this.stripe.year
                 }, this.stripeResponseHandler);
-                loader.hide();
+                //loader.hide();
             },
             stripeCheckout1(gateway)
             {
-            	
+            	 let loader = this.$loading.show();
                     this.registrationFeeForm.account_id=1;
                     
                     this.registrationFeeForm.instrument_bank_detail='';
@@ -277,7 +278,7 @@
 						this.selected_account = null;
 						this.$emit('completed');
 						this.stripeButton = true;
-						this.$loading.hide();
+						loader.hide();
 					})
 					.catch(error => {
 						loader.hide();
@@ -287,11 +288,11 @@
             },
             stripeResponseHandler(status, response) {
                 if(status == 200){
-                    let loader = this.$loading.show();
+                   
                     axios.get('/registration/fee/stripe',{
                             stripeToken: response.id,
-                            amount: this.registration.registration_fee*100,
-                            fee: this.registration.registration_fee*100,
+                            amount: this.remaining_fee,
+                            fee: this.remaining_fee,
                            
                         })
                         .then(response => {
@@ -299,7 +300,7 @@
                             
                         })
                         .catch(error => {
-                            loader.hide();
+                            //loader.hide();
                             helper.showErrorMsg(error);
                             this.stripeButton = true;
                         })
@@ -310,11 +311,12 @@
             },
 			getPreRequisite(){
 				let loader = this.$loading.show();
-	            axios.get('/api/registration/fee/pre-requisite')
+	            axios.get('/api/registration/fee/pre-requisite?reg_id='+this.registration.id)
 	                .then(response => {
 	                    this.accounts = response.accounts;
 	                    this.payment_methods = response.payment_methods;
 	                    this.payment_method_details = response.payment_method_details;
+                        this.remaining_fee=response.room_course_feeses;
 	                    loader.hide();
 	                })
 	                .catch(error => {

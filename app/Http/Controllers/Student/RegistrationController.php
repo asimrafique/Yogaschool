@@ -59,8 +59,8 @@ class RegistrationController extends Controller
     public function feePreRequisite()
     {
         $this->authorize('feePayment', Registration::class);
-
-        return $this->success($this->repo->getFeePreRequisite());
+       //   dd($this->request->get('reg_id'));
+        return $this->success($this->repo->getFeePreRequisite($this->request->get('reg_id')));
     }
 
     /**
@@ -165,6 +165,7 @@ class RegistrationController extends Controller
 
         $registration_custom_fields = $this->repo->getRegistrationCustomField();
         $online_registration_custom_fields = $this->repo->getOnlineRegistrationCustomField();
+       
         
         return $this->success(compact('registration','registration_custom_fields','online_registration_custom_fields'));
     }
@@ -228,10 +229,10 @@ class RegistrationController extends Controller
      */
     public function feePayment(RegistrationFeeRequest $request, $id)
     {
-        $registration = $this->repo->findOrFail($id);
+        $registration = $this->repo->findOrFailAgain($id);
 
         $this->authorize('feePayment', Registration::class);
-        //dd($this->request->all());
+        
         $this->repo->payment($this->request->all(), $registration);
 
         return $this->success(['message' => trans('student.registration_fee_paid')]);
@@ -261,10 +262,10 @@ class RegistrationController extends Controller
      */
     public function updateStatus(RegistrationUpdateStatusRequest $request, $id)
     {
-        $registration = $this->repo->findOrFail($id);
+        $registration = $this->repo->findOrFailAgain($id);
 
         $this->authorize('updateStatus', Registration::class);
-//        dd($request->all());
+      //dd($this->request->all());
         $registration = $this->repo->status($this->request->all(), $registration);
 
         return $this->success(['message' => trans('student.registration_status_updated')]);
