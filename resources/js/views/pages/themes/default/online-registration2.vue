@@ -427,6 +427,26 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                          <!--   <form>
+  <div id="card"></div>
+</form> -->
+
+<form>
+  <div id="card-number"></div>
+  <div id="card-number-error"></div>
+
+  <div id="card-holder"></div>
+  <div id="card-holder-error"></div>
+
+  <div id="expiry-date"></div>
+  <div id="expiry-date-error"></div>
+
+  <div id="verification-code"></div>
+  <div id="verification-code-error"></div>
+
+  <button type="button"  @click="mollieCheckout()">Pay</button>
+</form>
                                            <!--  <button type="button" @click="stripeCheckout" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button> -->
                                         
                                     </div>
@@ -469,7 +489,7 @@
           <span v-show="nextBtn" type="button"  @click="nextClick()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
            Next
           </span>
-          <button v-show="submitBtn" type="button"  @click="stripeCheckout()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
+          <button v-show="submitBtn" type="button"  @click="mollieCheckout()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
             {{ trans('general.submit') }}
           </button>
         </div>
@@ -587,19 +607,19 @@ course_id:false,
 
 
 
-     section1:true,
+     section1:false,
      section2:false,
      section3:false,
      section4:false,
      section5:false,
-     section6:false,
+     section6:true,
       section7:false,
 
 
-     nextBtn:true,
+     nextBtn:false,
      prevBtn:false,
 
-     submitBtn:false,
+     submitBtn:true,
 
      currentIndex:1,
 
@@ -614,12 +634,47 @@ course_id:false,
 possible:false,
 temp:[],
 
+mol:''
+
 
 
 
     }
   },
   mounted() {
+
+//  this.mollie = Mollie('pfl_3RkSN1zuPE', { locale: 'nl_NL', testmode: false });
+
+//             var cardComponent = this.mollie.createComponent('card');
+// cardComponent.mount('#card');
+
+
+
+
+
+
+
+
+// var cardNumber = this.mollie.createComponent('cardNumber');
+// cardNumber.mount('#card-number');
+
+// var cardHolder = this.mollie.createComponent('cardHolder');
+// cardHolder.mount('#card-holder');
+
+// var expiryDate = this.mollie.createComponent('expiryDate');
+// expiryDate.mount('#expiry-date');
+
+// var verificationCode = this.mollie.createComponent('verificationCode');
+// verificationCode.mount('#verification-code');
+                   
+
+
+
+
+
+
+
+
 
      var e1 = document.getElementById("progress-bar");
     e1.style.width = this.currentIndex*14.285+ "%";
@@ -646,7 +701,30 @@ temp:[],
         .catch(error => {
           loader.hide();
           helper.showErrorMsg(error);
-        })
+        });
+
+
+
+
+
+
+
+  this.mol=Mollie('pfl_3RkSN1zuPE', { locale: 'nl_NL', testmode: false });
+
+
+
+
+var cardNumber =this.mol.createComponent('cardNumber');
+cardNumber.mount('#card-number');
+
+var cardHolder =this.mol.createComponent('cardHolder');
+cardHolder.mount('#card-holder');
+
+var expiryDate =this.mol.createComponent('expiryDate');
+expiryDate.mount('#expiry-date');
+
+var verificationCode =this.mol.createComponent('verificationCode');
+verificationCode.mount('#verification-code');
   },
   computed: {
 
@@ -659,6 +737,73 @@ temp:[],
         },
     getConfig(config){
                 return helper.getConfig(config);
+            },
+        mollieCheckout(){
+
+
+
+console.log(this.mol);
+ //var { token, error } = await Mollie.createToken();
+
+
+  
+
+// await  Mollie.createToken({
+//                     cardNumber: this.stripe.card_number,
+//                     cardHolder:'Nabeel Farhat',
+//                     verificationCode: this.stripe.cvc,
+//                     expiryDate: '12/34',
+                   
+//                 });
+  // var { token, error } = await  Mollie.card.createToken({
+  //                   cardNumber: this.stripe.card_number,
+  //                   cardHolder:'Nabeel Farhat',
+  //                   verificationCode: this.stripe.cvc,
+  //                   expiryDate: '12/34',
+                   
+  //               });
+
+// var { token, error } = await this.mollie.createToken();
+
+  // if (error) {
+  //   // Something wrong happened while creating the token. Handle this situation gracefully.
+  //    console.log(error);
+  // }
+  //  console.log(token);
+
+
+//               var mollieClient = Mollie('pfl_3RkSN1zuPE', { locale: 'nl_NL', testmode: false });
+
+//               var payment = await mollieClient.payments.create({
+//   amount: {
+//     value:    '10.00',
+//     currency: 'EUR'
+//   },
+//   description: 'My first API payment',
+//   redirectUrl: 'http://yogaschool.test/online-registration2',
+//   webhookUrl:  'http://yogaschool.test/online-registration2'
+// });
+//               var payment = await mollieClient.payments.get('tr_8WhJKGmgBy');
+//               console.log(payment);
+              axios.get('/frontend/online-registration-stripe',{
+                           
+                            stripeToken: 2,
+                            amount: 100,
+                            fee: 122,
+                            course_id:2
+                           
+                        })
+                        .then(response => {
+                          console.log(response);
+                           // this.submit();
+                            
+                        })
+                        .catch(error => {
+                            loader.hide();
+                            helper.showErrorMsg(error);
+                            this.stripeButton = true;
+                        });
+
             },
     stripeCheckout(){
                

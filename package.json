@@ -35,9 +35,11 @@
   "dependencies": {
     "@chenfengyuan/vue-countdown": "^1.1.5",
     "@fortawesome/fontawesome-free": "^5.13.0",
+    "@mollie/api-client": "^3.6.0",
     "adapterjs": "^0.15.4",
     "bootstrap": "~4.3.1",
     "chart.js": "^2.8.0",
+    "https-browserify": "^1.0.0",
     "jquery": "^3.4.0",
     "laravel-vue-pagination": "^2.3.1",
     "moment": "^2.24.0",
