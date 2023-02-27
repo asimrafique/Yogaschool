@@ -785,7 +785,7 @@ console.log(this.mol);
 // });
 //               var payment = await mollieClient.payments.get('tr_8WhJKGmgBy');
 //               console.log(payment);
-              axios.get('/frontend/online-registration-stripe',{
+              axios.get('/test',{
                            
                             stripeToken: 2,
                             amount: 100,

@@ -92,26 +92,26 @@ class RegistrationController extends Controller
 
         return $this->success(compact('registrations', 'filters'));
     }
-    public function molliePaymentRegisterOnline()
-// {
-//     dd('sdf');
-//     // $payment = Mollie::api()->payments->create([
-//     //     "amount" => [
-//     //         "currency" => "EUR",
-//     //         "value" => "10.00" // You must send the correct number of decimals, thus we enforce the use of strings
-//     //     ],
-//     //     "description" => "Order #12345",
-//     //     //"redirectUrl" => 'http://yogaschool.test/online-registration2',
-//     //     //"webhookUrl" => 'http://yogaschool.test/online-registration2',
-//     //     "metadata" => [
-//     //         "order_id" => "12345",
-//     //     ],
-//     // ]);
+    public function molliePaymentRegisterOnline2()
+{
+    dd('sdf');
+    // $payment = Mollie::api()->payments->create([
+    //     "amount" => [
+    //         "currency" => "EUR",
+    //         "value" => "10.00" // You must send the correct number of decimals, thus we enforce the use of strings
+    //     ],
+    //     "description" => "Order #12345",
+    //     //"redirectUrl" => 'http://yogaschool.test/online-registration2',
+    //     //"webhookUrl" => 'http://yogaschool.test/online-registration2',
+    //     "metadata" => [
+    //         "order_id" => "12345",
+    //     ],
+    // ]);
 
-//     // redirect customer to Mollie checkout page
-//     return $this->success(['message' => $payment]);
-//     return redirect($payment, 303);
-// }
+    // redirect customer to Mollie checkout page
+    return $this->success(['message' => $payment]);
+    return redirect($payment, 303);
+}
     public function stripePaymentRegister()
     { dd('sdf');
 

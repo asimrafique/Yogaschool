@@ -11,6 +11,7 @@ use Spatie\Activitylog\Models\Activity;
 use Spatie\Permission\Models\Permission;
 use App\Repositories\Employee\EmployeeRepository;
 use App\Repositories\Student\StudentRecordRepository;
+use Mollie\Laravel\Facades\Mollie;
 
 class HomeController extends Controller
 {
@@ -41,6 +42,23 @@ class HomeController extends Controller
      */
     public function test()
     {
+      //  dd('sdf');
+    $payment = Mollie::api()->payments->create([
+        "amount" => [
+            "currency" => "EUR",
+            "value" => "10.00" // You must send the correct number of decimals, thus we enforce the use of strings
+        ],
+        "description" => "Order #12345",
+        "redirectUrl" => 'http://yogaschool.test/online-registration2',
+        "webhookUrl" => 'http://yogaschool.test/online-registration2',
+        "metadata" => [
+            "order_id" => "12345",
+        ],
+    ]);
+
+    // redirect customer to Mollie checkout page
+    return $this->success(['message' => $payment]);
+    return redirect($payment, 303);
     }
 
     /**
