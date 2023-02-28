@@ -35,15 +35,40 @@ class HomeController extends Controller
         $this->repo = $repo;
         $this->employee = $employee;
         $this->student_record = $student_record;
+        Mollie::api()->setApiKey('test_dHar4XY7LxsDOtmnkVtjNVWXLSlXsM');
     }
 
     /**
      * Used to test web route
      */
+
+    public function preparePayment()
+    {
+              $payment = Mollie::api()->payments->create([
+        "amount" => [
+            "currency" => "EUR",
+            "value" => "10.00" // You must send the correct number of decimals, thus we enforce the use of strings
+        ],
+        "description" => "Order #12345",
+        "redirectUrl" => route('mollie.sucess'),]);
+       $payments= Mollie::api()->payments()->get($payments->id);
+       return redirect($payments->getCheckoutUrl(),303);
+        
+    }
+    public function paymentSuccess()
+    {
+        echo 'payment recieved';
+    }
     public function test()
     {
+        $mollie = new \Mollie\Api\MollieApiClient();
+$mollie->setApiKey("test_dHar4XY7LxsDOtmnkVtjNVWXLSlXsM");
+//$mollie->setAccessToken("access_2FpfJqsNQk6cHvtcBwJ4E23HBJp2ahNdAN3EvPx5");
+  //dd($mollie);
+// setApiKey
+// setAccessToken
       //  dd('sdf');
-    $payment = Mollie::api()->payments->create([
+    $payment = $mollie->payments->create([
         "amount" => [
             "currency" => "EUR",
             "value" => "10.00" // You must send the correct number of decimals, thus we enforce the use of strings
@@ -54,7 +79,7 @@ class HomeController extends Controller
         "metadata" => [
             "order_id" => "12345",
         ],
-    ]);
+    ]); dd($payment);
 
     // redirect customer to Mollie checkout page
     return $this->success(['message' => $payment]);

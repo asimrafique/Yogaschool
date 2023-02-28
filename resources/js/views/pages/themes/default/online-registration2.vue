@@ -504,6 +504,7 @@
 <script>
 import registration from "../../../student/registration";
 
+
 export default {
   components: {},
   computed:{
@@ -709,7 +710,7 @@ mol:''
 
 
 
-  this.mol=Mollie('pfl_3RkSN1zuPE', { locale: 'nl_NL', testmode: false });
+  this.mol=Mollie('pfl_mju7NmTo9S', { locale: 'nl_NL', testmode: false });
 
 
 
@@ -738,13 +739,27 @@ verificationCode.mount('#verification-code');
     getConfig(config){
                 return helper.getConfig(config);
             },
-        mollieCheckout(){
+            webhookurk(){
+              console.log('webhook');
 
+            },
+     async   mollieCheckout(){
 
+// var mine=Mollie('pfl_mju7NmTo9S', { locale: 'nl_NL', testmode: false });
 
-console.log(this.mol);
- //var { token, error } = await Mollie.createToken();
+// const payment = await mine.payments.create({
+//   amount: {
+//     value:    '10.00',
+//     currency: 'EUR'
+//   },
+//   description: 'My first API payment',
+//   redirectUrl: 'https://yourwebshop.example.org/order/123456',
+//   webhookUrl:  this.webhookurk
+// });
 
+// console.log(payment);
+//  var { token, error } = await this.mol.createToken();
+// console.log(token,error);
 
   
 

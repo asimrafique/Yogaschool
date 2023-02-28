@@ -11,6 +11,9 @@
  */
 
 Route::get('/test', 'HomeController@test');
+
+Route::get('/mollie-payment', 'HomeController@preparePayment')->name('mollie.payment');
+Route::get('/payment-sucess', 'HomeController@paymentSuccess')->name('mollie.sucess');
 Route::get('/custom', function () {
     return;
 });
