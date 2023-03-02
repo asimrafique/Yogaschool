@@ -402,8 +402,24 @@
                   <div v-show="section6" style="padding: 3%;">
                                         <h4 class="card-title">{{trans('finance.choose_payment_gateway')}}</h4>
 
+                                              <div class="radio radio-success" >
+                                            <input type="radio" name="payment_gateway" id="stripe" value="stripe" @change="setPaymentGateway('stripe')">
+                                            <label for="stripe"> Stripe </label>
+                                        </div>
+                                        <div class="radio radio-success" >
+                                            <input type="radio" name="payment_gateway" id="billdesk" value="billdesk" @change="setPaymentGateway('mollie')">
+                                            <label for="billdesk"> Mollie </label>
+                                        </div>
+                                         <div class="row m-t-40" v-if="payment_gateway == 'mollie'">
+                                          <div class="col-4">
+                                                    <div class="form-group">
+                                                       <h4>Press Submit to Pay with Mollie</h4>
+                                                    </div>
+                                                </div>
 
-                                            <div class="row m-t-40">
+                                         </div>
+
+                                            <div class="row m-t-40" v-if="payment_gateway == 'stripe'">
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <input class="form-control" type="number" maxlength="16" value="" v-model="stripe.card_number" :placeholder="trans('finance.card_number')">
@@ -432,7 +448,7 @@
   <div id="card"></div>
 </form> -->
 
-<form>
+<!-- <form>
   <div id="card-number"></div>
   <div id="card-number-error"></div>
 
@@ -446,7 +462,7 @@
   <div id="verification-code-error"></div>
 
   <button type="button"  @click="mollieCheckout()">Pay</button>
-</form>
+</form> -->
                                            <!--  <button type="button" @click="stripeCheckout" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button> -->
                                         
                                     </div>
@@ -489,7 +505,10 @@
           <span v-show="nextBtn" type="button"  @click="nextClick()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
            Next
           </span>
-          <button v-show="submitBtn" type="button"  @click="mollieCheckout()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
+          <button v-show="submitBtn" type="button" v-if="payment_gateway == 'stripe'" @click="stripeCheckout()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
+            {{ trans('general.submit') }}
+          </button>
+          <button v-show="submitBtn" type="button" v-if="payment_gateway == 'mollie'" @click="mollieCheckout()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
             {{ trans('general.submit') }}
           </button>
         </div>
@@ -608,19 +627,19 @@ course_id:false,
 
 
 
-     section1:false,
+     section1:true,
      section2:false,
      section3:false,
      section4:false,
      section5:false,
-     section6:true,
+     section6:false,
       section7:false,
 
 
-     nextBtn:false,
+     nextBtn:true,
      prevBtn:false,
 
-     submitBtn:true,
+     submitBtn:false,
 
      currentIndex:1,
 
@@ -643,39 +662,15 @@ mol:''
     }
   },
   mounted() {
+ let urlParams = new URLSearchParams(window.location.search);
+ if (urlParams.has('payment_status')) {
 
-//  this.mollie = Mollie('pfl_3RkSN1zuPE', { locale: 'nl_NL', testmode: false });
-
-//             var cardComponent = this.mollie.createComponent('card');
-// cardComponent.mount('#card');
-
-
-
-
-
-
-
-
-// var cardNumber = this.mollie.createComponent('cardNumber');
-// cardNumber.mount('#card-number');
-
-// var cardHolder = this.mollie.createComponent('cardHolder');
-// cardHolder.mount('#card-holder');
-
-// var expiryDate = this.mollie.createComponent('expiryDate');
-// expiryDate.mount('#expiry-date');
-
-// var verificationCode = this.mollie.createComponent('verificationCode');
-// verificationCode.mount('#verification-code');
-                   
-
-
-
-
-
-
-
-
+                    this.section1=false;
+                    this.section7=true;
+                    this.nextBtn=false;
+                    this.prevBtn=false;
+                    this.submitBtn=false;
+          }
 
      var e1 = document.getElementById("progress-bar");
     e1.style.width = this.currentIndex*14.285+ "%";
@@ -710,22 +705,6 @@ mol:''
 
 
 
-  this.mol=Mollie('pfl_mju7NmTo9S', { locale: 'nl_NL', testmode: false });
-
-
-
-
-var cardNumber =this.mol.createComponent('cardNumber');
-cardNumber.mount('#card-number');
-
-var cardHolder =this.mol.createComponent('cardHolder');
-cardHolder.mount('#card-holder');
-
-var expiryDate =this.mol.createComponent('expiryDate');
-expiryDate.mount('#expiry-date');
-
-var verificationCode =this.mol.createComponent('verificationCode');
-verificationCode.mount('#verification-code');
   },
   computed: {
 
@@ -733,6 +712,9 @@ verificationCode.mount('#verification-code');
 
   },
   methods: {
+    setPaymentGateway(gateway){
+                this.payment_gateway = gateway;
+            },
     containsKey(obj, key ) {
             return Object.keys(obj).includes(key);
         },
@@ -743,73 +725,19 @@ verificationCode.mount('#verification-code');
               console.log('webhook');
 
             },
-     async   mollieCheckout(){
-
-// var mine=Mollie('pfl_mju7NmTo9S', { locale: 'nl_NL', testmode: false });
-
-// const payment = await mine.payments.create({
-//   amount: {
-//     value:    '10.00',
-//     currency: 'EUR'
-//   },
-//   description: 'My first API payment',
-//   redirectUrl: 'https://yourwebshop.example.org/order/123456',
-//   webhookUrl:  this.webhookurk
-// });
-
-// console.log(payment);
-//  var { token, error } = await this.mol.createToken();
-// console.log(token,error);
-
-  
-
-// await  Mollie.createToken({
-//                     cardNumber: this.stripe.card_number,
-//                     cardHolder:'Nabeel Farhat',
-//                     verificationCode: this.stripe.cvc,
-//                     expiryDate: '12/34',
-                   
-//                 });
-  // var { token, error } = await  Mollie.card.createToken({
-  //                   cardNumber: this.stripe.card_number,
-  //                   cardHolder:'Nabeel Farhat',
-  //                   verificationCode: this.stripe.cvc,
-  //                   expiryDate: '12/34',
-                   
-  //               });
-
-// var { token, error } = await this.mollie.createToken();
-
-  // if (error) {
-  //   // Something wrong happened while creating the token. Handle this situation gracefully.
-  //    console.log(error);
-  // }
-  //  console.log(token);
+        mollieCheckout(){
 
 
-//               var mollieClient = Mollie('pfl_3RkSN1zuPE', { locale: 'nl_NL', testmode: false });
-
-//               var payment = await mollieClient.payments.create({
-//   amount: {
-//     value:    '10.00',
-//     currency: 'EUR'
-//   },
-//   description: 'My first API payment',
-//   redirectUrl: 'http://yogaschool.test/online-registration2',
-//   webhookUrl:  'http://yogaschool.test/online-registration2'
-// });
-//               var payment = await mollieClient.payments.get('tr_8WhJKGmgBy');
-//               console.log(payment);
-              axios.get('/test',{
+            
+              axios.post('/mollie-payment',{
                            
-                            stripeToken: 2,
-                            amount: 100,
-                            fee: 122,
-                            course_id:2
+                           
+                            registrationForm:this.registrationForm
                            
                         })
                         .then(response => {
-                          console.log(response);
+                          console.log(response._links.checkout.href);
+                          window.location = response._links.checkout.href;
                            // this.submit();
                             
                         })

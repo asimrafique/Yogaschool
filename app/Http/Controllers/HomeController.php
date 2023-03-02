@@ -11,7 +11,9 @@ use Spatie\Activitylog\Models\Activity;
 use Spatie\Permission\Models\Permission;
 use App\Repositories\Employee\EmployeeRepository;
 use App\Repositories\Student\StudentRecordRepository;
-use Mollie\Laravel\Facades\Mollie;
+use App\Models\Student\Payments;
+require_once __DIR__ . "/../../../vendor/mollie-api-php/vendor/autoload.php";
+// require_once __DIR__ . "/../../../functions.php";
 
 class HomeController extends Controller
 {
@@ -19,6 +21,7 @@ class HomeController extends Controller
     protected $repo;
     protected $employee;
     protected $student_record;
+    protected $mollie;
 
     /**
      * Instantiate a new controller instance.
@@ -35,7 +38,11 @@ class HomeController extends Controller
         $this->repo = $repo;
         $this->employee = $employee;
         $this->student_record = $student_record;
-        Mollie::api()->setApiKey('test_dHar4XY7LxsDOtmnkVtjNVWXLSlXsM');
+
+        $this->mollie = new \Mollie\Api\MollieApiClient();
+
+$this->mollie->setApiKey("test_rUsJFr4VQ8KBRTJjthd2yVApd4c2x3");
+
     }
 
     /**
@@ -43,47 +50,124 @@ class HomeController extends Controller
      */
 
     public function preparePayment()
-    {
-              $payment = Mollie::api()->payments->create([
+     {   
+     
+    //dd($this->request->all());
+      static $payment_id;
+
+$payment_id=0;
+      $order_id=time();
+      //         $payment = $this->mollie->payments->create([
+      //   "amount" => [
+      //       "currency" => "EUR",
+      //       "value" => "10.00" // You must send the correct number of decimals, thus we enforce the use of strings
+      //   ],
+      //   'metadata'    => array(
+      //   'order_id' => $order_id,
+      // ),
+      //   "description" => "Order #12345",
+      //   // "redirectUrl" => route('mollie.sucess'),
+      //   'redirectUrl' => route('mollie.sucess').'?payment_id='.$order_id,
+      // // 'webhookUrl' => route('mollie.hook')
+
+      // ],
+
+      // );
+//$payment_id=$payment->id;
+             // dd($payment_id);
+
+     
+     $data=$this->request->all();
+     unset($data['registrationForm']['originalData']);
+    
+              
+
+  $payment = $this->mollie->payments->create([
         "amount" => [
             "currency" => "EUR",
             "value" => "10.00" // You must send the correct number of decimals, thus we enforce the use of strings
         ],
+        'metadata'    => array(
+        'order_id' => $order_id,
+      ),
         "description" => "Order #12345",
-        "redirectUrl" => route('mollie.sucess'),]);
-       $payments= Mollie::api()->payments()->get($payments->id);
-       return redirect($payments->getCheckoutUrl(),303);
+        // "redirectUrl" => route('mollie.sucess'),
+        'redirectUrl' => route('mollie.sucess').'?payment_id='.$data['registrationForm']['email'].'_'.$order_id,
+      // 'webhookUrl' => route('mollie.hook')
+
+      ],
+
+      );
+
+
+
+
+$reg_form=json_encode($data['registrationForm']);
+
+
+
+               //dd($reg_form);
+//dd(unset($data['registrationForm']['originalData']));
+             Payments::create(['payment_type'=>'mollie','payment_id'=>$data['registrationForm']['email'].'_'.$order_id,'reg_form'=>$reg_form,'status'=>'pending','mollie_payment_id'=>$payment->id]);
+             // dd($payment->_links->checkout->href);
+
+// $order_id = time();
+  //             $payment = $this->mollie->payments->create(
+  //   array(
+  //     'amount'      =>'10.00',
+  //     'description' => 'Asim One',
+  //     'redirectUrl' => 'http://www.registration.arhantayoga.org/pg-nl/pay-confirmation.php?order_id='. 12,
+  //     'metadata'    => array(
+  //       'order_id' => '12',
+  //     ),
+  //     'webhookUrl' => 'http://www.registration.arhantayoga.org/pg-nl/webhook.php'
+  //   )
+  // );
+      // $payments= Mollie::api()->payments()->get($payments->id);
+              return $this->success($payment);
+       //return redirect($payment->_links->checkout->href);
         
     }
+    public function paymentHook()
+    {    $this->request->all();
+      $data=json_encode($this->request->all());
+       Payments::create(['payment_type'=>'mollie','payment_id'=>1,'reg_form'=>$data,'status'=>'pending']);
+        echo 'payment hook';
+    }
     public function paymentSuccess()
-    {
-        echo 'payment recieved';
+    {   
+     $data=json_encode($this->request->all());
+
+      // Payments::create(['payment_type'=>'mollie','payment_id'=>1,'reg_form'=>$data,'status'=>'pending']);
+    return  redirect('online-registration2?payment_status=verified');
+    // return redirect()->route('/online-registration');
+      //  echo 'payment recieved';
     }
     public function test()
     {
-        $mollie = new \Mollie\Api\MollieApiClient();
-$mollie->setApiKey("test_dHar4XY7LxsDOtmnkVtjNVWXLSlXsM");
+//         $mollie = new \Mollie\Api\MollieApiClient();
+// $mollie->setApiKey("test_dHar4XY7LxsDOtmnkVtjNVWXLSlXsM");
 //$mollie->setAccessToken("access_2FpfJqsNQk6cHvtcBwJ4E23HBJp2ahNdAN3EvPx5");
   //dd($mollie);
 // setApiKey
 // setAccessToken
       //  dd('sdf');
-    $payment = $mollie->payments->create([
-        "amount" => [
-            "currency" => "EUR",
-            "value" => "10.00" // You must send the correct number of decimals, thus we enforce the use of strings
-        ],
-        "description" => "Order #12345",
-        "redirectUrl" => 'http://yogaschool.test/online-registration2',
-        "webhookUrl" => 'http://yogaschool.test/online-registration2',
-        "metadata" => [
-            "order_id" => "12345",
-        ],
-    ]); dd($payment);
+    // $payment = $mollie->payments->create([
+    //     "amount" => [
+    //         "currency" => "EUR",
+    //         "value" => "10.00" // You must send the correct number of decimals, thus we enforce the use of strings
+    //     ],
+    //     "description" => "Order #12345",
+    //     "redirectUrl" => 'http://yogaschool.test/online-registration2',
+    //     "webhookUrl" => 'http://yogaschool.test/online-registration2',
+    //     "metadata" => [
+    //         "order_id" => "12345",
+    //     ],
+    // ]); dd($payment);
 
     // redirect customer to Mollie checkout page
-    return $this->success(['message' => $payment]);
-    return redirect($payment, 303);
+    // return $this->success(['message' => $payment]);
+    // return redirect($payment, 303);
     }
 
     /**
