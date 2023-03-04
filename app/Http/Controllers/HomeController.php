@@ -11,6 +11,7 @@ use Spatie\Activitylog\Models\Activity;
 use Spatie\Permission\Models\Permission;
 use App\Repositories\Employee\EmployeeRepository;
 use App\Repositories\Student\StudentRecordRepository;
+use App\Repositories\Student\RegistrationRepository;
 use App\Models\Student\Payments;
 require_once __DIR__ . "/../../../vendor/mollie-api-php/vendor/autoload.php";
 // require_once __DIR__ . "/../../../functions.php";
@@ -22,6 +23,7 @@ class HomeController extends Controller
     protected $employee;
     protected $student_record;
     protected $mollie;
+    protected $reg_repo;
 
     /**
      * Instantiate a new controller instance.
@@ -32,12 +34,14 @@ class HomeController extends Controller
         Request $request,
         HomeRepository $repo,
         EmployeeRepository $employee,
-        StudentRecordRepository $student_record
+        StudentRecordRepository $student_record,
+        RegistrationRepository $reg_repo
     ) {
         $this->request = $request;
         $this->repo = $repo;
         $this->employee = $employee;
         $this->student_record = $student_record;
+        $this->reg_repo=$reg_repo;
 
         $this->mollie = new \Mollie\Api\MollieApiClient();
 
@@ -109,7 +113,9 @@ $reg_form=json_encode($data['registrationForm']);
                //dd($reg_form);
 //dd(unset($data['registrationForm']['originalData']));
              Payments::create(['payment_type'=>'mollie','payment_id'=>$data['registrationForm']['email'].'_'.$order_id,'reg_form'=>$reg_form,'status'=>'pending','mollie_payment_id'=>$payment->id]);
-             // dd($payment->_links->checkout->href);
+
+
+             
 
 // $order_id = time();
   //             $payment = $this->mollie->payments->create(
@@ -136,7 +142,23 @@ $reg_form=json_encode($data['registrationForm']);
     }
     public function paymentSuccess()
     {   
-     $data=json_encode($this->request->all());
+
+     $dbpayment=Payments::where('payment_id',$this->request->get('payment_id'))->first();
+      $payment  = $this->mollie->payments->get($dbpayment->mollie_payment_id);
+             //dd($payment);
+
+             if ($payment->status=='paid') {
+              $data=[];
+              $reg_form= json_decode($dbpayment->reg_form);
+              $data=(array)$reg_form;
+              // echo "<pre>";
+              // print_r($data);exit;
+              // dd($data);
+              $this->reg_repo->onlineRegistration($data);
+              // echo "<pre>";
+              // print_r($reg_form);exit;
+             }
+    // $data=json_encode($this->request->all());
 
       // Payments::create(['payment_type'=>'mollie','payment_id'=>1,'reg_form'=>$data,'status'=>'pending']);
     return  redirect('online-registration2?payment_status=verified');
