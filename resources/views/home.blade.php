@@ -9,6 +9,7 @@
         <meta name="author" content="ScriptMint">
         <title>{{config('app.name') ? : 'InstiKit'}}</title>
         <meta name="csrf-token" content="{{ csrf_token() }}" />
+        <script src="https://js.mollie.com/v1/mollie.js"></script>
         <link rel="shortcut icon" href="{{ config('config.icon') ? url('/'.config('config.icon')) : url('/images/favicon.png') }}">
         @if((!cache('direction') && config('config.direction') == 'rtl') || cache('direction') == 'rtl')
             <link href="{{ mix('/css/style-rtl.css') }}" id="direction" rel="stylesheet">
@@ -88,6 +89,8 @@
         @if(config('config.stripe'))
             <script src="https://js.stripe.com/v2"></script>
         @endif
+
+        
         @if(config('config.paystack') && in_array(getDefaultCurrency('name'), ['NGN', 'GHS']))
             <script src="https://js.paystack.co/v1/inline.js"></script>
         @endif

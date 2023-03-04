@@ -402,8 +402,24 @@
                   <div v-show="section6" style="padding: 3%;">
                                         <h4 class="card-title">{{trans('finance.choose_payment_gateway')}}</h4>
 
+                                              <div class="radio radio-success" >
+                                            <input type="radio" name="payment_gateway" id="stripe" value="stripe" @change="setPaymentGateway('stripe')">
+                                            <label for="stripe"> Stripe </label>
+                                        </div>
+                                        <div class="radio radio-success" >
+                                            <input type="radio" name="payment_gateway" id="billdesk" value="billdesk" @change="setPaymentGateway('mollie')">
+                                            <label for="billdesk"> Mollie </label>
+                                        </div>
+                                         <div class="row m-t-40" v-if="payment_gateway == 'mollie'">
+                                          <div class="col-4">
+                                                    <div class="form-group">
+                                                       <h4>Press Submit to Pay with Mollie</h4>
+                                                    </div>
+                                                </div>
 
-                                            <div class="row m-t-40">
+                                         </div>
+
+                                            <div class="row m-t-40" v-if="payment_gateway == 'stripe'">
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <input class="form-control" type="number" maxlength="16" value="" v-model="stripe.card_number" :placeholder="trans('finance.card_number')">
@@ -427,6 +443,26 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                          <!--   <form>
+  <div id="card"></div>
+</form> -->
+
+<!-- <form>
+  <div id="card-number"></div>
+  <div id="card-number-error"></div>
+
+  <div id="card-holder"></div>
+  <div id="card-holder-error"></div>
+
+  <div id="expiry-date"></div>
+  <div id="expiry-date-error"></div>
+
+  <div id="verification-code"></div>
+  <div id="verification-code-error"></div>
+
+  <button type="button"  @click="mollieCheckout()">Pay</button>
+</form> -->
                                            <!--  <button type="button" @click="stripeCheckout" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button> -->
                                         
                                     </div>
@@ -469,7 +505,10 @@
           <span v-show="nextBtn" type="button"  @click="nextClick()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
            Next
           </span>
-          <button v-show="submitBtn" type="button"  @click="stripeCheckout()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
+          <button v-show="submitBtn" type="button" v-if="payment_gateway == 'stripe'" @click="stripeCheckout()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
+            {{ trans('general.submit') }}
+          </button>
+          <button v-show="submitBtn" type="button" v-if="payment_gateway == 'mollie'" @click="mollieCheckout()" class="btn btn-info btn-lg waves-effect waves-light m-t-10">
             {{ trans('general.submit') }}
           </button>
         </div>
@@ -483,6 +522,7 @@
 
 <script>
 import registration from "../../../student/registration";
+
 
 export default {
   components: {},
@@ -614,12 +654,23 @@ course_id:false,
 possible:false,
 temp:[],
 
+mol:''
+
 
 
 
     }
   },
   mounted() {
+ let urlParams = new URLSearchParams(window.location.search);
+ if (urlParams.has('payment_status')) {
+
+                    this.section1=false;
+                    this.section7=true;
+                    this.nextBtn=false;
+                    this.prevBtn=false;
+                    this.submitBtn=false;
+          }
 
      var e1 = document.getElementById("progress-bar");
     e1.style.width = this.currentIndex*14.285+ "%";
@@ -646,7 +697,14 @@ temp:[],
         .catch(error => {
           loader.hide();
           helper.showErrorMsg(error);
-        })
+        });
+
+
+
+
+
+
+
   },
   computed: {
 
@@ -654,11 +712,41 @@ temp:[],
 
   },
   methods: {
+    setPaymentGateway(gateway){
+                this.payment_gateway = gateway;
+            },
     containsKey(obj, key ) {
             return Object.keys(obj).includes(key);
         },
     getConfig(config){
                 return helper.getConfig(config);
+            },
+            webhookurk(){
+              console.log('webhook');
+
+            },
+        mollieCheckout(){
+
+
+            
+              axios.post('/mollie-payment',{
+                           
+                           
+                            registrationForm:this.registrationForm
+                           
+                        })
+                        .then(response => {
+                          console.log(response._links.checkout.href);
+                          window.location = response._links.checkout.href;
+                           // this.submit();
+                            
+                        })
+                        .catch(error => {
+                            loader.hide();
+                            helper.showErrorMsg(error);
+                            this.stripeButton = true;
+                        });
+
             },
     stripeCheckout(){
                
