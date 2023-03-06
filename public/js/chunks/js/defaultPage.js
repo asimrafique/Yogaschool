@@ -3240,8 +3240,4 @@ module.exports = JSON.parse('[{"module":"institute","translation":"institute.ins
 /***/ })
 
 }]);
-<<<<<<< HEAD
-//# sourceMappingURL=defaultPage.js.map?id=e6f43ffd5806b38c
-=======
-//# sourceMappingURL=defaultPage.js.map?id=8bd81afe97b76547
->>>>>>> master
+//# sourceMappingURL=defaultPage.js.map?id=af064ac3a5a98a48

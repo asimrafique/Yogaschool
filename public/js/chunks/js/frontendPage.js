@@ -673,4 +673,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=frontendPage.js.map?id=2cc56a0b76b289d9
+//# sourceMappingURL=frontendPage.js.map?id=f9223a93fc9364b0

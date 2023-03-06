@@ -19,12 +19,8 @@ __webpack_require__.r(__webpack_exports__);
         floor_number: '',
         building_id: '',
         description: '',
-<<<<<<< HEAD
         types: '',
-=======
-        type: '',
->>>>>>> master
-        gender_allotted: '',
+        per_person_fee: '',
         room_no: ''
       }),
       buildings: [],
@@ -74,7 +70,7 @@ __webpack_require__.r(__webpack_exports__);
         _this3.selected_building = response.selected_building;
         _this3.roomForm.description = response.room.description;
         _this3.roomForm.types = response.room.types;
-        _this3.roomForm.gender_allotted = response.room.gender_allotted;
+        _this3.roomForm.per_person_fee = response.room.per_person_fee;
         _this3.roomForm.room_no = response.room.room_no;
         loader.hide();
       })["catch"](function (error) {
@@ -419,48 +415,32 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("Room Gender")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("Fee Per Person")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.roomForm.gender_allotted,
-      expression: "roomForm.gender_allotted"
+      value: _vm.roomForm.per_person_fee,
+      expression: "roomForm.per_person_fee"
     }],
-    staticClass: "custom-select col-12",
+    staticClass: "form-control",
     attrs: {
-      required: "",
-      name: "gender_allotted",
-      id: "gender_allotted"
+      type: "text",
+      name: "per_person_fee",
+      placeholder: "Enter Fee per person for this room"
+    },
+    domProps: {
+      value: _vm.roomForm.per_person_fee
     },
     on: {
-      change: [function ($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.roomForm, "gender_allotted", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }, function ($event) {
-        return _vm.roomForm.errors.clear("gender_allotted");
-      }]
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.roomForm, "per_person_fee", $event.target.value);
+      }
     }
-  }, [_c("option", {
-    attrs: {
-      value: ""
-    }
-  }, [_vm._v(_vm._s(_vm.trans("general.select_one")))]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "male"
-    }
-  }, [_vm._v("Male Room")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "female"
-    }
-  }, [_vm._v("Female Room")])]), _vm._v(" "), _c("show-error", {
+  }), _vm._v(" "), _c("show-error", {
     attrs: {
       "form-name": _vm.roomForm,
-      "prop-name": "gender_allotted"
+      "prop-name": "per_person_fee"
     }
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "col-12 col-sm-4"
@@ -727,7 +707,7 @@ var render = function render() {
     staticClass: "table-responsive"
   }, [_c("table", {
     staticClass: "table table-sm"
-  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("asset.building")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_floor_number")))]), _vm._v(" "), _c("th", [_vm._v("Type")]), _vm._v(" "), _c("th", [_vm._v("Gender Type")]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_description")))]), _vm._v(" "), _c("th", {
+  }, [_c("thead", [_c("tr", [_c("th", [_vm._v(_vm._s(_vm.trans("asset.building")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_name")))]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_floor_number")))]), _vm._v(" "), _c("th", [_vm._v("Type")]), _vm._v(" "), _c("th", [_vm._v(" Per Person Fee")]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm.trans("asset.room_description")))]), _vm._v(" "), _c("th", {
     staticClass: "table-option"
   }, [_vm._v(_vm._s(_vm.trans("general.action")))])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.rooms.data, function (room) {
     return _c("tr", [_c("td", {
@@ -748,7 +728,7 @@ var render = function render() {
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
-        textContent: _vm._s(room.gender_allotted)
+        textContent: _vm._s(room.per_person_fee + " $")
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
@@ -984,8 +964,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-<<<<<<< HEAD
-//# sourceMappingURL=index.js.map?id=c05adf3623d44611
-=======
-//# sourceMappingURL=index.js.map?id=6eca6fd901777e65
->>>>>>> master
+//# sourceMappingURL=index.js.map?id=27d0719eb64860cf
