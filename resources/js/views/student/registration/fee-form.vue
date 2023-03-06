@@ -57,6 +57,14 @@
                                             <input type="radio" name="payment_gateway" id="stripe" value="stripe" @change="setPaymentGateway('stripe')">
                                             <label for="stripe"> Stripe </label>
                                         </div>
+                                        <div class="radio radio-success" >
+                                            <input type="radio" name="payment_gateway" id="billdesk" value="billdesk" @change="setPaymentGateway('mollie')">
+                                            <label for="billdesk"> Mollie </label>
+                                        </div>
+                                         <template v-if="payment_gateway == 'mollie'">
+                                            <button type="button" @click="mollieCheckout" class="btn btn-info waves-effect waves-light pull-right"  style="margin-right: 2%" v-if="stripeButton"><span>{{trans('general.proceed')}}</span></button>
+
+                                         </template>
                                         <div class="radio radio-success" v-if="getConfig('paystack')">
                                             <input type="radio" name="payment_gateway" id="paystack" value="paystack" @change="setPaymentGateway('paystack')">
                                             <label for="paystack"> Paystack </label>
@@ -247,6 +255,32 @@
             },
 			setPaymentGateway(gateway){
                 this.payment_gateway = gateway;
+            },
+            mollieCheckout(){
+
+
+            if (this.registration_fee) {
+        this.registrationForm.reg_fee=this.registration_fee;
+
+       }
+              axios.post('/mollie-payment',{
+                           
+                           
+                            registrationForm:this.registrationForm
+                           
+                        })
+                        .then(response => {
+                          console.log(response._links.checkout.href);
+                          window.location = response._links.checkout.href;
+                           // this.submit();
+                            
+                        })
+                        .catch(error => {
+                            loader.hide();
+                            helper.showErrorMsg(error);
+                            this.stripeButton = true;
+                        });
+
             },
             stripeCheckout(){
                 //let loader = this.$loading.show();
