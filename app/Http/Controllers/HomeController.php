@@ -84,12 +84,13 @@ $payment_id=0;
      $data=$this->request->all();
      unset($data['registrationForm']['originalData']);
     
-              
+              //dd(gettype($data['registrationForm']['reg_fee']));
+              $data['registrationForm']['reg_fee']=$data['registrationForm']['reg_fee'].'.00';
 
   $payment = $this->mollie->payments->create([
         "amount" => [
             "currency" => "EUR",
-            "value" => "10.00" // You must send the correct number of decimals, thus we enforce the use of strings
+            "value" => $data['registrationForm']['reg_fee'] // You must send the correct number of decimals, thus we enforce the use of strings
         ],
         'metadata'    => array(
         'order_id' => $order_id,

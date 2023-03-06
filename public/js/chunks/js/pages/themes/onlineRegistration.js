@@ -277,7 +277,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         use_drugs: '',
         use_drugs_details: '',
         substance_frequency_of_use: ''
-      }, _defineProperty(_Form, "email", ''), _defineProperty(_Form, "password", ''), _defineProperty(_Form, "password_confirmation", ''), _defineProperty(_Form, "check", false), _Form)),
+      }, _defineProperty(_Form, "email", ''), _defineProperty(_Form, "password", ''), _defineProperty(_Form, "password_confirmation", ''), _defineProperty(_Form, "check", false), _defineProperty(_Form, "reg_fee", 0), _Form)),
       selected_course: null,
       selected_batch: null,
       guardian_relations: [],
@@ -372,6 +372,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   },
   mollieCheckout: function mollieCheckout() {
     var _this2 = this;
+    if (this.registration_fee) {
+      this.registrationForm.reg_fee = this.registration_fee;
+    }
     axios.post('/mollie-payment', {
       registrationForm: this.registrationForm
     }).then(function (response) {
@@ -6750,4 +6753,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=onlineRegistration.js.map?id=2fcd7286c0478332
+//# sourceMappingURL=onlineRegistration.js.map?id=a21c4b9397fd8710

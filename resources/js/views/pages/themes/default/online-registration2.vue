@@ -590,6 +590,7 @@ export default {
         password:'',
         password_confirmation:'',
         check:false,
+        reg_fee:0
         
 
       }),
@@ -728,7 +729,10 @@ mol:''
         mollieCheckout(){
 
 
-            
+            if (this.registration_fee) {
+        this.registrationForm.reg_fee=this.registration_fee;
+
+       }
               axios.post('/mollie-payment',{
                            
                            
@@ -999,6 +1003,7 @@ mol:''
        {
         this.registrationForm.check=false;
        }
+       
        
       this.registrationForm.post('/api/frontend/online-registration?section_no=final')
           .then(response => {
