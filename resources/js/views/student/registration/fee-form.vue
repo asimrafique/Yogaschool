@@ -248,6 +248,18 @@
              this.feeSubmissionForRole=false;
 			}
 			this.getPreRequisite();
+
+            let urlParams = new URLSearchParams(window.location.search);
+ if (urlParams.has('status')) {
+
+    var status=urlParams.get('status'); 
+    if (status=='verified') {
+ this.stripeCheckout1('stripe');
+
+    }
+
+                   
+          }
 		},
 		methods: {
 			getConfig(config){
@@ -257,22 +269,23 @@
                 this.payment_gateway = gateway;
             },
             mollieCheckout(){
+               
 
+       //      if (this.registration_fee) {
+       //  this.registrationForm.reg_fee=this.registration_fee;
 
-            if (this.registration_fee) {
-        this.registrationForm.reg_fee=this.registration_fee;
-
-       }
-              axios.post('/mollie-payment',{
+       // }
+              axios.post('/mollie-payment-remain',{
                            
                            
-                            registrationForm:this.registrationForm
+                            remaining_fee:this.remaining_fee,
+                            register_id:this.registration.id
                            
                         })
                         .then(response => {
                           console.log(response._links.checkout.href);
                           window.location = response._links.checkout.href;
-                           // this.submit();
+                           //this.stripeCheckout1('stripe');
                             
                         })
                         .catch(error => {

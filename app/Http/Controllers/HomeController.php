@@ -52,8 +52,74 @@ $this->mollie->setApiKey("test_rUsJFr4VQ8KBRTJjthd2yVApd4c2x3");
     /**
      * Used to test web route
      */
+ public function prepareRemainMollie()
 
-    public function preparePayment()
+{
+       static $payment_id;
+
+$payment_id=0;
+      $order_id=time();
+     
+     
+     $remaining_fee=$this->request->get('remaining_fee');
+     $remaining_fee=$remaining_fee .'.00';
+      $register_id=$this->request->get('register_id');
+    // unset($data['registrationForm']['originalData']);
+    
+              
+
+  $payment = $this->mollie->payments->create([
+        "amount" => [
+            "currency" => "EUR",
+            "value" => $remaining_fee // You must send the correct number of decimals, thus we enforce the use of strings
+        ],
+        'metadata'    => array(
+        'order_id' => $order_id,
+      ),
+        "description" => "Order #12345",
+        // "redirectUrl" => route('mollie.sucess'),
+        'redirectUrl' => route('mollie.remain.sucess').'?payment_id='.$register_id,
+      // 'webhookUrl' => route('mollie.hook')
+
+      ],
+
+      );
+
+
+
+
+
+
+
+
+         
+             Payments::create(['payment_type'=>'mollie','payment_id'=>$register_id,'reg_form'=>'remain amount','status'=>'pending','mollie_payment_id'=>$payment->id]);
+
+              return $this->success($payment);
+}  
+  public function  remainMollie()
+  {
+    //dd('sadasd');
+    $dbpayment=Payments::where('payment_id',$this->request->get('payment_id'))->first();
+    //dd($dbpayment);
+          $payment  = $this->mollie->payments->get($dbpayment->mollie_payment_id);
+                 
+            $route='';
+                 if ($payment->status=='paid') {
+                  
+                  //Payments::where('payment_id',$this->request->get('payment_id'))->delete();
+                  $route='student/registration/'.$this->request->get('payment_id').'?status=verified';
+
+                 }
+                 else
+                 {
+                   $route='student/registration/'.$this->request->get('payment_id').'?status=unverified';
+                 }
+
+    return redirect($route);
+
+   }
+  public function preparePayment()
      {   
      
     //dd($this->request->all());
