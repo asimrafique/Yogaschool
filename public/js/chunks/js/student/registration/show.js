@@ -313,6 +313,13 @@ __webpack_require__.r(__webpack_exports__);
       this.feeSubmissionForRole = false;
     }
     this.getPreRequisite();
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('status')) {
+      var status = urlParams.get('status');
+      if (status == 'verified') {
+        this.stripeCheckout1('stripe');
+      }
+    }
   },
   methods: {
     getConfig: function getConfig(config) {
@@ -320,6 +327,25 @@ __webpack_require__.r(__webpack_exports__);
     },
     setPaymentGateway: function setPaymentGateway(gateway) {
       this.payment_gateway = gateway;
+    },
+    mollieCheckout: function mollieCheckout() {
+      var _this = this;
+      //      if (this.registration_fee) {
+      //  this.registrationForm.reg_fee=this.registration_fee;
+
+      // }
+      axios.post('/mollie-payment-remain', {
+        remaining_fee: this.remaining_fee,
+        register_id: this.registration.id
+      }).then(function (response) {
+        console.log(response._links.checkout.href);
+        window.location = response._links.checkout.href;
+        //this.stripeCheckout1('stripe');
+      })["catch"](function (error) {
+        loader.hide();
+        helper.showErrorMsg(error);
+        _this.stripeButton = true;
+      });
     },
     stripeCheckout: function stripeCheckout() {
       //let loader = this.$loading.show();
@@ -334,7 +360,7 @@ __webpack_require__.r(__webpack_exports__);
       //loader.hide();
     },
     stripeCheckout1: function stripeCheckout1(gateway) {
-      var _this = this;
+      var _this2 = this;
       var loader = this.$loading.show();
       this.registrationFeeForm.account_id = 1;
       this.registrationFeeForm.instrument_bank_detail = '';
@@ -346,9 +372,9 @@ __webpack_require__.r(__webpack_exports__);
       this.registrationFeeForm.remarks = '';
       this.registrationFeeForm.post('/api/registration/' + this.registration.id + '/fee/payment').then(function (response) {
         toastr.success(response.message);
-        _this.selected_account = null;
-        _this.$emit('completed');
-        _this.stripeButton = true;
+        _this2.selected_account = null;
+        _this2.$emit('completed');
+        _this2.stripeButton = true;
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -356,18 +382,18 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     stripeResponseHandler: function stripeResponseHandler(status, response) {
-      var _this2 = this;
+      var _this3 = this;
       if (status == 200) {
         axios.get('/registration/fee/stripe', {
           stripeToken: response.id,
           amount: this.remaining_fee,
           fee: this.remaining_fee
         }).then(function (response) {
-          _this2.stripeCheckout1('stripe');
+          _this3.stripeCheckout1('stripe');
         })["catch"](function (error) {
           //loader.hide();
           helper.showErrorMsg(error);
-          _this2.stripeButton = true;
+          _this3.stripeButton = true;
         });
       } else {
         toastr.error(response.error.message);
@@ -375,13 +401,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getPreRequisite: function getPreRequisite() {
-      var _this3 = this;
+      var _this4 = this;
       var loader = this.$loading.show();
       axios.get('/api/registration/fee/pre-requisite?reg_id=' + this.registration.id).then(function (response) {
-        _this3.accounts = response.accounts;
-        _this3.payment_methods = response.payment_methods;
-        _this3.payment_method_details = response.payment_method_details;
-        _this3.remaining_fee = response.room_course_feeses;
+        _this4.accounts = response.accounts;
+        _this4.payment_methods = response.payment_methods;
+        _this4.payment_method_details = response.payment_method_details;
+        _this4.remaining_fee = response.room_course_feeses;
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -408,12 +434,12 @@ __webpack_require__.r(__webpack_exports__);
       return helper.formatCurrency(amount);
     },
     submit: function submit() {
-      var _this4 = this;
+      var _this5 = this;
       var loader = this.$loading.show();
       this.registrationFeeForm.post('/api/registration/' + this.registration.id + '/fee/payment').then(function (response) {
         toastr.success(response.message);
-        _this4.selected_account = null;
-        _this4.$emit('completed');
+        _this5.selected_account = null;
+        _this5.$emit('completed');
         loader.hide();
       })["catch"](function (error) {
         loader.hide();
@@ -1445,7 +1471,36 @@ var render = function render() {
     attrs: {
       "for": "stripe"
     }
-  }, [_vm._v(" Stripe ")])]) : _vm._e(), _vm._v(" "), _vm.getConfig("paystack") ? _c("div", {
+  }, [_vm._v(" Stripe ")])]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "radio radio-success"
+  }, [_c("input", {
+    attrs: {
+      type: "radio",
+      name: "payment_gateway",
+      id: "billdesk",
+      value: "billdesk"
+    },
+    on: {
+      change: function change($event) {
+        return _vm.setPaymentGateway("mollie");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "billdesk"
+    }
+  }, [_vm._v(" Mollie ")])]), _vm._v(" "), _vm.payment_gateway == "mollie" ? [_vm.stripeButton ? _c("button", {
+    staticClass: "btn btn-info waves-effect waves-light pull-right",
+    staticStyle: {
+      "margin-right": "2%"
+    },
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.mollieCheckout
+    }
+  }, [_c("span", [_vm._v(_vm._s(_vm.trans("general.proceed")))])]) : _vm._e()] : _vm._e(), _vm._v(" "), _vm.getConfig("paystack") ? _c("div", {
     staticClass: "radio radio-success"
   }, [_c("input", {
     attrs: {
@@ -2636,4 +2691,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=show.js.map?id=7207772e9da952a3
+//# sourceMappingURL=show.js.map?id=27bc8949f8b132f2
